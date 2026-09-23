@@ -1,0 +1,73 @@
+{"id": "evib-0001-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0001-q1", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "postpone", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0001-q2", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0002-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0002-q1", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0002-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "greenleaf", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0003-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0003-q1", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0003-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "bayline", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0003-q3", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["second_incident", "production_halt"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0004-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0004-q1", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "salad_bar", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0005-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0005-q1", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0005-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "p34", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0005-q3", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["rash", "liver_enzymes"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0006-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0006-q1", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0006-q2", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0007-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0007-q1", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0007-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "orca", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0007-q3", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["latency", "doc_lead"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0008-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0008-q1", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0008-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "ngc5253b", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0008-q3", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0009-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0009-q1", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0009-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "d15", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0009-q3", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["military", "landlord_repair_failure"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0010-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0010-q1", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "sow", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0010-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "d180", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0010-q3", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["public", "prior_known"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0011-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0011-q1", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "d90", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0012-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0012-q1", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0012-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "m12", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0012-q3", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ambiguous", "target": ["active_role"], "suggested_target": null, "confidence": "medium", "reason": "Breach requires a role 'substantially similar to Employee's role' within 12 months; the employee's role and timing are not given, so an 'active sales role' is not clearly a breach."}
+{"id": "evib-0013-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0013-q1", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "p389k", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0013-q2", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["no_hoa", "new_roof", "built_1998"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0014-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0014-q1", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "f310", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0014-q2", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["water", "trash"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0015-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0015-q1", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0015-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "y810", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0015-q3", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["hvac"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0016-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0016-q1", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "p459k", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0017-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0017-q1", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0017-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "decrease", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0017-q3", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["dizziness"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0018-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0018-q1", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0018-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "surveillance", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0018-q3", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["hba1c_improved", "fatigue_reported"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0019-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0019-q1", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "acetaminophen", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0020-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0020-q1", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "r389", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0020-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "n214", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0020-q3", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["revenue", "comp_sales", "opex"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0021-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0021-q1", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "aspen", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0021-q2", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "t1965", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0021-q3", "file": "evib_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["coreline"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0022-q0", "file": "evib_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evib-0022-q1", "file": "evib_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "modest_low_single_digit", "suggested_target": null, "confidence": "high", "reason": ""}

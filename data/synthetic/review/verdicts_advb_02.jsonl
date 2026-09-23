@@ -1,0 +1,55 @@
+{"id": "advb-0023-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0023-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "kestrel_finance_contact", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0023-q2", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["verify_by_phone"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0024-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0024-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "keep_the_order", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0025-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0025-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "submit_scorecards_by_friday", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0025-q2", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["wes_completed_onsite", "ines_accepted_offer"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0026-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0026-q1", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0027-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0027-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "lighter_weight_box_supplier_switch", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0027-q2", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["revert_box_supplier", "reply_directly_to_renata"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0028-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0028-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "net_45_with_early_pay_discount", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0029-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0029-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "novahome_decor", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0029-q2", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["issued_full_refund", "flagged_packaging_for_review"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0030-q0", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "decline_for_this_role", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0030-q1", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["resume_keyword_match_was_high", "possible_fit_for_different_role_later"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0031-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0031-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "employee_as_work_under_employee_b", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0031-q2", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["conversation_with_employee_bs_manager", "note_in_employee_bs_file"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0032-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0032-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "temporary_deactivation", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0033-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0033-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "invoice_9042", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0033-q2", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["issued_with_wrong_tax_rate", "should_be_disregarded"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0034-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0034-q1", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0035-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0035-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "good_faith_gesture_not_a_demand", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0035-q2", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["not_trying_to_create_bidding_war", "would_accept_original_offer"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0036-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0036-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "read_only_access", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0037-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0037-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "taskflow", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0037-q2", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["removed_priyas_access", "reassigned_tasks_to_deepak"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0038-q0", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "below_target_needs_corrective_plan", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0038-q1", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["quality_reject_rate"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0039-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0039-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "bulk_office_supplies_llc", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0039-q2", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["replacement_preferred", "refund_as_fallback"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0040-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0040-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "fell_through_in_background_check", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0041-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0041-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "rate_limiter_misconfiguration", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0041-q2", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["caused_by_eu_config_push", "resolved_by_reverting_config"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0042-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0042-q1", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0043-q0", "file": "advb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0043-q1", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "a_subcontractor_of_oakcrest", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0043-q2", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["paid_back_overtime_plus_goodwill", "fixed_the_payroll_bug", "agreed_to_third_party_audit"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0044-q0", "file": "advb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "6ft_maple_table_875", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0044-q1", "file": "advb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["6ft_oak", "5ft_oak_standard"], "suggested_target": null, "confidence": "high", "reason": ""}

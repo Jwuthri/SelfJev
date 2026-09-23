@@ -1,0 +1,58 @@
+{"id": "roua-0023-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "account_recovery", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0023-q1", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0024-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "order_status_inquiry", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0024-q1", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0025-q0", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0025-q1", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "kyc_verification", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0025-q2", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0026-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "presales_product_questions", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0026-q1", "file": "roua_02.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0026-q2", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0027-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "minor_cosmetic_bug", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0027-q1", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0027-q2", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0028-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "rate_lock_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0028-q1", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0028-q2", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "rate_lock_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0029-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "event_changes_rescheduling", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0029-q1", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0029-q2", "file": "roua_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["event_postponed", "ticket_resale_requested"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0030-q0", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0031-q0", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0031-q1", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "legal_compliance", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0032-q0", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0033-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ambiguous", "target": "integration_sync_failure", "suggested_target": null, "confidence": "medium", "reason": "Customer never ranks urgency; numbering is not priority. Xero sync dropping 200 transactions and the broken CSV export are both functional bugs; sync is plausible but ui_bug_report is also defensible."}
+{"id": "roua-0033-q1", "file": "roua_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["sync_failure", "ui_bug", "feature_request"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0033-q2", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0034-q0", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0034-q1", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "third_party_account_access", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0034-q2", "file": "roua_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["kyc_expedite_request", "unauthorized_third_party_request", "fee_dispute_on_own_account"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0034-q3", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0035-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "damage_defect_claims", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0035-q1", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0035-q2", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0036-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "compliance_privacy_requests", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0036-q1", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0036-q2", "file": "roua_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["data_deletion_request", "export_job_failure"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0036-q3", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0037-q0", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0038-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "subscription_pause_skip", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0038-q1", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0038-q2", "file": "roua_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["pause_subscription"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0039-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0039-q1", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0039-q2", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0040-q0", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0040-q1", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "standard_withdrawal_processing", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0040-q2", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0041-q0", "file": "roua_02.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0041-q1", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0041-q2", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0042-q0", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "scheduling_engine_bug", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0042-q1", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0042-q2", "file": "roua_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["scheduling_bug_report", "referral_program_question"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0043-q0", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0043-q1", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "payroll_corrections", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0043-q2", "file": "roua_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["time_threshold_exceeded", "employee_contacted_directly"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0044-q0", "file": "roua_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0044-q1", "file": "roua_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "fraud_review", "suggested_target": null, "confidence": "high", "reason": ""}

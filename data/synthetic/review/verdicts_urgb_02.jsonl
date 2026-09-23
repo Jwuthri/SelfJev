@@ -1,0 +1,63 @@
+{"id": "urgb-0023-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0023-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "review_when_free", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0024-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0024-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "respond_immediately_business_critical", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0024-q2", "file": "urgb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["revenue_loss_mentioned", "specific_dollar_estimate_given"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0025-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0025-q1", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0025-q2", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "enthusiastic_optimistic", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0026-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0026-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "rotate_credentials_immediately", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0026-q2", "file": "urgb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["credential_was_publicly_exposed", "self_reported_by_the_person_who_caused_it"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0027-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0027-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "overwhelmed_but_joking", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0028-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0028-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "social_request", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0028-q2", "file": "urgb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0029-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0029-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "rolled_back_the_deploy", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0029-q2", "file": "urgb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["rollback_confirmed_stable", "customers_were_affected"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0030-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0030-q1", "file": "urgb_02.jsonl", "type": "binary", "verdict": "wrong", "target": true, "suggested_target": false, "confidence": "medium", "reason": "Deadline is end of day Thursday, so completion is required by (not before) Thursday; nothing must be done before Thursday begins."}
+{"id": "urgb-0030-q2", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "complete_it_before_the_deadline", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0031-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0031-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "schedule_swap_request", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0032-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0032-q1", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0032-q2", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "planned_maintenance_notice", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0033-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0033-q1", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0033-q2", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "sarcastic", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0033-q3", "file": "urgb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["customer_is_upset", "internal_response_is_dismissive_in_tone"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0034-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0034-q1", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0034-q2", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "schedule_a_supportive_check_in", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0035-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0035-q1", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0035-q2", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "resolved_no_current_risk", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0036-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0036-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "escalated_and_fixed_it_same_day", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0036-q2", "file": "urgb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["contract_value_specified", "renewal_at_risk", "fix_verified_before_end_of_day"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0037-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0037-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "social_chat", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0037-q2", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "no_routing_needed", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0038-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0038-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "calm_formal", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0038-q2", "file": "urgb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["legal_action_is_involved", "requires_prompt_escalation_to_leadership"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0039-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0039-q1", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0039-q2", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "recovered_from_nightly_backup", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0040-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0040-q1", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0040-q2", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "passive_aggressive", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0041-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0041-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "logistics_planning_update", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0042-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0042-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "joking_use_of_emergency_for_lunch_plans", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0043-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0043-q1", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "cross_tenant_data_exposure", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0043-q2", "file": "urgb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["other_customers_company_name_and_email_exposed", "fix_deployed_same_day", "mandatory_legal_disclosure_expected"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0043-q3", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0044-q0", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0044-q1", "file": "urgb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0044-q2", "file": "urgb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "near_miss_no_loss_occurred", "suggested_target": null, "confidence": "high", "reason": ""}

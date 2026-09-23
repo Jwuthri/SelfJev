@@ -1,4 +1,4 @@
-"""pjev: classify | eval | calibrate | compare | bench | serve | train | train-custom"""
+"""pjev: classify | eval | calibrate | compare | bench | serve | train | train-custom | train-tree"""
 import argparse
 import json
 import sys
@@ -9,6 +9,10 @@ from .model import MODEL_ID, MODEL_REVISION
 
 
 def _scorer(a):
+    if a.tree:
+        from .tree import TreeScorer
+        return TreeScorer(a.model, a.revision, adapter=a.adapter, device=a.device, dtype=a.dtype, max_length=a.max_length,
+                          max_batch_tokens=a.max_batch_tokens)
     if a.checkpoint:
         from .custom import CustomScorer
         return CustomScorer(a.checkpoint, device=a.device, dtype=a.dtype, max_length=a.max_length,
@@ -32,6 +36,8 @@ def main(argv=None):
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     def model_args(p):
+        p.add_argument("--tree", action="store_true", help="shared-prefix tree scorer (tree.py) on --model/--revision; "
+                                                                "--adapter from `pjev train-tree`")
         p.add_argument("--checkpoint", help="custom shared-state model checkpoint (from `pjev train-custom`); "
                                             "default: the stock reranker backend")
         p.add_argument("--model", default=MODEL_ID, help="stock backend: Qwen3-Reranker checkpoint (0.6B / 4B / 8B)")
@@ -79,6 +85,9 @@ def main(argv=None):
     p = sub.add_parser("train-custom", help="custom model: new-module warm-up, then LoRA/full backbone adaptation")
     p.add_argument("config")
     p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
+    p = sub.add_parser("train-tree", help="shared-prefix tree scorer: LoRA on any Qwen3-architecture causal LM")
+    p.add_argument("config")
+    p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
     a = ap.parse_args(argv)
 
     if a.cmd == "classify":
@@ -105,7 +114,7 @@ def main(argv=None):
         from .benchmark import default_grid, run
         grid = default_grid(tuple(map(int, a.lengths.split(","))), tuple(map(int, a.questions.split(","))))
         rep = run(a.adapter, a.device, a.dtype, grid, a.repeats, max_batch_tokens=a.max_batch_tokens, out_dir=a.out,
-                  checkpoint=a.checkpoint, model_id=a.model, revision=a.revision)
+                  checkpoint=a.checkpoint, model_id=a.model, revision=a.revision, tree=a.tree)
         print((Path(a.out) / "bench.md").read_text())
     elif a.cmd == "serve":
         from .server import serve
@@ -116,6 +125,9 @@ def main(argv=None):
         train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
     elif a.cmd == "train-custom":
         from .train_custom import train
+        train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
+    elif a.cmd == "train-tree":
+        from .train_tree import train
         train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
 
 

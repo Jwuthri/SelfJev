@@ -1,0 +1,76 @@
+{"id": "polb-0023-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0023-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "glass_exception", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0023-q2", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["at_fault_collision"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0024-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0024-q1", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0024-q2", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "damage_only", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0024-q3", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["rental"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0025-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0025-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "forhire_use", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0025-q2", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0026-q0", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "statewide", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0026-q1", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0026-q2", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0026-q3", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["third_party_fault", "against_at_fault_insurer", "within_2yr"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0027-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0027-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "diego_excluded", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0027-q2", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0028-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ambiguous", "target": true, "suggested_target": null, "confidence": "low", "reason": "Policy says prior authorization is required but never states the consequence (denial) of skipping it; 'will be denied' relies on outside knowledge."}
+{"id": "polb-0028-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "over_threshold", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0028-q2", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["under_threshold", "er_setting"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0029-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0029-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "d1280", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0029-q2", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0029-q3", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["innetwork_costsharing"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0030-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0030-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "zero", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0030-q2", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0030-q3", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["continuous_coverage", "gap_under_63", "prior_over_12mo"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0031-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0031-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "summit_missed_deadline", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0031-q2", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0031-q3", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0032-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0032-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "missing_recert", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0032-q2", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["disability_before_26", "dependent_for_support", "over_26"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0033-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0033-q1", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0033-q2", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "flood_excluded", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0033-q3", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["sudden_discharge", "prompt_action", "internal_source"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0034-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0034-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "d8000", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0034-q2", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0034-q3", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["hail_damage", "exceeds_deductible"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0035-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0035-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "d1800", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0035-q2", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["acv_paid", "within_180"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0036-q0", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "reduce_for_mitigation", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0036-q1", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0036-q2", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "wrong", "target": ["failed_to_mitigate", "roof_covered"], "suggested_target": ["failed_to_mitigate"], "confidence": "medium", "reason": "Nothing in the state says windstorm roof damage is a covered peril; only the mitigation duty is described. roof_covered is not supported by the state."}
+{"id": "polb-0037-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0037-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "job_loss", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0037-q2", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["job_loss_reason", "jury_duty_reason"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0038-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0038-q1", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0038-q2", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["within_14days", "medically_able"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0039-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0039-q1", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0039-q2", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "d6000", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0039-q3", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0040-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0040-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "d200", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0040-q2", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["delay_over_12hr", "eligible_for_delay_benefit"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0041-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0041-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "past_contestability", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0041-q2", "file": "polb_02.jsonl", "type": "binary", "verdict": "ambiguous", "target": true, "suggested_target": null, "confidence": "low", "reason": "Within 2 years insurer 'may' deny only for a material misstatement that would have affected underwriting; materiality isn't established, so 'would the outcome be different' is uncertain."}
+{"id": "polb-0041-q3", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["past_2yr", "condition_undisclosed"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0042-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0042-q1", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "premium_refund", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0042-q2", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["within_2yr_li2", "premium_refund_due"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0043-q0", "file": "polb_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "annas_children", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0043-q1", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0043-q2", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0044-q0", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0044-q1", "file": "polb_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["intoxication", "illegal_activity", "controlled_substance"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0044-q2", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0044-q3", "file": "polb_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}

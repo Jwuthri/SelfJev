@@ -1,0 +1,53 @@
+{"id": "roub-0001-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0001-q1", "file": "roub_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["troubleshooting_attempted"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0002-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_disputes", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0002-q1", "file": "roub_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["unexplained_charge_increase", "app_crash_complaint"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0002-q2", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_disputes", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0003-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_credit_approvals", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0003-q1", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0003-q2", "file": "roub_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["diagnostic_ticket_opened"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0004-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0004-q1", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0005-q0", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0005-q1", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0005-q2", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "retention_offers", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0006-q0", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0006-q1", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0007-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "fraud_security", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0007-q1", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0008-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "field_dispatch", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0008-q1", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0008-q2", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "field_dispatch", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0009-q0", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0009-q1", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0009-q2", "file": "roub_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["customer_declined_upgrade", "customer_requested_human"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0010-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_disputes", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0010-q1", "file": "roub_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["unexpected_roaming_charge", "no_service_abroad", "request_for_explanation_or_removal"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0011-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "privacy_data_requests", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0011-q1", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0012-q0", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0012-q1", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_disputes", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0013-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "account_management", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0013-q1", "file": "roub_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["mention_of_competitor_pricing", "request_to_update_mailing_address"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0014-q0", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0014-q1", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "retention_offers", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0015-q0", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0015-q1", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "retention_offers", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0015-q2", "file": "roub_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["general_venting_about_leaving"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0016-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0016-q1", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0017-q0", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0017-q1", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "field_dispatch", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0017-q2", "file": "roub_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["customer_present_on_site", "visit_rescheduled_at_customer_request"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0018-q0", "file": "roub_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["technical_support", "billing_disputes", "sales_upgrades"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0018-q1", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0019-q0", "file": "roub_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0019-q1", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0020-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0020-q1", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0021-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "wholesale_pricing", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0021-q1", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0021-q2", "file": "roub_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0022-q0", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0022-q1", "file": "roub_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "privacy_team", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0022-q2", "file": "roub_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["reassign_case1_to_engineering", "issue_case2_credit", "treat_case3_as_technical", "escalate_case4_to_privacy"], "suggested_target": null, "confidence": "high", "reason": ""}

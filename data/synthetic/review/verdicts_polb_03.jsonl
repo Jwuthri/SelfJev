@@ -1,0 +1,69 @@
+{"id": "polb-0045-q0", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "c3", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0045-q1", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0045-q2", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["cap_3", "applies_regardless_txn_count"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0046-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0046-q1", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0046-q2", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["overdraft_fee"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0047-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0047-q1", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0047-q2", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "declined_no_fee", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0047-q3", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["onetime_debit", "atm_withdrawal"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0048-q0", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "transfer_fee_only", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0048-q1", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0048-q2", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0048-q3", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["transfer_fee", "od_fee"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0049-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0049-q1", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "overdrawn_under_5", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0050-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0050-q1", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "both_failed", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0050-q2", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ambiguous", "target": ["keep_1500", "one_dd"], "suggested_target": null, "confidence": "medium", "reason": "Candidate both_required ('Meeting both conditions simultaneously') would also have waived the fee (either condition suffices, so meeting both does too); its non-target status is arguable."}
+{"id": "polb-0051-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "medium", "reason": ""}
+{"id": "polb-0051-q1", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "notified_not_enrolled", "suggested_target": null, "confidence": "medium", "reason": ""}
+{"id": "polb-0051-q2", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0052-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0052-q1", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0052-q2", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["combined_balance"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0053-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0053-q1", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "age_exemption", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0053-q2", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["age_or_military"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0054-q0", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["incoming_wire_fee"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0054-q1", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0055-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0055-q1", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "next_business_day", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0055-q2", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["fee_waived", "premier_benefit", "cutoff_missed"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0056-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0056-q1", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "fraud_hold", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0056-q2", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0056-q3", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["title_wire"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0057-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0057-q1", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "receiver", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0057-q2", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["receiver_tier"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0058-q0", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "tier_6mo", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0058-q1", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0058-q2", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["term_length", "interest_rate"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0059-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0059-q1", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["death", "disability"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0059-q2", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0059-q3", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "not_joint_or_bene", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0060-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0060-q1", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "full_required", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0060-q2", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0061-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0061-q1", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0061-q2", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "grace_10day", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0062-q0", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "d6", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0062-q1", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["world_elite"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0063-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0063-q1", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "d10", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0063-q2", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0063-q3", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0064-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0064-q1", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0064-q2", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "typically_worse", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0065-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0065-q1", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "two_late_6mo", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0065-q2", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["jan_late_fee", "apr_late_fee", "six_ontime"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0065-q3", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0066-q0", "file": "polb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0066-q1", "file": "polb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "cash_advance_balance", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0066-q2", "file": "polb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["excess_to_highest_rate", "minimum_flexible"], "suggested_target": null, "confidence": "high", "reason": ""}

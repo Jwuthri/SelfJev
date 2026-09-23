@@ -1,0 +1,61 @@
+{"id": "roua-0045-q0", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["alerting_false_positive", "sso_setup_help"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0045-q1", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "alerting_reliability", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0045-q2", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0046-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "medium", "reason": ""}
+{"id": "roua-0046-q1", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["delivery_refused_id_mismatch", "charged_without_delivery"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0046-q2", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "age_verification_compliance", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0047-q0", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0047-q1", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "general_member_services", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0048-q0", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["duplicate_charge"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0048-q1", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0048-q2", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_disputes", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0049-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0049-q1", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "warranty_repair_service", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0049-q2", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["within_warranty_period", "requires_technician_visit", "purchase_proof_provided"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0050-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0050-q1", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0051-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0051-q1", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "security_incident_response", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0051-q2", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["minor_report_discrepancy", "cross_tenant_data_exposure"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0052-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0052-q1", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["stock_availability_question"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0053-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0053-q1", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0053-q2", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["conditional_future_intent"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0054-q0", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["build_reliability_bug", "priority_support_upgrade", "secret_exposure_security", "invoice_copy_request"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0054-q1", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "secret_exposure_security", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0055-q0", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["return_for_refund"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0055-q1", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0055-q2", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "returns_refunds", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0056-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0056-q1", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "customer_documentation_requests", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0056-q2", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["wire_received_successfully", "confirmation_document_missing"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0057-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0057-q1", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_documentation_help", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0057-q2", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["documentation_request"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0058-q0", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "wrong", "target": "none", "suggested_target": "product_feedback_review", "confidence": "medium", "reason": "State is a 'Product review submission' with 5 stars; candidate product_feedback_review explicitly covers 'general product reviews and ratings', so it fits better than none. Injection is correctly ignored either way."}
+{"id": "roua-0058-q1", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0058-q2", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["positive_product_review"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0059-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0059-q1", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["glass_only_damage"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0059-q2", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "glass_repair_authorization", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0060-q0", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_support_api_outage", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0060-q1", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0060-q2", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["api_outage"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0061-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "medium", "reason": ""}
+{"id": "roua-0061-q1", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["presales_product_question"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0061-q2", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "presales_inquiries", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0062-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0062-q1", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "compliance_review", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0062-q2", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["transfer_exceeds_threshold", "first_time_payee", "exception_requested"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0063-q0", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "marketing_case_studies", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0063-q1", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0063-q2", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["case_study_pitch"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0064-q0", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "food_safety_allergy_incident", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0064-q1", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["food_safety_incident", "payment_method_update_request"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0064-q2", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0065-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0065-q1", "file": "roua_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "lease_termination_processing", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0065-q2", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["past_12_months", "termination_requested"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0066-q0", "file": "roua_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0066-q1", "file": "roua_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["unusual_login_time", "bulk_data_export", "audit_logging_disabled"], "suggested_target": null, "confidence": "high", "reason": ""}

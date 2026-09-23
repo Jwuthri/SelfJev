@@ -8,8 +8,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNS = {"base": "baseline/test", "base+cal": "baseline/test_calibrated", "LoRA": "lora_pilot/test", "LoRA+cal": "lora_pilot/test_calibrated",
-        # custom shared-state model, included once its reports exist
-        "custom-frozen": "custom_frozen/test", "custom-LoRA": "custom_lora/test", "custom-LoRA+cal": "custom_lora/test_calibrated"}
+        # custom shared-state model (spec version, frozen) and the similarity variant with joint LoRA, once their reports exist
+        "custom": "custom_frozen/test", "custom-sim-LoRA": "custom_sim_lora/test", "custom-sim-LoRA+cal": "custom_sim_lora/test_calibrated"}
 R = {k: json.loads((ROOT / "reports" / v / "report.json").read_text()) for k, v in RUNS.items()
      if (ROOT / "reports" / v / "report.json").exists()}
 
@@ -71,7 +71,7 @@ def mcnemar(a, b):
 
 correct = {c: {r["id"]: r["correct"] for r in R[c]["predictions"]} for c in R}
 fam_of = {r["id"]: r["family"] for r in R["base"]["predictions"]}
-for x, y in [("base", "LoRA"), ("LoRA", "custom-LoRA"), ("custom-frozen", "custom-LoRA")]:
+for x, y in [("base", "LoRA"), ("LoRA", "custom-sim-LoRA"), ("custom", "custom-sim-LoRA")]:
     if x not in R or y not in R:
         continue
     lines = [f"**Paired test, {x} vs {y} (uncalibrated): questions only one of them gets right; exact McNemar p**", "",

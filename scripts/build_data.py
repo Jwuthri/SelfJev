@@ -6,6 +6,7 @@
 Splits are assigned per source_id, so every question (and paraphrase) about one state lands in one split.
 Synthetic sources whose state overlaps an eval state (word 8-gram containment >= 0.3) are dropped, not moved.
 Eval review overrides (data/eval/review/overrides.json: {example_id: new_target | null to drop}) are applied last.
+Synthetic questions with action "drop" in data/synthetic/review/flags.json are removed (raw files stay untouched).
 """
 import json
 import re
@@ -57,6 +58,12 @@ def main():
         if any(len(sh & e) / min(len(sh), len(e)) >= 0.3 for e in eval_sh if e):
             dropped.add(s)
     syn = [e for e in syn if e["state"] not in dropped]
+    flags_path = ROOT / "data/synthetic/review/flags.json"
+    if flags_path.exists():
+        drop_ids = {k for k, f in json.loads(flags_path.read_text()).items() if f.get("action") == "drop"}
+        n = len(syn)
+        syn = [e for e in syn if e["id"] not in drop_ids]
+        print(f"dropped {n - len(syn)} synthetic questions flagged in review")
     write_jsonl(ROOT / "data/synthetic.jsonl", syn)
     print("synthetic:", dict(Counter(e["split"] for e in syn)), dict(Counter(e["question"]["type"] for e in syn)),
           f"dropped {len(dropped)} states overlapping eval")

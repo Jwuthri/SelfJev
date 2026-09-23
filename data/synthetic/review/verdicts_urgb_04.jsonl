@@ -1,0 +1,58 @@
+{"id": "urgb-0067-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0067-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "evacuate_and_call_gas_company", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0067-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["gas_odor_reported", "odor_increasing_over_time", "tenant_alone_in_unit"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0068-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0068-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "routine_maintenance_request", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0068-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["minor_non_urgent_repair_needed", "tenant_requests_no_rush"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0069-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0069-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "emergency_maintenance_dispatch_now", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0069-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["active_water_intrusion", "structural_damage_reported"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0070-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0070-q1", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["routine_rent_reminder"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0071-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0071-q1", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0071-q2", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "escalated_from_battery_chirp_to_overheating_wiring", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0071-q3", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["battery_low_chirping_reported", "burning_smell_reported", "tenant_evacuated"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0072-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0072-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "routine_noise_complaint", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0072-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["noise_complaint_reported"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0073-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0073-q1", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["forced_entry_evidence", "police_already_contacted", "door_currently_unsecurable"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0074-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0074-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "scheduled_test_notice", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0074-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["scheduled_test_announced"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0075-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0075-q1", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["general_heat_discomfort_mentioned", "policy_question_about_ac_units"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0076-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0076-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "emergency_repair_today_health_risk", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0076-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["ac_unit_broken", "vulnerable_tenant_health_condition", "prior_repair_requests_ignored"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0077-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0077-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "routine_lease_inquiry", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0077-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["lease_renewal_inquiry"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0078-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ambiguous", "target": true, "suggested_target": null, "confidence": "medium", "reason": "Ordinance applies only between Oct 1 and May 1; the message gives no date, so the date condition can't be verified from the state (3F outside only implies winter)."}
+{"id": "urgb-0078-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ambiguous", "target": "ordinance_violation_emergency_repair_required", "suggested_target": null, "confidence": "medium", "reason": "Same issue as q0: the ordinance's Oct 1-May 1 date condition can't be checked because no date is given."}
+{"id": "urgb-0078-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["indoor_temperature_below_legal_minimum", "children_present_in_unit", "prior_contact_attempts_made"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0079-q0", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "mandatory_lead_inspection_within_5_business_days", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0079-q1", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["building_built_before_1978", "child_under_6_resides_in_unit", "peeling_or_chipping_paint_reported"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0080-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0080-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "financial_administrative_inquiry", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0080-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["deposit_timeline_specified_in_lease"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0081-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0081-q1", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["person_trapped_confirmed", "emergency_line_already_contacted"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0082-q0", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "formally_confrontational_citing_lease_terms", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0082-q1", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["eviction_explicitly_mentioned", "misunderstanding_resolved_by_the_end"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0083-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0083-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "emergency_plumber_dispatch_now", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0083-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["active_flooding", "property_damage_in_progress"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0084-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0084-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "neutral_formal", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0084-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["rent_increase_amount_specified", "advance_notice_period_specified"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0085-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0085-q1", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["electrical_burning_smell_reported", "smell_has_been_intermittent"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0086-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0086-q1", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "trivial_maintenance_request", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0086-q2", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["trivial_annoyance_reported", "tenant_flags_as_low_priority"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0087-q0", "file": "urgb_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "health_hazard_remediation_within_48_hours", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0087-q1", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["mold_area_at_least_10_sq_ft", "connected_to_an_active_leak"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0088-q0", "file": "urgb_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0088-q1", "file": "urgb_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["co_alarm_actively_sounding"], "suggested_target": null, "confidence": "high", "reason": ""}

@@ -1,0 +1,49 @@
+{"id": "hnum-0001-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0001-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "r_2000_2200", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0002-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0002-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "director", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0002-q2", "file": "hnum_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["laptop_unit"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0003-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0003-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "correct_refund", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0004-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0004-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "r_850_900", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0004-q2", "file": "hnum_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["early_termination_fee", "proration"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0005-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0005-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "correct_total", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0006-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0006-q1", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0006-q2", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "director_and_cfo", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0006-q3", "file": "hnum_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["server_racks", "switches"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0007-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0007-q1", "file": "hnum_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["blender"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0008-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0008-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "two_fees", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0008-q2", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0009-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0009-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "correct_total", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0010-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0010-q1", "file": "hnum_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["order_b", "order_c", "order_d"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0010-q2", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "correct_total", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0011-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0011-q1", "file": "hnum_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["order_1", "order_3", "order_4"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0012-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0012-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "correct_amount", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0012-q2", "file": "hnum_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["percent_15", "flat_25"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0013-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0013-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "correct_total", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0014-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0014-q1", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0014-q2", "file": "hnum_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["mid_tier"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0015-q0", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "3", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0015-q1", "file": "hnum_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["item_1", "item_3", "item_5"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0016-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0016-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "correct_amount", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0016-q2", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0017-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0017-q1", "file": "hnum_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["retail_3200", "wholesale_1920", "deductible_250"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0018-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0018-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "correct_final", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0018-q2", "file": "hnum_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["qty_500", "qty_550"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0019-q0", "file": "hnum_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0019-q1", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "correct_total", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hnum-0019-q2", "file": "hnum_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "none_of_these", "suggested_target": null, "confidence": "high", "reason": ""}

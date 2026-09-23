@@ -9,6 +9,10 @@ The backbone is the reranker's transformer body with its stock causal mask, load
 no yes/no logits and no joint (state, candidate) sequence. z() is a fixed per-dimension standardization of its
 last hidden states (mean/std fit once on training text, stored in the checkpoint): raw last-layer states share
 one dominant direction (mean token cosine ~0.49), which drowns the token-specific signal the attention needs.
+similarity (opt-in variant, not in the v1 spec): score += w_type * MaxSim, the mean over the candidate's content
+tokens (the question for binary, the description otherwise) of their best cosine match among the state's tokens, on
+the same standardized backbone features. w starts at sim_init for multiclass and 0 for binary/multilabel, so the
+untrained multiclass scorer IS the parameter-free MaxSim rule; the heads learn on top of it.
 tied_init: the new modules are random, but W_c = W_m and, per block, Wq = Wk (random orthogonal) and Wo = Wv^T at
 initialisation, so at step 0 each candidate token attends to the state tokens most similar to it in feature space
 (a parameter-free MaxSim over these features already ranks candidates far above chance). Training unties them. Candidate tokens are packed per state
@@ -38,8 +42,18 @@ CANDIDATE_TEMPLATE = "Task: {type}\nQuestion: {instruction}\nProposed answer: {a
 BINARY_ANSWER = "Yes"  # binary p_yes = P(the Document supports answering the question "Yes")
 # split_special_tokens: "<|im_end|>" typed inside a state is plain text, never a control token.
 TOKENIZE = {"add_special_tokens": False, "split_special_tokens": True}
+SHAPE_BUCKETS = True  # on MPS, pad batch shapes to a fixed ladder: MPS compiles and keeps a graph per new tensor shape
+
+
+def bucket(x: int) -> int:
+    """Round up to 1..8, 10, 12, 14, 16, 20, 24, 28, 32, 40, ... (4 sizes per doubling): at most 25% padding."""
+    step = 1 << max(0, (x - 1).bit_length() - 3)
+    return -(-x // step) * step
+
+
 ARCH = {"h": 256, "heads": 8, "ffn": 1024, "blocks": 2, "head_width": 128, "dropout": 0.1, "pooling": "mean",
-        "shared_head": False, "memory_norm": True, "standardize": True, "tied_init": True, "null_attention": True}
+        "shared_head": False, "memory_norm": True, "standardize": True, "tied_init": True, "null_attention": True,
+        "similarity": False, "sim_init": 20.0}
 
 
 def format_config() -> dict:
@@ -52,10 +66,30 @@ def state_text(state: str) -> str:
     return STATE_TEMPLATE.format(state=state)
 
 
-def candidate_texts(q: Question) -> list[str]:
-    """One sequence per scored item: the question with its proposed answer, never the state."""
-    answers = [BINARY_ANSWER] if q.type == "binary" else [c.description for c in q.candidates]
-    return [CANDIDATE_TEMPLATE.format(type=q.type, instruction=q.instruction, answer=a) for a in answers]
+def candidate_texts(q: Question, spans=False):
+    """One sequence per scored item: the question with its proposed answer, never the state. spans=True returns
+    (text, (start, end)) with the character span of the content the similarity term uses: the question for binary,
+    the candidate description otherwise."""
+    out = []
+    for a in [BINARY_ANSWER] if q.type == "binary" else [c.description for c in q.candidates]:
+        text = CANDIDATE_TEMPLATE.format(type=q.type, instruction=q.instruction, answer=a)
+        start = text.index("\nQuestion: ") + len("\nQuestion: ")
+        out.append((text, (start, start + len(q.instruction)) if q.type == "binary" else (len(text) - len(a), len(text))))
+    return out if spans else [t for t, _ in out]
+
+
+def state_span(text: str) -> tuple[int, int]:
+    return STATE_TEMPLATE.index("{state}"), len(text)
+
+
+def tokenize(tokenizer, texts, spans=None):
+    """-> token ids, or (ids, content masks) with spans: a token is content if it overlaps its text's span."""
+    if not texts:
+        return ([], []) if spans is not None else []
+    enc = tokenizer(texts, return_offsets_mapping=spans is not None, **TOKENIZE)
+    if spans is None:
+        return enc["input_ids"]
+    return enc["input_ids"], [[a < e and b > s for a, b in offs] for offs, (s, e) in zip(enc["offset_mapping"], spans)]
 
 
 class CrossAttention(nn.Module):
@@ -119,6 +153,8 @@ class SharedStateClassifier(nn.Module):
         self.norm_out = nn.LayerNorm(h)
         self.binary_head = _head(h, a["head_width"])
         self.choice_head = None if a["shared_head"] else _head(h, a["head_width"])
+        # [binary/multilabel, multiclass]; binary starts at 0: an absolute similarity level has no calibrated meaning yet
+        self.sim_scale = nn.Parameter(torch.tensor([0.0, a["sim_init"]])) if a["similarity"] else None
         if a["tied_init"]:
             self._tie_init()
         self.counts = Counter()  # backbone/interaction work, for instrumentation and benchmarks
@@ -140,21 +176,30 @@ class SharedStateClassifier(nn.Module):
     def new_parameters(self):
         return [p for n, p in self.named_parameters() if not n.startswith("backbone.")]
 
+    def _buckets(self):
+        """Shape bucketing only on MPS, whose per-shape graph cache grows without bound (+17 MB per training step
+        measured); CUDA and CPU run the exact shapes."""
+        return SHAPE_BUCKETS and self.norm_out.weight.device.type == "mps"
+
     def hidden(self, ids, kind):
         """Right-padded backbone pass -> (last hidden states [B, W, d] fp32, real-token mask [B, W]). Real tokens get
-        positions 0..len-1 exactly as unbatched, and the causal mask keeps them from seeing the padding after them."""
+        positions 0..len-1 exactly as unbatched, and the causal mask alone keeps them from seeing the padding after
+        them, so no attention mask is passed: identical real-token outputs, and the fast causal attention kernel even
+        for padded batches (an explicit mask made an 8K-token state 1.7x slower on MPS).
+        When _buckets(), B and W are rounded up by bucket(); the extra rows are pad-only dummies (mask all False)."""
         n, width = len(ids), max(map(len, ids))
-        x = torch.full((n, width), self.pad_id, dtype=torch.long)
-        m = torch.zeros((n, width), dtype=torch.long)
+        rows, width = (bucket(n), bucket(width)) if self._buckets() else (n, width)
+        x = torch.full((rows, width), self.pad_id, dtype=torch.long)
+        m = torch.zeros((rows, width), dtype=torch.bool)
         for r, t in enumerate(ids):
             x[r, :len(t)] = torch.tensor(t)
-            m[r, :len(t)] = 1
+            m[r, :len(t)] = True
         dev = self.norm_out.weight.device
         with torch.set_grad_enabled(torch.is_grad_enabled() and self.backbone_grad):
-            out = self.backbone(input_ids=x.to(dev), attention_mask=m.to(dev), use_cache=False).last_hidden_state
+            out = self.backbone(input_ids=x.to(dev), use_cache=False).last_hidden_state
         self.counts.update({f"{kind}_calls": 1, f"{kind}_sequences": n, f"{kind}_tokens": sum(map(len, ids)),
-                            f"{kind}_padded_tokens": n * width})
-        return (out.float() - getattr(self, f"{kind}_mean")) / getattr(self, f"{kind}_std"), m.bool().to(dev)
+                            f"{kind}_padded_tokens": rows * width})
+        return (out.float() - getattr(self, f"{kind}_mean")) / getattr(self, f"{kind}_std"), m.to(dev)
 
     @torch.no_grad()
     def fit_standardization(self, state_ids, cand_ids, max_batch_tokens=8192):
@@ -176,10 +221,18 @@ class SharedStateClassifier(nn.Module):
             info[kind] = {"sequences": len(ids), "tokens": n}
         return info
 
-    def memory(self, state_ids):
-        """-> (memory [S, L, h], padding mask [S, L], True = padding). One backbone pass for all given states."""
+    def memory(self, state_ids, content=None):
+        """-> (memory [S, L, h], padding mask [S, L] (True = padding), similarity keys or None). One backbone pass."""
         H, m = self.hidden(state_ids, "state")
-        return self.memory_proj(H), ~m
+        pad = ~m
+        pad[len(state_ids):, 0] = False  # dummy rows from SHAPE_BUCKETS: never fully masked (they own no candidates)
+        keys = None
+        if self.sim_scale is not None:  # unit-norm standardized features + mask of the state's content tokens
+            c = torch.zeros(m.shape, dtype=torch.bool)
+            for r, x in enumerate(content):
+                c[r, :len(x)] = torch.tensor(x, dtype=torch.bool)
+            keys = (F.normalize(H, dim=-1), c.to(m.device))
+        return self.memory_proj(H), pad, keys
 
     def candidate_tokens(self, cand_ids, max_batch_tokens=16384):
         """-> projected tokens of every candidate, flat [T, h], candidate-major in input order."""
@@ -190,11 +243,15 @@ class SharedStateClassifier(nn.Module):
             rows.append(H.flatten(0, 1))
             offset |= {i: base + r * width for r, i in enumerate(b)}
         index = [offset[i] + t for i, x in enumerate(cand_ids) for t in range(len(x))]
+        if self._buckets():
+            index += [0] * (bucket(len(index)) - len(index))  # dummy tokens: interact() routes them to a trash slot
         flat = torch.cat(rows)
-        return self.candidate_proj(flat[torch.tensor(index, device=flat.device)])
+        flat = flat[torch.tensor(index, device=flat.device)]
+        return self.candidate_proj(flat), (F.normalize(flat, dim=-1) if self.sim_scale is not None else None)
 
-    def interact(self, memory, memory_pad, q_tok, owner, lens, multiclass):
-        """Pack candidate tokens per state, run the blocks, masked-mean-pool per candidate, apply the heads."""
+    def interact(self, memory, memory_pad, q_tok, owner, lens, multiclass, keys=None, cand_vecs=None, cand_content=None):
+        """Pack candidate tokens per state, run the blocks, masked-mean-pool per candidate, apply the heads
+        (+ the similarity term when enabled; cand_content: flat content flags of the real candidate tokens)."""
         dev, S = q_tok.device, memory.shape[0]
         tok_state, tok_pos, tok_cand, fill = [], [], [], [0] * S
         for n, (s, k) in enumerate(zip(owner, lens)):
@@ -202,25 +259,45 @@ class SharedStateClassifier(nn.Module):
             tok_pos += range(fill[s], fill[s] + k)
             tok_cand += [n] * k
             fill[s] += k
+        n_cand, width, lens, multiclass = len(lens), max(fill), list(lens), list(multiclass)
+        if self._buckets():  # dummy tokens -> trash slot (row 0, last column) -> trash candidate n_cand, sliced off below
+            width, extra = bucket(width + 1), len(q_tok) - len(tok_state)
+            tok_state, tok_pos, tok_cand = tok_state + [0] * extra, tok_pos + [width - 1] * extra, tok_cand + [n_cand] * extra
+            lens += [1] * (bucket(n_cand + 1) - n_cand)
+            multiclass += [False] * (len(lens) - n_cand)
         ts, tp = torch.tensor(tok_state, device=dev), torch.tensor(tok_pos, device=dev)
-        q = q_tok.new_zeros(S, max(fill), q_tok.shape[-1])
+        q = q_tok.new_zeros(S, width, q_tok.shape[-1])
         q[ts, tp] = q_tok  # padded query rows are never read back
         for block in self.blocks:
             q = block(q, memory, memory_pad)
         out = self.norm_out(q[ts, tp])
         pooled = out.new_zeros(len(lens), out.shape[-1]).index_add_(0, torch.tensor(tok_cand, device=dev), out)
         pooled = pooled / torch.tensor(lens, device=dev, dtype=out.dtype)[:, None]
-        self.counts.update({"memory_rows": S, "query_tokens": len(tok_state)})
+        self.counts.update({"memory_rows": S, "query_tokens": sum(lens[:n_cand])})
+        mc = torch.tensor(multiclass, device=dev)
         scores = self.binary_head(pooled).squeeze(-1)
-        if self.choice_head is None:
-            return scores
-        return torch.where(torch.tensor(multiclass, device=dev), self.choice_head(pooled).squeeze(-1), scores)
+        if self.choice_head is not None:
+            scores = torch.where(mc, self.choice_head(pooled).squeeze(-1), scores)
+        if self.sim_scale is not None:
+            K, kmask = keys
+            c = cand_vecs.new_zeros(S, width, cand_vecs.shape[-1])
+            c[ts, tp] = cand_vecs
+            step = max(1, 2**27 // (S * K.shape[1]))  # bound the [S, Q, L] similarity matrix; rows are independent
+            best = torch.cat([torch.bmm(c[:, i:i + step], K.transpose(1, 2)).masked_fill(~kmask[:, None, :], -1.0).amax(-1)
+                              for i in range(0, width, step)], 1)[ts, tp]  # each token's best match in its state
+            tc = torch.tensor(tok_cand, device=dev)
+            w = torch.tensor(list(cand_content) + [False] * (len(tok_cand) - len(cand_content)), device=dev, dtype=best.dtype)
+            sim = best.new_zeros(len(lens)).index_add_(0, tc, best * w) / best.new_zeros(len(lens)).index_add_(0, tc, w).clamp_min(1)
+            scores = scores + self.sim_scale[mc.long()] * sim
+        return scores[:n_cand]
 
-    def forward(self, state_ids, cand_ids, owner, multiclass, max_batch_tokens=16384):
-        """state_ids: distinct states; candidate n belongs to state owner[n]; multiclass[n] picks choice_head."""
-        memory, pad = self.memory(state_ids)
-        q = self.candidate_tokens(cand_ids, max_batch_tokens)
-        return self.interact(memory, pad, q, owner, [len(x) for x in cand_ids], multiclass)
+    def forward(self, state_ids, cand_ids, owner, multiclass, max_batch_tokens=16384, state_content=None, cand_content=None):
+        """state_ids: distinct states; candidate n belongs to state owner[n]; multiclass[n] picks choice_head.
+        *_content: per-token content masks, needed only by the similarity variant."""
+        memory, pad, keys = self.memory(state_ids, state_content)
+        q, vecs = self.candidate_tokens(cand_ids, max_batch_tokens)
+        return self.interact(memory, pad, q, owner, [len(x) for x in cand_ids], multiclass, keys, vecs,
+                             [x for m in cand_content for x in m] if cand_content else None)
 
 
 def count_params(model: SharedStateClassifier) -> dict:
@@ -288,8 +365,8 @@ class CustomScorer:
                      "device": self.device, "dtype": dtype, "max_length": max_length, "max_candidate_length": max_candidate_length,
                      "truncation": "none (overlength input raises InputTooLong)", "params": count_params(self.model)}
 
-    def tokenize(self, texts):
-        return self.tokenizer(texts, **TOKENIZE)["input_ids"] if texts else []
+    def tokenize(self, texts, spans=None):
+        return tokenize(self.tokenizer, texts, spans)
 
     @torch.inference_mode()
     def score_requests(self, reqs):
@@ -300,10 +377,11 @@ class CustomScorer:
             s = states.setdefault(state_text(r.state), len(states))
             first_req.setdefault(s, ri)
             for q in r.questions:
-                for text, cid in zip(candidate_texts(q), [c.id for c in q.candidates] or [None]):
-                    cands.append((s, text, q.type == "multiclass"))
+                for (text, span), cid in zip(candidate_texts(q, spans=True), [c.id for c in q.candidates] or [None]):
+                    cands.append((s, text, q.type == "multiclass", span))
                     where.append((ri, q.id, cid))
-        state_ids, cand_ids = self.tokenize(list(states)), self.tokenize([c[1] for c in cands])
+        state_ids, state_content = self.tokenize(list(states), [state_span(t) for t in states])
+        cand_ids, cand_content = self.tokenize([c[1] for c in cands], [c[3] for c in cands])
         if over := [(i, len(x)) for i, x in enumerate(state_ids) if len(x) > self.max_length]:
             raise InputTooLong(over, self.max_length, "; ".join(f"request {first_req[i]} state: {n} tokens" for i, n in over[:5]))
         if over := [(i, len(x)) for i, x in enumerate(cand_ids) if len(x) > self.max_candidate_length]:
@@ -316,12 +394,12 @@ class CustomScorer:
             by_state[c[0]].append(n)
         scores, self.model.counts = [0.0] * len(cands), Counter()
         for chunk in length_batches([len(x) for x in state_ids], self.max_batch_tokens, self.max_batch_size):
-            memory, pad = self.model.memory([state_ids[s] for s in chunk])
+            memory, pad, keys = self.model.memory([state_ids[s] for s in chunk], [state_content[s] for s in chunk])
             local = {s: i for i, s in enumerate(chunk)}
             ns = [n for s in chunk for n in by_state[s]]
-            q = self.model.candidate_tokens([cand_ids[n] for n in ns], self.max_batch_tokens)
+            q, vecs = self.model.candidate_tokens([cand_ids[n] for n in ns], self.max_batch_tokens)
             out = self.model.interact(memory, pad, q, [local[cands[n][0]] for n in ns], [len(cand_ids[n]) for n in ns],
-                                      [cands[n][2] for n in ns])
+                                      [cands[n][2] for n in ns], keys, vecs, [x for n in ns for x in cand_content[n]])
             for n, v in zip(ns, out.tolist()):  # .tolist() waits for the device
                 scores[n] = v
         t2 = time.perf_counter()

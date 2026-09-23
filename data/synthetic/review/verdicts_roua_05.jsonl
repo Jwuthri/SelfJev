@@ -1,0 +1,44 @@
+{"id": "roua-0089-q0", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_documentation_help", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0089-q1", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0090-q0", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["missing_parts"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0091-q0", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["address_update_request", "joint_holder_addition_request"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0091-q1", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "account_maintenance", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0092-q0", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0092-q1", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0093-q0", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "presales_inquiries", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0093-q1", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0094-q0", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0094-q1", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "same_day_micro_approval", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0094-q2", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["under_1000_dollars", "prior_good_standing_history"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0095-q0", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0095-q1", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["minor_dashboard_slowness", "embedded_override_instruction"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0096-q0", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["conditional_future_complaint"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0097-q0", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0097-q1", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "payment_status_inquiries", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0098-q0", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0098-q1", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ambiguous", "target": "account_settings_admin", "suggested_target": null, "confidence": "medium", "reason": "Email makes two separate asks (retention change and countersignature status); nothing marks retention as primary, so document_status_support is equally defensible as a single routing target."}
+{"id": "roua-0098-q2", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["retention_change_requested", "countersignature_status_question"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0099-q0", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "damaged_spoiled_goods_claims", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0099-q1", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0100-q0", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["threshold_avoidance_pattern", "high_velocity_transactions", "new_customer_profiles"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0101-q0", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["search_accuracy_bug", "facet_filter_bug", "pagination_bug"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0101-q1", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_regression_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0102-q0", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0102-q1", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "standard_furniture_returns", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0102-q2", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["within_14_day_window", "item_assembled", "restocking_fee_applies"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0103-q0", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0103-q1", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "portfolio_performance_review", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0104-q0", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["integration_availability_question"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0105-q0", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0105-q1", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0106-q0", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0106-q1", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "total_loss_settlement", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0106-q2", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["exceeds_total_loss_threshold", "repair_estimate_provided"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0107-q0", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0107-q1", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "account_profile_updates", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0108-q0", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["product_recall_match"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0108-q1", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0109-q0", "file": "roua_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["future_conditional_intent"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0110-q0", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "data_freshness_pipeline_issue", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0110-q1", "file": "roua_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roua-0110-q2", "file": "roua_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "data_freshness_pipeline_issue", "suggested_target": null, "confidence": "high", "reason": ""}

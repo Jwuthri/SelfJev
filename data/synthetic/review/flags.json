@@ -1,0 +1,576 @@
+{
+ "adva-0026-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "update_payment_method",
+   "asks_hypothetical_question"
+  ],
+  "note": "An 'asks a hypothetical question' candidate doesn't fit a question about actions to perform now.",
+  "file": "adva_02.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Question asks which actions the customer wants performed right now; asks_hypothetical_question is described as asking \"without requesting it\", so whether it belongs in the target depends on reading; not an action to perform."
+ },
+ "advb-0049-q2": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "motor_only_replacement_tried_first",
+   "buyer_missed_the_return_deadline_with_no_consequence"
+  ],
+  "note": "The state contradicts itself: the Day 20 drop-off is inside the Day 9+14=23 window, yet the story treats it as late.",
+  "file": "advb_03.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "State inconsistent: deadline Day 9+14=Day 23; buyer dropped off Day 20 ('yesterday' on Day 21), so within window, yet seller says past window. Notes' 'Day 21 past Day 9+14' is wrong arithmetic."
+ },
+ "advb-0063-q2": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "weighting_is_fixed_at_original_terms",
+   "vendor_b_has_highest_technical_score",
+   "vendor_c_has_lowest_price"
+  ],
+  "note": "The conclusion never states that Vendor C has the lowest price (that is only in the table).",
+  "file": "advb_03.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Question asks what the procurement conclusion states; Vendor C's lowest price appears only in the scoring table, not in the conclusion text."
+ },
+ "evia-0016-q3": {
+  "action": "relabel",
+  "target": [
+   "custom_reporting_module",
+   "erp_api_integration"
+  ],
+  "old_target": [
+   "custom_reporting_module",
+   "dedicated_support_line",
+   "erp_api_integration"
+  ],
+  "note": "Amara named only the reporting module and ERP integration; the support line was Daniel's line.",
+  "file": "evia_01.jsonl",
+  "reviewer_verdict": "wrong",
+  "reviewer_reason": "Question asks what Amara said; the dedicated support line loss was stated by Daniel, not Amara. Amara named only the reporting module and ERP integration."
+ },
+ "evia-0040-q3": {
+  "action": "keep",
+  "old_target": [
+   "support_getting_meaningfully_worse",
+   "greenstack_price_increase_at_renewal"
+  ],
+  "note": "reviewer flagged, kept after second look: Tobias says he doubts they'd move before the contract ends; the target holds.",
+  "file": "evia_02.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Asked if a low-risk migration assessment would change the August timeline, Tobias said 'Possibly', so a_lower_migration_risk_assessment is not clearly incorrect."
+ },
+ "evia-0045-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "anders",
+  "note": "Priya's roadmap doc is also still 'in review' (unresolved), so two answers fit.",
+  "file": "evia_03.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Priya's Q1 roadmap doc is 'in review', also unresolved; both Anders and Priya are defensible answers."
+ },
+ "evia-0068-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "reduced_oceania_queue_times",
+   "the_early_community_speculation"
+  ],
+  "note": "Whether the community speculation is 'attributed to the algorithm' or to a comms gap is debatable.",
+  "file": "evia_04.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Speculation arose because players noticed the algorithm's queue-time change, but the notes attribute the issue to a comms process gap; whether it is 'attributed to the algorithm' is debatable."
+ },
+ "evib-0012-q3": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "active_role"
+  ],
+  "note": "'Active sales role' isn't necessarily 'substantially similar'; the employee's role is never given.",
+  "file": "evib_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Breach requires a role 'substantially similar to Employee's role' within 12 months; the employee's role and timing are not given, so an 'active sales role' is not clearly a breach."
+ },
+ "hpar-0005-q2": {
+  "action": "keep",
+  "old_target": "p3_low",
+  "note": "reviewer flagged, kept after second look: 'Not urgent, just flagging' with no errors reasonably fits P3.",
+  "file": "hpar_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "p95 latency 4x normal (800ms vs 200ms) is literally 'partial degradation' (P2), though the team calls it 'not urgent'; P2 vs P3 both defensible given candidate descriptions."
+ },
+ "mula-0001-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "firmware_update"
+  ],
+  "note": "'Hoping a firmware update fixes it' isn't clearly an explicit request.",
+  "file": "mula_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Customer only says they are 'hoping a firmware update fixes it'; that is a hope, not an explicit request, so [] is also defensible."
+ },
+ "mula-0005-q3": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "clause_1_standard_warranty",
+   "clause_3_extended_care",
+   "clause_6_registration"
+  ],
+  "note": "'Directly relevant clauses' is subjective, and the target is inconsistent (clause 1 in, clause 4 out).",
+  "file": "mula_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "'Directly relevant' is subjective: clause 1 is included for ruling out coverage, but clause 4 (also ruled out) and clause 5 are excluded; the logic is inconsistent."
+ },
+ "mula-0029-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "feature_request",
+   "compliment_about_support",
+   "plan_comparison_question"
+  ],
+  "note": "The user asks about one plan's limit; whether that counts as 'comparing two plans' is debatable.",
+  "file": "mula_02.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "User asks whether the Team plan allows unlimited guests; that is a question about one plan's feature, and whether it counts as 'comparing two plans' is debatable (only the agent brings in Enterprise)."
+ },
+ "mula-0044-q1": {
+  "action": "relabel",
+  "target": [
+   "billed_119_99_annual",
+   "expected_12_99_monthly"
+  ],
+  "old_target": [
+   "billed_119_99_annual",
+   "expected_12_99_monthly",
+   "five_day_response_time",
+   "three_days_of_notes_lost"
+  ],
+  "note": "The 5-day response and the 3 days of lost notes are not about the billing mismatch.",
+  "file": "mula_02.jsonl",
+  "reviewer_verdict": "wrong",
+  "reviewer_reason": "Question asks for numbers about the billing mismatch; 5-day support response and 3 days of lost notes are unrelated to billing."
+ },
+ "mula-0044-q2": {
+  "action": "keep",
+  "old_target": "data_recovery_and_refund",
+  "note": "reviewer flagged, kept after second look: Fixing the data and the billing is the clear implied request.",
+  "file": "mula_02.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Customer makes no explicit request ('don't even know which problem to lead with'); 'none: no request is implied' is also defensible, and the target omits the support complaint."
+ },
+ "mulb-0002-q0": {
+  "action": "keep",
+  "old_target": [
+   "food_handler_cert_required",
+   "weekend_availability_required"
+  ],
+  "note": "reviewer flagged, kept after second look: The candidate says 'must obtain' a certificate, which is true.",
+  "file": "mulb_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Food handler cert is due within 30 days AFTER hire, so it is arguably not a 'requirement to be hired' (compare mulb-0046/0064, where post-hire items were treated as not hiring requirements)."
+ },
+ "mulb-0018-q0": {
+  "action": "keep",
+  "old_target": [
+   "two_reference_letters",
+   "data_management_plan_if_over_100k"
+  ],
+  "note": "reviewer flagged, kept after second look: The DMP requirement reasonably belongs to the full-proposal stage.",
+  "file": "mulb_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "State says DMPs are 'required for all awards over $100,000' but never says they are submitted with the full proposal; it could be a post-award requirement."
+ },
+ "mulb-0020-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "health_benefits",
+   "paid_time_off",
+   "equipment_provided"
+  ],
+  "note": "Needing to own a laptop implies, but doesn't 'explicitly' exclude, a provided laptop.",
+  "file": "mulb_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "'Must own a laptop' implies no laptop is provided but does not explicitly exclude one, and the question asks what is 'explicitly excluded'."
+ },
+ "mulb-0037-q2": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "signed_commitment_date_for_mfa"
+  ],
+  "note": "It's unclear whether a promised future date counts as 'confirmed evidence'.",
+  "file": "mulb_02.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "A promised future date sent by email is arguably not 'confirmed evidence'; Talon wants a screenshot as evidence. [] is also defensible, and nothing was 'signed'."
+ },
+ "mulb-0040-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "no_preliminary_data",
+   "postdoc_listed_as_pi",
+   "equipment_preapproval_requested_after_submission"
+  ],
+  "note": "The guidelines don't say that late equipment pre-approval makes an application ineligible.",
+  "file": "mulb_02.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Guidelines require equipment pre-approval before submission but never say what happens if it is late (ineligibility or return without review), unlike the preliminary-data rule."
+ },
+ "mulb-0062-q2": {
+  "action": "relabel",
+  "target": false,
+  "old_target": true,
+  "note": "The memo only recommends approval; nothing says DeskFlow is approved.",
+  "file": "mulb_03.jsonl",
+  "reviewer_verdict": "wrong",
+  "reviewer_reason": "The memo only contains IT's recommendation to approve; nothing says DeskFlow has actually been approved, so under the evidence rule the answer is false."
+ },
+ "mulb-0068-q0": {
+  "action": "relabel",
+  "target": [
+   "drivers_license_required"
+  ],
+  "old_target": [
+   "drivers_license_required",
+   "paid_training_provided"
+  ],
+  "note": "Paid training is something the employer offers, not a hiring requirement.",
+  "file": "mulb_04.jsonl",
+  "reviewer_verdict": "wrong",
+  "reviewer_reason": "Question asks for hiring requirements; paid training is a provided benefit, not a requirement of the applicant. Only the driver's license is a true requirement."
+ },
+ "pola-0009-q2": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "outstanding_invoice_must_be_settled",
+  "note": "The invoice was already paid by the memo date, so 'must be settled' describes the past.",
+  "file": "pola_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "By the Nov 6 state, Invoice #4471 was already paid (Oct 8), so nothing further is arguably required; 'must be settled' describes a past step. Notes also wrongly call the invoice past-due at cancellation."
+ },
+ "pola-0022-q2": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "within_warranty_time_window",
+   "proof_of_purchase_provided",
+   "defect_confirmed"
+  ],
+  "note": "The policy defines no warranty time window, so 'within window' can't be decided.",
+  "file": "pola_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "The policy defines no warranty time window at all (coverage 'regardless of age'), so 'within the warranty's normal time window' cannot be confirmed from the state."
+ },
+ "polb-0011-q0": {
+  "action": "keep",
+  "old_target": false,
+  "note": "reviewer flagged, kept after second look: Nothing establishes Kevin as Lisa's approver, so false holds.",
+  "file": "polb_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "State never says Kevin is Lisa's direct report or that Lisa is a manager; Kevin is a 'project lead' who could be her direct manager, in which case policy allows him to approve. Notes invent the reporting line."
+ },
+ "polb-0011-q1": {
+  "action": "keep",
+  "old_target": "lisa_supervisor",
+  "note": "reviewer flagged, kept after second look: Her supervisor is the right approver under either reading.",
+  "file": "polb_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Skip-level rule applies only to a manager's self-submitted report; Lisa isn't shown to be a manager and Kevin's relation to her is unstated, so 'kevin' vs 'lisa_supervisor' is undetermined."
+ },
+ "polb-0016-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "both_required",
+  "note": "The manager says the promotion alone makes him eligible (for the list); two readings fit.",
+  "file": "polb_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Priya says L3 promotion 'only gets you onto the eligible-roles list'; question asks what makes him 'eligible', so promotion_only is defensible alongside both_required (which is needed for actual designation)."
+ },
+ "polb-0018-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": true,
+  "note": "The policy covers non-exempt staff only; Grace's classification is never stated.",
+  "file": "polb_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Overtime policy applies only to non-exempt employees; Grace's exempt/non-exempt classification is never stated, so entitlement can't be confirmed from the state."
+ },
+ "polb-0018-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "time_half",
+  "note": "Same gap: non-exempt status is assumed.",
+  "file": "polb_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Same issue: Grace's non-exempt status is not stated, so the 1.5x rate is assumed rather than established."
+ },
+ "polb-0028-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": true,
+  "note": "The policy never says the claim 'will be denied'; the consequence is not stated.",
+  "file": "polb_02.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Policy says prior authorization is required but never states the consequence (denial) of skipping it; 'will be denied' relies on outside knowledge."
+ },
+ "polb-0036-q2": {
+  "action": "relabel",
+  "target": [
+   "failed_to_mitigate"
+  ],
+  "old_target": [
+   "failed_to_mitigate",
+   "roof_covered"
+  ],
+  "note": "The state never says the windstorm roof damage is covered.",
+  "file": "polb_02.jsonl",
+  "reviewer_verdict": "wrong",
+  "reviewer_reason": "Nothing in the state says windstorm roof damage is a covered peril; only the mitigation duty is described. roof_covered is not supported by the state."
+ },
+ "polb-0041-q2": {
+  "action": "keep",
+  "old_target": true,
+  "note": "reviewer flagged, kept after second look: An undisclosed heart condition is the policy's own example of a material misstatement.",
+  "file": "polb_02.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Within 2 years insurer 'may' deny only for a material misstatement that would have affected underwriting; materiality isn't established, so 'would the outcome be different' is uncertain."
+ },
+ "polb-0050-q2": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "keep_1500",
+   "one_dd"
+  ],
+  "note": "'Meeting both conditions' would also waive the fee, so the non-target candidate is actually true.",
+  "file": "polb_03.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Candidate both_required ('Meeting both conditions simultaneously') would also have waived the fee (either condition suffices, so meeting both does too); its non-target status is arguable."
+ },
+ "roua-0033-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "integration_sync_failure",
+  "note": "The customer never ranks urgency; the sync failure vs the broken export button is a judgment call.",
+  "file": "roua_02.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Customer never ranks urgency; numbering is not priority. Xero sync dropping 200 transactions and the broken CSV export are both functional bugs; sync is plausible but ui_bug_report is also defensible."
+ },
+ "roua-0058-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "none",
+  "note": "product_feedback_review ('general product reviews') fits as well as 'none'.",
+  "file": "roua_03.jsonl",
+  "reviewer_verdict": "wrong",
+  "reviewer_reason": "State is a 'Product review submission' with 5 stars; candidate product_feedback_review explicitly covers 'general product reviews and ratings', so it fits better than none. Injection is correctly ignored either way."
+ },
+ "roua-0082-q2": {
+  "action": "relabel",
+  "target": [
+   "backup_failure_undetected",
+   "ransomware_incident_reported",
+   "potential_data_loss",
+   "promotional_content_present"
+  ],
+  "old_target": [
+   "backup_failure_undetected",
+   "ransomware_incident_reported",
+   "potential_data_loss"
+  ],
+  "note": "The state literally contains an unrelated promo_banner.",
+  "file": "roua_04.jsonl",
+  "reviewer_verdict": "wrong",
+  "reviewer_reason": "The report literally contains embedded promo_banner=\"Upgrade to Nightowl Pro today!\", which is unrelated promotional content; promotional_content_present is true (notes of q1 even call it noise)."
+ },
+ "roua-0083-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "returns_refunds",
+  "note": "A skin-reaction safety review is as defensible as refunds.",
+  "file": "roua_04.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Customer reports an adverse skin reaction (skin 'like a tomato'), matching skin_reaction_safety_review's description, while also asking for a refund; both routes defensible."
+ },
+ "roua-0098-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "account_settings_admin",
+  "note": "Two equal requests; nothing marks the retention change as the primary one.",
+  "file": "roua_05.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Email makes two separate asks (retention change and countersignature status); nothing marks retention as primary, so document_status_support is equally defensible as a single routing target."
+ },
+ "roub-0090-q1": {
+  "action": "keep",
+  "old_target": [
+   "broken_streetlight"
+  ],
+  "note": "reviewer flagged, kept after second look: A farmers-market question isn't something needing repair or action.",
+  "file": "roub_05.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Instruction asks what needs \"repair or action\"; the farmers-market question is explicitly present and answering it is arguably an action, so including farmers_market_schedule_question is defensible."
+ },
+ "roub-0110-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "financial_aid_bursar",
+  "note": "The question asks 'what was decided' but the candidates are team names (malformed).",
+  "file": "roub_05.jsonl",
+  "reviewer_verdict": "ok",
+  "reviewer_reason": ""
+ },
+ "urga-0018-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": false,
+  "note": "The latest update asks the agent to edit the postmortem doc, which is further agent action.",
+  "file": "urga_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Most recent update is the team lead asking Deshawn to add a line to the postmortem doc, which is further agent action; notes cite an earlier status line. True/false both defensible."
+ },
+ "urga-0060-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "prorated_refund_of_annual_plan"
+  ],
+  "note": "The policy requires the 'app unusable'; only the sync feature was down.",
+  "file": "urga_03.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Prorated refund requires the 'app was unusable' 7+ days; state only says the workout-sync feature was broken. Whether one broken feature = unusable app is not settled by the policy."
+ },
+ "urga-0060-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": true,
+  "note": "Same gap as q0.",
+  "file": "urga_03.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Same issue: policy requires the app be unusable for 7+ consecutive days; only the sync feature was down (Aug 1 00:00-Aug 11 19:40). True vs false both defensible."
+ },
+ "urga-0074-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "qualifies_as_emergency_exception",
+  "note": "The stated policy has no emergency exception; the label relies on outside knowledge.",
+  "file": "urga_04.jsonl",
+  "reviewer_verdict": "wrong",
+  "reviewer_reason": "Stated policy has no emergency exception at all (within 2h = forfeit); only the customer asks 'surely that counts'. Target relies on outside knowledge. No candidate cleanly fits; unclear is closest."
+ },
+ "urga-0083-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "before",
+  "note": "The expected load time of the results is unknown; 'unclear' is equally defensible.",
+  "file": "urga_04.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "No expected load time for results is given; they could finish processing before tomorrow morning. 'unclear' is equally defensible to 'before'."
+ },
+ "urga-0095-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "the_seller_agreed_to_a_full_refund",
+   "the_buyer_already_shipped_the_item_back",
+   "the_refund_has_already_been_completed"
+  ],
+  "note": "The refund was released but hasn't landed, and the item was delivered, not in transit.",
+  "file": "urga_05.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Refund 'released' but funds arrive in 3-5 business days, so 'fully processed' is debatable; also item was delivered, not 'in transit', by the end."
+ },
+ "urga-0107-q2": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "the_dispute_finalized_in_the_customers_favor"
+  ],
+  "note": "The Mar 2 message is arguably a follow-up that came before the window closed.",
+  "file": "urga_05.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "The Mar 2 message ('should I expect further communication?') is a follow-up before the Apr 14 close; only the Apr 20 follow-up came after. Candidate arguably true."
+ },
+ "urga-0108-q0": {
+  "action": "keep",
+  "old_target": "mixed_feelings",
+  "note": "reviewer flagged, kept after second look: The candidate description matches the message exactly.",
+  "file": "urga_05.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Most of the message is overt sarcasm about routing; 'sarcastic' is as defensible as 'mixed_feelings' for 'best describes'."
+ },
+ "urgb-0002-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": true,
+  "note": "'Right now' is undefined; by the end of the thread the fix is deployed.",
+  "file": "urgb_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "By the end of the thread the fix is deployed and error rate is 4% and falling with engineers already engaged; whether a page is needed 'right now' depends on the time point, which the question doesn't fix."
+ },
+ "urgb-0002-q2": {
+  "action": "keep",
+  "old_target": [
+   "checkout_payments_failing"
+  ],
+  "note": "reviewer flagged, kept after second look: 'Down to 4% and falling' is not yet fixed.",
+  "file": "urgb_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "already_fixed_by_end_of_thread arguably true: fix deployed, errors down to 4% and falling, Dee says 'amazing, thank you'; not clearly incorrect."
+ },
+ "urgb-0007-q2": {
+  "action": "drop",
+  "drop": true,
+  "old_target": [
+   "occurred_during_published_maintenance"
+  ],
+  "note": "The alert was elevated from 09:22 to 10:58, so '>10 minutes' is arguably true.",
+  "file": "urgb_01.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "fired_for_more_than_10_consecutive_minutes arguably true: alert fired 09:22 and error rate stayed elevated until 10:58 (~96 min); only the 09:31 entry says 9 minutes."
+ },
+ "urgb-0030-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": true,
+  "note": "'Due end of day Thursday' vs 'before Thursday' is a wording trap with no clear answer.",
+  "file": "urgb_02.jsonl",
+  "reviewer_verdict": "wrong",
+  "reviewer_reason": "Deadline is end of day Thursday, so completion is required by (not before) Thursday; nothing must be done before Thursday begins."
+ },
+ "urgb-0078-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": true,
+  "note": "The ordinance applies Oct 1 to May 1; no date is given.",
+  "file": "urgb_04.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Ordinance applies only between Oct 1 and May 1; the message gives no date, so the date condition can't be verified from the state (3F outside only implies winter)."
+ },
+ "urgb-0078-q1": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "ordinance_violation_emergency_repair_required",
+  "note": "Same missing date.",
+  "file": "urgb_04.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "Same issue as q0: the ordinance's Oct 1-May 1 date condition can't be checked because no date is given."
+ },
+ "urgb-0095-q0": {
+  "action": "drop",
+  "drop": true,
+  "old_target": "imminent_need_for_emergency_contact_procedure",
+  "note": "The office later says the procedure is for unreachable parents; 'imminent' is debatable.",
+  "file": "urgb_05.jsonl",
+  "reviewer_verdict": "ambiguous",
+  "reviewer_reason": "At 4:25 the parent was in constant contact and arrived at 4:26; the office later says the policy is for unreachable parents, so 'about to invoke the procedure' and 'routine wait' are both defensible."
+ }
+}

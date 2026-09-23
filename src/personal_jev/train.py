@@ -31,7 +31,7 @@ DEFAULTS = {
     "train_files": ["data/hf.jsonl"], "val_files": ["data/hf.jsonl"], "out_dir": "runs/lora", "seed": 13,
     "model_id": MODEL_ID, "revision": MODEL_REVISION, "prompt": DEFAULT_PROMPT, "device": None, "dtype": "float32", "max_length": 2048, "max_batch_tokens": 8192, "grad_accum": 4, "epochs": 1,
     "max_steps": None, "lr": 2e-4, "warmup_ratio": 0.03, "weight_decay": 0.0, "max_grad_norm": 1.0,
-    "gradient_checkpointing": True, "eval_every": 100, "max_val_questions": 800, "max_train_questions": None, "max_train_per_family": None,
+    "gradient_checkpointing": True, "eval_every": 100, "max_val_questions": 800, "max_train_questions": None, "max_train_per_family": None, "cap_exempt_families": [],
     "lora": {"r": 16, "alpha": 32, "dropout": 0.05, "target_modules": ["q_proj", "k_proj", "v_proj", "o_proj"]},
 }
 
@@ -67,7 +67,8 @@ def shuffle_candidates(item, rng):
     rng.shuffle(perm)
     t = item["target"]
     return item | {"ids": [item["ids"][i] for i in perm],
-                   "target": perm.index(t) if item["type"] == "multiclass" else [t[i] for i in perm]}
+                   "target": perm.index(t) if item["type"] == "multiclass" else [t[i] for i in perm]} \
+        | ({"content": [item["content"][i] for i in perm]} if "content" in item else {})  # custom model's token masks
 
 
 def grouped_loss(s, items):
@@ -140,12 +141,14 @@ def select_data(cfg, rng):
     """Train and validation examples; same seed and config -> same questions (shared by train_custom)."""
     train_ex = load(cfg["train_files"], {"train"})
     if cap := cfg["max_train_per_family"]:  # data-mixture control: no single family dominates the pilot
-        fams = {}
+        fams, exempt = {}, set(cfg.get("cap_exempt_families") or [])  # exempt: e.g. an added family for a data curve
         for ex in train_ex:
             fams.setdefault(ex["family"], []).append(ex)
-        train_ex = [ex for f in sorted(fams) for ex in (rng.sample(fams[f], cap) if len(fams[f]) > cap else fams[f])]
-    if cfg["max_train_questions"]:
-        train_ex = rng.sample(train_ex, min(cfg["max_train_questions"], len(train_ex)))
+        train_ex = [ex for f in sorted(fams) for ex in (rng.sample(fams[f], cap) if len(fams[f]) > cap and f not in exempt else fams[f])]
+    if k := cfg["max_train_questions"]:  # nested subsets from one fixed shuffle (25% of the data is inside the 50%)
+        order = list(range(len(train_ex)))
+        random.Random(cfg["seed"]).shuffle(order)
+        train_ex = [train_ex[i] for i in sorted(order[:k])]
     val_ex = load(cfg["val_files"], {"validation"})
     return train_ex, rng.sample(val_ex, min(cfg["max_val_questions"], len(val_ex)))
 

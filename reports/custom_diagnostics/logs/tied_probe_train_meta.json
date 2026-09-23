@@ -1,0 +1,292 @@
+{
+ "config": {
+  "train_files": [
+   "data/hf.jsonl",
+   "data/synthetic.jsonl"
+  ],
+  "val_files": [
+   "data/hf.jsonl",
+   "data/synthetic.jsonl",
+   "data/eval.jsonl"
+  ],
+  "out_dir": "/private/tmp/claude-501/-Users-julien-Documents-Repos-SelfJev/894b0ee7-3568-49fb-b48f-7aa9112b63b0/scratchpad/tied_probe",
+  "seed": 13,
+  "device": null,
+  "dtype": "bfloat16",
+  "max_state_length": 2048,
+  "max_candidate_length": 256,
+  "max_batch_tokens": 8192,
+  "grad_accum": 2,
+  "epochs": 3,
+  "max_steps": 100,
+  "backbone": "frozen",
+  "stage_a_steps": 60,
+  "lr_new": 0.001,
+  "lr_backbone": 0.0002,
+  "warmup_steps": 20,
+  "weight_decay": 0.01,
+  "max_grad_norm": 1.0,
+  "gradient_checkpointing": true,
+  "eval_every": 50,
+  "max_val_questions": 1200,
+  "max_train_questions": null,
+  "max_train_per_family": 1600,
+  "arch": {
+   "h": 256,
+   "heads": 8,
+   "ffn": 1024,
+   "blocks": 2,
+   "head_width": 128,
+   "dropout": 0.1,
+   "pooling": "mean",
+   "shared_head": false,
+   "memory_norm": true,
+   "standardize": true,
+   "tied_init": true
+  },
+  "standardize_sample": 512,
+  "lora": {
+   "r": 16,
+   "alpha": 32,
+   "dropout": 0.05,
+   "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+   ]
+  }
+ },
+ "base": {
+  "model": "Qwen/Qwen3-Reranker-0.6B",
+  "revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473"
+ },
+ "format": {
+  "name": "custom-v1",
+  "state_template": "Document:\n{state}",
+  "candidate_template": "Task: {type}\nQuestion: {instruction}\nProposed answer: {answer}",
+  "binary_answer": "Yes",
+  "tokenize": {
+   "add_special_tokens": false,
+   "split_special_tokens": true
+  },
+  "padding": "right",
+  "sha": "b96b6174a187"
+ },
+ "params": {
+  "new_modules": 2171394,
+  "backbone": 595776512,
+  "backbone_trainable": 0,
+  "new_by_module": {
+   "memory_proj": 262912,
+   "candidate_proj": 262400,
+   "blocks": 1579520,
+   "norm_out": 512,
+   "binary_head": 33025,
+   "choice_head": 33025
+  },
+  "stage_a_trainable": 2171394,
+  "stage_b_trainable": 2171394
+ },
+ "standardization": {
+  "state": {
+   "sequences": 508,
+   "tokens": 33422
+  },
+  "candidate": {
+   "sequences": 2146,
+   "tokens": 56506
+  }
+ },
+ "data": {
+  "train_files": [
+   {
+    "path": "data/hf.jsonl",
+    "sha256": "fe29b29286d5a372271e925825e8b9794f3f64be9a9fc04cad458b4b94ada510"
+   },
+   {
+    "path": "data/synthetic.jsonl",
+    "sha256": "9886dc9ee297a9e638be2f306b107910846d87bc92343bd5e6d0771d0f5c103d"
+   }
+  ],
+  "val_files": [
+   {
+    "path": "data/hf.jsonl",
+    "sha256": "fe29b29286d5a372271e925825e8b9794f3f64be9a9fc04cad458b4b94ada510"
+   },
+   {
+    "path": "data/synthetic.jsonl",
+    "sha256": "9886dc9ee297a9e638be2f306b107910846d87bc92343bd5e6d0771d0f5c103d"
+   },
+   {
+    "path": "data/eval.jsonl",
+    "sha256": "be888eb38dcca063823924430e03985ddf2186b874e792d5734936ba93ba6910"
+   }
+  ],
+  "train_questions": 10112,
+  "train_states": 8556,
+  "val_questions": 983,
+  "train_by_family": {
+   "hf_emotions_multilabel": 1600,
+   "hf_intent_banking77": 1600,
+   "hf_nli": 1600,
+   "hf_sentiment_tweets": 1600,
+   "hf_topic_agnews": 1600,
+   "syn_adversarial": 305,
+   "syn_evidence": 331,
+   "syn_multilabel": 291,
+   "syn_policy": 228,
+   "syn_routing": 473,
+   "syn_urgency_sentiment": 484
+  },
+  "train_by_type": {
+   "multilabel": 2214,
+   "multiclass": 5466,
+   "binary": 2432
+  },
+  "dropped_overlength": {
+   "train": {},
+   "val": {}
+  }
+ },
+ "best": {
+  "step": 100,
+  "stage": "A",
+  "loss": 1.0795970462709816,
+  "question_accuracy": 0.32451678535096645,
+  "accuracy_by_type_at_T1_t0.5": {
+   "binary": 0.6088709677419355,
+   "multiclass": 0.301707779886148,
+   "multilabel": 0.04326923076923077
+  },
+  "checkpoint_sha": "bb65a8f33c5768e477d0df66044bdc8fe55e141b28b218a0177b3239b1025da2"
+ },
+ "steps": 100,
+ "stage_a_steps": 100,
+ "log": [
+  {
+   "step": 0,
+   "stage": "init (random new modules)",
+   "val": {
+    "loss": 1.1266223057604272,
+    "question_accuracy": 0.23296032553407936,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.3951612903225806,
+     "multiclass": 0.24667931688804554,
+     "multilabel": 0.004807692307692308
+    }
+   }
+  },
+  {
+   "step": 10,
+   "stage": "A",
+   "train_loss": 1.1131650298833846,
+   "grad_norm": 0.9165169596672058,
+   "questions_seen": 734
+  },
+  {
+   "step": 20,
+   "stage": "A",
+   "train_loss": 1.0792174845933915,
+   "grad_norm": 0.6204163432121277,
+   "questions_seen": 1447
+  },
+  {
+   "step": 30,
+   "stage": "A",
+   "train_loss": 1.1728258058428764,
+   "grad_norm": 0.1746639758348465,
+   "questions_seen": 2099
+  },
+  {
+   "step": 40,
+   "stage": "A",
+   "train_loss": 1.0554894834756852,
+   "grad_norm": 0.3329651951789856,
+   "questions_seen": 2765
+  },
+  {
+   "step": 50,
+   "stage": "A",
+   "train_loss": 1.1154006183147431,
+   "grad_norm": 0.30552729964256287,
+   "questions_seen": 3431
+  },
+  {
+   "step": 50,
+   "stage": "A",
+   "val": {
+    "loss": 1.0947306604860758,
+    "question_accuracy": 0.31637843336724314,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.5120967741935484,
+     "multiclass": 0.32827324478178366,
+     "multilabel": 0.052884615384615384
+    }
+   }
+  },
+  {
+   "step": 60,
+   "stage": "A",
+   "train_loss": 1.1649838224053384,
+   "grad_norm": 0.16622169315814972,
+   "questions_seen": 4099
+  },
+  {
+   "step": 70,
+   "stage": "A",
+   "train_loss": 1.0685177490115165,
+   "grad_norm": 0.3905828297138214,
+   "questions_seen": 4794
+  },
+  {
+   "step": 80,
+   "stage": "A",
+   "train_loss": 1.1227727681398392,
+   "grad_norm": 0.5320265889167786,
+   "questions_seen": 5559
+  },
+  {
+   "step": 90,
+   "stage": "A",
+   "train_loss": 1.0159817680716514,
+   "grad_norm": 0.2844293415546417,
+   "questions_seen": 6259
+  },
+  {
+   "step": 100,
+   "stage": "A",
+   "train_loss": 1.090351414680481,
+   "grad_norm": 0.3808899521827698,
+   "questions_seen": 6861
+  },
+  {
+   "step": 100,
+   "stage": "A",
+   "val": {
+    "loss": 1.0795970462709816,
+    "question_accuracy": 0.32451678535096645,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.6088709677419355,
+     "multiclass": 0.301707779886148,
+     "multilabel": 0.04326923076923077
+    }
+   }
+  }
+ ],
+ "reload_check": {
+  "questions": 64,
+  "max_abs_score_diff": 4.76837158203125e-07
+ },
+ "hardware": {
+  "device": "mps",
+  "chip": "Apple M5 Pro",
+  "platform": "macOS-26.5.2-arm64-arm-64bit"
+ },
+ "versions": {
+  "torch": "2.14.0",
+  "transformers": "5.17.0",
+  "peft": "0.21.0"
+ },
+ "wall_s": 314.0860516250832
+}

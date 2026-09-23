@@ -1,0 +1,68 @@
+{"id": "polb-0001-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0001-q1", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0001-q2", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "forfeited", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0002-q0", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "tier_3plus", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0002-q1", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0002-q2", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0002-q3", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["tenure_combines", "qualifies_3plus", "under_1yr_at_lakeside"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0003-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0003-q1", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "primary_12wk", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0003-q2", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0003-q3", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0004-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0004-q1", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0004-q2", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "one", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0005-q0", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "rescheduled_no_penalty", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0005-q1", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0005-q2", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["auto_approved", "vacation_rescheduled"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0006-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0006-q1", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "outside_window", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0006-q2", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["blackout_applies", "bereavement_expired"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0006-q3", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0007-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0007-q1", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0008-q0", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["day1", "day2", "day4"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0008-q1", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0008-q2", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "tier_c", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0008-q3", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0009-q0", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "m36", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0009-q1", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0009-q2", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["home_to_client_excess", "client_to_home_excess"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0010-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0010-q1", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "late_domestic", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0010-q2", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0011-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ambiguous", "target": false, "suggested_target": null, "confidence": "medium", "reason": "State never says Kevin is Lisa's direct report or that Lisa is a manager; Kevin is a 'project lead' who could be her direct manager, in which case policy allows him to approve. Notes invent the reporting line."}
+{"id": "polb-0011-q1", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ambiguous", "target": "lisa_supervisor", "suggested_target": null, "confidence": "medium", "reason": "Skip-level rule applies only to a manager's self-submitted report; Lisa isn't shown to be a manager and Kevin's relation to her is unstated, so 'kevin' vs 'lisa_supervisor' is undetermined."}
+{"id": "polb-0011-q2", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0012-q0", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "half", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0012-q1", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0012-q2", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0013-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0013-q1", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "pip_status", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0013-q2", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["on_pip", "tenure_100days"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0014-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0014-q1", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["within_30days", "notice_given"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0014-q2", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "no_entity", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0015-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0015-q1", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0015-q2", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["company_initiated", "past_90days"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0016-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0016-q1", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ambiguous", "target": "both_required", "suggested_target": null, "confidence": "medium", "reason": "Priya says L3 promotion 'only gets you onto the eligible-roles list'; question asks what makes him 'eligible', so promotion_only is defensible alongside both_required (which is needed for actual designation)."}
+{"id": "polb-0016-q2", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0016-q3", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0017-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0017-q1", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "weather_emergency", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0018-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ambiguous", "target": true, "suggested_target": null, "confidence": "medium", "reason": "Overtime policy applies only to non-exempt employees; Grace's exempt/non-exempt classification is never stated, so entitlement can't be confirmed from the state."}
+{"id": "polb-0018-q1", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ambiguous", "target": "time_half", "suggested_target": null, "confidence": "low", "reason": "Same issue: Grace's non-exempt status is not stated, so the 1.5x rate is assumed rather than established."}
+{"id": "polb-0019-q0", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "paid_cash", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0019-q1", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0019-q2", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["elected_comptime"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0020-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0020-q1", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "duties_review", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0020-q2", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["no_ot_now", "review_could_change"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0020-q3", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0021-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0021-q1", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "holiday_double", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0022-q0", "file": "polb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0022-q1", "file": "polb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "director", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "polb-0022-q2", "file": "polb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["supervisor_approved"], "suggested_target": null, "confidence": "high", "reason": ""}

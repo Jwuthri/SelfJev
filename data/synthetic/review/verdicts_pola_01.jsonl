@@ -1,0 +1,55 @@
+{"id": "pola-0001-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0001-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "full_refund_original_payment", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0001-q2", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["clearance_tagged_item", "manufacturer_defect_reported"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0002-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0002-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "deny_final_sale_category", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0003-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0003-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "fifteen_percent_fee", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0003-q2", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["within_return_window"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0004-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0004-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "thirty_dollars", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0005-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0005-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "opened_hygiene_final_sale", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0006-q0", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "replacement_with_covered_shipping", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0006-q1", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["item_arrived_incorrect", "replacement_ships_at_no_extra_cost", "within_thirty_day_window"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0007-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0007-q1", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["extra_seats_prorated_refund", "annual_plan_active_until_term_end", "fourteen_day_window_missed"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0007-q2", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "active_until_term_end_no_renewal", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0008-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0008-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "continues_as_paid_until_cycle_ends", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0009-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0009-q1", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["late_fee_avoided", "cancellation_submitted_before_due_date", "outstanding_invoice_existed_at_cancellation"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0009-q2", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ambiguous", "target": "outstanding_invoice_must_be_settled", "suggested_target": null, "confidence": "medium", "reason": "By the Nov 6 state, Invoice #4471 was already paid (Oct 8), so nothing further is arguably required; 'must be settled' describes a past step. Notes also wrongly call the invoice past-due at cancellation."}
+{"id": "pola-0010-q0", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["downgrade_effective_next_cycle", "upgrades_are_prorated_immediately"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0010-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "start_of_next_billing_cycle", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0011-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0011-q1", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["takes_effect_at_next_renewal"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0012-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0012-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "submitted_verification_late", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0013-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0013-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "twenty_four_hour_rule", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0013-q2", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["canceled_within_24_hours_of_booking", "booked_at_least_7_days_before_departure"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0014-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0014-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "airline_schedule_change_of_3_hours_or_more", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0014-q2", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0015-q0", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0015-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "twenty_five_dollars", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0016-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0016-q1", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["balance_refundable", "cancellation_at_least_45_days_before_departure"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0017-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0017-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "automatically_protected_due_to_elite_status", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0018-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0018-q1", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0018-q2", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "replace_with_refurbished_unit", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0019-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0019-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "ninety_days_unregistered", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0019-q2", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0020-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0020-q1", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["battery_replacement"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0020-q2", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "forty_nine_dollars", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0021-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0021-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "free_replacement_no_repair_attempt", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0021-q2", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0022-q0", "file": "pola_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0022-q1", "file": "pola_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "purchased_from_unauthorized_seller", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "pola-0022-q2", "file": "pola_01.jsonl", "type": "multilabel", "verdict": "ambiguous", "target": ["within_warranty_time_window", "proof_of_purchase_provided", "defect_confirmed"], "suggested_target": null, "confidence": "medium", "reason": "The policy defines no warranty time window at all (coverage 'regardless of age'), so 'within the warranty's normal time window' cannot be confirmed from the state."}

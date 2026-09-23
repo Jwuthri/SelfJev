@@ -1,12 +1,13 @@
 """Comic-infographic pages on how personal-jev scores, learns and is evaluated -> docs/comics/*.png.
 
-Two batches, generated directly with OpenAI `gpt-image-2.5-flare`:
+Three batches, generated directly with OpenAI `gpt-image-2.5-flare`:
   deep      4 dense technical pages (every number is measured; see reports/summary.md, reports/bench/, runs/)
   friendly  the same 4 topics told with analogies, still technically correct
+  lora      2 pages on the stock Qwen + LoRA model: how the text reaches Qwen, and where LoRA plugs in
 Deep page 1 can take a --style image purely as a visual reference; every other page uses deep page 1 as its
 reference so the robot and layout stay consistent. Needs OPENAI_API_KEY in the environment (never printed).
 
-usage: uv run --group docs python scripts/make_comics.py [--batch deep|friendly|all] [--pages 1,2,3,4] [--style ref.webp]
+usage: uv run --group docs python scripts/make_comics.py [--batch deep|friendly|lora|all] [--pages 1,2,3,4] [--style ref.webp]
 """
 import argparse
 import base64
@@ -200,10 +201,80 @@ Bottom banner: "RULE: TRUST THE TEST SET, NOT THE VIBES."
 """),
 ]
 
+# Token counts from the pinned tokenizer on examples/request.json (prompt mapping task-v1); LoRA sizes from the checkpoint.
+LORA_PAGES = [
+    ("lora-1-text-to-qwen", """Title: "HOW THE TEXT REACHES QWEN · 1/2"
+
+Panel 1 header "ONE REQUEST": Rerankie at a desk reading a support ticket on its screen: "Checkout is broken. We are losing sales. Please fix it today." Three question cards: "URGENT? yes / no", "WHICH TEAM? technical / billing / sales", "WHICH TAGS? revenue loss / refund / blocked". Callout: "1 + 3 + 3 = 7 prompts".
+
+Panel 2 header "ONE PROMPT PER CANDIDATE": a dark code card with these monospace lines:
+"<|im_start|>system"
+"Judge whether the Document meets the requirements based on the Query and the Instruct provided. Note that the answer can only be "yes" or "no".<|im_end|>"
+"<|im_start|>user"
+"<Instruct>: Which team should handle the underlying issue?"
+"<Query>: Technical support: software malfunctions and integration failures"
+"<Document>: Checkout is broken. We are losing sales. Please fix it today.<|im_end|>"
+"<|im_start|>assistant"
+"<think></think>"
+Side note: "Qwen's official reranker template, word for word".
+
+Panel 3 header "WHAT GOES IN EACH SLOT", three colored rows:
+"<Instruct>  ←  the question"
+"<Query>  ←  one candidate's description (never its id)"
+"<Document>  ←  the customer's text, copied into every prompt"
+Small note: "yes/no questions: the question moves to <Query>".
+
+Panel 4 header "TEXT → TOKENS": a long tape of small token blocks in three colors with labels under each section: "system prefix: 39 tokens", "Instruct + Query + Document: 37-42 tokens", "assistant suffix: 9 tokens". Note: "7 prompts, 85-90 tokens each, 612 in total". Warning chip: "too long = error, never cut".
+
+Panel 5 header "BATCH WITH LEFT PADDING": a grid of 7 rows of token blocks of slightly different lengths; gray padding blocks on the LEFT so every row ends in the same right-most column, which glows. Note: "every prompt's last token lines up in one column · up to 16,384 padded tokens per batch".
+
+Panel 6 header "ONE FORWARD PASS, NO GENERATION": Rerankie's transparent head shows a stack labeled "28 transformer layers"; from the glowing last column an arrow goes into a wide bar labeled "151,669 vocabulary scores" where only two cells light up: "yes (id 9693)" and "no (id 2152)". Formula card: "score = logit(yes) − logit(no)".
+
+Panel 7 header "SCORES → ANSWERS", three rows:
+"URGENT: p = sigmoid(score), yes if p ≥ 0.5"
+"TEAM: softmax over its 3 scores, pick the highest"
+"TAGS: sigmoid of each score, keep all ≥ 0.5"
+
+Panel 8 header "THE HIDDEN COST": a tired Rerankie reading the same ticket seven times. Text: "The ticket is inside all 7 prompts. 16 questions × 3 candidates on an 8,000-token text = 48 full reads."
+
+Bottom banner: "RULE: ONE PROMPT PER CANDIDATE. THE ANSWER IS READ FROM TWO LOGITS."
+"""),
+    ("lora-2-where-lora-plugs-in", """Title: "WHERE LoRA PLUGS IN · 2/2"
+
+Panel 1 header "THE FROZEN BASE": Rerankie with a transparent chest showing a locked glass core labeled "Qwen3-Reranker-0.6B · 600M weights · frozen". Note: "28 layers · width 1,024 · 16 query heads, 8 key/value heads".
+
+Panel 2 header "ONE PROJECTION, ZOOMED IN": a clean left-to-right diagram. An input arrow "x" splits into two parallel lanes. Main lane: a large frozen box with a lock icon labeled "W (frozen)". Bypass lane, drawn thinner and glowing: a small chip "A: 1,024 → 16", then a small chip "B: 16 → out", then a tag "× 2". Both lanes meet at ONE plus sign, then an arrow "output". Caption under the diagram: "this bypass sits on q_proj, k_proj, v_proj and o_proj in all 28 layers; the MLP has none".
+
+Panel 3 header "THE LoRA FORMULA": a dark code card with these monospace lines:
+"output = W·x + (32 / 16) · B·(A·x)"
+"W: frozen original weight"
+"A: 16 × input, B: output × 16  (trainable)"
+"B starts at zero → step 0 = the original model"
+
+Panel 4 header "HOW TINY IS IT": a tally card:
+"per layer: q 49,152 + k 32,768 + v 32,768 + o 49,152 = 163,840"
+"× 28 layers = 4,587,520 trainable"
+"0.76% of 600M · one 18 MB file"
+
+Panel 5 header "WHAT IT LEARNS FROM": a mini version of the 7 prompts feeding blank score cards (no numbers on them) into two loss cards: "TEAM: cross-entropy over its own 3 scores" and "URGENT / TAGS: binary cross-entropy on each score". Glowing gradient arrows flow back only into the small A and B chips. Note: "same prompts and same yes − no score as at inference".
+
+Panel 6 header "THE RUN": a spec card: "10,112 training questions · 183 steps · 1.05 h · lr 2e-4 · bf16 · Apple M5 Pro".
+
+Panel 7 header "BEFORE → AFTER · 3,471 TEST QUESTIONS", a scoreboard:
+"question accuracy: 61.0% → 73.5%"
+"binary AUROC: 0.605 → 0.863"
+"multilabel exact match: 1.2% → 31.1%"
+
+Panel 8 header "AT SERVING TIME": Rerankie clipping a small glowing adapter onto the locked core. Text: "base + 18 MB adapter, loaded together · unmerged adapter adds 8-14% latency · bf16: 73.7% vs 73.5% in fp32".
+
+Bottom banner: "RULE: SAME PROMPT, SAME YES/NO READOUT. ONLY 0.76% OF THE WEIGHTS LEARN."
+"""),
+]
+
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--batch", default="all", choices=["deep", "friendly", "all"])
+    ap.add_argument("--batch", default="all", choices=["deep", "friendly", "lora", "all"])
     ap.add_argument("--pages", default="1,2,3,4")
     ap.add_argument("--style", help="optional image used only as a visual style reference for deep page 1")
     ap.add_argument("--quality", default="high", choices=["low", "medium", "high", "xhigh", "max", "auto"])
@@ -235,6 +306,8 @@ def main():
         jobs += [(n, SAME_SERIES + LOOK + p) for i, (n, p) in enumerate(DEEP, 1) if i in pages and i != 1]
     if a.batch in ("friendly", "all"):
         jobs += [(n, SAME_SERIES + FRIENDLY + p) for i, (n, p) in enumerate(FRIENDLY_PAGES, 1) if i in pages]
+    if a.batch in ("lora", "all"):
+        jobs += [(n, SAME_SERIES + LOOK + p) for i, (n, p) in enumerate(LORA_PAGES, 1) if i in pages]
     with ThreadPoolExecutor(max_workers=7) as ex:
         list(ex.map(lambda j: render(*j, anchor), jobs))
 

@@ -1,0 +1,11 @@
+{
+ "model": "Qwen/Qwen3-Reranker-4B",
+ "revision": "22e683669bc0f0bd69640a1354a6d0aebcfeede5",
+ "selected": "answer-v1",
+ "scores": {
+  "answer-v1": 0.7071243009720902,
+  "task-v1": 0.7031045684230118,
+  "task-v2": 0.6840052683978795,
+  "hybrid-v1": 0.6973746342782025
+ }
+}

@@ -27,7 +27,7 @@ from safetensors.torch import load_file
 from transformers import AutoModel, AutoTokenizer
 
 from .custom import (ARCH, CustomScorer, SharedStateClassifier, candidate_texts, checkpoint_sha, count_params, format_config,
-                     save_checkpoint, state_text)
+                     save_checkpoint, state_span, state_text, tokenize)
 from .data import sha256_file
 from .model import MODEL_ID, MODEL_REVISION, default_device, sync
 from .schemas import parse_question
@@ -46,15 +46,16 @@ DEFAULTS = {
 
 def encode_items(tokenizer, examples, max_state, max_cand):
     """-> (items, state token lists, dropped). Items: one per question, candidate token ids in "ids" (as in train.py)
-    and the index of its state; identical states share one entry. Overlength questions are dropped and counted."""
-    tok = lambda xs: tokenizer(xs, add_special_tokens=False, split_special_tokens=True)["input_ids"]
+    and the index of its state; identical states share one entry. "content" / "state_content" are the token masks the
+    similarity variant uses. Overlength questions are dropped and counted."""
     keys, texts, per_q = {}, [], []
     for ex in examples:
         q = parse_question({"id": "q", **ex["question"]})
         s = keys.setdefault(state_text(ex["state"]), len(keys))
         per_q.append((ex, q, s, len(texts)))
-        texts += candidate_texts(q)
-    cand_ids, states = tok(texts), tok(list(keys))
+        texts += candidate_texts(q, spans=True)
+    cand_ids, cand_content = tokenize(tokenizer, [t for t, _ in texts], [sp for _, sp in texts])
+    states, state_content = tokenize(tokenizer, list(keys), [state_span(t) for t in keys])
     items, dropped = [], Counter()
     for ex, q, s, k in per_q:
         ids = cand_ids[k:k + (len(q.candidates) or 1)]
@@ -63,7 +64,8 @@ def encode_items(tokenizer, examples, max_state, max_cand):
             continue
         cids = [c.id for c in q.candidates]
         target = {"binary": lambda t: t, "multiclass": cids.index, "multilabel": lambda t: [c in t for c in cids]}[q.type](ex["target"])
-        items.append({"id": ex["id"], "family": ex["family"], "type": q.type, "state": s, "ids": ids, "target": target})
+        items.append({"id": ex["id"], "family": ex["family"], "type": q.type, "state": s, "ids": ids, "target": target,
+                      "content": cand_content[k:k + len(ids)], "state_content": state_content[s]})
     return items, states, dict(dropped)
 
 
@@ -94,15 +96,17 @@ def micro_batches(items, states, max_batch_tokens, rng, bucket=256):
 
 def forward_items(model, items, states, max_batch_tokens):
     """Flat scores for the items' candidates, in item order; each distinct state is encoded once."""
-    local, state_ids, cand_ids, owner, mc = {}, [], [], [], []
+    local, state_ids, state_content, cand_ids, cand_content, owner, mc = {}, [], [], [], [], [], []
     for it in items:
         if it["state"] not in local:
             local[it["state"]] = len(state_ids)
             state_ids.append(states[it["state"]])
+            state_content.append(it["state_content"])
         cand_ids += it["ids"]
+        cand_content += it["content"]
         owner += [local[it["state"]]] * len(it["ids"])
         mc += [it["type"] == "multiclass"] * len(it["ids"])
-    return model(state_ids, cand_ids, owner, mc, max_batch_tokens)
+    return model(state_ids, cand_ids, owner, mc, max_batch_tokens, state_content, cand_content)
 
 
 @torch.no_grad()

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="708" height="236" font-family="sans-serif" font-size="11">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="28" y="28" width="180" height="180" fill="none" stroke="#888"/>
+<line x1="28" y1="208" x2="208" y2="28" stroke="#bbb" stroke-dasharray="4"/>
+<text x="28" y="20">binary (p_yes), n=210</text>
+<text x="28" y="224">confidence → observed ↑</text>
+<circle cx="30.4" cy="202.7" r="8.3" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="55.2" cy="180.3" r="4.2" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="72.4" cy="208.0" r="3.1" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="92.5" cy="148.0" r="3.1" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="106.9" cy="118.0" r="3.5" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="125.2" cy="79.4" r="3.6" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="146.4" cy="73.0" r="3.2" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="165.4" cy="172.0" r="3.4" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="181.7" cy="105.1" r="3.6" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="202.1" cy="37.0" r="6.8" fill="#2f6bd6" fill-opacity="0.65"/>
+<rect x="264" y="28" width="180" height="180" fill="none" stroke="#888"/>
+<line x1="264" y1="208" x2="444" y2="28" stroke="#bbb" stroke-dasharray="4"/>
+<text x="264" y="20">multiclass (top-label), n=486</text>
+<text x="264" y="224">confidence → observed ↑</text>
+<circle cx="346.9" cy="95.5" r="3.6" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="364.5" cy="108.0" r="4.4" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="381.1" cy="115.9" r="4.7" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="398.6" cy="78.9" r="4.8" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="416.4" cy="65.9" r="5.1" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="440.6" cy="34.9" r="8.9" fill="#2f6bd6" fill-opacity="0.65"/>
+<rect x="500" y="28" width="180" height="180" fill="none" stroke="#888"/>
+<line x1="500" y1="208" x2="680" y2="28" stroke="#bbb" stroke-dasharray="4"/>
+<text x="500" y="20">multilabel (p_yes), n=1010</text>
+<text x="500" y="224">confidence → observed ↑</text>
+<circle cx="504.0" cy="204.6" r="8.8" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="525.1" cy="185.0" r="4.6" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="545.3" cy="182.3" r="4.0" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="562.3" cy="152.6" r="3.4" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="579.6" cy="111.4" r="3.8" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="597.6" cy="140.9" r="4.0" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="617.7" cy="90.6" r="3.4" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="636.7" cy="69.3" r="4.2" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="652.4" cy="73.0" r="3.8" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="671.2" cy="71.4" r="4.2" fill="#2f6bd6" fill-opacity="0.65"/>
+</svg>

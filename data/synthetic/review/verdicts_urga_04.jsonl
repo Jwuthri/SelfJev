@@ -1,0 +1,50 @@
+{"id": "urga-0067-q0", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["appointment_no_show_by_provider", "billing_error"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0067-q1", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_fee_reversal", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0068-q0", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_information", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0068-q1", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["a_product_suggestion", "acceptance_of_responsibility_for_the_mistake"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0069-q0", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["praise_for_work_quality", "intent_to_book_again", "a_complaint_about_punctuality"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0069-q1", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "the_cleaner_being_reviewed", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0070-q0", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "mildly_impatient", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0070-q1", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["mild_impatience"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0071-q0", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["project_missed_estimate_by_6_or_more_months"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0071-q1", "file": "urga_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0071-q2", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["a_refund", "information_about_the_creators_other_projects"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0072-q0", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "sarcastic", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0072-q1", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["inability_to_access_paid_content"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0073-q0", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["undisclosed_smoking_in_the_home", "positive_communication_from_the_sitter"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0073-q1", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["the_smoking_issue_flagged", "guidance_on_raising_the_paw_issue_with_the_sitter"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0074-q0", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "wrong", "target": "qualifies_as_emergency_exception", "suggested_target": "unclear_needs_manager_review", "confidence": "medium", "reason": "Stated policy has no emergency exception at all (within 2h = forfeit); only the customer asks 'surely that counts'. Target relies on outside knowledge. No candidate cleanly fits; unclear is closest."}
+{"id": "urga-0074-q1", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_fee_waiver_due_to_emergency", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0075-q0", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0075-q1", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_account_closure", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0076-q0", "file": "urga_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0076-q1", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "an_unrecognized_new_charge", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0076-q2", "file": "urga_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0076-q3", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["the_original_package_was_misrouted", "the_original_package_was_eventually_delivered", "the_customer_reported_a_second_unrelated_issue"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0077-q0", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_downgrade", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0077-q1", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["a_downgrade_request", "price_sensitivity"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0078-q0", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["a_discrepancy_between_receipt_and_charge"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0078-q1", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_information_explaining_a_charge", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0079-q0", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_information", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0079-q1", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0080-q0", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "three", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0080-q1", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "one_credit_25_dollars", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0081-q0", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_information", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0081-q1", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["the_customer_needs_to_make_a_choice"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0082-q0", "file": "urga_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0082-q1", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["genuine_positive_feedback", "an_embedded_fake_authorization_claim"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0083-q0", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "anxious", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0083-q1", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ambiguous", "target": "before", "suggested_target": null, "confidence": "medium", "reason": "No expected load time for results is given; they could finish processing before tomorrow morning. 'unclear' is equally defensible to 'before'."}
+{"id": "urga-0084-q0", "file": "urga_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0084-q1", "file": "urga_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0084-q2", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_information_about_a_possible_billing_error", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0085-q0", "file": "urga_04.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0085-q1", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "an_unrelated_app_settings_question", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0085-q2", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["the_driver_was_suspended_pending_investigation", "an_email_followup_was_promised", "a_default_tip_setting_was_explained"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0085-q3", "file": "urga_04.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0086-q0", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "compliment", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0086-q1", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["early_shipment", "a_thoughtful_personal_touch"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0087-q0", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["an_unexpected_recurring_fee", "a_question_about_service_availability"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0087-q1", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_disputes", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0088-q0", "file": "urga_04.jsonl", "type": "multiclass", "verdict": "ok", "target": "a_resolved_technical_glitch", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0088-q1", "file": "urga_04.jsonl", "type": "multilabel", "verdict": "ok", "target": ["a_resolved_technical_glitch"], "suggested_target": null, "confidence": "high", "reason": ""}

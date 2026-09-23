@@ -1,0 +1,55 @@
+{"id": "urgb-0001-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0001-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "close_no_action", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0001-q2", "file": "urgb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["transient_auto_resolved"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0002-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ambiguous", "target": true, "suggested_target": null, "confidence": "medium", "reason": "By the end of the thread the fix is deployed and error rate is 4% and falling with engineers already engaged; whether a page is needed 'right now' depends on the time point, which the question doesn't fix."}
+{"id": "urgb-0002-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "low_key_apologetic", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0002-q2", "file": "urgb_01.jsonl", "type": "multilabel", "verdict": "ambiguous", "target": ["checkout_payments_failing"], "suggested_target": null, "confidence": "medium", "reason": "already_fixed_by_end_of_thread arguably true: fix deployed, errors down to 4% and falling, Dee says 'amazing, thank you'; not clearly incorrect."}
+{"id": "urgb-0003-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0003-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "scheduled_drill_notice", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0004-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0004-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "positive_excited", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0005-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0005-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "rogue_script_killed_by_engineer", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0005-q2", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "manual_backfill_script_on_primary", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0006-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0006-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "sev2_page_now", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0007-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0007-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "maintenance_window_exception_no_page", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0007-q2", "file": "urgb_01.jsonl", "type": "multilabel", "verdict": "ambiguous", "target": ["occurred_during_published_maintenance"], "suggested_target": null, "confidence": "medium", "reason": "fired_for_more_than_10_consecutive_minutes arguably true: alert fired 09:22 and error rate stayed elevated until 10:58 (~96 min); only the 09:31 entry says 9 minutes."}
+{"id": "urgb-0007-q3", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "meets_sev2_traffic_range", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0008-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0008-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "page_due_to_flapping_pattern", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0009-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0009-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "calm_professional", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0009-q2", "file": "urgb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["credential_leak", "request_for_same_day_action"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0010-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0010-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "schedule_swap_request", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0011-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0011-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "critical_page_immediately", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0011-q2", "file": "urgb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["revenue_impact_quantified"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0012-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0012-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "physical_safety_hazard", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0013-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0013-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "routine_meeting_reminder", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0013-q2", "file": "urgb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0014-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0014-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "stressed_but_not_alarmed", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0015-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0015-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "postmortem_report", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0015-q2", "file": "urgb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["customer_support_notified_during_incident"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0016-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0016-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "one_item_needs_followup", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0017-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0017-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "escalated_to_full_outage", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0017-q2", "file": "urgb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["affects_all_customers", "internal_admin_panel_also_affected"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0018-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0018-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "real_emergency_evacuation", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0019-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0019-q1", "file": "urgb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["caused_by_planned_upstream_maintenance"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0020-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0020-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "positive_appreciative", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0020-q2", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "resolved_last_night", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0021-q0", "file": "urgb_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["orders_db_replica_3"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0021-q1", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0022-q0", "file": "urgb_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0022-q1", "file": "urgb_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "page_after_hours_sev2_rule", "suggested_target": null, "confidence": "high", "reason": ""}

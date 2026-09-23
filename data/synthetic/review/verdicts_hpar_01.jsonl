@@ -1,0 +1,45 @@
+{"id": "hpar-0001-q0", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_team", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0001-q1", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_team", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0002-q0", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "finance_review", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0002-q1", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "finance_review", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0002-q2", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0003-q0", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "risk_team", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0003-q1", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "risk_team", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0003-q2", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0004-q0", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0004-q1", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0004-q2", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "p1_critical", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0005-q0", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0005-q1", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0005-q2", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ambiguous", "target": "p3_low", "suggested_target": null, "confidence": "medium", "reason": "p95 latency 4x normal (800ms vs 200ms) is literally 'partial degradation' (P2), though the team calls it 'not urgent'; P2 vs P3 both defensible given candidate descriptions."}
+{"id": "hpar-0006-q0", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0006-q1", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0007-q0", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0007-q1", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0008-q0", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0008-q1", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0008-q2", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "contradicted", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0009-q0", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0009-q1", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0009-q2", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0010-q0", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0010-q1", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0011-q0", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0011-q1", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0012-q0", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0012-q1", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0012-q2", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "defective_exception", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0013-q0", "file": "hpar_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["late_delivery", "damaged_item", "wrong_item", "overcharged"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0013-q1", "file": "hpar_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["late_delivery", "damaged_item", "wrong_item", "overcharged"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0013-q2", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0014-q0", "file": "hpar_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["wrong_item"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0014-q1", "file": "hpar_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["wrong_item"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0015-q0", "file": "hpar_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0015-q1", "file": "hpar_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0016-q0", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "people_ops", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0016-q1", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "people_ops", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0016-q2", "file": "hpar_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0017-q0", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "engineering", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0017-q1", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "engineering", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0018-q0", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "customer_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "hpar-0018-q1", "file": "hpar_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "customer_support", "suggested_target": null, "confidence": "high", "reason": ""}

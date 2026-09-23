@@ -1,0 +1,60 @@
+{"id": "mula-0001-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["battery_life", "pairing_connectivity", "audio_defect"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0001-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ambiguous", "target": ["firmware_update"], "suggested_target": null, "confidence": "medium", "reason": "Customer only says they are 'hoping a firmware update fixes it'; that is a hope, not an explicit request, so [] is also defensible."}
+{"id": "mula-0002-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["missing_item"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0002-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["replacement_shipment"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0002-q2", "file": "mula_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_replacement", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0003-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["overheating", "random_shutdown", "trackpad_defect"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0003-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["serial_number_requested", "serial_number_provided"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0003-q2", "file": "mula_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0003-q3", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["thermal_sensor_fault", "trackpad_fault"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0004-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["reliability_issue"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0004-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["no_action_requested"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0005-q0", "file": "mula_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "free_replacement_extended_care", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0005-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["standard_warranty_expired", "extended_care_active", "dead_pixel_threshold_met"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0005-q2", "file": "mula_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0005-q3", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ambiguous", "target": ["clause_1_standard_warranty", "clause_3_extended_care", "clause_6_registration"], "suggested_target": null, "confidence": "medium", "reason": "'Directly relevant' is subjective: clause 1 is included for ruling out coverage, but clause 4 (also ruled out) and clause 5 are excluded; the logic is inconsistent."}
+{"id": "mula-0006-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["refund_already_received"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0006-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["no_further_action"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0007-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["battery_drain", "sync_issue"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0007-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["full_refund_available", "return_window_30_days"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0007-q2", "file": "mula_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0008-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["photo_quality", "delivery_speed", "price"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0008-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["photo_quality"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0009-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0009-q1", "file": "mula_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "pre_use_impression", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0009-q2", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["purchase_is_recent", "promises_a_follow_up"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0010-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["policy_question"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0010-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["overheating_hazard", "refund_request", "policy_question"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0010-q2", "file": "mula_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0011-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["product_defect"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0011-q1", "file": "mula_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0012-q0", "file": "mula_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "hardware_warranty_team", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0012-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["power_failure", "warranty_status"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0012-q2", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["charged_overnight"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0013-q0", "file": "mula_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0013-q1", "file": "mula_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "tier_10_percent", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0013-q2", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["bulk_discount_request", "delivery_deadline_concern", "unrelated_prior_invoice_issue"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0013-q3", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["standard_shipping_three_weeks", "expedited_five_business_days", "expedited_costs_extra_per_unit"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0014-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["battery_issue"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0015-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["false_motion_triggers", "night_vision_blur", "notification_delay"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0015-q1", "file": "mula_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "hardware_defects", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0015-q2", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["qa_to_file_firmware_bug", "support_to_draft_comms"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0016-q0", "file": "mula_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0016-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["product_functionality"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0017-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["battery_defect_confirmed", "replacement_offered", "firmware_version_provided"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0017-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["calibration_suggested", "calibration_already_tried"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0017-q2", "file": "mula_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "the_company", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0017-q3", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["battery_issue", "tracking_email_promised"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0018-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["customer_service_issue", "response_time_issue"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0018-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0019-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0019-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["overheating", "screen_flicker"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0019-q2", "file": "mula_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0020-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["battery_below_advertised_spec"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0021-q0", "file": "mula_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "manufacturing_defect", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0021-q1", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["replacement_request"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0021-q2", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["packaging_undamaged", "cited_specific_law", "independent_technician_opinion", "prior_unanswered_calls"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0021-q3", "file": "mula_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "ten_days", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0022-q0", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["packaging_damage", "screen_damage", "missing_accessory", "poor_customer_service"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0022-q1", "file": "mula_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mula-0022-q2", "file": "mula_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["replace_charger", "repair_or_replace_screen", "apologize_for_service_call"], "suggested_target": null, "confidence": "high", "reason": ""}

@@ -1,0 +1,51 @@
+{"id": "roub-0023-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "scheduling", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0023-q1", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0024-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "clinical_triage", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0024-q1", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0024-q2", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "clinical_triage", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0024-q3", "file": "roub_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["new_concerning_symptom", "request_to_switch_to_telehealth"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0025-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "scheduling", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0025-q1", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "records_release", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0025-q2", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0026-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0026-q1", "file": "roub_02.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0027-q0", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0027-q1", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0027-q2", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "scheduling", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0028-q0", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0028-q1", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0029-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "fraud_compliance", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0029-q1", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0030-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "referrals_prior_auth", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0030-q1", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0030-q2", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "referrals_prior_auth", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0031-q0", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0031-q1", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "clinical_triage", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0031-q2", "file": "roub_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["patient_declined_routine_followup", "patient_requested_human"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0032-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "pharmacy_refills", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0032-q1", "file": "roub_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["medication_already_out", "upcoming_scheduled_visit"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0033-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "records_release", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0033-q1", "file": "roub_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["signed_authorization_enclosed", "request_for_complete_records"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0034-q0", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0034-q1", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "pharmacy_refills", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0035-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_insurance", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0035-q1", "file": "roub_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["compliment_about_staff", "dispute_over_copay_amount"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0036-q0", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0036-q1", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "referrals_prior_auth", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0037-q0", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0037-q1", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "clinical_triage", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0038-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "clinical_triage", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0038-q1", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0039-q0", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0039-q1", "file": "roub_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["portal_only_contact"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0040-q0", "file": "roub_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["pharmacy_refills", "provider_change", "billing_insurance"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0040-q1", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0041-q0", "file": "roub_02.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0041-q1", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0042-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0042-q1", "file": "roub_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["vendor_or_marketing_content"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0043-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "scheduling", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0043-q1", "file": "roub_02.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0044-q0", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "clinical_triage", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0044-q1", "file": "roub_02.jsonl", "type": "multiclass", "verdict": "ok", "target": "practice_management", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0044-q2", "file": "roub_02.jsonl", "type": "multilabel", "verdict": "ok", "target": ["same_day_triage_callback_for_owen", "records_request_forwarded_for_dorothy"], "suggested_target": null, "confidence": "high", "reason": ""}

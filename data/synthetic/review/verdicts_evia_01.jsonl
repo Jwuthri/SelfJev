@@ -1,0 +1,76 @@
+{"id": "evia-0001-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0001-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0001-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "elena", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0002-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0002-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0002-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "tomasz", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0002-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["post_patch_for_review"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0003-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0003-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0003-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "leah_goldman", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0003-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["denver"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0004-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0004-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0004-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "system_design", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0004-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["priyanka_rao"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0005-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0005-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0005-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "lucas", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0006-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0006-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0006-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "expired_tls_certificate", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0006-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["re_enable_auto_renewal", "add_certificate_expiry_alert"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0007-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0007-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0007-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "dns_ttl_cache_mismatch", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0007-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["ferrovia_logistics"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0008-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0008-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0008-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "redis_failover_bug", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0009-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0009-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0009-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "claims", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0009-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["employee_credentials_entered_on_fake_page", "mandatory_training_planned"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0010-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0010-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0010-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "orbit_dashboard", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0010-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["atlas_api"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0011-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0011-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0011-q2", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0012-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0012-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0012-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "project_fenwick", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0012-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["tidewater_energy", "cascadia_freight", "corvid_analytics", "glasswing_travel"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0013-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0013-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0013-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "oct30_plus_3_business_days", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0013-q3", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0014-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0014-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0014-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "next_quarter_starting_oct1", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0015-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0015-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0015-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "no_robotics_fleet_integration", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0015-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["routing_speed_problem_at_scale", "previously_evaluated_cargosense", "plans_to_add_cto_to_next_call"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0016-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0016-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0016-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "downgrade_to_business_tier", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0016-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "wrong", "target": ["custom_reporting_module", "dedicated_support_line", "erp_api_integration"], "suggested_target": ["custom_reporting_module", "erp_api_integration"], "confidence": "medium", "reason": "Question asks what Amara said; the dedicated support line loss was stated by Daniel, not Amara. Amara named only the reporting module and ERP integration."}
+{"id": "evia-0017-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0017-q1", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "automated_compliance_reporting", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0017-q2", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["automated_compliance_reporting"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0017-q3", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0018-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0019-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0019-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0019-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "none_of_the_above", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0020-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0020-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0020-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "enterprise", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0020-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["legacy_token_removal", "pagination_default_change"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0021-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0022-q0", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0022-q1", "file": "evia_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0022-q2", "file": "evia_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "v4_0", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0022-q3", "file": "evia_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["saml_sso", "audit_log_sso_events"], "suggested_target": null, "confidence": "high", "reason": ""}

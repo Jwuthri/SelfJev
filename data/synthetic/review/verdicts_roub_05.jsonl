@@ -1,0 +1,62 @@
+{"id": "roub-0089-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "public_works", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0089-q1", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0089-q2", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["property_damage_already_occurred"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0090-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "public_works", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0090-q1", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ambiguous", "target": ["broken_streetlight"], "suggested_target": null, "confidence": "medium", "reason": "Instruction asks what needs \"repair or action\"; the farmers-market question is explicitly present and answering it is arguably an action, so including farmers_market_schedule_question is defensible."}
+{"id": "roub-0091-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "council_briefing_prep", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0091-q1", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "public_works", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0091-q2", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0092-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0092-q1", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0092-q2", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["federal_tax_filing"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0093-q0", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0093-q1", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0093-q2", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "code_enforcement", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0094-q0", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0094-q1", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "code_enforcement", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0094-q2", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["ongoing_noise_issue"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0095-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "code_enforcement", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0095-q1", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0095-q2", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["illegal_dumping_of_construction_debris"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0096-q0", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0096-q1", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "permits_licensing", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0096-q2", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "permits_licensing", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0097-q0", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0097-q1", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "public_works", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0097-q2", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["resident_declined_new_program", "resident_requested_human"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0098-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "utilities_water_sewer", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0098-q1", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["discolored_water", "safety_concern_about_drinking_water"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0099-q0", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0099-q1", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "parking_transportation", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0100-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "registrar", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0100-q1", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0100-q2", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["official_transcript_request"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0101-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "financial_aid_bursar", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0101-q1", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["interest_in_changing_major", "registration_hold_from_unpaid_balance"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0101-q2", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0102-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "financial_aid_bursar", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0102-q1", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "housing_residential_life", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0102-q2", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0103-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0103-q1", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0104-q0", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0104-q1", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0104-q2", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "academic_advising", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0105-q0", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0105-q1", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "academic_advising", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0105-q2", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["current_grades_concern"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0106-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "security_incident", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0106-q1", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0106-q2", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["unrecognized_login_location", "unauthorized_grade_change"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0107-q0", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0107-q1", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "financial_aid_bursar", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0107-q2", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "financial_aid_bursar", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0108-q0", "file": "roub_05.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0108-q1", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "registrar", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0108-q2", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["student_declined_studyabroad_pitch", "student_requested_human"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0109-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "housing_residential_life", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0109-q1", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["prior_reports_already_made", "broken_heating"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0110-q0", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "financial_aid_bursar", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0110-q1", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "work_study_compliance", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0110-q2", "file": "roub_05.jsonl", "type": "multiclass", "verdict": "ok", "target": "communications_office", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0110-q3", "file": "roub_05.jsonl", "type": "multilabel", "verdict": "ok", "target": ["case2_considered_resolved_for_now", "case3_referred_to_compliance"], "suggested_target": null, "confidence": "high", "reason": ""}

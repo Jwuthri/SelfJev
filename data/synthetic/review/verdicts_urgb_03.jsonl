@@ -1,0 +1,68 @@
+{"id": "urgb-0045-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0045-q1", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "emergency_call_911_now", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0045-q2", "file": "urgb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["chest_pain_or_pressure", "shortness_of_breath"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0046-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0046-q1", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "routine_non_urgent", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0047-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0047-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0047-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "urgent_same_day", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0047-q3", "file": "urgb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["caffeine_or_fatigue_contributing_factor", "episode_duration_increased_over_the_thread", "plan_changed_to_in_person_visit"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0048-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0048-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0048-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "appointment_change_request", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0049-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0049-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0049-q2", "file": "urgb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["localized_skin_rash"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0050-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0050-q1", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "urgent_same_day", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0050-q2", "file": "urgb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["fever_present", "wound_drainage_increasing", "pain_level_increasing"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0051-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0051-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0051-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_department", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0052-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0052-q1", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "a_family_member_on_the_patients_behalf", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0052-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "emergency_call_911_now", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0053-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0053-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0053-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "complaint_with_an_embedded_question", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0053-q3", "file": "urgb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["complaint_about_wait_time", "scheduling_question_asked"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0054-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0054-q1", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "emergency_call_911_now", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0054-q2", "file": "urgb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["headache", "blurry_vision", "facial_drooping", "slurred_speech"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0055-q0", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "urgent_same_day", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0055-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0055-q2", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0056-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0056-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0056-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "nutrition_and_wellness_referral", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0057-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0057-q1", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "urgent_same_day", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0057-q2", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0058-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0058-q1", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "a_paid_caregiver", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0059-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0059-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0059-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "technical_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0060-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0060-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0060-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "urgent_same_day", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0060-q3", "file": "urgb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["racing_heart_rate", "prior_similar_episodes_documented"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0061-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0061-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0061-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "urgent_same_day", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0061-q3", "file": "urgb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["side_effect_was_expected_at_first", "blood_pressure_drop_confirmed_by_home_monitor", "in_person_visit_scheduled_same_day"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0062-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0062-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0062-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "medical_records_department", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0063-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0063-q1", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "emergency_call_911_now", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0063-q2", "file": "urgb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["heavy_bleeding", "lightheadedness"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0064-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0064-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0064-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "thank_you_note_plus_preventive_care_question", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0065-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0065-q1", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "emergency_er_now", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0065-q2", "file": "urgb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["high_fever", "neck_stiffness", "unusual_sleepiness_or_lethargy"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0066-q0", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0066-q1", "file": "urgb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urgb-0066-q2", "file": "urgb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "appointment_scheduling_request", "suggested_target": null, "confidence": "high", "reason": ""}

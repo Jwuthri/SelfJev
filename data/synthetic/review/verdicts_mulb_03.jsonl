@@ -1,0 +1,55 @@
+{"id": "mulb-0045-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["auto_renewal"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0045-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["requires_written_notice_to_stop_renewal"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0046-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["manufacturing_experience_required"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0046-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["unlimited_pto_is_rarely_used_in_practice"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0046-q2", "file": "mulb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0047-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["e_stop_malfunction_suspected", "press_taken_out_of_service"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0047-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["lockout_applied"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0048-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["needs_assessment_required_with_application"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0048-q1", "file": "mulb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "documented_reason_plus_approval_30_days_before_deadline", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0049-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["refundable_key_deposit", "hoa_rules_apply"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0049-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0049-q2", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["she_returned_all_keys_and_the_fob"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0050-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["sso_supported_free", "encryption_at_rest"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0050-q1", "file": "mulb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0051-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["lessee_liable_for_damage_in_possession", "insurance_requirement", "lessor_delivers_and_picks_up"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0051-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["cancel_10_days_before", "cancel_1_day_before"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0051-q2", "file": "mulb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "not_specified_in_agreement", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0052-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["seasonal_only", "license_required"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0052-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["companyprovided_vehicle"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0053-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["ppe_was_worn_correctly", "repeat_equipment_issue"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0053-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["pi_was_notified_and_responded"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0053-q2", "file": "mulb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0054-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["employee_only_eligibility"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0054-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["rolling_review", "flat_award_amount"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0055-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["grills_allowed_on_balcony"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0055-q1", "file": "mulb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0056-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["mfa_enforced_org_wide", "current_soc2_type2"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0056-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["a_misconfigured_storage_bucket"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0056-q2", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["stale_access_reviews", "vulnerability_sla_process_lapse"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0057-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["non_solicitation_of_clients", "confidentiality_of_firm_business_info"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0057-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["sixteen_weeks_severance"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0057-q2", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["firm_branded_training_materials_she_creates"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0058-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["twic_card_required_before_start", "drug_testing_required"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0058-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["hazard_pay_for_certain_voyages", "seasonal_work_pattern"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0058-q2", "file": "mulb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0059-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["product_quarantined_and_destroyed", "production_line_stopped_temporarily"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0059-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["root_cause_identified", "equipment_replaced"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0060-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["preconsultation_required"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0060-q1", "file": "mulb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0061-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["rent_increase_notice_meets_minimum"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0061-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["notice_given_at_least_60_days_before"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0062-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0062-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["approve_for_maintenance_ticket_use_only", "require_new_review_before_pii_expansion"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0062-q2", "file": "mulb_03.jsonl", "type": "binary", "verdict": "wrong", "target": true, "suggested_target": false, "confidence": "medium", "reason": "The memo only contains IT's recommendation to approve; nothing says DeskFlow has actually been approved, so under the evidence rule the answer is false."}
+{"id": "mulb-0063-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["points_expire"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0063-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["per_transaction_expiration"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0064-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["medical_billing_experience_required"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0064-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["she_meets_the_certification_bar_via_experience"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0064-q2", "file": "mulb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "her_state_of_residence", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0065-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["warning_sign_was_placed_initially", "lost_time_injury"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0065-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["sought_urgent_care_by_own_choice_after_shift"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0065-q2", "file": "mulb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "this_is_the_first_reported_in_at_least_2_years", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0066-q0", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["completed_feasibility_study_required_at_application", "municipal_governments_eligible"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0066-q1", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["falls_under_tier_b", "eligible_for_up_to_2_million"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "mulb-0066-q2", "file": "mulb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}

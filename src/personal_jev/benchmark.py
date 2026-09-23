@@ -77,10 +77,14 @@ def default_grid(lengths=(512, 2048, 8192), questions=(1, 4, 16)):
 
 
 def run(adapter=None, device=None, dtype="float32", grid=None, repeats=20, warmup=1, max_batch_tokens=16384, out_dir=None,
-        min_repeats=3, row_budget_s=60.0, checkpoint=None, model_id=None, revision=None):
+        min_repeats=3, row_budget_s=60.0, checkpoint=None, model_id=None, revision=None, tree=False):
     grid = grid or default_grid()
     t0 = time.perf_counter()
-    if checkpoint:
+    if tree:
+        from .tree import TreeScorer
+        scorer = TreeScorer(model_id, revision, adapter=adapter, device=device, dtype=dtype, max_length=MAX_CONTEXT,
+                            max_batch_tokens=max_batch_tokens)
+    elif checkpoint:
         from .custom import CustomScorer
         scorer = CustomScorer(checkpoint, device=device, dtype=dtype, max_length=MAX_CONTEXT, max_batch_tokens=max_batch_tokens)
     else:

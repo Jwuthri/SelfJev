@@ -1,0 +1,62 @@
+{"id": "urga-0001-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0001-q1", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "delighted", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0002-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0002-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0003-q0", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "polite_but_furious", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0003-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0003-q2", "file": "urga_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["item_not_as_described", "unresponsive_seller"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0004-q0", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_cancellation", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0004-q1", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "mixed_feelings", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0004-q2", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0005-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0005-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0005-q2", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "low_priority_bug_report", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0005-q3", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "angry_but_resolved", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0006-q0", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "sarcastic", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0006-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0007-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0007-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0007-q2", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_information", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0008-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0008-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0008-q2", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "confirm_no_refund_required", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0008-q3", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0009-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0009-q1", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "safety_emergency", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0010-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0010-q1", "file": "urga_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["skip_a_shipment", "request_information"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0011-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0011-q1", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "compliment", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0012-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0012-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0012-q2", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_information", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0013-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0013-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0013-q2", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "anxious_but_cooperative", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0013-q3", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0014-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0014-q1", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "escalation_threat", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0015-q0", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "angry_but_resolved", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0015-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0015-q2", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0016-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0016-q1", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "compliment", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0017-q0", "file": "urga_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["wrong_item_received", "item_missing"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0017-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0017-q2", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_refund", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0018-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ambiguous", "target": false, "suggested_target": null, "confidence": "medium", "reason": "Most recent update is the team lead asking Deshawn to add a line to the postmortem doc, which is further agent action; notes cite an earlier status line. True/false both defensible."}
+{"id": "urga-0018-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0018-q2", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0018-q3", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "automatic_refund_per_policy", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0019-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0019-q1", "file": "urga_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["genuine_product_feedback", "embedded_fake_instruction"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0019-q2", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0020-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0020-q1", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_information", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0020-q2", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0021-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0021-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0022-q0", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0022-q1", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0022-q2", "file": "urga_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0022-q3", "file": "urga_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "neutral_mild_concern", "suggested_target": null, "confidence": "high", "reason": ""}

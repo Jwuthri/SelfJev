@@ -1,0 +1,50 @@
+{"id": "roub-0045-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "access_provisioning", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0045-q1", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0046-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "hardware_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0046-q1", "file": "roub_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["performance_complaint", "software_license_request", "hardware_failure"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0047-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "access_provisioning", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0047-q1", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "network_infra", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0047-q2", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0048-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0048-q1", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0049-q0", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0049-q1", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0049-q2", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "access_provisioning", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0050-q0", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0050-q1", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "network_infra", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0051-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "security_incident", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0051-q1", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0052-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "oncall_standard_queue", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0052-q1", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0052-q2", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "oncall_standard_queue", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0053-q0", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0053-q1", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "hardware_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0053-q2", "file": "roub_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["user_declined_upgrade_offer", "user_requested_human"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0054-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "hardware_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0054-q1", "file": "roub_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["self_troubleshooting_attempted", "urgent_business_need"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0055-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "data_governance_compliance", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0055-q1", "file": "roub_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["legal_hold_to_preserve_data"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0056-q0", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0056-q1", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "network_infra", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0057-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "hardware_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0057-q1", "file": "roub_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["compliment_about_support", "request_for_hardware_replacement"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0058-q0", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0058-q1", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "software_licensing", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0059-q0", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0059-q1", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "hardware_support", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0060-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "access_provisioning", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0060-q1", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0061-q0", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0061-q1", "file": "roub_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["user_requested_monitoring_period", "hardware_part_replaced"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0062-q0", "file": "roub_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["network_infra", "software_licensing", "hardware_support"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0062-q1", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0063-q0", "file": "roub_03.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0063-q1", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0064-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0064-q1", "file": "roub_03.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0065-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "security_incident", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0065-q1", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0066-q0", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "security_incident", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0066-q1", "file": "roub_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "facilities", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0066-q2", "file": "roub_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["advance_hardware_replacement_for_item1", "phishing_confirmed_for_item3"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "roub-0066-q3", "file": "roub_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}

@@ -1,0 +1,55 @@
+{"id": "advb-0045-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0045-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "start_on_original_date", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0045-q2", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["accepted_the_offer", "requested_delay_then_withdrew_request"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0046-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0046-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "approved_temporary_gpu_instances", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0047-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0047-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "q3_dashboard_stuck_loading", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0047-q2", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["customer_message_is_sarcastic", "auto_tagger_misread_sentiment", "escalating_to_on_call"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0048-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0048-q1", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0049-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0049-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "full_desk_replaced_old_returned_no_charge", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0049-q2", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ambiguous", "target": ["motor_only_replacement_tried_first", "buyer_missed_the_return_deadline_with_no_consequence"], "suggested_target": null, "confidence": "medium", "reason": "State inconsistent: deadline Day 9+14=Day 23; buyer dropped off Day 20 ('yesterday' on Day 21), so within window, yet seller says past window. Notes' 'Day 21 past Day 9+14' is wrong arithmetic."}
+{"id": "advb-0050-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0050-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "design", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0051-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0051-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "raise_cap_to_3x_acv", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0051-q2", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["auto_approval_text_should_be_ignored", "full_cap_removal_is_not_possible", "a_redline_is_being_sent"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0052-q0", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "the_sons_account", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0052-q1", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["subscription_paused_8_weeks", "workout_history_preserved_during_pause"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0053-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0053-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "75_days", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0053-q2", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["three_year_term", "annual_rate_review_with_mutual_agreement"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0054-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0054-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "model_x_pro", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0055-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0055-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "no", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0055-q2", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["praises_technical_skills", "recommends_the_candidate"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0056-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0056-q1", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0057-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0057-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "raise_priority_on_the_duplicate_id_ticket", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0057-q2", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["hotfix_resolved_198_of_200_records", "two_records_have_a_separate_duplicate_id_issue"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0058-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0058-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "invoice_ks_7734", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0059-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0059-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "replacement_earbud_only", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0059-q2", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["flagged_as_manipulation_attempt", "similar_pattern_seen_in_other_fraud_claims"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0060-q0", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "the_candidate_yusuf_karimi", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0060-q1", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["salary_expectation_210_to_220k", "remote_only_is_a_hard_requirement"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0061-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0061-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "believed_a_departed_contractor_still_had_access", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0061-q2", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["yaras_contract_was_extended", "hr_and_it_systems_had_a_sync_gap"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0062-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0062-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "ios_only", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0063-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0063-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "pinnacle_storage_solutions", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0063-q2", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ambiguous", "target": ["weighting_is_fixed_at_original_terms", "vendor_b_has_highest_technical_score", "vendor_c_has_lowest_price"], "suggested_target": ["weighting_is_fixed_at_original_terms", "vendor_b_has_highest_technical_score"], "confidence": "medium", "reason": "Question asks what the procurement conclusion states; Vendor C's lowest price appears only in the scoring table, not in the conclusion text."}
+{"id": "advb-0064-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0064-q1", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0065-q0", "file": "advb_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0065-q1", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "vendor_checked_wrong_successor_entity", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0065-q2", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["candidate_provided_supporting_documents", "background_check_was_reverified_and_resolved"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0066-q0", "file": "advb_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "worker_pool_3", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "advb-0066-q1", "file": "advb_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["worker_pool_1", "worker_pool_2"], "suggested_target": null, "confidence": "high", "reason": ""}

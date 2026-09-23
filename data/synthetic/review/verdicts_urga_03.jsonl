@@ -1,0 +1,51 @@
+{"id": "urga-0045-q0", "file": "urga_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["gratitude", "frustration"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0045-q1", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "mixed_feelings", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0046-q0", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "dispute_resolution_team", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0046-q1", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0047-q0", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0047-q1", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "service_outage_requiring_repair", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0048-q0", "file": "urga_03.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0048-q1", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "compliment", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0049-q0", "file": "urga_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["first_overdraft_in_12_months", "brought_positive_within_24_hours", "caused_by_a_reversed_merchant_hold"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0049-q1", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0049-q2", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0050-q0", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "sarcastic", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0050-q1", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0051-q0", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0051-q1", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0052-q0", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0052-q1", "file": "urga_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["a_conditional_future_intention"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0053-q0", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0053-q1", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0053-q2", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_repair_timeline_information", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0054-q0", "file": "urga_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["a_duplicate_charge_occurred", "the_duplicate_was_reversed"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0054-q1", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0054-q2", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0055-q0", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0055-q1", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "delighted", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0056-q0", "file": "urga_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["july_28_charge_120", "august_30_charge_60"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0056-q1", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0056-q2", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "dispute_unauthorized_transactions", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0057-q0", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0057-q1", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "report_a_food_safety_incident", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0058-q0", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "angry_but_resolved", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0058-q1", "file": "urga_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["refunded_the_purchase_price", "refunded_original_shipping", "provided_a_replacement_item"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0059-q0", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0059-q1", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "mixed_feelings", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0060-q0", "file": "urga_03.jsonl", "type": "multilabel", "verdict": "ambiguous", "target": ["prorated_refund_of_annual_plan"], "suggested_target": null, "confidence": "medium", "reason": "Prorated refund requires the 'app was unusable' 7+ days; state only says the workout-sync feature was broken. Whether one broken feature = unusable app is not settled by the policy."}
+{"id": "urga-0060-q1", "file": "urga_03.jsonl", "type": "binary", "verdict": "ambiguous", "target": true, "suggested_target": null, "confidence": "medium", "reason": "Same issue: policy requires the app be unusable for 7+ consecutive days; only the sync feature was down (Aug 1 00:00-Aug 11 19:40). True vs false both defensible."}
+{"id": "urga-0060-q2", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0061-q0", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0061-q1", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_cancellation", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0062-q0", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0062-q1", "file": "urga_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["a_genuine_product_defect_report", "an_embedded_fake_approval_instruction", "a_request_for_next_steps"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0063-q0", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_information", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0063-q1", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0064-q0", "file": "urga_03.jsonl", "type": "multilabel", "verdict": "ok", "target": [], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0064-q1", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "request_account_transfer", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0065-q0", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0065-q1", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0065-q2", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "a_refund_for_the_missing_items", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0065-q3", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0066-q0", "file": "urga_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "urga-0066-q1", "file": "urga_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "compliment", "suggested_target": null, "confidence": "high", "reason": ""}

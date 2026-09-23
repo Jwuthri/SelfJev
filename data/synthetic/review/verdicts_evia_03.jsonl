@@ -1,0 +1,56 @@
+{"id": "evia-0045-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ambiguous", "target": "anders", "suggested_target": null, "confidence": "high", "reason": "Priya's Q1 roadmap doc is 'in review', also unresolved; both Anders and Priya are defensible answers."}
+{"id": "evia-0045-q1", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["seat_map_component_fix"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0046-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "video_production_bottleneck", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0046-q1", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["editorial_calendar_tool", "freelancer_onboarding_checklist"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0046-q2", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0047-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "cac", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0047-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0047-q2", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["arr", "churn"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0048-q0", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0048-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0048-q2", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "additional_console_certification_pass", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0048-q3", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["a_layoff_plan", "an_acquisition_by_silverlatch"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0049-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "load_balancer_misconfiguration", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0049-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0050-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "unannounced_maintenance_on_verdant_foods_side", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0050-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0051-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "a_timeout_misconfigured_to_zero", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0051-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0051-q2", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["the_queue_cleared_within_40_minutes_of_the_fix", "the_timeout_was_corrected_for_all_job_types"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0052-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "a_leftover_testing_concurrency_setting", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0052-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0052-q2", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0052-q3", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["only_eu_west_was_affected", "the_rebalance_concurrency_was_5x_the_intended_value"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0053-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "on_hold", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0053-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0054-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "heic", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0054-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0054-q2", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["task_completion_time_decreased", "rollout_is_on_track_for_march_1"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0055-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "discontinued_skus", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0055-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0055-q2", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0056-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "central", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0056-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0056-q2", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["hard_braking_events_decreased_fleet_wide", "central_regions_shortage_is_resolving"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0057-q0", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0057-q1", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "eight", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0058-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "procurement_committee_sign_off", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0059-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "whether_to_add_the_advanced_analytics_add_on", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0059-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0060-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "business", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0060-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0060-q2", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["sso"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0061-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "building_in_house", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0061-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0061-q2", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0061-q3", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["prior_experience_with_airlines_our_size", "a_more_polished_demo"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0062-q0", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0063-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "ten_thousand", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0064-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "it_defaults_to_fully_open", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0064-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0064-q2", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["webhook"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0065-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "it_automatically_redirects_to_the_new_dashboard", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0065-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0066-q0", "file": "evia_03.jsonl", "type": "multiclass", "verdict": "ok", "target": "v11_0", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0066-q1", "file": "evia_03.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "evia-0066-q2", "file": "evia_03.jsonl", "type": "multilabel", "verdict": "ok", "target": ["it_is_enterprise_tier_only", "other_tiers_stay_at_5"], "suggested_target": null, "confidence": "high", "reason": ""}

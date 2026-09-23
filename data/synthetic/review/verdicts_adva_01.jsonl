@@ -1,0 +1,57 @@
+{"id": "adva-0001-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0001-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "account_closure", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0002-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0002-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "none", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0003-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0003-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "ui_navigation_help", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0003-q2", "file": "adva_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["frustrated_with_ui"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0004-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0004-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_dispute", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0004-q2", "file": "adva_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["repeat_contact", "charge_confirmed_after_cancellation"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0005-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0005-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "fraud_dispute", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0006-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0006-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "complaint_escalation", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0007-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0007-q1", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0007-q2", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "card_services", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0008-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0008-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "recipient_lopez", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0008-q2", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0008-q3", "file": "adva_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["funds_currently_on_hold", "arden_claims_it_was_a_mistake"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0009-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0009-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "preference_notice", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0010-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0010-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "complaint_service_downgrade", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0011-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0011-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "clause_3_2_cooling_off", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0011-q2", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0011-q3", "file": "adva_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["cancelled_within_24h_of_booking", "cancellation_submitted_via_portal"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0012-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0012-q1", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0013-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0013-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "policy_question", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0014-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0014-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "free_replacement", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0014-q2", "file": "adva_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["discount", "replacement"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0015-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0015-q1", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0015-q2", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "wrong_size_shipped_needs_replacement", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0016-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0016-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "plan_suspension", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0017-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0017-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "plan_terms_complaint", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0017-q2", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0018-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0018-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "billing_system_discrepancy", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0018-q2", "file": "adva_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["reduced_speed_notice_was_sent", "total_usage_under_10gb_limit"], "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0019-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0019-q1", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": true, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0020-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0020-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "meeting_request_with_complaint", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0021-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0021-q1", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0021-q2", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "approved_and_proceeding", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0022-q0", "file": "adva_01.jsonl", "type": "binary", "verdict": "ok", "target": false, "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0022-q1", "file": "adva_01.jsonl", "type": "multiclass", "verdict": "ok", "target": "active_outage_needs_escalation", "suggested_target": null, "confidence": "high", "reason": ""}
+{"id": "adva-0022-q2", "file": "adva_01.jsonl", "type": "multilabel", "verdict": "ok", "target": ["embedded_instruction_to_ai", "business_impact_deadline"], "suggested_target": null, "confidence": "high", "reason": ""}
