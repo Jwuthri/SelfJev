@@ -1,0 +1,56 @@
+{
+  "train_files": [
+    "data/hf.jsonl",
+    "data/synthetic.jsonl"
+  ],
+  "val_files": [
+    "data/hf.jsonl",
+    "data/synthetic.jsonl",
+    "data/eval.jsonl"
+  ],
+  "out_dir": "runs/custom_lora",
+  "seed": 13,
+  "dtype": "bfloat16",
+  "max_state_length": 2048,
+  "max_candidate_length": 256,
+  "max_batch_tokens": 8192,
+  "grad_accum": 1,
+  "epochs": 3,
+  "backbone": "lora",
+  "stage_a_steps": 0,
+  "lr_new": 0.0003,
+  "lr_backbone": 0.0002,
+  "warmup_steps": 20,
+  "weight_decay": 0.01,
+  "max_grad_norm": 1.0,
+  "gradient_checkpointing": true,
+  "eval_every": 147,
+  "max_val_questions": 1200,
+  "max_train_per_family": 1600,
+  "arch": {
+    "h": 256,
+    "heads": 8,
+    "ffn": 1024,
+    "blocks": 2,
+    "head_width": 128,
+    "dropout": 0.1,
+    "pooling": "mean",
+    "shared_head": false,
+    "memory_norm": true,
+    "standardize": true,
+    "tied_init": true,
+    "null_attention": true
+  },
+  "lora": {
+    "r": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj"
+    ]
+  },
+  "init_from": "runs/custom_frozen/checkpoint"
+}

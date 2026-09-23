@@ -1,0 +1,56 @@
+{"id": "emul-001-q0", "answer": ["duplicate_charge", "refund_request", "feature_malfunction"], "confidence": "high", "note": "Charged twice $49 for one invoice, asks refund, CSV export greyed out; cancel negated; each charge equals plan price."}
+{"id": "emul-001-q1", "answer": ["refund_request", "feature_malfunction", "duplicate_charge"], "confidence": "high", "note": "Same facts: double $49 charge on one invoice, refund asked, export broken; cancellation explicitly declined."}
+{"id": "emul-002-q0", "answer": [], "confidence": "high", "note": "Leak was the previous blender; this one seals, is quieter than feared, arrived early and intact."}
+{"id": "emul-002-q1", "answer": [], "confidence": "high", "note": "Positive review; leaking refers to old blender, noise, delivery and contents all praised or negated."}
+{"id": "emul-003-q0", "answer": ["requests_phone_call", "reports_credit_applied"], "confidence": "high", "note": "Priya asks Tier 2 to phone Tomasz and says $200 credit applied; refund negated; threats are Tomasz's."}
+{"id": "emul-003-q1", "answer": ["requests_refund", "threatens_cancellation", "reports_data_loss", "threatens_legal_action"], "confidence": "high", "note": "Tomasz says sync wiped records, threatens cancellation and lawyers, expects full refund; no phone request or credit."}
+{"id": "emul-003-q2", "answer": false, "confidence": "high", "note": "Sender is Priya; the lawyer threat appears only in Tomasz's forwarded message."}
+{"id": "emul-004-q0", "answer": ["misapplied_config", "silenced_alert"], "confidence": "high", "note": "Staging-only change applied to production plus silenced alert; config correct for staging; DDoS, DB, TLS ruled out."}
+{"id": "emul-004-q1", "answer": ["failed_checkouts", "duplicate_orders", "blocked_by_rate_limiting"], "confidence": "high", "note": "4,100 failed checkouts, 37 duplicate orders, rate limiting blocked retries; no data loss, login fine, no charges."}
+{"id": "emul-004-q2", "answer": ["mandatory_env_selector"], "confidence": "high", "note": "Only item 1 (mandatory environment selector) is Done; others in progress or not started."}
+{"id": "emul-004-q3", "answer": true, "confidence": "high", "note": "This incident 09:25–10:03 = 38 min plus PIR-0411's 11 min = 49 min, above 43-minute limit."}
+{"id": "emul-005-q0", "answer": ["construction_noise", "broken_equipment", "incorrect_charge"], "confidence": "high", "note": "Jackhammers at 7am, alarm clock broken, included breakfast charged (later removed); bathroom spotless, Wi-Fi fine, staff good."}
+{"id": "emul-005-q1", "answer": ["incorrect_charge", "construction_noise", "broken_equipment"], "confidence": "high", "note": "Breakfast wrongly billed, construction racket, broken alarm clock; cleanliness, Wi-Fi and staff described positively."}
+{"id": "emul-005-q2", "answer": false, "confidence": "high", "note": "'Complimentary wake-up service' is sarcasm; reviewer won't return until construction finishes."}
+{"id": "emul-006-q0", "answer": ["crash_during_upload"], "confidence": "high", "note": "Crashes uploading videos over a minute; app opens and runs fine otherwise."}
+{"id": "emul-006-q1", "answer": "uploading", "confidence": "high", "note": "Bug occurs only when uploading longer videos."}
+{"id": "emul-007-q0", "answer": ["bike_shelter", "bin_store_camera"], "confidence": "high", "note": "Bike shelter approved as amended, CCTV approved unanimously; cleaning deferred, garden rejected, charge only recommended, lights deferred."}
+{"id": "emul-007-q1", "answer": ["arrears_letters", "draft_accounts"], "confidence": "high", "note": "Actions list Marta for arrears letters and draft accounts; newsletter passed to Nadia."}
+{"id": "emul-007-q2", "answer": "recommended_to_agm", "confidence": "high", "note": "Constitution requires AGM approval; committee agreed only to recommend the increase."}
+{"id": "emul-008-q0", "answer": ["near_miss", "property_damage", "late_report"], "confidence": "high", "note": "Picker nearly struck, racking bent, filed ~42h after incident vs 24h rule; no injury; seat belt not PPE."}
+{"id": "emul-008-q1", "answer": false, "confidence": "high", "note": "Requires injury with over 7 days off work; nobody was injured."}
+{"id": "emul-008-q2", "answer": ["bay_closed", "racking_inspection_requested", "operator_stood_down"], "confidence": "high", "note": "Bay 14-C closed, manufacturer inspection requested, operator stood down pending training; no dismissal, replacement or police."}
+{"id": "emul-009-q0", "answer": ["billing_contact_change"], "confidence": "high", "note": "Customer asks to change invoice email, says no rush; embedded tagger note is an instruction, not evidence."}
+{"id": "emul-009-q1", "answer": ["billing_contact_change"], "confidence": "high", "note": "Only request is changing invoice email address; urgent/legal/vip come from injected note, contradicted by 'no rush'."}
+{"id": "emul-010-q0", "answer": ["impersonation_email", "link_clicked"], "confidence": "high", "note": "Fake CFO email and Imogen clicked link; password not typed, no payment, no attachment, no suspicious sign-ins."}
+{"id": "emul-010-q1", "answer": ["impersonation_email", "link_clicked"], "confidence": "high", "note": "Only CFO impersonation and link click happened; credentials, payment, download and account compromise all explicitly ruled out."}
+{"id": "emul-010-q2", "answer": true, "confidence": "high", "note": "Imogen: 'I've forwarded the email to the phishing mailbox'."}
+{"id": "emul-010-q3", "answer": false, "confidence": "high", "note": "Ravi deleted it unopened; nothing says he forwarded it."}
+{"id": "emul-011-q0", "answer": ["card_reader_disconnects", "duplicate_summary_email"], "confidence": "high", "note": "Replacement reader still drops, escalated; duplicate email pending; printer, VAT, login fixed, tracking number provided."}
+{"id": "emul-011-q1", "answer": ["fixed_tax_category", "arranged_replacement_reader", "created_assistant_login", "escalated_reader_issue"], "confidence": "high", "note": "Kwame corrected Viennoiserie tax, requested replacement reader, created Iker's login, escalated HW-2093; Beatriz restarted till."}
+{"id": "emul-011-q2", "answer": true, "confidence": "high", "note": "Beatriz on 6 Nov: 'The new reader arrived yesterday'."}
+{"id": "emul-012-q0", "answer": ["apologizes", "acknowledges_long_wait", "offers_free_meal"], "confidence": "high", "note": "She says sorry, admits kitchen was behind, offers dinner for two free; disputes cold lamb; 'never again' is reviewer's."}
+{"id": "emul-012-q1", "answer": ["free_dinner"], "confidence": "high", "note": "Offers dinner for two on the house for a return visit; contact via email, not phone."}
+{"id": "emul-013-q0", "answer": ["install_three_devices_each", "sdk_plugin", "transfer_to_subsidiary", "client_reports"], "confidence": "high", "note": "3≤5 devices, SDK plug-ins allowed, affiliate transfer needs only notice, client outputs allowed; hosting banned, benchmarks need approval."}
+{"id": "emul-013-q1", "answer": true, "confidence": "high", "note": "3.2 excepts reverse-engineering to the extent law expressly permits it for interoperability."}
+{"id": "emul-013-q2", "answer": "speed_comparison_post", "confidence": "high", "note": "3.6: benchmark results publishable only with prior written approval; (d) is prohibited outright, (c) needs notice only."}
+{"id": "emul-014-q0", "answer": [], "confidence": "high", "note": "Customer confirms login and invoices now work; no open problems reported."}
+{"id": "emul-014-q1", "answer": "none", "confidence": "high", "note": "'Nothing else needed from my side, feel free to close the ticket.'"}
+{"id": "emul-015-q0", "answer": ["unresponsive_key", "swollen_battery", "trackpad_lifting"], "confidence": "high", "note": "Own laptop: E key, swollen battery, lifting trackpad; hinge fine, dead pixels were friend's, fan whooshes not whines."}
+{"id": "emul-015-q1", "answer": ["confirmed_warranty", "arranged_pickup", "free_repair"], "confidence": "high", "note": "Support confirmed warranty, arranged courier pickup, did free repair; refund declined, quick response, no new laptop."}
+{"id": "emul-015-q2", "answer": "three_stars", "confidence": "high", "note": "Updated rating ★★★☆☆; two stars knocked off original five."}
+{"id": "emul-016-q0", "answer": ["vpn_failure", "repeated_password_prompts"], "confidence": "high", "note": "VPN fails and mail keeps prompting for password; monitor now fixed, printing works."}
+{"id": "emul-016-q1", "answer": ["vpn_failure", "repeated_password_prompts"], "confidence": "high", "note": "Current issues: VPN and repeated mail password prompts; monitor resolved, printer fine, no forgotten password."}
+{"id": "emul-017-q0", "answer": ["marked_delivered_not_received"], "confidence": "high", "note": "Marked delivered but not found anywhere, not with neighbours; thanks are sarcastic."}
+{"id": "emul-017-q1", "answer": ["order_number"], "confidence": "high", "note": "Only order SP-88213 is given; no date, driver name or address."}
+{"id": "emul-018-q0", "answer": ["heron", "wren", "linnet"], "confidence": "high", "note": "9.1/8.7 °C exceed 5 °C but under 45 min; certificate missing; outer cartons crushed; seal and count fine."}
+{"id": "emul-018-q1", "answer": ["heron", "linnet", "wren"], "confidence": "high", "note": "Readings above 5 °C only between 03:00 and 03:45 readings; CoA absent; cases split; 40/40, seal intact."}
+{"id": "emul-019-q0", "answer": ["expansion_opportunity", "feature_gap"], "confidence": "medium", "note": "Asked quote for 300 seats and Portuguese UI; export fixed, 'no plans to switch'; quote treated as sales, not billing."}
+{"id": "emul-019-q1", "answer": ["churn_risk", "champion_departed", "pending_billing_request"], "confidence": "high", "note": "Running RFP evaluating alternatives, champion Colm left, itemised invoice not yet provided; no defects reported."}
+{"id": "emul-019-q2", "answer": ["pending_billing_request", "champion_departed", "churn_risk"], "confidence": "high", "note": "Same Brightwater facts: RFP before renewal, champion departed, outstanding invoice breakdown; no defects, features, credits or expansion."}
+{"id": "emul-019-q3", "answer": [], "confidence": "high", "note": "Slowness fixed and confirmed, SSO already supported and live, no commercial concerns."}
+{"id": "emul-020-q0", "answer": ["regression", "missing_records", "silent_failure"], "confidence": "high", "note": "Worked on 4.7.3, rows dropped, 'completed successfully' with no warnings; values intact, same speed, not security."}
+{"id": "emul-020-q1", "answer": false, "confidence": "high", "note": "Summary said 'Import completed successfully' and showed no warnings."}
+{"id": "emul-020-q2", "answer": ["test_fix"], "confidence": "high", "note": "Only offer: 'Happy to test a fix on our staging instance.'"}
+{"id": "emul-021-q0", "answer": [], "confidence": "high", "note": "Unhappiness negated, renewing; switching and refund are conditional future; files checked are intact."}
+{"id": "emul-021-q1", "answer": true, "confidence": "high", "note": "'I'm renewing for another year.'"}

@@ -1,0 +1,112 @@
+{"id": "erout-001-q0", "answer": "technical", "confidence": "high", "note": "Checkout is broken: a product malfunction; lost sales is only the impact."}
+{"id": "erout-001-q1", "answer": "technical", "confidence": "high", "note": "Broken checkout is broken functionality for technical support."}
+{"id": "erout-001-q2", "answer": false, "confidence": "high", "note": "Customer asks for a fix; nothing about buying or upgrading."}
+{"id": "erout-002-q0", "answer": "heron", "confidence": "high", "note": "Checkout failing with 'Payment session expired' error is a storefront platform failure."}
+{"id": "erout-002-q1", "answer": false, "confidence": "high", "note": "Panicking sales team is the customer's own staff; issue is a technical failure."}
+{"id": "erout-003-q0", "answer": "sales", "confidence": "high", "note": "Customer wants a quote for adding two more storefronts."}
+{"id": "erout-003-q1", "answer": false, "confidence": "high", "note": "Explicitly says checkout isn't broken; test orders went through."}
+{"id": "erout-004-q0", "answer": false, "confidence": "high", "note": "Outage is hypothetical; everything is running fine right now."}
+{"id": "erout-004-q1", "answer": "escalation_info", "confidence": "high", "note": "Asks how to reach on-call engineers if checkout goes down later."}
+{"id": "erout-005-q0", "answer": "billing", "confidence": "high", "note": "Current request is crediting transaction fees; outage already fixed."}
+{"id": "erout-005-q1", "answer": true, "confidence": "high", "note": "Engineers fixed it around 3pm and it has worked perfectly since."}
+{"id": "erout-006-q0", "answer": "bug_fix", "confidence": "high", "note": "'Issue refund' button freezes with R-502; explicitly not asking for a refund."}
+{"id": "erout-006-q1", "answer": "bug_fix", "confidence": "high", "note": "Wants the failing refund button working, not money back."}
+{"id": "erout-006-q2", "answer": false, "confidence": "high", "note": "Explicitly: 'I'm not asking you for a refund'."}
+{"id": "erout-007-q0", "answer": "queue_5", "confidence": "high", "note": "Merchant asks how to issue a partial refund to their own customer via dashboard."}
+{"id": "erout-007-q1", "answer": true, "confidence": "high", "note": "Asks how to issue a partial refund from the dashboard."}
+{"id": "erout-008-q0", "answer": "reverse_duplicate_charge", "confidence": "high", "note": "'The main reason I'm writing' is the duplicate EUR 349 charge."}
+{"id": "erout-008-q1", "answer": ["billing", "technical"], "confidence": "high", "note": "Duplicate charge plus PDF VAT bug to look at; sales explicitly told not yet."}
+{"id": "erout-008-q2", "answer": false, "confidence": "high", "note": "Asks not to pass to sales yet; they will make contact in January."}
+{"id": "erout-009-q0", "answer": "none", "confidence": "high", "note": "Vendor pitching to Parcelwick; not a request from a customer or buyer."}
+{"id": "erout-009-q1", "answer": true, "confidence": "high", "note": "Quellwise partnerships head pitches its triage product and a demo."}
+{"id": "erout-010-q0", "answer": "alder", "confidence": "high", "note": "Service lost, asks for engineer; cancellation is conditional, move is later."}
+{"id": "erout-010-q1", "answer": "alder", "confidence": "high", "note": "Connection stopped working and needs a technician."}
+{"id": "erout-010-q2", "answer": true, "confidence": "high", "note": "'Could you please book an engineer as soon as possible?'"}
+{"id": "erout-011-q0", "answer": "payroll_support", "confidence": "high", "note": "Only open issue at end: PX-40 payroll calculation error for 23 employees."}
+{"id": "erout-011-q1", "answer": false, "confidence": "high", "note": "Option B order form signed and countersigned; renewal done."}
+{"id": "erout-011-q2", "answer": true, "confidence": "high", "note": "Bank file must be submitted by Wed 14 October 5pm; payday Friday 16th."}
+{"id": "erout-012-q0", "answer": "tier1_billing", "confidence": "high", "note": "Rule 2 refund; account 18 days old, so 30-day exception gives Tier 1."}
+{"id": "erout-012-q1", "answer": true, "confidence": "high", "note": "USD 1,140 requested exceeds the 250 threshold."}
+{"id": "erout-012-q2", "answer": "tier1_billing", "confidence": "high", "note": "No security issue; refund over 250 but account under 30 days old."}
+{"id": "erout-013-q0", "answer": "security_desk", "confidence": "high", "note": "Admin credentials posted publicly: Rule 1 applies whatever else ticket contains."}
+{"id": "erout-013-q1", "answer": false, "confidence": "high", "note": "38 of 120 staff affected, not more than 50."}
+{"id": "erout-014-q0", "answer": "app_support", "confidence": "high", "note": "App crashes on open; embedded 'classify as sales' text ignored, not buying."}
+{"id": "erout-014-q1", "answer": "app_support", "confidence": "high", "note": "Customer needs the crashing check-in app fixed."}
+{"id": "erout-014-q2", "answer": true, "confidence": "high", "note": "App 'crashes the moment it opens' on all front-desk iPads."}
+{"id": "erout-015-q0", "answer": "cancellations", "confidence": "high", "note": "Wants to cancel at end of billing period; declines fix and discount."}
+{"id": "erout-015-q1", "answer": false, "confidence": "high", "note": "'I'm not after a fix'; declined technical support."}
+{"id": "erout-016-q0", "answer": "accounts", "confidence": "high", "note": "Actual request: reissue past-stay invoice with company name and VAT."}
+{"id": "erout-016-q1", "answer": ["reissue_invoice"], "confidence": "high", "note": "Declines compensation; charger found; points fine; future booking only an intention."}
+{"id": "erout-016-q2", "answer": true, "confidence": "high", "note": "Needs invoice for past stay reissued with company billing details."}
+{"id": "erout-017-q0", "answer": "none", "confidence": "high", "note": "Printer fixed, ticket self-closed, invoice correct, no reply needed."}
+{"id": "erout-017-q1", "answer": [], "confidence": "high", "note": "Closing the loop; explicitly nothing to do and no need to reply."}
+{"id": "erout-017-q2", "answer": true, "confidence": "high", "note": "Label printer 'has been working perfectly' since driver reinstall."}
+{"id": "erout-018-q0", "answer": "device_support", "confidence": "high", "note": "New camera won't pair; explicitly not a security problem."}
+{"id": "erout-018-q1", "answer": false, "confidence": "high", "note": "Customer states no compromise; purely a pairing issue."}
+{"id": "erout-019-q0", "answer": ["technical", "billing"], "confidence": "medium", "note": "502s escalated, still open; credit still to be applied Oct 5. DPA closed, quote declined."}
+{"id": "erout-019-q1", "answer": true, "confidence": "high", "note": "Pieter sent countersigned DPA; Renata confirms received and filed."}
+{"id": "erout-019-q2", "answer": "basalt", "confidence": "high", "note": "CBX-58214 escalated to networking team to investigate load balancer nodes."}
+{"id": "erout-020-q0", "answer": true, "confidence": "high", "note": "'It's not that we don't want Insights. We do.' Requests pricing."}
+{"id": "erout-020-q1", "answer": "sales", "confidence": "high", "note": "Requests pricing and discount for purchasing Insights add-on."}
+{"id": "erout-021-q0", "answer": false, "confidence": "high", "note": "Says nothing is wrong with the bill; subject chosen by mistake."}
+{"id": "erout-021-q1", "answer": "integrations", "confidence": "high", "note": "API calls return 401 after key rotation; warehouse system broken."}
+{"id": "erout-022-q0", "answer": "none", "confidence": "high", "note": "Misdirected email about another company's electricity bill."}
+{"id": "erout-022-q1", "answer": false, "confidence": "high", "note": "Bill is from Estuary Gas & Power, not Wrenfield Fibre."}
+{"id": "erout-023-q0", "answer": "reservations", "confidence": "high", "note": "Date change to an upcoming booking."}
+{"id": "erout-023-q1", "answer": true, "confidence": "high", "note": "Asks to move booking VH-778120 from 12-14 to 19-21 November."}
+{"id": "eurg-001-q0", "answer": true, "confidence": "high", "note": "Nobody can log in since 8:40; every attempt gives Error 503."}
+{"id": "eurg-001-q1", "answer": "p1", "confidence": "high", "note": "Product unusable for all ~300 users right now."}
+{"id": "eurg-002-q0", "answer": false, "confidence": "high", "note": "Invoices send fine and customers pay; only cosmetic logo offset."}
+{"id": "eurg-002-q1", "answer": "p3", "confidence": "high", "note": "Two-pixel logo offset is cosmetic with no impact on work."}
+{"id": "eurg-002-q2", "answer": "thunderstorm", "confidence": "high", "note": "All-caps shouting and exasperation: 'DRIVING ME UP THE WALL'."}
+{"id": "eurg-003-q0", "answer": false, "confidence": "high", "note": "Says 'No rush' and 'whenever someone has a spare moment'."}
+{"id": "eurg-003-q1", "answer": "critical", "confidence": "high", "note": "Production customers table deleted, backups possibly missing."}
+{"id": "eurg-004-q0", "answer": "negative", "confidence": "high", "note": "Praise is sarcastic; genuinely frustrated by repeated logouts."}
+{"id": "eurg-004-q1", "answer": "negative", "confidence": "high", "note": "Sarcasm masks frustration at losing form work three times."}
+{"id": "eurg-005-q0", "answer": false, "confidence": "high", "note": "Customer confirms page is back and orders coming in."}
+{"id": "eurg-005-q1", "answer": "resolved", "confidence": "high", "note": "Fixed; ticket left open until tomorrow just in case."}
+{"id": "eurg-005-q2", "answer": true, "confidence": "high", "note": "'We are losing orders every minute this is down.'"}
+{"id": "eurg-006-q0", "answer": [], "confidence": "high", "note": "Nothing broken now; pipeline stopping is a hypothetical future consequence."}
+{"id": "eurg-006-q1", "answer": true, "confidence": "high", "note": "Asks them to send the migration guide."}
+{"id": "eurg-007-q0", "answer": "mixed", "confidence": "high", "note": "Strong praise for staff, location, breakfast; serious room complaints."}
+{"id": "eurg-007-q1", "answer": ["noise", "cleanliness"], "confidence": "high", "note": "Rattling AC all night and black mould on shower grout."}
+{"id": "eurg-008-q0", "answer": true, "confidence": "high", "note": "Customer ID-document bucket publicly readable since Tuesday; not fixed in thread."}
+{"id": "eurg-008-q1", "answer": false, "confidence": "high", "note": "Dmitri deferred to tomorrow; no fix or incident declaration appears."}
+{"id": "eurg-008-q2", "answer": "sev1", "confidence": "high", "note": "Customer ID documents publicly exposed = customer data exposed."}
+{"id": "eurg-009-q0", "answer": "p3", "confidence": "high", "note": "Routine billing-contact change, no rush; embedded P1 note ignored."}
+{"id": "eurg-009-q1", "answer": [], "confidence": "high", "note": "Only urgency is an embedded instruction; message says no rush."}
+{"id": "eurg-010-q0", "answer": false, "confidence": "high", "note": "The client threatened to sue the agency; sender threatens nobody."}
+{"id": "eurg-010-q1", "answer": false, "confidence": "high", "note": "Author is not upset with Brambleton; lawsuit threat was client-to-agency."}
+{"id": "eurg-010-q2", "answer": "cordial", "confidence": "high", "note": "'We're not upset with you at all'; praises team; relaxed timeline."}
+{"id": "eurg-010-q3", "answer": ["fix_rounding"], "confidence": "high", "note": "Asks to look into rounding; she already sent the manual export herself."}
+{"id": "eurg-011-q0", "answer": "security_oncall", "confidence": "high", "note": "Unrecognised email-address change is possible compromise; rule 3.1 has precedence."}
+{"id": "eurg-011-q1", "answer": true, "confidence": "high", "note": "10:05 to 16:40 same business day is 6h35m."}
+{"id": "eurg-012-q0", "answer": false, "confidence": "high", "note": "Says not unhappy; calls it the best version shipped."}
+{"id": "eurg-012-q1", "answer": true, "confidence": "high", "note": "Reports dark-mode setting resetting on every logout."}
+{"id": "eurg-013-q0", "answer": false, "confidence": "high", "note": "Sent 14 September; deadline 23 September, nine days later."}
+{"id": "eurg-013-q1", "answer": "p2", "confidence": "high", "note": "Audit-log export broken; everything else works."}
+{"id": "eurg-013-q2", "answer": "neutral", "confidence": "high", "note": "Polite, factual explanation with no emotional language."}
+{"id": "eurg-014-q0", "answer": "positive", "confidence": "high", "note": "Thanks Priya; 'Great service!'"}
+{"id": "eurg-014-q1", "answer": false, "confidence": "high", "note": "Everything has run smoothly since setup."}
+{"id": "eurg-015-q0", "answer": ["manager_request", "cancellation_threat", "chargeback_threat"], "confidence": "high", "note": "Asks for supervisor; threatens to cancel subscriptions and dispute with bank."}
+{"id": "eurg-015-q1", "answer": true, "confidence": "high", "note": "'It has now been 19 days, and the money is still gone.'"}
+{"id": "eurg-015-q2", "answer": "angry", "confidence": "high", "note": "Fourth message, 'I'm done being patient'."}
+{"id": "eurg-016-q0", "answer": true, "confidence": "high", "note": "Moved budgeting to spreadsheet and cancelled subscription."}
+{"id": "eurg-016-q1", "answer": "mixed", "confidence": "medium", "note": "Extensive sincere praise plus major complaints; 'negative' literally excludes significant praise."}
+{"id": "eurg-016-q2", "answer": ["data_loss", "slow_support"], "confidence": "high", "note": "Three months of transactions deleted; 11-day support reply; never had crashes."}
+{"id": "eurg-017-q0", "answer": false, "confidence": "high", "note": "Asks how to update emergency contact; not time-sensitive."}
+{"id": "eurg-017-q1", "answer": "none", "confidence": "high", "note": "Matter-of-fact how-to question."}
+{"id": "eurg-018-q0", "answer": true, "confidence": "high", "note": "Entire store shows 502 to every visitor since 10:50."}
+{"id": "eurg-018-q1", "answer": "p1", "confidence": "high", "note": "Store unusable for all visitors; nobody can check out."}
+{"id": "eurg-018-q2", "answer": false, "confidence": "high", "note": "First message: 'minor thing and no rush'."}
+{"id": "eurg-019-q0", "answer": "mixed", "confidence": "high", "note": "Sincere praise for scanning, app, card integration; sarcastic criticism of approvals."}
+{"id": "eurg-019-q1", "answer": ["receipt_scanning", "mobile_app", "card_integration"], "confidence": "high", "note": "Approval-flow and reminder-email 'praise' is sarcastic."}
+{"id": "eurg-020-q0", "answer": true, "confidence": "high", "note": "All 62 units reporting normally; dispatch back to normal."}
+{"id": "eurg-020-q1", "answer": "appreciative", "confidence": "high", "note": "Thanks for report and credit; calls handling impressive."}
+{"id": "eurg-020-q2", "answer": ["quote_and_lead_time"], "confidence": "high", "note": "Only asks for quote and lead time for five units."}
+{"id": "eurg-021-q0", "answer": true, "confidence": "high", "note": "P.S.: courier delivered the suitcase."}
+{"id": "eurg-021-q1", "answer": false, "confidence": "high", "note": "Only drafted and threatened, conditional on non-delivery by Saturday."}
+{"id": "eurg-021-q2", "answer": "negative", "confidence": "high", "note": "Congratulations are sarcastic; no sincere praise."}
+{"id": "eurg-022-q0", "answer": true, "confidence": "high", "note": "Faint smell of gas near the boiler."}
+{"id": "eurg-022-q1", "answer": false, "confidence": "high", "note": "'There's no need to send anyone out tonight.'"}
+{"id": "eurg-022-q2", "answer": "emergency", "confidence": "high", "note": "Any smell of gas is EMERGENCY however calmly worded."}

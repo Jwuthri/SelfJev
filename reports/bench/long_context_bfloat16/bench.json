@@ -1,0 +1,69 @@
+{
+ "meta": {
+  "model": "Qwen/Qwen3-Reranker-0.6B",
+  "revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473",
+  "adapter": null,
+  "adapter_sha256": null,
+  "device": "mps",
+  "dtype": "bfloat16",
+  "max_length": 32768,
+  "truncation": "none (overlength input raises InputTooLong)",
+  "prompt": "task-v1",
+  "prompt_sha": "f7b8d8022dfb",
+  "max_batch_tokens": 16384,
+  "max_batch_size": 64,
+  "warmup": 1,
+  "chip": "Apple M5 Pro",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "torch": "2.14.0",
+  "transformers": "5.17.0",
+  "created": "2026-09-23T01:49:06-0700"
+ },
+ "cold_start": {
+  "load_ms": 1198.3777910936624,
+  "first_request_ms": 270.5766250146553,
+  "first_request_pairs": 3
+ },
+ "rows": [
+  {
+   "state_tokens": 16384,
+   "questions": 1,
+   "candidates": 1,
+   "type": "binary",
+   "pairs": 1,
+   "input_tokens": 16464,
+   "padded_tokens": 16464,
+   "batches": 1,
+   "repeated_state_tokens": 16384,
+   "e2e_ms_p50": 2463.453728996683,
+   "e2e_ms_p95": 2465.047667035833,
+   "model_ms_p50": 2451.2741459766403,
+   "tokenize_ms_p50": 12.088729010429233,
+   "pairs_per_s": 0.4059341518085995,
+   "tokens_per_s": 6683.299875376782,
+   "repeats": 2,
+   "mps_driver_allocated_mb": 3208.6875,
+   "note": "MPS driver allocation after the run, including allocator cache (approximates peak)"
+  },
+  {
+   "state_tokens": 32000,
+   "questions": 1,
+   "candidates": 1,
+   "type": "binary",
+   "pairs": 1,
+   "input_tokens": 32080,
+   "padded_tokens": 32080,
+   "batches": 1,
+   "repeated_state_tokens": 32000,
+   "e2e_ms_p50": 7261.260624509305,
+   "e2e_ms_p95": 7347.871958045289,
+   "model_ms_p50": 7236.875458562281,
+   "tokenize_ms_p50": 24.237103934865445,
+   "pairs_per_s": 0.13771713366473154,
+   "tokens_per_s": 4417.965647964588,
+   "repeats": 2,
+   "mps_driver_allocated_mb": 4264.6875,
+   "note": "MPS driver allocation after the run, including allocator cache (approximates peak)"
+  }
+ ]
+}
