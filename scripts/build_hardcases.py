@@ -54,13 +54,20 @@ def write_blind(srcs):
 
 
 def main():
+    global RAW, REVIEW
     ap = argparse.ArgumentParser()
     ap.add_argument("--blind", action="store_true")
     ap.add_argument("--unverified", action="store_true", help="build without blind answers (not recommended)")
     ap.add_argument("--answers", nargs="+", default=["answers_astra.jsonl"],
                     help="judge files in data/hardcases/review/ that decide what is kept (default: GPT-6 Astra only; "
                          "second opinions such as Jev are reported elsewhere and never decide)")
+    ap.add_argument("--raw", default=str(RAW), help="source files (round 3: data/hardcases_r3/raw)")
+    ap.add_argument("--review", default=str(REVIEW), help="judge answers and REVIEW.md (round 3: data/hardcases_r3/review)")
+    ap.add_argument("--out", default=str(ROOT / "data/hardcases.jsonl"))
+    ap.add_argument("--guard", nargs="+", default=["data/eval.jsonl"], help="test files whose states must not overlap "
+                    "(8-gram containment >= 0.3); round 3 adds data/eval2.jsonl")
     a = ap.parse_args()
+    RAW, REVIEW = Path(a.raw), Path(a.review)
     srcs = sources()
     if a.blind:
         return write_blind(srcs)
@@ -68,7 +75,7 @@ def main():
     answers = {x["id"]: x for f in a.answers if (REVIEW / f).exists() for x in read_jsonl(REVIEW / f)}
     if not answers and not a.unverified:
         sys.exit("no blind answers in data/hardcases/review/; run the verification pass or pass --unverified")
-    eval_sh = [shingles(s) for s in {e["state"] for e in read_jsonl(ROOT / "data/eval.jsonl")}]
+    eval_sh = [shingles(s) for s in {e["state"] for f in a.guard for e in read_jsonl(ROOT / f)}]
     norm = lambda t: sorted(t) if isinstance(t, list) else t
     judges = ", ".join(sorted({str(x.get("note", "?")).split(";")[0] for x in answers.values()})[:5])
     kept, stats, leak = [], defaultdict(Counter), 0
@@ -88,14 +95,14 @@ def main():
                     continue
             stats[fam]["kept"] += 1
             kept.append(ex)
-    write_jsonl(ROOT / "data/hardcases.jsonl", kept)
+    write_jsonl(Path(a.out), kept)
     total = Counter()
     lines = ["# Hard-case data review (round 2)", "",
              "Authors: 8 Claude Sonnet sub-agents ([BRIEF_sonnet_agents.md](../BRIEF_sonnet_agents.md), prefixes h*) and OpenRouter "
              "models via scripts/gen_hardcases.py ([BRIEF.md](../BRIEF.md), prefixes gf/gk/df/lu; see each row's provenance). "
              f"Blind judge: {judges or 'none'}. A question is kept only if the judge's answer equals the authored label. "
              "LLM-verified, not human-reviewed.", "",
-             f"States dropped for overlap with eval.jsonl: {leak}", "",
+             f"States dropped for overlap with {', '.join(a.guard)}: {leak}", "",
              "| family | kept | disagreed (dropped) | unanswered (dropped) | agreement % |", "|---|---|---|---|---|"]
     for fam, c in sorted(stats.items()):
         total.update(c)

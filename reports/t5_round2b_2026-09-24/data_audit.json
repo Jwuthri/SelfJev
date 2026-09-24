@@ -1,0 +1,84 @@
+{
+  "splits": {
+    "train": {
+      "questions": 16375,
+      "families": {
+        "hard_contrastive": 199,
+        "hard_injection_tone": 193,
+        "hard_long_evidence": 183,
+        "hard_multilabel": 195,
+        "hard_numeric": 214,
+        "hard_policy": 219,
+        "hard_roles": 252,
+        "hard_temporal": 191,
+        "hf_emotions_multilabel": 1600,
+        "hf_intent_banking77": 1600,
+        "hf_nli": 1600,
+        "hf_sentiment_tweets": 1600,
+        "hf_topic_agnews": 1600,
+        "r2_hard": 1559,
+        "r2_simple": 1566,
+        "r2_very_hard": 1524,
+        "syn_adversarial": 304,
+        "syn_evidence": 328,
+        "syn_multilabel": 286,
+        "syn_policy": 223,
+        "syn_routing": 468,
+        "syn_urgency_sentiment": 471
+      },
+      "types": {
+        "multiclass": 7381,
+        "binary": 5217,
+        "multilabel": 3777
+      },
+      "unique_states": 11803,
+      "unique_sources": 12044
+    },
+    "validation": {
+      "questions": 1388,
+      "families": {
+        "eval_adversarial": 9,
+        "eval_agent_output": 16,
+        "eval_evidence": 9,
+        "eval_multilabel": 8,
+        "eval_policy": 18,
+        "eval_routing": 10,
+        "eval_urgency_sentiment": 11,
+        "hard_contrastive": 23,
+        "hard_injection_tone": 19,
+        "hard_long_evidence": 18,
+        "hard_multilabel": 12,
+        "hard_numeric": 13,
+        "hard_policy": 13,
+        "hard_roles": 30,
+        "hard_temporal": 15,
+        "hf_emotions_multilabel": 105,
+        "hf_intent_banking77": 96,
+        "hf_nli": 100,
+        "hf_sentiment_tweets": 102,
+        "hf_topic_agnews": 95,
+        "r2_hard": 190,
+        "r2_simple": 207,
+        "r2_very_hard": 196,
+        "syn_adversarial": 3,
+        "syn_evidence": 7,
+        "syn_multilabel": 11,
+        "syn_policy": 9,
+        "syn_routing": 19,
+        "syn_urgency_sentiment": 24
+      },
+      "types": {
+        "multilabel": 321,
+        "binary": 489,
+        "multiclass": 578
+      },
+      "unique_states": 1001,
+      "unique_sources": 1002
+    }
+  },
+  "train_validation_overlap": {
+    "ids": 0,
+    "nonempty_source_ids": 0,
+    "exact_states": 0
+  }
+}

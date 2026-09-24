@@ -1,0 +1,26 @@
+{
+  "utc": "2026-09-24T06:17:33.592321+00:00",
+  "event": "integrated_into_original_master",
+  "original_checkout": "/Users/julien/Documents/Repos/SelfJev",
+  "branch": "master",
+  "head_unchanged": "a5b79df29fe6f1cb3a7f5c33d7f06bb01fe43994",
+  "new_commits": 0,
+  "changes": "uncommitted in original checkout",
+  "removed_branch": "codex/tree-latency-compact",
+  "removed_worktree": "/Users/julien/.codex/worktrees/selfjev-tree-latency/SelfJev",
+  "experiment_source_commit": "2e2c109eb26ade85a5ac09f1ad5009cfc7afddb7",
+  "source_and_report_files_integrated": 135,
+  "trained_artifact_files_verified": 24,
+  "archive_regular_files_verified": 597,
+  "preexisting_files_unchanged_outside_documented_updates": 190,
+  "validation": {
+    "command": "PYTHONPATH=src OMP_NUM_THREADS=1 HF_HUB_OFFLINE=1 .venv/bin/python -m pytest -q tests/test_tree.py tests/test_tree_compact.py -k 'not real_reranker and not train_tree_entrypoint'",
+    "passed": 16,
+    "deselected": 2,
+    "seconds": 13.1,
+    "note": "Integration checks only; real-model and training checks were already performed in the GPU experiment."
+  },
+  "archive": "runs/latency_optimization_2026-09-24/integration_archive",
+  "other_session_worktree": "preserved",
+  "new_cloud_or_api_spend": 0
+}

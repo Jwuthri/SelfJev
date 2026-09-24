@@ -1,0 +1,15 @@
+{
+  "created_utc": "2026-09-24T05:22:20.217451+00:00",
+  "gates": {
+    "cold_2048_16_latency_reduction_at_least_15pct": false,
+    "development_loss_no_more_than_0_5pp": true,
+    "authored_loss_no_more_than_2pp": true,
+    "fresh_loss_no_more_than_2pp": true
+  },
+  "passed_all": false,
+  "cold_latency_reduction": 0.07407026230716496,
+  "reference_cold_ms": 700.3653609999674,
+  "compact_cold_ms": 648.4891149998475,
+  "document_warm_reduction": 0.12758931343256663,
+  "recommendation": "Retain R1 plus validated vLLM runtime as general serving option; compact adapter remains experimental. CLINC over-rejection is an additional concern beyond aggregate gates."
+}

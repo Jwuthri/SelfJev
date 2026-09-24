@@ -1,0 +1,17 @@
+{
+  "utc": "2026-09-24T05:29:57.166204+00:00",
+  "event": "cloud_cleanup_storage_deletion_pending",
+  "instance": "i-0172e64b9d0dc20ac",
+  "state": "terminated",
+  "root_volume_remaining": 1,
+  "security_group_deleted": "sg-03423e9420faa62a1",
+  "key_pair_deleted": "selfjev-tree-compact-20260924",
+  "remaining_experiment_instances": {
+    "us-east-1": [],
+    "us-west-2": [],
+    "us-east-2": []
+  },
+  "other_task_resources": "untouched",
+  "root_volume_state": "deleting",
+  "checked_utc": "2026-09-24T05:36:19.834958+00:00"
+}

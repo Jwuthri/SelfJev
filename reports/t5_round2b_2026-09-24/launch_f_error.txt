@@ -1,0 +1,1 @@
+aws: [ERROR]: An error occurred (Unsupported) when calling the RunInstances operation: Your requested instance type (g6e.4xlarge) is not supported in your requested Availability Zone (us-east-1f). Please retry your request by not specifying an Availability Zone or choosing us-east-1a, us-east-1b, us-east-1c, us-east-1d.

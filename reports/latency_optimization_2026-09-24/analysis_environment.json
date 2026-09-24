@@ -1,0 +1,12 @@
+{
+  "python": "3.12.13 (main, Jun  2 2026, 22:42:28) [Clang 22.1.3 ]",
+  "platform": "macOS-26.5.2-arm64-arm-64bit",
+  "numpy": "2.5.3",
+  "plotting_matplotlib": "3.10.0 (isolated uv environment)",
+  "scripts": {
+    "scripts/compare_compact_quality.py": "96ac2ffd10abc3d30cd797ba5c88b65f679693a6301bf3264dcb6505e8f093ae",
+    "scripts/audit_compact_challenge.py": "bda4531cfc0811f11535f7aa7ba6292baa8b2c2d2c3b7412b8073169b001ef2f",
+    "scripts/summarize_tree_latency.py": "b8965289a317a668a52161e619acf7ccc49f0e6fa92823f1eb659d55b443e771",
+    "scripts/plot_tree_latency.py": "7623bf408c22edfc0b045683bf4b3daecb062887e775dff711656fdd083fc216"
+  }
+}

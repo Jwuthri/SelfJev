@@ -18,6 +18,12 @@ Mine beats Jev on multi-label questions (51.7% vs 40.1% exact match). Jev still 
 
 **The honest takeaway:** the idea isn't the moat. A small open model gets there in a day. What's left is data for the hard reasoning cases, calibration that holds on new tasks, and serving. Credit where due: Jev answered all 3,471 questions for $0.06.
 
-Caveats: my own benchmark (11 public datasets plus an LLM-written test set of hard cases), single runs, and I didn't measure Jev's latency.
+**Where Jev is clearly ahead: speed.** Jev answers in ~150 ms whatever the size. Mine, on one small A10G GPU, takes 120 ms for one question on a short text and up to 1.2 s for 16 questions on a 4K-token text.
 
-Round 2 is training now on 10K new hard cases aimed at exactly where it loses. Rematch soon.
+Caveats: my own benchmark (11 public datasets plus an LLM-written test set of hard cases), single runs.
+
+Round 2 added 10K new verified hard cases:
+• My own hard-case questions: 78.4% → 83.0%
+• Overall: the same, 81.2%
+
+This benchmark is mostly public datasets, so it can't see the gain. A fresh test set is being built for the rematch.

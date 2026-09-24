@@ -1,0 +1,19 @@
+{
+    "InstanceTypeOfferings": [
+        {
+            "InstanceType": "p5.4xlarge",
+            "LocationType": "availability-zone",
+            "Location": "us-east-2c"
+        },
+        {
+            "InstanceType": "p5.4xlarge",
+            "LocationType": "availability-zone",
+            "Location": "us-east-2b"
+        },
+        {
+            "InstanceType": "p5.4xlarge",
+            "LocationType": "availability-zone",
+            "Location": "us-east-2a"
+        }
+    ]
+}

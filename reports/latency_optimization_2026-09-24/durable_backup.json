@@ -1,0 +1,9 @@
+{
+  "model_backup": "/Users/julien/Documents/Repos/SelfJev/runs/latency_optimization_2026-09-24/tree_4b_compact_v2",
+  "frozen_data_backup": "/Users/julien/Documents/Repos/SelfJev/runs/latency_optimization_2026-09-24/frozen_data",
+  "adapter_sha256": "0b51c5c717b44e0c85a6aae5d98899d128917add7a31448ea21a9ef5ab787a60",
+  "format_code_branch": "master",
+  "note": "Compact-format code and trained artifacts are available in the original master checkout as uncommitted changes. Historical source paths remain in raw experiment records.",
+  "format_code_checkout": "/Users/julien/Documents/Repos/SelfJev",
+  "active_model_path": "/Users/julien/Documents/Repos/SelfJev/runs/tree_4b_compact_v2"
+}

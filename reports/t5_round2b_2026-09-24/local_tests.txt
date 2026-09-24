@@ -1,0 +1,2 @@
+PYTHONPATH=src OMP_NUM_THREADS=1 HF_HUB_OFFLINE=1 .venv/bin/python -m pytest -q tests/test_t5_shared.py tests/test_challengers.py tests/test_tree.py tests/test_tree_compact.py -k "not real_reranker and not entrypoint"
+27 passed, 2 deselected, 1 warning in 4.87s

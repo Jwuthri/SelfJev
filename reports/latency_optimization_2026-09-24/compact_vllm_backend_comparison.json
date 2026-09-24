@@ -1,0 +1,776 @@
+{
+ "reference_file": "reports/latency_optimization_2026-09-24/compact_development.json",
+ "candidate_file": "reports/latency_optimization_2026-09-24/vllm_compact_a10g.json",
+ "overall": {
+  "n": 3471,
+  "sources": 3366,
+  "reference_accuracy": 0.8184961106309421,
+  "candidate_accuracy": 0.8184961106309421,
+  "accuracy_delta": 0.0,
+  "source_cluster_bootstrap_95_ci": [
+   -0.0017206767995411529,
+   0.001718213058419244
+  ],
+  "bootstrap_repeats": 10000,
+  "bootstrap_seed": 8431,
+  "candidate_only_correct": 4,
+  "reference_only_correct": 4,
+  "decision_changes": [
+   {
+    "id": "go_emotions-test-1813",
+    "source_id": "go_emotions-test-1813",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "surprise"
+    ],
+    "candidate_selected": [
+     "surprise",
+     "sadness"
+    ],
+    "reference_correct": false,
+    "candidate_correct": false
+   },
+   {
+    "id": "go_emotions-test-420",
+    "source_id": "go_emotions-test-420",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [],
+    "candidate_selected": [
+     "embarrassment"
+    ],
+    "reference_correct": false,
+    "candidate_correct": false
+   },
+   {
+    "id": "go_emotions-test-1624",
+    "source_id": "go_emotions-test-1624",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "sadness",
+     "disapproval"
+    ],
+    "candidate_selected": [
+     "disapproval"
+    ],
+    "reference_correct": true,
+    "candidate_correct": false
+   },
+   {
+    "id": "go_emotions-test-2978",
+    "source_id": "go_emotions-test-2978",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [],
+    "candidate_selected": [
+     "confusion"
+    ],
+    "reference_correct": false,
+    "candidate_correct": true
+   },
+   {
+    "id": "go_emotions-test-595",
+    "source_id": "go_emotions-test-595",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "neutral"
+    ],
+    "candidate_selected": [
+     "neutral",
+     "disapproval"
+    ],
+    "reference_correct": false,
+    "candidate_correct": false
+   },
+   {
+    "id": "go_emotions-test-3251",
+    "source_id": "go_emotions-test-3251",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "neutral",
+     "joy",
+     "admiration"
+    ],
+    "candidate_selected": [
+     "joy",
+     "admiration"
+    ],
+    "reference_correct": false,
+    "candidate_correct": false
+   },
+   {
+    "id": "mnli-eval-1103",
+    "source_id": "mnli-eval-1103",
+    "family": "hf_nli",
+    "reference_selected": false,
+    "candidate_selected": true,
+    "reference_correct": true,
+    "candidate_correct": false
+   },
+   {
+    "id": "clinc_oos-test-1237",
+    "source_id": "clinc_oos-test-1237",
+    "family": "heldout_intent_clinc",
+    "reference_selected": "none",
+    "candidate_selected": "new_card",
+    "reference_correct": false,
+    "candidate_correct": true
+   },
+   {
+    "id": "clinc_oos-test-4028",
+    "source_id": "clinc_oos-test-4028",
+    "family": "heldout_intent_clinc",
+    "reference_selected": "none",
+    "candidate_selected": "gas",
+    "reference_correct": false,
+    "candidate_correct": true
+   },
+   {
+    "id": "dbpedia_14-test-2437",
+    "source_id": "dbpedia_14-test-2437",
+    "family": "heldout_topic_dbpedia",
+    "reference_selected": "company",
+    "candidate_selected": "writtenwork",
+    "reference_correct": true,
+    "candidate_correct": false
+   },
+   {
+    "id": "emotion-test-150",
+    "source_id": "emotion-test-150",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "sadness",
+    "candidate_selected": "anger",
+    "reference_correct": true,
+    "candidate_correct": false
+   },
+   {
+    "id": "emul-019-q3",
+    "source_id": "emul-019",
+    "family": "eval_multilabel",
+    "reference_selected": [
+     "champion_departed"
+    ],
+    "candidate_selected": [],
+    "reference_correct": false,
+    "candidate_correct": true
+   }
+  ]
+ },
+ "slices": {
+  "authored": {
+   "n": 171,
+   "sources": 66,
+   "reference_accuracy": 0.7894736842105263,
+   "candidate_accuracy": 0.7953216374269005,
+   "accuracy_delta": 0.005847953216374269,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.017964071856287425
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 1,
+   "reference_only_correct": 0,
+   "decision_changes": [
+    {
+     "id": "emul-019-q3",
+     "source_id": "emul-019",
+     "family": "eval_multilabel",
+     "reference_selected": [
+      "champion_departed"
+     ],
+     "candidate_selected": [],
+     "reference_correct": false,
+     "candidate_correct": true
+    }
+   ]
+  },
+  "public_seen_families": {
+   "n": 1500,
+   "sources": 1500,
+   "reference_accuracy": 0.8,
+   "candidate_accuracy": 0.7993333333333333,
+   "accuracy_delta": -0.0006666666666666666,
+   "source_cluster_bootstrap_95_ci": [
+    -0.0033333333333333335,
+    0.0013333333333333333
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 1,
+   "reference_only_correct": 2,
+   "decision_changes": [
+    {
+     "id": "go_emotions-test-1813",
+     "source_id": "go_emotions-test-1813",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [
+      "surprise"
+     ],
+     "candidate_selected": [
+      "surprise",
+      "sadness"
+     ],
+     "reference_correct": false,
+     "candidate_correct": false
+    },
+    {
+     "id": "go_emotions-test-420",
+     "source_id": "go_emotions-test-420",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [],
+     "candidate_selected": [
+      "embarrassment"
+     ],
+     "reference_correct": false,
+     "candidate_correct": false
+    },
+    {
+     "id": "go_emotions-test-1624",
+     "source_id": "go_emotions-test-1624",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [
+      "sadness",
+      "disapproval"
+     ],
+     "candidate_selected": [
+      "disapproval"
+     ],
+     "reference_correct": true,
+     "candidate_correct": false
+    },
+    {
+     "id": "go_emotions-test-2978",
+     "source_id": "go_emotions-test-2978",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [],
+     "candidate_selected": [
+      "confusion"
+     ],
+     "reference_correct": false,
+     "candidate_correct": true
+    },
+    {
+     "id": "go_emotions-test-595",
+     "source_id": "go_emotions-test-595",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [
+      "neutral"
+     ],
+     "candidate_selected": [
+      "neutral",
+      "disapproval"
+     ],
+     "reference_correct": false,
+     "candidate_correct": false
+    },
+    {
+     "id": "go_emotions-test-3251",
+     "source_id": "go_emotions-test-3251",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [
+      "neutral",
+      "joy",
+      "admiration"
+     ],
+     "candidate_selected": [
+      "joy",
+      "admiration"
+     ],
+     "reference_correct": false,
+     "candidate_correct": false
+    },
+    {
+     "id": "mnli-eval-1103",
+     "source_id": "mnli-eval-1103",
+     "family": "hf_nli",
+     "reference_selected": false,
+     "candidate_selected": true,
+     "reference_correct": true,
+     "candidate_correct": false
+    }
+   ]
+  },
+  "public_heldout_families": {
+   "n": 1800,
+   "sources": 1800,
+   "reference_accuracy": 0.8366666666666667,
+   "candidate_accuracy": 0.8366666666666667,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    -0.0022222222222222222,
+    0.0022222222222222222
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 2,
+   "reference_only_correct": 2,
+   "decision_changes": [
+    {
+     "id": "clinc_oos-test-1237",
+     "source_id": "clinc_oos-test-1237",
+     "family": "heldout_intent_clinc",
+     "reference_selected": "none",
+     "candidate_selected": "new_card",
+     "reference_correct": false,
+     "candidate_correct": true
+    },
+    {
+     "id": "clinc_oos-test-4028",
+     "source_id": "clinc_oos-test-4028",
+     "family": "heldout_intent_clinc",
+     "reference_selected": "none",
+     "candidate_selected": "gas",
+     "reference_correct": false,
+     "candidate_correct": true
+    },
+    {
+     "id": "dbpedia_14-test-2437",
+     "source_id": "dbpedia_14-test-2437",
+     "family": "heldout_topic_dbpedia",
+     "reference_selected": "company",
+     "candidate_selected": "writtenwork",
+     "reference_correct": true,
+     "candidate_correct": false
+    },
+    {
+     "id": "emotion-test-150",
+     "source_id": "emotion-test-150",
+     "family": "heldout_emotion_multiclass",
+     "reference_selected": "sadness",
+     "candidate_selected": "anger",
+     "reference_correct": true,
+     "candidate_correct": false
+    }
+   ]
+  },
+  "family:eval_adversarial": {
+   "n": 27,
+   "sources": 10,
+   "reference_accuracy": 0.9259259259259259,
+   "candidate_accuracy": 0.9259259259259259,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  },
+  "family:eval_agent_output": {
+   "n": 26,
+   "sources": 10,
+   "reference_accuracy": 0.6153846153846154,
+   "candidate_accuracy": 0.6153846153846154,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  },
+  "family:eval_evidence": {
+   "n": 17,
+   "sources": 8,
+   "reference_accuracy": 0.8823529411764706,
+   "candidate_accuracy": 0.8823529411764706,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  },
+  "family:eval_multilabel": {
+   "n": 32,
+   "sources": 11,
+   "reference_accuracy": 0.78125,
+   "candidate_accuracy": 0.8125,
+   "accuracy_delta": 0.03125,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.09090909090909091
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 1,
+   "reference_only_correct": 0,
+   "decision_changes": [
+    {
+     "id": "emul-019-q3",
+     "source_id": "emul-019",
+     "family": "eval_multilabel",
+     "reference_selected": [
+      "champion_departed"
+     ],
+     "candidate_selected": [],
+     "reference_correct": false,
+     "candidate_correct": true
+    }
+   ]
+  },
+  "family:eval_policy": {
+   "n": 22,
+   "sources": 8,
+   "reference_accuracy": 0.5909090909090909,
+   "candidate_accuracy": 0.5909090909090909,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  },
+  "family:eval_routing": {
+   "n": 25,
+   "sources": 10,
+   "reference_accuracy": 0.84,
+   "candidate_accuracy": 0.84,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  },
+  "family:eval_urgency_sentiment": {
+   "n": 22,
+   "sources": 9,
+   "reference_accuracy": 0.9090909090909091,
+   "candidate_accuracy": 0.9090909090909091,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  },
+  "family:heldout_boolq": {
+   "n": 300,
+   "sources": 300,
+   "reference_accuracy": 0.8366666666666667,
+   "candidate_accuracy": 0.8366666666666667,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  },
+  "family:heldout_emotion_multiclass": {
+   "n": 300,
+   "sources": 300,
+   "reference_accuracy": 0.5566666666666666,
+   "candidate_accuracy": 0.5533333333333333,
+   "accuracy_delta": -0.0033333333333333335,
+   "source_cluster_bootstrap_95_ci": [
+    -0.01,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 1,
+   "decision_changes": [
+    {
+     "id": "emotion-test-150",
+     "source_id": "emotion-test-150",
+     "family": "heldout_emotion_multiclass",
+     "reference_selected": "sadness",
+     "candidate_selected": "anger",
+     "reference_correct": true,
+     "candidate_correct": false
+    }
+   ]
+  },
+  "family:heldout_intent_clinc": {
+   "n": 300,
+   "sources": 300,
+   "reference_accuracy": 0.9166666666666666,
+   "candidate_accuracy": 0.9233333333333333,
+   "accuracy_delta": 0.006666666666666667,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.016666666666666666
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 2,
+   "reference_only_correct": 0,
+   "decision_changes": [
+    {
+     "id": "clinc_oos-test-1237",
+     "source_id": "clinc_oos-test-1237",
+     "family": "heldout_intent_clinc",
+     "reference_selected": "none",
+     "candidate_selected": "new_card",
+     "reference_correct": false,
+     "candidate_correct": true
+    },
+    {
+     "id": "clinc_oos-test-4028",
+     "source_id": "clinc_oos-test-4028",
+     "family": "heldout_intent_clinc",
+     "reference_selected": "none",
+     "candidate_selected": "gas",
+     "reference_correct": false,
+     "candidate_correct": true
+    }
+   ]
+  },
+  "family:heldout_question_type_trec": {
+   "n": 300,
+   "sources": 300,
+   "reference_accuracy": 0.8733333333333333,
+   "candidate_accuracy": 0.8733333333333333,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  },
+  "family:heldout_sentiment_sst2": {
+   "n": 300,
+   "sources": 300,
+   "reference_accuracy": 0.8766666666666667,
+   "candidate_accuracy": 0.8766666666666667,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  },
+  "family:heldout_topic_dbpedia": {
+   "n": 300,
+   "sources": 300,
+   "reference_accuracy": 0.96,
+   "candidate_accuracy": 0.9566666666666667,
+   "accuracy_delta": -0.0033333333333333335,
+   "source_cluster_bootstrap_95_ci": [
+    -0.01,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 1,
+   "decision_changes": [
+    {
+     "id": "dbpedia_14-test-2437",
+     "source_id": "dbpedia_14-test-2437",
+     "family": "heldout_topic_dbpedia",
+     "reference_selected": "company",
+     "candidate_selected": "writtenwork",
+     "reference_correct": true,
+     "candidate_correct": false
+    }
+   ]
+  },
+  "family:hf_emotions_multilabel": {
+   "n": 300,
+   "sources": 300,
+   "reference_accuracy": 0.5033333333333333,
+   "candidate_accuracy": 0.5033333333333333,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    -0.01,
+    0.01
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 1,
+   "reference_only_correct": 1,
+   "decision_changes": [
+    {
+     "id": "go_emotions-test-1813",
+     "source_id": "go_emotions-test-1813",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [
+      "surprise"
+     ],
+     "candidate_selected": [
+      "surprise",
+      "sadness"
+     ],
+     "reference_correct": false,
+     "candidate_correct": false
+    },
+    {
+     "id": "go_emotions-test-420",
+     "source_id": "go_emotions-test-420",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [],
+     "candidate_selected": [
+      "embarrassment"
+     ],
+     "reference_correct": false,
+     "candidate_correct": false
+    },
+    {
+     "id": "go_emotions-test-1624",
+     "source_id": "go_emotions-test-1624",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [
+      "sadness",
+      "disapproval"
+     ],
+     "candidate_selected": [
+      "disapproval"
+     ],
+     "reference_correct": true,
+     "candidate_correct": false
+    },
+    {
+     "id": "go_emotions-test-2978",
+     "source_id": "go_emotions-test-2978",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [],
+     "candidate_selected": [
+      "confusion"
+     ],
+     "reference_correct": false,
+     "candidate_correct": true
+    },
+    {
+     "id": "go_emotions-test-595",
+     "source_id": "go_emotions-test-595",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [
+      "neutral"
+     ],
+     "candidate_selected": [
+      "neutral",
+      "disapproval"
+     ],
+     "reference_correct": false,
+     "candidate_correct": false
+    },
+    {
+     "id": "go_emotions-test-3251",
+     "source_id": "go_emotions-test-3251",
+     "family": "hf_emotions_multilabel",
+     "reference_selected": [
+      "neutral",
+      "joy",
+      "admiration"
+     ],
+     "candidate_selected": [
+      "joy",
+      "admiration"
+     ],
+     "reference_correct": false,
+     "candidate_correct": false
+    }
+   ]
+  },
+  "family:hf_intent_banking77": {
+   "n": 300,
+   "sources": 300,
+   "reference_accuracy": 0.9566666666666667,
+   "candidate_accuracy": 0.9566666666666667,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  },
+  "family:hf_nli": {
+   "n": 300,
+   "sources": 300,
+   "reference_accuracy": 0.9466666666666667,
+   "candidate_accuracy": 0.9433333333333334,
+   "accuracy_delta": -0.0033333333333333335,
+   "source_cluster_bootstrap_95_ci": [
+    -0.01,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 1,
+   "decision_changes": [
+    {
+     "id": "mnli-eval-1103",
+     "source_id": "mnli-eval-1103",
+     "family": "hf_nli",
+     "reference_selected": false,
+     "candidate_selected": true,
+     "reference_correct": true,
+     "candidate_correct": false
+    }
+   ]
+  },
+  "family:hf_sentiment_tweets": {
+   "n": 300,
+   "sources": 300,
+   "reference_accuracy": 0.68,
+   "candidate_accuracy": 0.68,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  },
+  "family:hf_topic_agnews": {
+   "n": 300,
+   "sources": 300,
+   "reference_accuracy": 0.9133333333333333,
+   "candidate_accuracy": 0.9133333333333333,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    0.0,
+    0.0
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 0,
+   "reference_only_correct": 0,
+   "decision_changes": []
+  }
+ }
+}

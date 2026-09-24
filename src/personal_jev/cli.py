@@ -9,6 +9,10 @@ from .model import MODEL_ID, MODEL_REVISION
 
 
 def _scorer(a):
+    if a.jina:
+        from .jina import JINA, JinaScorer
+        model, rev = (a.model, a.revision) if a.model.startswith("jinaai/") else JINA
+        return JinaScorer(model, rev, adapter=a.adapter, device=a.device, dtype=a.dtype, max_length=a.max_length, max_batch_tokens=a.max_batch_tokens)
     if a.tree:
         from .tree import TreeScorer
         return TreeScorer(a.model, a.revision, adapter=a.adapter, device=a.device, dtype=a.dtype, max_length=a.max_length,
@@ -38,6 +42,7 @@ def main(argv=None):
     def model_args(p):
         p.add_argument("--tree", action="store_true", help="shared-prefix tree scorer (tree.py) on --model/--revision; "
                                                                 "--adapter from `pjev train-tree`")
+        p.add_argument("--jina", action="store_true", help="jina-reranker-v3.5 listwise scorer (jina.py); --adapter from `pjev train-jina`")
         p.add_argument("--checkpoint", help="custom shared-state model checkpoint (from `pjev train-custom`); "
                                             "default: the stock reranker backend")
         p.add_argument("--model", default=MODEL_ID, help="stock backend: Qwen3-Reranker checkpoint (0.6B / 4B / 8B)")
@@ -89,6 +94,9 @@ def main(argv=None):
     p = sub.add_parser("train-tree", help="shared-prefix tree scorer: LoRA on any Qwen3-architecture causal LM")
     p.add_argument("config")
     p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
+    p = sub.add_parser("train-jina", help="jina-reranker-v3.5 listwise scorer: LoRA + projector + head scalars")
+    p.add_argument("config")
+    p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
     a = ap.parse_args(argv)
 
     if a.cmd == "classify":
@@ -129,6 +137,9 @@ def main(argv=None):
         train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
     elif a.cmd == "train-tree":
         from .train_tree import train
+        train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
+    elif a.cmd == "train-jina":
+        from .train_jina import train
         train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
 
 

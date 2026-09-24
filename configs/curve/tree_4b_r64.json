@@ -1,0 +1,39 @@
+{
+  "train_files": [
+    "data/hf.jsonl",
+    "data/synthetic.jsonl"
+  ],
+  "val_files": [
+    "data/hf.jsonl",
+    "data/synthetic.jsonl",
+    "data/eval.jsonl"
+  ],
+  "out_dir": "runs/curve/tree_4b_r64",
+  "seed": 13,
+  "dtype": "bfloat16",
+  "max_length": 2048,
+  "max_batch_tokens": 16384,
+  "grad_accum": 2,
+  "epochs": 1,
+  "lr": 0.0002,
+  "warmup_ratio": 0.05,
+  "weight_decay": 0.0,
+  "max_grad_norm": 1.0,
+  "gradient_checkpointing": true,
+  "eval_every": 50,
+  "max_val_questions": 1200,
+  "max_train_per_family": 1600,
+  "lora": {
+    "r": 64,
+    "alpha": 128,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj"
+    ]
+  },
+  "model_id": "Qwen/Qwen3-Reranker-4B",
+  "revision": "22e683669bc0f0bd69640a1354a6d0aebcfeede5"
+}

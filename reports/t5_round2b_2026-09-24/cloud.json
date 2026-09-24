@@ -1,0 +1,15 @@
+{
+  "region": "us-east-1",
+  "name": "selfjev-t5-r2b-20260924",
+  "hourly_usd": 3.00424,
+  "shutdown_hours": 8,
+  "resources": [],
+  "security_group": "sg-0fe60bef54db7609d",
+  "key_name": "selfjev-t5-r2b-20260924",
+  "cleanup": {
+    "security_group_deleted": true,
+    "key_pair_deleted": true,
+    "no_instance_launched": true,
+    "utc": "2026-09-24T06:54:11.765240+00:00"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "train": {
+    "n": 16375,
+    "max_combined_tokens": 8375,
+    "dropped": []
+  },
+  "validation": {
+    "n": 1388,
+    "max_combined_tokens": 8630,
+    "dropped": []
+  }
+}

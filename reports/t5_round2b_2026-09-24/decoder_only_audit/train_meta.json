@@ -1,0 +1,365 @@
+{
+  "config": {
+    "train_files": [
+      "data/hf.jsonl",
+      "data/synthetic.jsonl",
+      "data/hardcases_nb.jsonl"
+    ],
+    "val_files": [
+      "data/hf.jsonl",
+      "data/synthetic.jsonl",
+      "data/eval.jsonl",
+      "data/hardcases.jsonl"
+    ],
+    "out_dir": "runs/t5gemma2_r2b",
+    "seed": 13,
+    "model_id": "google/t5gemma-2-1b-1b",
+    "revision": "dd0a2683227859151b1730ca3a63087df5b5f39b",
+    "prompt": "task-v1",
+    "device": "cuda",
+    "dtype": "bfloat16",
+    "max_length": 16384,
+    "max_batch_tokens": 16384,
+    "grad_accum": 2,
+    "epochs": 1,
+    "max_steps": null,
+    "lr": 0.0002,
+    "warmup_ratio": 0.05,
+    "weight_decay": 0.0,
+    "max_grad_norm": 1.0,
+    "gradient_checkpointing": true,
+    "eval_every": 50,
+    "max_val_questions": 1400,
+    "max_train_questions": null,
+    "max_train_per_family": 1600,
+    "cap_exempt_families": [],
+    "lora": {
+      "r": 16,
+      "alpha": 32,
+      "dropout": 0.05,
+      "target_modules": [
+        "q_proj",
+        "k_proj",
+        "v_proj",
+        "o_proj"
+      ]
+    },
+    "optimizer_questions": 72,
+    "microbatch_tokens": 4096,
+    "selection_manifest": "reports/t5_round2b_2026-09-24/selection.json"
+  },
+  "model": {
+    "rotary_buffer_precision": "native",
+    "adapter_sha256": null,
+    "model": "google/t5gemma-2-1b-1b",
+    "revision": "dd0a2683227859151b1730ca3a63087df5b5f39b",
+    "adapter": null,
+    "device": "cuda",
+    "dtype": "bfloat16",
+    "architecture": "pretrained T5Gemma encoder/decoder; shared document cross-KV views",
+    "prompt": "challenger-state-first-v1",
+    "prompt_sha": "6c9d8459ac44",
+    "truncation": "none",
+    "max_length": 16384,
+    "branch_batch": 16,
+    "cache_storage": "one cross-KV per layer/document; bounded expanded decoder views",
+    "merged": false
+  },
+  "trainable_parameters": 2981888,
+  "train_questions": 16375,
+  "val_questions": 1388,
+  "selection_sha256": "ffe8a26490a25be1fe7cbb5de79ae6abcd4c1206410ca04efbe538eb70bbc61c",
+  "train_ids_sha256": "a610024449a3a13c3aa3749028649488620aaa0432de8178395337acd5e5588f",
+  "candidate_shuffle": true,
+  "lora_targets": [
+    "model.decoder.layers.0.self_attn.q_proj",
+    "model.decoder.layers.0.self_attn.k_proj",
+    "model.decoder.layers.0.self_attn.v_proj",
+    "model.decoder.layers.0.self_attn.o_proj",
+    "model.decoder.layers.1.self_attn.q_proj",
+    "model.decoder.layers.1.self_attn.k_proj",
+    "model.decoder.layers.1.self_attn.v_proj",
+    "model.decoder.layers.1.self_attn.o_proj",
+    "model.decoder.layers.2.self_attn.q_proj",
+    "model.decoder.layers.2.self_attn.k_proj",
+    "model.decoder.layers.2.self_attn.v_proj",
+    "model.decoder.layers.2.self_attn.o_proj",
+    "model.decoder.layers.3.self_attn.q_proj",
+    "model.decoder.layers.3.self_attn.k_proj",
+    "model.decoder.layers.3.self_attn.v_proj",
+    "model.decoder.layers.3.self_attn.o_proj",
+    "model.decoder.layers.4.self_attn.q_proj",
+    "model.decoder.layers.4.self_attn.k_proj",
+    "model.decoder.layers.4.self_attn.v_proj",
+    "model.decoder.layers.4.self_attn.o_proj",
+    "model.decoder.layers.5.self_attn.q_proj",
+    "model.decoder.layers.5.self_attn.k_proj",
+    "model.decoder.layers.5.self_attn.v_proj",
+    "model.decoder.layers.5.self_attn.o_proj",
+    "model.decoder.layers.6.self_attn.q_proj",
+    "model.decoder.layers.6.self_attn.k_proj",
+    "model.decoder.layers.6.self_attn.v_proj",
+    "model.decoder.layers.6.self_attn.o_proj",
+    "model.decoder.layers.7.self_attn.q_proj",
+    "model.decoder.layers.7.self_attn.k_proj",
+    "model.decoder.layers.7.self_attn.v_proj",
+    "model.decoder.layers.7.self_attn.o_proj",
+    "model.decoder.layers.8.self_attn.q_proj",
+    "model.decoder.layers.8.self_attn.k_proj",
+    "model.decoder.layers.8.self_attn.v_proj",
+    "model.decoder.layers.8.self_attn.o_proj",
+    "model.decoder.layers.9.self_attn.q_proj",
+    "model.decoder.layers.9.self_attn.k_proj",
+    "model.decoder.layers.9.self_attn.v_proj",
+    "model.decoder.layers.9.self_attn.o_proj",
+    "model.decoder.layers.10.self_attn.q_proj",
+    "model.decoder.layers.10.self_attn.k_proj",
+    "model.decoder.layers.10.self_attn.v_proj",
+    "model.decoder.layers.10.self_attn.o_proj",
+    "model.decoder.layers.11.self_attn.q_proj",
+    "model.decoder.layers.11.self_attn.k_proj",
+    "model.decoder.layers.11.self_attn.v_proj",
+    "model.decoder.layers.11.self_attn.o_proj",
+    "model.decoder.layers.12.self_attn.q_proj",
+    "model.decoder.layers.12.self_attn.k_proj",
+    "model.decoder.layers.12.self_attn.v_proj",
+    "model.decoder.layers.12.self_attn.o_proj",
+    "model.decoder.layers.13.self_attn.q_proj",
+    "model.decoder.layers.13.self_attn.k_proj",
+    "model.decoder.layers.13.self_attn.v_proj",
+    "model.decoder.layers.13.self_attn.o_proj",
+    "model.decoder.layers.14.self_attn.q_proj",
+    "model.decoder.layers.14.self_attn.k_proj",
+    "model.decoder.layers.14.self_attn.v_proj",
+    "model.decoder.layers.14.self_attn.o_proj",
+    "model.decoder.layers.15.self_attn.q_proj",
+    "model.decoder.layers.15.self_attn.k_proj",
+    "model.decoder.layers.15.self_attn.v_proj",
+    "model.decoder.layers.15.self_attn.o_proj",
+    "model.decoder.layers.16.self_attn.q_proj",
+    "model.decoder.layers.16.self_attn.k_proj",
+    "model.decoder.layers.16.self_attn.v_proj",
+    "model.decoder.layers.16.self_attn.o_proj",
+    "model.decoder.layers.17.self_attn.q_proj",
+    "model.decoder.layers.17.self_attn.k_proj",
+    "model.decoder.layers.17.self_attn.v_proj",
+    "model.decoder.layers.17.self_attn.o_proj",
+    "model.decoder.layers.18.self_attn.q_proj",
+    "model.decoder.layers.18.self_attn.k_proj",
+    "model.decoder.layers.18.self_attn.v_proj",
+    "model.decoder.layers.18.self_attn.o_proj",
+    "model.decoder.layers.19.self_attn.q_proj",
+    "model.decoder.layers.19.self_attn.k_proj",
+    "model.decoder.layers.19.self_attn.v_proj",
+    "model.decoder.layers.19.self_attn.o_proj",
+    "model.decoder.layers.20.self_attn.q_proj",
+    "model.decoder.layers.20.self_attn.k_proj",
+    "model.decoder.layers.20.self_attn.v_proj",
+    "model.decoder.layers.20.self_attn.o_proj",
+    "model.decoder.layers.21.self_attn.q_proj",
+    "model.decoder.layers.21.self_attn.k_proj",
+    "model.decoder.layers.21.self_attn.v_proj",
+    "model.decoder.layers.21.self_attn.o_proj",
+    "model.decoder.layers.22.self_attn.q_proj",
+    "model.decoder.layers.22.self_attn.k_proj",
+    "model.decoder.layers.22.self_attn.v_proj",
+    "model.decoder.layers.22.self_attn.o_proj",
+    "model.decoder.layers.23.self_attn.q_proj",
+    "model.decoder.layers.23.self_attn.k_proj",
+    "model.decoder.layers.23.self_attn.v_proj",
+    "model.decoder.layers.23.self_attn.o_proj",
+    "model.decoder.layers.24.self_attn.q_proj",
+    "model.decoder.layers.24.self_attn.k_proj",
+    "model.decoder.layers.24.self_attn.v_proj",
+    "model.decoder.layers.24.self_attn.o_proj",
+    "model.decoder.layers.25.self_attn.q_proj",
+    "model.decoder.layers.25.self_attn.k_proj",
+    "model.decoder.layers.25.self_attn.v_proj",
+    "model.decoder.layers.25.self_attn.o_proj"
+  ],
+  "initialization": "fresh pretrained T5Gemma 2, not the R1 adapter",
+  "comparison_limits": "same R2b eligible IDs and one epoch; tokenizer, format, 72-question step grouping and architecture differ",
+  "versions": {
+    "torch": "2.14.0+cu130"
+  },
+  "gpu": "NVIDIA L40S",
+  "log": [
+    {
+      "step": 0,
+      "validation": {
+        "loss": 1.0061848665606392,
+        "question_accuracy": 0.37247838616714696,
+        "n": 1388
+      },
+      "wall_s": 147.62382969599997
+    },
+    {
+      "step": 10,
+      "train_loss": 0.9373086199630052,
+      "gradient_norm": 2.937741279602051
+    },
+    {
+      "step": 20,
+      "train_loss": 0.6888905818923377,
+      "gradient_norm": 6.954030513763428
+    },
+    {
+      "step": 30,
+      "train_loss": 0.49383673432748765,
+      "gradient_norm": 3.2574715614318848
+    },
+    {
+      "step": 40,
+      "train_loss": 0.5318641638295958,
+      "gradient_norm": 4.545309543609619
+    },
+    {
+      "step": 50,
+      "train_loss": 0.434445092221722,
+      "gradient_norm": 3.431978225708008
+    },
+    {
+      "step": 50,
+      "validation": {
+        "loss": 0.4941784960570207,
+        "question_accuracy": 0.6858789625360231,
+        "n": 1388
+      },
+      "wall_s": 913.681493524
+    },
+    {
+      "step": 60,
+      "train_loss": 0.5035041336668655,
+      "gradient_norm": 4.1199774742126465
+    },
+    {
+      "step": 70,
+      "train_loss": 0.4073037335765548,
+      "gradient_norm": 3.427762031555176
+    },
+    {
+      "step": 80,
+      "train_loss": 0.3710706830606796,
+      "gradient_norm": 2.4048919677734375
+    },
+    {
+      "step": 90,
+      "train_loss": 0.4666985357180238,
+      "gradient_norm": 3.938042402267456
+    },
+    {
+      "step": 100,
+      "train_loss": 0.41343475018402387,
+      "gradient_norm": 5.893043041229248
+    },
+    {
+      "step": 100,
+      "validation": {
+        "loss": 0.4458286347093686,
+        "question_accuracy": 0.7319884726224783,
+        "n": 1388
+      },
+      "wall_s": 1677.7086441640001
+    },
+    {
+      "step": 110,
+      "train_loss": 0.3870790503833632,
+      "gradient_norm": 4.373077392578125
+    },
+    {
+      "step": 120,
+      "train_loss": 0.3930115731122896,
+      "gradient_norm": 3.0119099617004395
+    },
+    {
+      "step": 130,
+      "train_loss": 0.4266126078728121,
+      "gradient_norm": 5.2670722007751465
+    },
+    {
+      "step": 140,
+      "train_loss": 0.33665143104462913,
+      "gradient_norm": 3.5646255016326904
+    },
+    {
+      "step": 150,
+      "train_loss": 0.40575912456006336,
+      "gradient_norm": 2.8686587810516357
+    },
+    {
+      "step": 150,
+      "validation": {
+        "loss": 0.39853125814282114,
+        "question_accuracy": 0.7478386167146974,
+        "n": 1388
+      },
+      "wall_s": 2450.610152761
+    },
+    {
+      "step": 160,
+      "train_loss": 0.36516351957106963,
+      "gradient_norm": 3.3468539714813232
+    },
+    {
+      "step": 170,
+      "train_loss": 0.34230487669992726,
+      "gradient_norm": 3.617647886276245
+    },
+    {
+      "step": 180,
+      "train_loss": 0.37029856459867005,
+      "gradient_norm": 4.011219501495361
+    },
+    {
+      "step": 190,
+      "train_loss": 0.530031343743758,
+      "gradient_norm": 5.089545249938965
+    },
+    {
+      "step": 200,
+      "train_loss": 0.3380746861806756,
+      "gradient_norm": 3.3949663639068604
+    },
+    {
+      "step": 200,
+      "validation": {
+        "loss": 0.3807185674476064,
+        "question_accuracy": 0.7636887608069164,
+        "n": 1388
+      },
+      "wall_s": 3200.821716293
+    },
+    {
+      "step": 210,
+      "train_loss": 0.6026286319865903,
+      "gradient_norm": 4.6692795753479
+    },
+    {
+      "step": 220,
+      "train_loss": 0.22963603657080967,
+      "gradient_norm": 3.2774782180786133
+    },
+    {
+      "step": 228,
+      "validation": {
+        "loss": 0.37939612353481217,
+        "question_accuracy": 0.7759365994236311,
+        "n": 1388
+      },
+      "wall_s": 3681.734694403
+    }
+  ],
+  "best": {
+    "step": 228,
+    "loss": 0.37939612353481217,
+    "question_accuracy": 0.7759365994236311,
+    "n": 1388
+  },
+  "steps": 228,
+  "wall_s": 3685.3596334179997,
+  "adapter_sha256": "4c4d1f9d683052f0f2b32196f409a9b46a250255ae84caf49b3288131bfa9c43",
+  "reload_check": {
+    "questions": 32,
+    "max_abs_score_diff": 0.0
+  }
+}

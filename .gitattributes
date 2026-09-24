@@ -1,0 +1,8 @@
+/data/hardcases.jsonl filter=lfs diff=lfs merge=lfs -text
+/data/hardcases_nb.jsonl filter=lfs diff=lfs merge=lfs -text
+/data/hardcases_r3.jsonl filter=lfs diff=lfs merge=lfs -text
+/data/hardcases_r3/raw/r3lu.jsonl filter=lfs diff=lfs merge=lfs -text
+/data/ova/hardcases.jsonl filter=lfs diff=lfs merge=lfs -text
+/data/ova/hardcases_nb.jsonl filter=lfs diff=lfs merge=lfs -text
+/reports/hardcases_r3/gen_cache/r3gk.jsonl filter=lfs diff=lfs merge=lfs -text
+/reports/hardcases_r3/gen_cache/r3lu.jsonl filter=lfs diff=lfs merge=lfs -text

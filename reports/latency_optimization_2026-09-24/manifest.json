@@ -1,0 +1,33 @@
+{
+  "created_utc": "2026-09-24T03:51:05.256838+00:00",
+  "git_head": "4ec53718d51326e483e037d2b384ecd50a70207e",
+  "files": {
+    "src/personal_jev/vllm_tree.py": "302a97fa616373be2d50cb3f516228d5212e917e2d218bceffea07dec271df50",
+    "src/personal_jev/tree.py": "cf0cc9a9ac1a0747829d4cb8e15f96bd867fa36ea56dc391445a36b3a4f9be8f",
+    "src/personal_jev/server.py": "c1cd852246c14e228b565f19513fa98d495b426f360cc79f9782e33569772e73",
+    "src/personal_jev/benchmark.py": "58c15946efcf0310a00cdbde73a8b44f7dc21566a18a2f817d4894dda5ef7d0b",
+    "src/personal_jev/train_tree.py": "569c96c30ccfc470a900a3cb8cfc2451cd6e3e3c9893c6d8362f96a2ef166a68",
+    "src/personal_jev/custom.py": "9068bf5d2b41b34d86084fb15be3471d40eed28e595706a3f73a248a00c3fc6b",
+    "src/personal_jev/classify.py": "1a480741b3dd7ac1c02b3b77032194cef57f10cb509efee28e27ddc9529dda82",
+    "src/personal_jev/train_custom.py": "2c0b57612a708eabfefe918fc6302d881220f9730849c8abf571281c8ac64f19",
+    "src/personal_jev/__init__.py": "c82d17272d14c5758ffce96aba9c4487104ee7ea351e94d67afc4c0d71e7494f",
+    "src/personal_jev/formatting.py": "9f9631ab6cd4804a61b29e0dbd80a6f0e916b4567ad8ac06cd6a2b5fb24b19e5",
+    "src/personal_jev/model.py": "e98d074b7eb3f04521816e210a5c4c825ec60f3622d60225f93fc19eae91f00c",
+    "src/personal_jev/schemas.py": "8df3faf8bd6b42f5218f22bd50dd3084245b7d8c508ae2b08e56ca96d251097f",
+    "src/personal_jev/cli.py": "1ee289dcd8bf4bcc600131eed1804564963918b011de330f1c423a3250a0d263",
+    "src/personal_jev/train.py": "040c0a3ae1bf8fdf882c70002c2f13400222db2f77b32e9b80c8dc0ee39157a0",
+    "src/personal_jev/evaluate.py": "8a2f2207197a382bb0e5d6debf0a69573d9dea1ad8292b1d155484e90d2224ed",
+    "src/personal_jev/data.py": "5eb4168f63d3338143296d25c6dc5e8641f895b161807c44edfd6f808bc451b9",
+    "src/personal_jev/calibration.py": "ce45471b3c2bf06740fa57ea8423a9d379a58a48573f829160e7a7579efa4fac",
+    "uv.lock": "c38316f7d5a0be528c6a12c5e95159c0180ce2273fa2a1f3f72eb00ff740a9a4",
+    "configs/tree_4b.json": "d185b438e40921076fac6a7f6fdbcffd0c896ae90850c1d6db8c205100d54d40",
+    "data/eval.jsonl": "be888eb38dcca063823924430e03985ddf2186b874e792d5734936ba93ba6910",
+    "data/synthetic.jsonl": "31b78b470a830766aaa0561426752bcc0a9ebf04d028d61e67c56c78bac4b566",
+    "data/dev.jsonl": "85c664114edb07d404c68af46a779ed32689022c71a4b97bdd5413c3d233c501",
+    "data/hf.jsonl": "fe29b29286d5a372271e925825e8b9794f3f64be9a9fc04cad458b4b94ada510",
+    "data/distill.jsonl": "7bcbf6de8667075ac61c42df3403ca126f1175ad648fcf50869112dd3cff9056",
+    "runs/tree_4b/adapter/adapter_model.safetensors": "b7a2c5f8503918e723bb8ccbd19ae9f6da10d339f9fc7c7d205354dfb92e17f5",
+    "runs/tree_4b/adapter/README.md": "c3cc08e7ee3c94740d336aec8a67d7c6a835f9d0e9e6a25e75e0528e4b65eb63",
+    "runs/tree_4b/adapter/adapter_config.json": "fcce934f58766d4b4302e897e0e059bd2705801b2abe45a9b9ae53874903affe"
+  }
+}

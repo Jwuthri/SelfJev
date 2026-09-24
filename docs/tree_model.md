@@ -122,7 +122,38 @@ validation, and the reranker wins on test.
   branch per question and candidate, so adding questions barely changes the time.
 - **Single-candidate speed-ups.** Even with one question × 3 candidates, the stock model reads the text 3 times,
   hence the 2–3× gain.
-- **Absolute latency** is A10G-bound. Jev claims 70–500 ms end to end; we did not measure Jev's latency.
+- **Absolute latency** is A10G-bound; see the end-to-end comparison with Jev below.
+
+### End to end vs Jev (2026-09-23)
+
+The same decisions-API requests were sent from a Mac in California to both services, one at a time:
+- **Jev** through OpenRouter, whose edge is 12 ms away;
+- **ours** (tree 4B + LoRA) on one AWS A10G in us-east-1, 71 ms away.
+
+The table gives p50 over 10 timed rounds, text 8 → 4,096 tokens, choice questions with 3 options. Full tables, p95,
+server-side times and cost: [reports/latency/summary.md](../reports/latency/summary.md); script
+`scripts/latency_sweep.py`, chart `scripts/latency_chart.py`.
+
+![latency vs text length](../reports/latency/latency.png)
+
+| text tokens | Jev, 1 q | ours vLLM, 1 q | ours transformers, 1 q | Jev, 16 q | ours vLLM, 16 q |
+|---|---|---|---|---|---|
+| 8 | 148 ms | **120 ms** | 196 ms | 159 ms | 336 ms |
+| 512 | **156 ms** | 197 ms | 263 ms | **160 ms** | 467 ms |
+| 2,048 | **144 ms** | 424 ms | 598 ms | **156 ms** | 767 ms |
+| 4,096 | **154 ms** | 755 ms | 1,062 ms | **174 ms** | 1,195 ms |
+
+- **Jev's curve is flat.** Its compute for ~6K tokens takes tens of ms, so its time is mostly network and API
+  overhead.
+- **Ours scales with the text.** The A10G is compute-bound at 6.5–10K tokens/s with vLLM and 4.7–6K with
+  transformers.
+- **Cost.** Fully busy at $1.006/h, the A10G with vLLM costs $0.005–0.27 per 1,000 requests; Jev costs $0.016–0.27 at
+  $0.042 per million input tokens. We are cheaper only while the GPU is busy.
+- **vLLM backend** ([src/personal_jev/vllm_tree.py](../src/personal_jev/vllm_tree.py)):
+  - every leaf is one prompt, and the prefix cache shares the text between leaves;
+  - the LoRA is merged into the weights;
+  - on the example request it makes the same decisions as the transformers path, scores within 0.06 logit;
+  - its test-set accuracy has not been re-measured.
 
 ## Training
 
@@ -149,8 +180,7 @@ thresholds.
 
 - One seed and one hyperparameter setting per backbone.
 - The 81.6% vs 80.3% gain over stock is significant (p = 0.016) but modest.
-- Speed was measured on one A10G only, and the latency figures include no serving optimizations such as a merged
-  adapter or batching queue.
+- Speed was measured on one A10G only (the L40S was out of capacity); no H100 numbers yet.
 - The eval-data caveats of the main README apply: LLM-written `eval_*` families with 17–32 questions each, and
   possible pretraining overlap of the public sets.
 - Remaining gap to Jev and GPT-6 Astra: sarcasm and sentiment (SST-2 84.0 vs Jev 96.7), BoolQ (83.3 vs 90.7), and

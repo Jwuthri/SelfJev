@@ -1,0 +1,123 @@
+{
+ "n": 9,
+ "all_regressions_to_none": true,
+ "cases": [
+  {
+   "id": "clinc_oos-test-1237",
+   "source_id": "clinc_oos-test-1237",
+   "family": "heldout_intent_clinc",
+   "reference_selected": "new_card",
+   "candidate_selected": "none",
+   "reference_correct": true,
+   "candidate_correct": false,
+   "state": "am i eligible for a new credit card",
+   "target": "new_card",
+   "r1_gold_minus_none_score": 0.24141502380371094,
+   "compact_gold_minus_none_score": -0.03910541534423828
+  },
+  {
+   "id": "clinc_oos-test-2410",
+   "source_id": "clinc_oos-test-2410",
+   "family": "heldout_intent_clinc",
+   "reference_selected": "restaurant_reviews",
+   "candidate_selected": "none",
+   "reference_correct": true,
+   "candidate_correct": false,
+   "state": "what do people think of the new burger at mcdonalds",
+   "target": "restaurant_reviews",
+   "r1_gold_minus_none_score": 0.41943931579589844,
+   "compact_gold_minus_none_score": -0.09422874450683594
+  },
+  {
+   "id": "clinc_oos-test-1105",
+   "source_id": "clinc_oos-test-1105",
+   "family": "heldout_intent_clinc",
+   "reference_selected": "rewards_balance",
+   "candidate_selected": "none",
+   "reference_correct": true,
+   "candidate_correct": false,
+   "state": "how many points do i have on my visa",
+   "target": "rewards_balance",
+   "r1_gold_minus_none_score": 0.17668724060058594,
+   "compact_gold_minus_none_score": -0.5462741851806641
+  },
+  {
+   "id": "clinc_oos-test-4028",
+   "source_id": "clinc_oos-test-4028",
+   "family": "heldout_intent_clinc",
+   "reference_selected": "gas",
+   "candidate_selected": "none",
+   "reference_correct": true,
+   "candidate_correct": false,
+   "state": "do i have enough gas in my car to make it to dallas",
+   "target": "gas",
+   "r1_gold_minus_none_score": 0.24772357940673828,
+   "compact_gold_minus_none_score": -0.05577278137207031
+  },
+  {
+   "id": "clinc_oos-test-3433",
+   "source_id": "clinc_oos-test-3433",
+   "family": "heldout_intent_clinc",
+   "reference_selected": "vaccines",
+   "candidate_selected": "none",
+   "reference_correct": true,
+   "candidate_correct": false,
+   "state": "would you need more shots to go to mexico",
+   "target": "vaccines",
+   "r1_gold_minus_none_score": 0.2754173278808594,
+   "compact_gold_minus_none_score": -0.04321479797363281
+  },
+  {
+   "id": "clinc_oos-test-3557",
+   "source_id": "clinc_oos-test-3557",
+   "family": "heldout_intent_clinc",
+   "reference_selected": "greeting",
+   "candidate_selected": "none",
+   "reference_correct": true,
+   "candidate_correct": false,
+   "state": "it is good to see you",
+   "target": "greeting",
+   "r1_gold_minus_none_score": 0.3286705017089844,
+   "compact_gold_minus_none_score": -0.08678817749023438
+  },
+  {
+   "id": "clinc_oos-test-2172",
+   "source_id": "clinc_oos-test-2172",
+   "family": "heldout_intent_clinc",
+   "reference_selected": "make_call",
+   "candidate_selected": "none",
+   "reference_correct": true,
+   "candidate_correct": false,
+   "state": "computer, call alexa",
+   "target": "make_call",
+   "r1_gold_minus_none_score": 0.2262716293334961,
+   "compact_gold_minus_none_score": -0.1952037811279297
+  },
+  {
+   "id": "clinc_oos-test-3850",
+   "source_id": "clinc_oos-test-3850",
+   "family": "heldout_intent_clinc",
+   "reference_selected": "bill_balance",
+   "candidate_selected": "none",
+   "reference_correct": true,
+   "candidate_correct": false,
+   "state": "how much are my rent and cable",
+   "target": "bill_balance",
+   "r1_gold_minus_none_score": 0.06750869750976562,
+   "compact_gold_minus_none_score": -0.32801246643066406
+  },
+  {
+   "id": "clinc_oos-test-2247",
+   "source_id": "clinc_oos-test-2247",
+   "family": "heldout_intent_clinc",
+   "reference_selected": "todo_list",
+   "candidate_selected": "none",
+   "reference_correct": true,
+   "candidate_correct": false,
+   "state": "what must i do today",
+   "target": "todo_list",
+   "r1_gold_minus_none_score": 0.14740943908691406,
+   "compact_gold_minus_none_score": -0.113739013671875
+  }
+ ]
+}

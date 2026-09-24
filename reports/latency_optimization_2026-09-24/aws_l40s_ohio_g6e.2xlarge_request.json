@@ -1,0 +1,83 @@
+{
+  "ImageId": "ami-0df05b259cbee3b8b",
+  "InstanceType": "g6e.2xlarge",
+  "MinCount": 1,
+  "MaxCount": 1,
+  "KeyName": "selfjev-tree-compact-20260924",
+  "NetworkInterfaces": [
+    {
+      "DeviceIndex": 0,
+      "Groups": [
+        "sg-07ae185d6dd01644a"
+      ],
+      "AssociatePublicIpAddress": true
+    }
+  ],
+  "BlockDeviceMappings": [
+    {
+      "DeviceName": "/dev/sda1",
+      "Ebs": {
+        "VolumeSize": 250,
+        "VolumeType": "gp3",
+        "DeleteOnTermination": true,
+        "Encrypted": true
+      }
+    }
+  ],
+  "MetadataOptions": {
+    "HttpTokens": "required"
+  },
+  "TagSpecifications": [
+    {
+      "ResourceType": "instance",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "selfjev-tree-compact-20260924-l40s-ohio"
+        },
+        {
+          "Key": "Project",
+          "Value": "selfjev"
+        },
+        {
+          "Key": "Experiment",
+          "Value": "tree-latency-compact"
+        },
+        {
+          "Key": "Owner",
+          "Value": "julien"
+        },
+        {
+          "Key": "ManagedBy",
+          "Value": "codex-tree-latency"
+        }
+      ]
+    },
+    {
+      "ResourceType": "volume",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "selfjev-tree-compact-20260924-l40s-ohio"
+        },
+        {
+          "Key": "Project",
+          "Value": "selfjev"
+        },
+        {
+          "Key": "Experiment",
+          "Value": "tree-latency-compact"
+        },
+        {
+          "Key": "Owner",
+          "Value": "julien"
+        },
+        {
+          "Key": "ManagedBy",
+          "Value": "codex-tree-latency"
+        }
+      ]
+    }
+  ],
+  "ClientToken": "selfjev-tree-compact-20260924-ohio-g6e.2xlarge"
+}

@@ -1,0 +1,9 @@
+{
+  "source_worktree": "/Users/julien/.codex/worktrees/1d33/SelfJev",
+  "source_files": {
+    "src/personal_jev/challengers.py": "1f0204390aa6e688b673c1311c4c06ed69d596779d6d58f91a0caf322422d164",
+    "scripts/run_challenger.py": "cc9ce59248f30a9ebbaa42f8dd20e24c8c7724e9d67306ee00913d4804ad1815",
+    "tests/test_challengers.py": "16f9592ff0076326b18bbcb90e0e4579b6b4ddf9d69a7c2884d01277fd99a389"
+  },
+  "prior_adapter_sha256": "e639fcfae76120dc4ee311500a1c2dd835546fb7eaa5ed25e458bcd3c5c2b832"
+}

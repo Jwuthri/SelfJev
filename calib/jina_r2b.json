@@ -1,0 +1,52 @@
+{
+ "temperature": {
+  "binary": 1.1614486138403428,
+  "multiclass": 1.244514611771385,
+  "multilabel": 1.1885022274370185
+ },
+ "threshold": {
+  "binary": 0.39678251814879717,
+  "multilabel": 0.33633124529609254
+ },
+ "fit": {
+  "method": "temperature scaling per output type, grid search on NLL",
+  "min_n": 30,
+  "model": "jinaai/jina-reranker-v3.5",
+  "revision": "e8a93f33f0b22108f8c2364f8484ce3422552fbc",
+  "adapter": "runs/jina_r2b/adapter",
+  "adapter_sha256": "b617fd1ea83c36c0a3e311b642341197b102dfd13f9fe05496366531512a1710",
+  "prompt_sha": "8bf5a0abfcae",
+  "fit_report": "reports/jina_r2b/calibration/report.json",
+  "fit_report_sha256": "328f66aa9d0d9ec7db3175a5a9465020d131fa6b31b250f0cc8e8addeed37d94",
+  "fit_data": [
+   {
+    "path": "data/hf.jsonl",
+    "sha256": "fe29b29286d5a372271e925825e8b9794f3f64be9a9fc04cad458b4b94ada510"
+   },
+   {
+    "path": "data/eval.jsonl",
+    "sha256": "be888eb38dcca063823924430e03985ddf2186b874e792d5734936ba93ba6910"
+   }
+  ],
+  "created": "2026-09-24T08:48:59+0000",
+  "n": {
+   "binary": 210,
+   "multiclass": 476,
+   "multilabel": 1014
+  },
+  "nll_before": {
+   "binary": 0.31730860206663,
+   "multiclass": 0.4955877207360509,
+   "multilabel": 0.323948450110501
+  },
+  "nll_after": {
+   "binary": 0.31389265586730286,
+   "multiclass": 0.4844380516706075,
+   "multilabel": 0.32015231453568044
+  },
+  "skipped": {},
+  "threshold_report": "reports/jina_r2b/validation/report.json",
+  "threshold_report_sha256": "8dc15fbbb4a79fc15afb5a9549766f998aacaef3afb9e347346dd6238aaac097",
+  "threshold_rule": "max F1 on validation after temperature scaling"
+ }
+}

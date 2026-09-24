@@ -1,0 +1,1445 @@
+[
+ {
+  "evaluation": "development",
+  "new_only_correct": 66,
+  "reference_only_correct": 54,
+  "changes": [
+   {
+    "id": "banking77-eval-2902",
+    "family": "hf_intent_banking77",
+    "reference_selected": "extra_charge_on_statement",
+    "new_selected": "cash_withdrawal_charge",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "banking77-eval-2848",
+    "family": "hf_intent_banking77",
+    "reference_selected": "card_payment_not_recognised",
+    "new_selected": "getting_spare_card",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "banking77-eval-2671",
+    "family": "hf_intent_banking77",
+    "reference_selected": "declined_transfer",
+    "new_selected": "pending_card_payment",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "banking77-eval-1692",
+    "family": "hf_intent_banking77",
+    "reference_selected": "request_refund",
+    "new_selected": "card_arrival",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-1813",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "surprise",
+     "sadness"
+    ],
+    "new_selected": [
+     "surprise"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-5401",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "disappointment",
+     "annoyance"
+    ],
+    "new_selected": [],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-2798",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "love"
+    ],
+    "new_selected": [
+     "love",
+     "admiration"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-2605",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [],
+    "new_selected": [
+     "realization"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-4522",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "gratitude",
+     "annoyance"
+    ],
+    "new_selected": [
+     "gratitude"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-2776",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "caring",
+     "embarrassment",
+     "optimism"
+    ],
+    "new_selected": [
+     "embarrassment",
+     "optimism"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-2884",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "disappointment"
+    ],
+    "new_selected": [
+     "pride",
+     "disappointment"
+    ],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-1923",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "amusement"
+    ],
+    "new_selected": [
+     "amusement",
+     "desire"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-853",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "sadness",
+     "annoyance"
+    ],
+    "new_selected": [
+     "sadness"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-1624",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "disapproval"
+    ],
+    "new_selected": [
+     "sadness",
+     "disapproval"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-2978",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "confusion"
+    ],
+    "new_selected": [],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-4691",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "excitement"
+    ],
+    "new_selected": [
+     "excitement",
+     "disapproval"
+    ],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-909",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "gratitude"
+    ],
+    "new_selected": [
+     "approval",
+     "gratitude"
+    ],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-595",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "neutral",
+     "disapproval"
+    ],
+    "new_selected": [
+     "neutral"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-3842",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [],
+    "new_selected": [
+     "approval"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-1990",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "curiosity",
+     "neutral"
+    ],
+    "new_selected": [
+     "neutral"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-5298",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "admiration"
+    ],
+    "new_selected": [
+     "amusement",
+     "admiration"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-5341",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "annoyance"
+    ],
+    "new_selected": [
+     "annoyance",
+     "anger"
+    ],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-5386",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "disapproval",
+     "confusion",
+     "curiosity"
+    ],
+    "new_selected": [
+     "confusion",
+     "curiosity"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-2392",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "anger"
+    ],
+    "new_selected": [
+     "annoyance",
+     "anger"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-3251",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "joy",
+     "admiration"
+    ],
+    "new_selected": [
+     "neutral",
+     "joy",
+     "admiration"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-2307",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "joy",
+     "neutral"
+    ],
+    "new_selected": [
+     "neutral"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-1686",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "neutral"
+    ],
+    "new_selected": [
+     "neutral",
+     "confusion"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-2621",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "disappointment"
+    ],
+    "new_selected": [
+     "admiration",
+     "disappointment"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "go_emotions-test-952",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "annoyance",
+     "neutral"
+    ],
+    "new_selected": [
+     "annoyance"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-3063",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "neutral"
+    ],
+    "new_selected": [
+     "neutral",
+     "disapproval"
+    ],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-4694",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "admiration",
+     "annoyance"
+    ],
+    "new_selected": [
+     "admiration",
+     "neutral",
+     "annoyance"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-2515",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "approval"
+    ],
+    "new_selected": [
+     "approval",
+     "love"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-3268",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "optimism"
+    ],
+    "new_selected": [],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-2329",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "neutral"
+    ],
+    "new_selected": [
+     "neutral",
+     "optimism"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-3036",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "neutral"
+    ],
+    "new_selected": [
+     "neutral",
+     "admiration"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-4373",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "joy"
+    ],
+    "new_selected": [
+     "admiration"
+    ],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-3537",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "neutral",
+     "desire",
+     "optimism"
+    ],
+    "new_selected": [
+     "neutral",
+     "optimism"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "go_emotions-test-3472",
+    "family": "hf_emotions_multilabel",
+    "reference_selected": [
+     "pride"
+    ],
+    "new_selected": [
+     "admiration",
+     "pride"
+    ],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "mnli-eval-6192",
+    "family": "hf_nli",
+    "reference_selected": true,
+    "new_selected": false,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "mnli-eval-8893",
+    "family": "hf_nli",
+    "reference_selected": true,
+    "new_selected": false,
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "mnli-eval-2838",
+    "family": "hf_nli",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "mnli-eval-6717",
+    "family": "hf_nli",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "mnli-eval-3976",
+    "family": "hf_nli",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "ag_news-eval-6843",
+    "family": "hf_topic_agnews",
+    "reference_selected": "business",
+    "new_selected": "sci_tech",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "ag_news-eval-1884",
+    "family": "hf_topic_agnews",
+    "reference_selected": "business",
+    "new_selected": "sci_tech",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "ag_news-eval-7266",
+    "family": "hf_topic_agnews",
+    "reference_selected": "sci_tech",
+    "new_selected": "business",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "ag_news-eval-5766",
+    "family": "hf_topic_agnews",
+    "reference_selected": "sci_tech",
+    "new_selected": "business",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "ag_news-eval-1631",
+    "family": "hf_topic_agnews",
+    "reference_selected": "sci_tech",
+    "new_selected": "business",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "tweet_eval_sentiment-test-9991",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "negative",
+    "new_selected": "neutral",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "tweet_eval_sentiment-test-10687",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "positive",
+    "new_selected": "neutral",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "tweet_eval_sentiment-test-1566",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "positive",
+    "new_selected": "neutral",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "tweet_eval_sentiment-test-9166",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "positive",
+    "new_selected": "neutral",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "tweet_eval_sentiment-test-8675",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "neutral",
+    "new_selected": "negative",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "tweet_eval_sentiment-test-8544",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "positive",
+    "new_selected": "neutral",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "tweet_eval_sentiment-test-11951",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "positive",
+    "new_selected": "neutral",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "tweet_eval_sentiment-test-2502",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "positive",
+    "new_selected": "neutral",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "tweet_eval_sentiment-test-2936",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "neutral",
+    "new_selected": "negative",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "tweet_eval_sentiment-test-11009",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "positive",
+    "new_selected": "neutral",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "tweet_eval_sentiment-test-5474",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "negative",
+    "new_selected": "neutral",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "tweet_eval_sentiment-test-8847",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "negative",
+    "new_selected": "neutral",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "tweet_eval_sentiment-test-4560",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "neutral",
+    "new_selected": "negative",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "tweet_eval_sentiment-test-8944",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "neutral",
+    "new_selected": "negative",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "tweet_eval_sentiment-test-11544",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "neutral",
+    "new_selected": "negative",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "tweet_eval_sentiment-test-8105",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "positive",
+    "new_selected": "neutral",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "tweet_eval_sentiment-test-10282",
+    "family": "hf_sentiment_tweets",
+    "reference_selected": "negative",
+    "new_selected": "neutral",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "clinc_oos-test-1237",
+    "family": "heldout_intent_clinc",
+    "reference_selected": "new_card",
+    "new_selected": "none",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "clinc_oos-test-2410",
+    "family": "heldout_intent_clinc",
+    "reference_selected": "restaurant_reviews",
+    "new_selected": "none",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "clinc_oos-test-1105",
+    "family": "heldout_intent_clinc",
+    "reference_selected": "rewards_balance",
+    "new_selected": "none",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "clinc_oos-test-4028",
+    "family": "heldout_intent_clinc",
+    "reference_selected": "gas",
+    "new_selected": "none",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "clinc_oos-test-3433",
+    "family": "heldout_intent_clinc",
+    "reference_selected": "vaccines",
+    "new_selected": "none",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "clinc_oos-test-3557",
+    "family": "heldout_intent_clinc",
+    "reference_selected": "greeting",
+    "new_selected": "none",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "clinc_oos-test-2172",
+    "family": "heldout_intent_clinc",
+    "reference_selected": "make_call",
+    "new_selected": "none",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "clinc_oos-test-3850",
+    "family": "heldout_intent_clinc",
+    "reference_selected": "bill_balance",
+    "new_selected": "none",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "clinc_oos-test-2247",
+    "family": "heldout_intent_clinc",
+    "reference_selected": "todo_list",
+    "new_selected": "none",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "dbpedia_14-test-12789",
+    "family": "heldout_topic_dbpedia",
+    "reference_selected": "writtenwork",
+    "new_selected": "artist",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "dbpedia_14-test-29544",
+    "family": "heldout_topic_dbpedia",
+    "reference_selected": "meanoftransportation",
+    "new_selected": "building",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "dbpedia_14-test-10248",
+    "family": "heldout_topic_dbpedia",
+    "reference_selected": "artist",
+    "new_selected": "officeholder",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "dbpedia_14-test-66352",
+    "family": "heldout_topic_dbpedia",
+    "reference_selected": "writtenwork",
+    "new_selected": "company",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "trec_coarse-test-106",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "numeric_values",
+    "new_selected": "entities",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "trec_coarse-test-29",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "entities",
+    "new_selected": "locations",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "trec_coarse-test-239",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "entities",
+    "new_selected": "description_and_abstract_concepts",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "trec_coarse-test-33",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "numeric_values",
+    "new_selected": "entities",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "trec_coarse-test-127",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "entities",
+    "new_selected": "description_and_abstract_concepts",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "trec_coarse-test-62",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "entities",
+    "new_selected": "locations",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "trec_coarse-test-269",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "human_beings",
+    "new_selected": "entities",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "trec_coarse-test-162",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "entities",
+    "new_selected": "description_and_abstract_concepts",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "trec_coarse-test-368",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "description_and_abstract_concepts",
+    "new_selected": "locations",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "trec_coarse-test-12",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "numeric_values",
+    "new_selected": "entities",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "trec_coarse-test-370",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "numeric_values",
+    "new_selected": "entities",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "trec_coarse-test-408",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "numeric_values",
+    "new_selected": "description_and_abstract_concepts",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "trec_coarse-test-454",
+    "family": "heldout_question_type_trec",
+    "reference_selected": "numeric_values",
+    "new_selected": "entities",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-280",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "joy",
+    "new_selected": "fear",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-1478",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "surprise",
+    "new_selected": "sadness",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-340",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "sadness",
+    "new_selected": "anger",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "emotion-test-1250",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "sadness",
+    "new_selected": "love",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-858",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "sadness",
+    "new_selected": "fear",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-1457",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "joy",
+    "new_selected": "surprise",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-1340",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "sadness",
+    "new_selected": "fear",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-953",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "sadness",
+    "new_selected": "fear",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-195",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "surprise",
+    "new_selected": "sadness",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "emotion-test-1310",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "surprise",
+    "new_selected": "joy",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "emotion-test-654",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "joy",
+    "new_selected": "love",
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-364",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "sadness",
+    "new_selected": "joy",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "emotion-test-984",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "sadness",
+    "new_selected": "fear",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-606",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "fear",
+    "new_selected": "anger",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-752",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "surprise",
+    "new_selected": "joy",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "emotion-test-1425",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "surprise",
+    "new_selected": "love",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-389",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "surprise",
+    "new_selected": "joy",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-738",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "sadness",
+    "new_selected": "fear",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-1362",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "surprise",
+    "new_selected": "sadness",
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "emotion-test-1567",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "fear",
+    "new_selected": "sadness",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "emotion-test-1347",
+    "family": "heldout_emotion_multiclass",
+    "reference_selected": "joy",
+    "new_selected": "love",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "boolq-test-1568",
+    "family": "heldout_boolq",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "boolq-test-2126",
+    "family": "heldout_boolq",
+    "reference_selected": true,
+    "new_selected": false,
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "boolq-test-2412",
+    "family": "heldout_boolq",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "boolq-test-1768",
+    "family": "heldout_boolq",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "boolq-test-767",
+    "family": "heldout_boolq",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "boolq-test-544",
+    "family": "heldout_boolq",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "boolq-test-1744",
+    "family": "heldout_boolq",
+    "reference_selected": true,
+    "new_selected": false,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "boolq-test-966",
+    "family": "heldout_boolq",
+    "reference_selected": true,
+    "new_selected": false,
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "boolq-test-2999",
+    "family": "heldout_boolq",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "boolq-test-2491",
+    "family": "heldout_boolq",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "boolq-test-2570",
+    "family": "heldout_boolq",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "boolq-test-1400",
+    "family": "heldout_boolq",
+    "reference_selected": true,
+    "new_selected": false,
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "boolq-test-2459",
+    "family": "heldout_boolq",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-245",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-421",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-729",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-220",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-352",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-239",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-696",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-780",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-332",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-588",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-398",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-532",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": true,
+    "new_selected": false,
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "sst2-test-458",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "sst2-test-728",
+    "family": "heldout_sentiment_sst2",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "eadv-013-q3",
+    "family": "eval_adversarial",
+    "reference_selected": [
+     "contract_termination",
+     "fee_refund",
+     "written_confirmation"
+    ],
+    "new_selected": [
+     "contract_termination",
+     "fee_refund",
+     "written_confirmation",
+     "invoice_history"
+    ],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "eagt-005-q0",
+    "family": "eval_agent_output",
+    "reference_selected": [],
+    "new_selected": [
+     "reveals_confidential"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "eagt-010-q1",
+    "family": "eval_agent_output",
+    "reference_selected": [
+     "empathy",
+     "apology",
+     "general_reasons"
+    ],
+    "new_selected": [
+     "empathy",
+     "apology",
+     "general_reasons",
+     "specific_cause"
+    ],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "eagt-013-q0",
+    "family": "eval_agent_output",
+    "reference_selected": [],
+    "new_selected": [
+     "reveals_confidential"
+    ],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "eagt-015-q1",
+    "family": "eval_agent_output",
+    "reference_selected": "rule_2_damage_exception",
+    "new_selected": "none",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "eagt-020-q1",
+    "family": "eval_agent_output",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "eevi-004-q3",
+    "family": "eval_evidence",
+    "reference_selected": [
+     "indexed_2381004"
+    ],
+    "new_selected": [],
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "emul-008-q0",
+    "family": "eval_multilabel",
+    "reference_selected": [
+     "near_miss",
+     "ppe_breach",
+     "property_damage"
+    ],
+    "new_selected": [
+     "near_miss",
+     "ppe_breach",
+     "property_damage",
+     "late_report"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   },
+   {
+    "id": "emul-019-q3",
+    "family": "eval_multilabel",
+    "reference_selected": [],
+    "new_selected": [
+     "champion_departed"
+    ],
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "epol-010-q0",
+    "family": "eval_policy",
+    "reference_selected": "denied_other",
+    "new_selected": "full_reimbursement",
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "epol-010-q1",
+    "family": "eval_policy",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": false,
+    "new_correct": true
+   },
+   {
+    "id": "epol-016-q3",
+    "family": "eval_policy",
+    "reference_selected": [
+     "nightly_forfeited"
+    ],
+    "new_selected": [
+     "nightly_forfeited",
+     "cleaning_forfeited"
+    ],
+    "reference_correct": false,
+    "new_correct": false
+   }
+  ]
+ },
+ {
+  "evaluation": "fresh rules",
+  "new_only_correct": 1,
+  "reference_only_correct": 1,
+  "changes": [
+   {
+    "id": "compact-challenge-071-q1",
+    "family": "compact_fresh_rules",
+    "reference_selected": false,
+    "new_selected": true,
+    "reference_correct": true,
+    "new_correct": false
+   },
+   {
+    "id": "compact-challenge-119-q1",
+    "family": "compact_fresh_rules",
+    "reference_selected": true,
+    "new_selected": false,
+    "reference_correct": false,
+    "new_correct": true
+   }
+  ]
+ }
+]

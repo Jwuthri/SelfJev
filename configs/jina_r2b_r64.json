@@ -1,0 +1,48 @@
+{
+  "train_files": [
+    "data/hf.jsonl",
+    "data/synthetic.jsonl",
+    "data/hardcases_nb.jsonl"
+  ],
+  "val_files": [
+    "data/hf.jsonl",
+    "data/synthetic.jsonl",
+    "data/eval.jsonl",
+    "data/hardcases.jsonl"
+  ],
+  "out_dir": "runs/jina_r2b_r64",
+  "seed": 13,
+  "dtype": "bfloat16",
+  "max_length": 8192,
+  "max_batch_tokens": 16384,
+  "grad_accum": 2,
+  "epochs": 1,
+  "lr": 0.0002,
+  "head_lr": 0.01,
+  "warmup_ratio": 0.05,
+  "weight_decay": 0.0,
+  "max_grad_norm": 1.0,
+  "gradient_checkpointing": true,
+  "eval_every": 50,
+  "max_val_questions": 1400,
+  "max_train_per_family": 1600,
+  "query_tail": 1024,
+  "max_passages": 32,
+  "train_projector": true,
+  "lora": {
+    "r": 64,
+    "alpha": 128,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj",
+      "gate_proj",
+      "up_proj",
+      "down_proj"
+    ]
+  },
+  "model_id": "jinaai/jina-reranker-v3.5",
+  "revision": "e8a93f33f0b22108f8c2364f8484ce3422552fbc"
+}

@@ -1,0 +1,77 @@
+{
+  "all": {
+    "n": 10080,
+    "correct": 8379,
+    "accuracy": 0.83125
+  },
+  "type:multiclass": {
+    "n": 5455,
+    "correct": 4791,
+    "accuracy": 0.8782768102658112
+  },
+  "family:hf_intent_banking77": {
+    "n": 1600,
+    "correct": 1499,
+    "accuracy": 0.936875
+  },
+  "type:multilabel": {
+    "n": 2199,
+    "correct": 1270,
+    "accuracy": 0.5775352432924057
+  },
+  "family:hf_emotions_multilabel": {
+    "n": 1600,
+    "correct": 728,
+    "accuracy": 0.455
+  },
+  "type:binary": {
+    "n": 2426,
+    "correct": 2318,
+    "accuracy": 0.955482275350371
+  },
+  "family:hf_nli": {
+    "n": 1600,
+    "correct": 1524,
+    "accuracy": 0.9525
+  },
+  "family:hf_topic_agnews": {
+    "n": 1600,
+    "correct": 1462,
+    "accuracy": 0.91375
+  },
+  "family:hf_sentiment_tweets": {
+    "n": 1600,
+    "correct": 1187,
+    "accuracy": 0.741875
+  },
+  "family:syn_adversarial": {
+    "n": 304,
+    "correct": 293,
+    "accuracy": 0.9638157894736842
+  },
+  "family:syn_evidence": {
+    "n": 328,
+    "correct": 318,
+    "accuracy": 0.9695121951219512
+  },
+  "family:syn_multilabel": {
+    "n": 286,
+    "correct": 270,
+    "accuracy": 0.9440559440559441
+  },
+  "family:syn_policy": {
+    "n": 223,
+    "correct": 201,
+    "accuracy": 0.9013452914798207
+  },
+  "family:syn_routing": {
+    "n": 468,
+    "correct": 453,
+    "accuracy": 0.967948717948718
+  },
+  "family:syn_urgency_sentiment": {
+    "n": 471,
+    "correct": 444,
+    "accuracy": 0.9426751592356688
+  }
+}

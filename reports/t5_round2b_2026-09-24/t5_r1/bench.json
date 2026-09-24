@@ -1,0 +1,2119 @@
+{
+  "model": {
+    "rotary_buffer_precision": "native",
+    "adapter_sha256": "e639fcfae76120dc4ee311500a1c2dd835546fb7eaa5ed25e458bcd3c5c2b832",
+    "model": "google/t5gemma-2-1b-1b",
+    "revision": "dd0a2683227859151b1730ca3a63087df5b5f39b",
+    "adapter": "runs/t5gemma2_r1_reference/adapter",
+    "device": "cuda",
+    "dtype": "bfloat16",
+    "architecture": "pretrained T5Gemma encoder/decoder; shared document cross-KV views",
+    "prompt": "challenger-state-first-v1",
+    "prompt_sha": "6c9d8459ac44",
+    "truncation": "none",
+    "max_length": 32768,
+    "branch_batch": 16,
+    "cache_storage": "one cross-KV per layer/document; bounded expanded decoder views",
+    "merged": false,
+    "shared_decoder_prefix": false,
+    "gpu": "NVIDIA L40S"
+  },
+  "gpu": "NVIDIA L40S",
+  "request_sha256": "0eee3c4799e515ba8a0a2bf40b32820a136269e73931a89c08e13ba1772c474a",
+  "gpu_before": "NVIDIA L40S, 595.91.07, P0, 41, 135.50 W, 2040 MHz, 9001 MHz, 18439 MiB",
+  "timing": "resident model, cold document prefix, same request bytes; excludes model loading and network",
+  "rows": [
+    {
+      "bucket": "512_1",
+      "gpu_after": "NVIDIA L40S, 595.91.07, P0, 41, 97.02 W, 2040 MHz, 9001 MHz, 18439 MiB",
+      "n": 20,
+      "p50_ms": 117.16059800028233,
+      "p95_ms": 118.2547100006559,
+      "raw_ms": [
+        118.2547100006559,
+        117.03512599979149,
+        117.42145700009132,
+        117.2200660003,
+        116.78497299999435,
+        118.30911300057778,
+        117.42607700034569,
+        116.98360399986996,
+        117.1644030000607,
+        118.05079900022974,
+        117.87011999967945,
+        117.04510700019455,
+        116.83486599940807,
+        117.32278099952964,
+        115.1245969995216,
+        114.74225700021634,
+        116.94810199969652,
+        117.15679300050397,
+        117.14013200071349,
+        117.35659299938561
+      ],
+      "counts": [
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 707,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 13498368
+        }
+      ],
+      "peak_allocated_mb": 4261.23193359375,
+      "state_tokens_actual": [
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503
+      ],
+      "synthetic_correct_decisions": 18,
+      "synthetic_decisions": 20
+    },
+    {
+      "bucket": "512_16",
+      "gpu_after": "NVIDIA L40S, 595.91.07, P0, 41, 130.94 W, 2040 MHz, 9001 MHz, 18439 MiB",
+      "n": 20,
+      "p50_ms": 242.2795464999581,
+      "p95_ms": 243.1086550004693,
+      "raw_ms": [
+        242.52841500037903,
+        243.1086550004693,
+        245.41702500027895,
+        239.52982900027564,
+        241.31430099987483,
+        242.4127190006402,
+        237.8510099997584,
+        239.68005599999742,
+        242.7383459998964,
+        242.42572900038795,
+        242.48083299971768,
+        242.34913600048458,
+        242.06949099971098,
+        242.93953600044915,
+        242.30391299988696,
+        242.04088999977103,
+        241.3647650000712,
+        242.2551800000292,
+        239.61565300032817,
+        241.97625600027095
+      ],
+      "counts": [
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        },
+        {
+          "input_tokens": 3728,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 13498368
+        }
+      ],
+      "peak_allocated_mb": 4499.35888671875,
+      "state_tokens_actual": [
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503,
+        503
+      ],
+      "synthetic_correct_decisions": 256,
+      "synthetic_decisions": 320
+    },
+    {
+      "bucket": "2048_1",
+      "gpu_after": "NVIDIA L40S, 595.91.07, P0, 43, 147.21 W, 2040 MHz, 9001 MHz, 18439 MiB",
+      "n": 20,
+      "p50_ms": 120.02289749943884,
+      "p95_ms": 121.65684799947485,
+      "raw_ms": [
+        121.98818500019115,
+        121.46238799959974,
+        120.0690849991588,
+        119.96532899956946,
+        120.45168499935244,
+        120.56032100008451,
+        118.11995300013223,
+        120.2264430003197,
+        119.97670999971888,
+        119.78477100001328,
+        121.21975500031112,
+        119.73818800015579,
+        119.70563600061723,
+        119.27485299929685,
+        118.69059300079243,
+        119.9027760003446,
+        120.89010799991229,
+        120.0901160000285,
+        119.95718900016072,
+        121.65684799947485
+      ],
+      "counts": [
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2210,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        }
+      ],
+      "peak_allocated_mb": 4419.9677734375,
+      "state_tokens_actual": [
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006
+      ],
+      "synthetic_correct_decisions": 13,
+      "synthetic_decisions": 20
+    },
+    {
+      "bucket": "2048_4",
+      "gpu_after": "NVIDIA L40S, 595.91.07, P0, 41, 166.59 W, 2040 MHz, 9001 MHz, 18439 MiB",
+      "n": 20,
+      "p50_ms": 133.24160799993479,
+      "p95_ms": 133.67757000014535,
+      "raw_ms": [
+        133.8818670001274,
+        133.24332299998787,
+        133.37775099989813,
+        133.13169699995342,
+        133.2398929998817,
+        133.44618199971592,
+        133.25743800032797,
+        131.56451800023206,
+        133.09716999992816,
+        133.67757000014535,
+        133.31512100012333,
+        133.09315900005458,
+        132.5809420004589,
+        133.58368500030338,
+        133.03403699956107,
+        133.01275499998155,
+        133.2368370003678,
+        133.56033299987757,
+        133.37749399943277,
+        132.91965999997046
+      ],
+      "counts": [
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 2810,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 53514240
+        }
+      ],
+      "peak_allocated_mb": 4934.6484375,
+      "state_tokens_actual": [
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006
+      ],
+      "synthetic_correct_decisions": 72,
+      "synthetic_decisions": 80
+    },
+    {
+      "bucket": "2048_16",
+      "gpu_after": "NVIDIA L40S, 595.91.07, P0, 41, 166.97 W, 2040 MHz, 9001 MHz, 18439 MiB",
+      "n": 100,
+      "p50_ms": 284.3923069999619,
+      "p95_ms": 285.30874499938363,
+      "raw_ms": [
+        284.31698300028074,
+        281.9036760001836,
+        282.8644269993674,
+        284.76389599927643,
+        281.5674779994879,
+        283.5041700000147,
+        284.55771599965374,
+        284.1952469998432,
+        284.32842299935146,
+        280.20464699966396,
+        284.4200279996585,
+        284.59055699931923,
+        281.9907700004478,
+        284.2217879997406,
+        284.2876509994312,
+        282.6073030000771,
+        283.63662700030545,
+        284.24121900025057,
+        283.97006500017596,
+        284.2589900001258,
+        284.38909699980286,
+        284.7595960001854,
+        281.49502399992343,
+        281.76913900006184,
+        284.7456259996761,
+        284.3176729993502,
+        284.80869000031817,
+        284.45300000021234,
+        285.24887200001103,
+        283.2906190005815,
+        283.2408860003852,
+        284.29979199972877,
+        282.41482300018106,
+        285.07985300075234,
+        284.527664000052,
+        284.533164000095,
+        280.692051999722,
+        283.24742699987837,
+        285.1944389994969,
+        284.48069200021564,
+        284.89862300011737,
+        284.6286499998314,
+        286.94577099940943,
+        284.5484649997161,
+        284.9472469997636,
+        284.78424700006144,
+        284.8015480003596,
+        284.64445999998134,
+        285.4294310000114,
+        284.8309999999401,
+        286.11300800002937,
+        283.07465800025966,
+        284.6374599994306,
+        284.8033589998522,
+        284.4790920007654,
+        284.652000999813,
+        284.5213929995225,
+        283.94332399966515,
+        283.26502700019773,
+        285.10315400035324,
+        283.1764929997007,
+        283.25343699998484,
+        285.30874499938363,
+        284.574877000523,
+        282.413902999906,
+        284.3581550005183,
+        284.4169680001869,
+        284.773266999764,
+        284.15753500030405,
+        282.43111399933696,
+        284.3955170001209,
+        284.33061400028237,
+        283.0136439997659,
+        284.90722400056256,
+        285.0608730004751,
+        284.53031400022155,
+        281.7733189995124,
+        286.32200799984275,
+        282.10649700031354,
+        282.3828410000715,
+        284.7066829999676,
+        283.25691699956224,
+        284.80446899993694,
+        281.6216410001289,
+        282.2775550002916,
+        284.6014180004204,
+        284.3842570000561,
+        283.4623479993752,
+        284.72339500058297,
+        283.1738030008637,
+        284.28515100040386,
+        284.87556200070685,
+        282.4780959999771,
+        283.6874800004807,
+        284.5617459997811,
+        284.80812900033925,
+        282.3209069993027,
+        284.67380099937145,
+        286.15259999969567,
+        284.9540770002932
+      ],
+      "counts": [
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        },
+        {
+          "input_tokens": 5231,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 53514240
+        }
+      ],
+      "peak_allocated_mb": 5168.5615234375,
+      "state_tokens_actual": [
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006,
+        2006
+      ],
+      "synthetic_correct_decisions": 1264,
+      "synthetic_decisions": 1600
+    },
+    {
+      "bucket": "8192_1",
+      "gpu_after": "NVIDIA L40S, 595.91.07, P0, 46, 236.24 W, 2040 MHz, 9001 MHz, 18439 MiB",
+      "n": 20,
+      "p50_ms": 321.88636999990194,
+      "p95_ms": 323.7272469996242,
+      "raw_ms": [
+        322.44975400044495,
+        322.6444450001509,
+        321.1591609997413,
+        321.79262499994365,
+        321.9573340002171,
+        322.8876230004971,
+        325.40856699961296,
+        323.7272469996242,
+        323.12538599944673,
+        322.91767399965465,
+        322.513582999818,
+        322.6326900003187,
+        321.1507509995499,
+        321.0625860001528,
+        320.9511710001607,
+        320.82137299948954,
+        321.1084889999256,
+        321.8154059995868,
+        321.24570599989966,
+        320.84271399980935
+      ],
+      "counts": [
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 8223,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 1,
+          "cross_kv_storage_bytes": 213604352
+        }
+      ],
+      "peak_allocated_mb": 5376.72802734375,
+      "state_tokens_actual": [
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019
+      ],
+      "synthetic_correct_decisions": 14,
+      "synthetic_decisions": 20
+    },
+    {
+      "bucket": "8192_16",
+      "gpu_after": "NVIDIA L40S, 595.91.07, P0, 46, 219.05 W, 2040 MHz, 9001 MHz, 18439 MiB",
+      "n": 20,
+      "p50_ms": 677.9622750000271,
+      "p95_ms": 679.7199650000039,
+      "raw_ms": [
+        678.0763599999773,
+        677.8288270006669,
+        677.6949799996146,
+        676.7725409999912,
+        677.1668920000593,
+        678.1489949999013,
+        679.7199650000039,
+        680.3728309996586,
+        677.9571150000265,
+        677.3487020000175,
+        679.1075150003962,
+        677.9674350000278,
+        678.1669570000304,
+        676.9185269995432,
+        678.3339009998599,
+        677.9387200003839,
+        677.7705619997505,
+        678.0330850006067,
+        678.2610670006761,
+        677.2695050003676
+      ],
+      "counts": [
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        },
+        {
+          "input_tokens": 11244,
+          "encoder_calls": 1,
+          "cross_projection_pairs": 26,
+          "decoder_batches": 3,
+          "cross_kv_storage_bytes": 213604352
+        }
+      ],
+      "peak_allocated_mb": 7905.9697265625,
+      "state_tokens_actual": [
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019,
+        8019
+      ],
+      "synthetic_correct_decisions": 240,
+      "synthetic_decisions": 320
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "tree-compact-v2",
+  "prefix": "<|im_start|>system\nJudge whether the proposed answer to the question is correct, using only the Document as evidence. Answer yes or no.<|im_end|>\n<|im_start|>user\n",
+  "state": [
+    "<Document>: ",
+    "\n"
+  ],
+  "question": [
+    "Question: ",
+    "\nAnswer:"
+  ],
+  "leaf": " ",
+  "suffix": "<|im_end|>",
+  "binary_answer": "Yes",
+  "readout": [
+    "yes",
+    "no"
+  ],
+  "user_text": "split_special_tokens=True",
+  "sha": "197307642df6"
+}

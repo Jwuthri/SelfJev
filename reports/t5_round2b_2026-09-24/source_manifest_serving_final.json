@@ -1,0 +1,25 @@
+{
+  "created_utc": "2026-09-24T07:43:09.995397+00:00",
+  "files": {
+    "configs/t5gemma2_r2b.json": "ca3a3d80045ac4cc6ff3528dbb3f309eefd9ec429bc2027e94b6c54c124995d8",
+    "pyproject.toml": "e54aa0336feb390ed4473f44edc93b2ca60c124813ff5ccd9ba1cd09962ea543",
+    "reports/t5_round2b_2026-09-24/latency_requests.json": "0eee3c4799e515ba8a0a2bf40b32820a136269e73931a89c08e13ba1772c474a",
+    "scripts/check_t5_overfit.py": "4ad0e9d6a934a3a6885ecffb8f440c45df55747cd6c58720e7a752f826d6fb43",
+    "scripts/check_t5_prefix.py": "cb22d13759267fc5836c32e3153a63c67b38cf57f4a7985d3b7cf4d8aa7748cc",
+    "scripts/check_t5_round2b.py": "98313be3c43764476190f52c6392c117f069ffb2227726780b33b5ff44b49334",
+    "scripts/eval_t5_round2b.py": "fe67a985de99e9392e1f8850c9274ac061c778d967168e4714263016b4e71dd0",
+    "scripts/evaluate_t5_round2b.sh": "1e0368dbe65818ed735c987f03255d2280e40e0c834422e0f36009b28119b34c",
+    "scripts/prepare_t5_round2b.py": "5ddf1420db27fa82edc0322ba63729f87ac6a0d4966000b4d0516955d767b1aa",
+    "scripts/profile_t5_round2b.py": "f68cf55fbd4c46097ed7362b4865925e40e358a0dec214a19702eeced5b9d351",
+    "scripts/run_challenger.py": "cc9ce59248f30a9ebbaa42f8dd20e24c8c7724e9d67306ee00913d4804ad1815",
+    "scripts/summarize_t5_round2b.py": "729a88ae717747d7596a1f23a34f06002ad2e51aa79fd8d12e9c4e686fe2ab90",
+    "scripts/train_t5_round2b.py": "57463d34f64ff46277b8234eb191060c552b9a12375004fcc57c8308104f9ef7",
+    "src/personal_jev/challengers.py": "1f0204390aa6e688b673c1311c4c06ed69d596779d6d58f91a0caf322422d164",
+    "src/personal_jev/t5_shared.py": "de5aeb3deb6fdd8cbeb9ff4eb9b90ba0640b2072c4ba816a52d4fa6b58d2ddda",
+    "src/personal_jev/tree.py": "1cab17aca09997e796f114da2830ef324a27d93f952798ac69cc56cd4c556324",
+    "src/personal_jev/vllm_tree.py": "0626608b9e75e4189619608892a74f048c960d9e62e4f584f261f7b78ba8da71",
+    "tests/test_t5_shared.py": "ea8212a16765493572cbb00dc11df038b2758db4f8c85e205ccfd2dfa5fb5683",
+    "uv.lock": "c38316f7d5a0be528c6a12c5e95159c0180ce2273fa2a1f3f72eb00ff740a9a4"
+  },
+  "note": "Final serving/check scripts frozen before the first new development/eval2 score."
+}

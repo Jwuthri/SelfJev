@@ -17,6 +17,7 @@ import concurrent.futures as cf
 import hashlib
 import json
 import sys
+import threading
 import time
 import os
 import urllib.error
@@ -31,6 +32,7 @@ from compare_external import call_cost, http, jev_request, llm_request  # noqa: 
 from personal_jev.data import expand_source, read_jsonl, write_jsonl  # noqa: E402
 
 RAW = ROOT / "data/hardcases/raw"
+lock_sync = threading.Lock()
 TERMINAL = {"completed", "failed", "expired", "cancelled"}
 OPENAI = "https://api.openai.com"
 PRICE = {"gpt-6-astra": (5.0, 25.0)}  # batch USD per M tokens (input, output incl. reasoning) = 50% of list
@@ -60,9 +62,9 @@ def to_openai(body, model, effort):
     return b | {"model": model, "reasoning_effort": effort, "max_completion_tokens": body.get("max_tokens", 6000)}
 
 
-def sources(prefixes, limit=None):
+def sources(prefixes, limit=None, raw=RAW):
     out = {}
-    for f in sorted(RAW.glob("*.jsonl")):
+    for f in sorted(raw.glob("*.jsonl")):
         for src in read_jsonl(f):
             sid = src["source_id"]
             if prefixes and sid.split("-")[0] not in prefixes:
@@ -87,7 +89,9 @@ def decide(ex, ans):
     return [c for c in ids if ps[c] >= 0.5], min(max(p, 1 - p) for p in ps.values())
 
 
-def submit(model, effort, groups, registry, chunk):
+def submit(model, effort, groups, registry, chunk, reg_path=None):
+    """Submits new sources in chunks; the registry is saved after EVERY chunk so a failure mid-way (e.g. OpenAI's enqueued-token
+    limit) never leads to paying twice: rerun and the remaining sources are submitted."""
     known = {sid for b in registry["batches"] for sid in b["source_ids"]}
     todo = [sid for sid in groups if sid not in known]
     for i in range(0, len(todo), chunk):
@@ -97,11 +101,17 @@ def submit(model, effort, groups, registry, chunk):
             state, exs = groups[sid][0]["state"], groups[sid][1]
             body, _ = llm_request(model, state, exs, effort)
             lines.append(json.dumps({"custom_id": sid, "method": "POST", "url": "/v1/chat/completions", "body": to_openai(body, model, effort)}))
-        fid = upload_jsonl(lines)
-        b = json.loads(oa("POST", "/v1/batches", {"input_file_id": fid, "endpoint": "/v1/chat/completions", "completion_window": "24h",
-                                                    "metadata": {"project": "personal-jev hardcases r2"}}))
+        try:
+            fid = upload_jsonl(lines)
+            b = json.loads(oa("POST", "/v1/batches", {"input_file_id": fid, "endpoint": "/v1/chat/completions", "completion_window": "24h",
+                                                        "metadata": {"project": "personal-jev hardcases"}}))
+        except RuntimeError as e:  # e.g. "Enqueued token limit reached": stop here, rerun later for the rest
+            print(f"submission stopped after {i} sources: {str(e)[:300]}", flush=True)
+            return i
         registry["batches"].append({"id": b["id"], "input_file_id": fid, "model": model, "effort": effort, "source_ids": sids,
                                     "submitted": time.time(), "status": b.get("status")})
+        if reg_path:
+            reg_path.write_text(json.dumps(registry, indent=1))
         print(f"submitted batch {b['id']}: {len(sids)} sources, status {b.get('status')}", flush=True)
     return len(todo)
 
@@ -156,6 +166,49 @@ def collect(groups, results_dir, out, model):
     write_jsonl(out, rows)
     print(f"{out}: {len(rows)} answers, batch cost ${cost:.2f}, errors {dict(errs)}", flush=True)
     return {row["id"]: row for row in rows}, cost
+
+
+def run_sync(groups, review, model, effort="low", workers=6):
+    """Second judge through OpenRouter chat completions (no batch): answers_<slug>.jsonl, cached, blind like the batch judge."""
+    slug = model.split("/")[-1]
+    cache_path = review / f"sync_cache_{slug}.jsonl"
+    cache = {c["key"]: c["response"] for c in map(json.loads, open(cache_path))} if cache_path.exists() else {}
+    rows, cost, errs = {}, [0.0], Counter()
+
+    def one(sid):
+        src, exs = groups[sid]
+        body, keys = llm_request(model, src["state"], exs, effort)
+        key = hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()[:16]
+        if key not in cache:
+            for attempt in range(3):
+                try:
+                    resp = http("POST", "/v1/chat/completions", body, timeout=600)
+                    break
+                except Exception as e:  # rate limit, network
+                    resp, err = None, repr(e)[:120]
+                    time.sleep(5 * (attempt + 1))
+            if resp is None:
+                errs[err] += 1
+                return
+            cost[0] += call_cost(resp)
+            cache[key] = resp
+            with lock_sync:
+                with open(cache_path, "a") as f:
+                    f.write(json.dumps({"key": key, "sid": sid, "response": resp}) + "\n")
+        try:
+            answers = json.loads(cache[key]["choices"][0]["message"]["content"])
+            for (eid, ks), ex in zip(keys, exs):
+                a, conf = decide(ex, answers[ks[0]])
+                rows[eid] = {"id": eid, "answer": a, "confidence": round(conf, 4), "note": f"{model} effort={effort} sync"}
+        except Exception as e:
+            errs[f"parse: {type(e).__name__}"] += 1
+
+    with cf.ThreadPoolExecutor(workers) as pool:
+        list(pool.map(one, list(groups)))
+    out = review / f"answers_{slug}.jsonl"
+    write_jsonl(out, list(rows.values()))
+    print(f"{out}: {len(rows)} answers, ${cost[0]:.2f}, errors {dict(errs)}", flush=True)
+    return rows
 
 
 def run_jev(groups, review, model="~typesafe/jev-latest", workers=6):
@@ -253,15 +306,21 @@ def main():
     ap.add_argument("--limit", type=int, help="smoke test: first N sources")
     ap.add_argument("--review", default=str(ROOT / "data/hardcases/review"))
     ap.add_argument("--jev", action="store_true", help="also run Jev synchronously as a second opinion")
+    ap.add_argument("--raw", default=str(RAW), help="directory of source files to judge")
+    ap.add_argument("--sync-model", help="run this OpenRouter model synchronously as the judge instead of the Astra batch")
     a = ap.parse_args()
     review = Path(a.review)
     results_dir = review / "batch_results"
     results_dir.mkdir(parents=True, exist_ok=True)
     reg_path = review / "batches.json"
     registry = json.loads(reg_path.read_text()) if reg_path.exists() else {"batches": []}
-    groups = sources(a.prefixes, a.limit)
+    groups = sources(a.prefixes, a.limit, Path(a.raw))
     print(f"{len(groups)} sources, {sum(len(g[1]) for g in groups.values())} questions from prefixes {a.prefixes or 'all'}", flush=True)
-    n = submit(a.model, a.effort, groups, registry, a.chunk)
+    if a.sync_model:
+        judge = run_sync(groups, review, a.sync_model, a.effort)
+        report(groups, judge, run_jev(groups, review) if a.jev else None, review / f"JUDGE_{a.sync_model.split('/')[-1]}.md")
+        return
+    n = submit(a.model, a.effort, groups, registry, a.chunk, reg_path)
     reg_path.write_text(json.dumps(registry, indent=1))
     print(f"{n} new sources submitted; {len(registry['batches'])} batches on record", flush=True)
     done = wait(registry, results_dir, a.poll)

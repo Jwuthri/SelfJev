@@ -1,0 +1,149 @@
+{
+  "note": "Diagnostic comparison with the existing MPS tree report; final same-GPU comparison pending. No retraining or threshold adjustment based on these results.",
+  "rows": [
+    {
+      "slice": "(none)",
+      "n": 569,
+      "t5_accuracy": 0.8681898066783831,
+      "existing_tree_accuracy": 0.961335676625659
+    },
+    {
+      "slice": "contradiction",
+      "n": 172,
+      "t5_accuracy": 0.7674418604651163,
+      "existing_tree_accuracy": 0.9244186046511628
+    },
+    {
+      "slice": "distractor",
+      "n": 474,
+      "t5_accuracy": 0.7278481012658228,
+      "existing_tree_accuracy": 0.8818565400843882
+    },
+    {
+      "slice": "double_negation",
+      "n": 126,
+      "t5_accuracy": 0.6587301587301587,
+      "existing_tree_accuracy": 0.873015873015873
+    },
+    {
+      "slice": "evidence_end",
+      "n": 57,
+      "t5_accuracy": 0.8070175438596491,
+      "existing_tree_accuracy": 0.8947368421052632
+    },
+    {
+      "slice": "evidence_middle",
+      "n": 114,
+      "t5_accuracy": 0.8245614035087719,
+      "existing_tree_accuracy": 0.9473684210526315
+    },
+    {
+      "slice": "evidence_start",
+      "n": 17,
+      "t5_accuracy": 0.7058823529411765,
+      "existing_tree_accuracy": 0.8235294117647058
+    },
+    {
+      "slice": "exception",
+      "n": 213,
+      "t5_accuracy": 0.7183098591549296,
+      "existing_tree_accuracy": 0.8732394366197183
+    },
+    {
+      "slice": "hypothetical",
+      "n": 128,
+      "t5_accuracy": 0.8125,
+      "existing_tree_accuracy": 0.921875
+    },
+    {
+      "slice": "injection",
+      "n": 151,
+      "t5_accuracy": 0.7019867549668874,
+      "existing_tree_accuracy": 0.8211920529801324
+    },
+    {
+      "slice": "lexical_overlap",
+      "n": 201,
+      "t5_accuracy": 0.8059701492537313,
+      "existing_tree_accuracy": 0.9303482587064676
+    },
+    {
+      "slice": "long_state",
+      "n": 191,
+      "t5_accuracy": 0.774869109947644,
+      "existing_tree_accuracy": 0.8900523560209425
+    },
+    {
+      "slice": "missing_evidence",
+      "n": 141,
+      "t5_accuracy": 0.8226950354609929,
+      "existing_tree_accuracy": 0.9432624113475178
+    },
+    {
+      "slice": "multi_positive",
+      "n": 322,
+      "t5_accuracy": 0.5745341614906833,
+      "existing_tree_accuracy": 0.7950310559006211
+    },
+    {
+      "slice": "multi_turn",
+      "n": 149,
+      "t5_accuracy": 0.7785234899328859,
+      "existing_tree_accuracy": 0.912751677852349
+    },
+    {
+      "slice": "negation",
+      "n": 257,
+      "t5_accuracy": 0.7431906614785992,
+      "existing_tree_accuracy": 0.9221789883268483
+    },
+    {
+      "slice": "nota",
+      "n": 118,
+      "t5_accuracy": 0.7203389830508474,
+      "existing_tree_accuracy": 0.8898305084745762
+    },
+    {
+      "slice": "numeric_reasoning",
+      "n": 224,
+      "t5_accuracy": 0.6205357142857143,
+      "existing_tree_accuracy": 0.7857142857142857
+    },
+    {
+      "slice": "paraphrase",
+      "n": 218,
+      "t5_accuracy": 0.7110091743119266,
+      "existing_tree_accuracy": 0.8394495412844036
+    },
+    {
+      "slice": "role_reversal",
+      "n": 187,
+      "t5_accuracy": 0.7433155080213903,
+      "existing_tree_accuracy": 0.93048128342246
+    },
+    {
+      "slice": "sarcasm",
+      "n": 149,
+      "t5_accuracy": 0.6912751677852349,
+      "existing_tree_accuracy": 0.825503355704698
+    },
+    {
+      "slice": "temporal_reasoning",
+      "n": 203,
+      "t5_accuracy": 0.6206896551724138,
+      "existing_tree_accuracy": 0.7783251231527094
+    },
+    {
+      "slice": "zero_positive",
+      "n": 73,
+      "t5_accuracy": 0.7945205479452054,
+      "existing_tree_accuracy": 0.863013698630137
+    },
+    {
+      "slice": "zero_positive_distractor",
+      "n": 1,
+      "t5_accuracy": 0.0,
+      "existing_tree_accuracy": 1.0
+    }
+  ]
+}

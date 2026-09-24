@@ -1,0 +1,3 @@
+NVIDIA A10G, 595.91.07
+vllm 0.30.0 torch 2.13.0+cu130
+project torch 2.14.0+cu130 transformers 5.17.0 peft 0.21.0

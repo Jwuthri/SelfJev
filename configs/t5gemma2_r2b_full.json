@@ -1,0 +1,50 @@
+{
+  "train_files": [
+    "data/hf.jsonl",
+    "data/synthetic.jsonl",
+    "data/hardcases_nb.jsonl"
+  ],
+  "val_files": [
+    "data/hf.jsonl",
+    "data/synthetic.jsonl",
+    "data/eval.jsonl",
+    "data/hardcases.jsonl"
+  ],
+  "out_dir": "runs/t5gemma2_r2b_full",
+  "seed": 13,
+  "model_id": "google/t5gemma-2-1b-1b",
+  "revision": "dd0a2683227859151b1730ca3a63087df5b5f39b",
+  "prompt": "task-v1",
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "max_length": 16384,
+  "max_batch_tokens": 16384,
+  "grad_accum": 2,
+  "epochs": 1,
+  "max_steps": null,
+  "lr": 0.0002,
+  "warmup_ratio": 0.05,
+  "weight_decay": 0.0,
+  "max_grad_norm": 1.0,
+  "gradient_checkpointing": true,
+  "eval_every": 50,
+  "max_val_questions": 1400,
+  "max_train_questions": null,
+  "max_train_per_family": 1600,
+  "cap_exempt_families": [],
+  "lora": {
+    "r": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target_modules": [
+      "q_proj",
+      "k_proj",
+      "v_proj",
+      "o_proj"
+    ]
+  },
+  "optimizer_questions": 72,
+  "microbatch_tokens": 4096,
+  "selection_manifest": "reports/t5_round2b_2026-09-24/selection.json",
+  "correction": "Explicit native encoder.text_model and decoder LoRA coverage; supersedes decoder-only targeting error in initial pilot."
+}

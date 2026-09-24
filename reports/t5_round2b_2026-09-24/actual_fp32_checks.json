@@ -1,0 +1,31 @@
+{
+  "rows": [
+    {
+      "state_tokens": 64,
+      "max_native_shared_diff": 1.33514404296875e-05,
+      "max_single_shared_diff": 5.7220458984375e-06,
+      "question_permutation_diff": 3.814697265625e-06,
+      "counts": {
+        "encoder_calls": 1,
+        "cross_projection_pairs": 26,
+        "decoder_batches": 3,
+        "max_branch_rows": 4,
+        "cross_kv_storage_bytes": 3620864
+      }
+    },
+    {
+      "state_tokens": 1024,
+      "max_native_shared_diff": 5.7220458984375e-06,
+      "max_single_shared_diff": 5.7220458984375e-06,
+      "question_permutation_diff": 3.814697265625e-06,
+      "counts": {
+        "encoder_calls": 1,
+        "cross_projection_pairs": 26,
+        "decoder_batches": 3,
+        "max_branch_rows": 4,
+        "cross_kv_storage_bytes": 54738944
+      }
+    }
+  ],
+  "overlength_rejected": true
+}

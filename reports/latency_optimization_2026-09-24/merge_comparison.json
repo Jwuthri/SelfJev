@@ -1,0 +1,22 @@
+{
+ "unmerged_accuracy": 0.8167675021607606,
+ "merged_accuracy": 0.8150388936905791,
+ "decision_flips": [
+  "banking77-eval-2902",
+  "go_emotions-test-2392",
+  "go_emotions-test-1686",
+  "go_emotions-test-2515",
+  "go_emotions-test-4223",
+  "go_emotions-test-3472",
+  "mnli-eval-3349",
+  "emotion-test-1457",
+  "emotion-test-642",
+  "boolq-test-1744",
+  "sst2-test-780",
+  "sst2-test-53"
+ ],
+ "merged_only_correct": 2,
+ "unmerged_only_correct": 8,
+ "mean_abs_score_diff": 0.029498044438305632,
+ "max_abs_score_diff": 0.3278350830078125
+}

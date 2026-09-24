@@ -1,0 +1,287 @@
+{
+ "config": {
+  "train_files": [
+   "data/hf.jsonl",
+   "data/synthetic.jsonl"
+  ],
+  "val_files": [
+   "data/hf.jsonl",
+   "data/synthetic.jsonl",
+   "data/eval.jsonl"
+  ],
+  "out_dir": "runs/tree_4b_compact_v2",
+  "seed": 13,
+  "model_id": "Qwen/Qwen3-Reranker-4B",
+  "revision": "22e683669bc0f0bd69640a1354a6d0aebcfeede5",
+  "prompt": "task-v1",
+  "device": null,
+  "dtype": "bfloat16",
+  "max_length": 2048,
+  "max_batch_tokens": 8192,
+  "grad_accum": 4,
+  "epochs": 2,
+  "max_steps": null,
+  "lr": 0.0001,
+  "warmup_ratio": 0.05,
+  "weight_decay": 0.0,
+  "max_grad_norm": 1.0,
+  "gradient_checkpointing": true,
+  "eval_every": 40,
+  "max_val_questions": 1200,
+  "max_train_questions": null,
+  "max_train_per_family": 1600,
+  "cap_exempt_families": [],
+  "lora": {
+   "r": 16,
+   "alpha": 32,
+   "dropout": 0.05,
+   "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+   ]
+  },
+  "format_name": "tree-compact-v2",
+  "init_adapter": "runs/tree_4b/adapter",
+  "teacher_file": "reports/latency_optimization_2026-09-24/teacher_train.json",
+  "teacher_weight": 0.5
+ },
+ "base": {
+  "model": "Qwen/Qwen3-Reranker-4B",
+  "revision": "22e683669bc0f0bd69640a1354a6d0aebcfeede5"
+ },
+ "format": {
+  "name": "tree-compact-v2",
+  "prefix": "<|im_start|>system\nJudge whether the proposed answer to the question is correct, using only the Document as evidence. Answer yes or no.<|im_end|>\n<|im_start|>user\n",
+  "state": [
+   "<Document>: ",
+   "\n"
+  ],
+  "question": [
+   "Question: ",
+   "\nAnswer:"
+  ],
+  "leaf": " ",
+  "suffix": "<|im_end|>",
+  "binary_answer": "Yes",
+  "readout": [
+   "yes",
+   "no"
+  ],
+  "user_text": "split_special_tokens=True",
+  "sha": "197307642df6"
+ },
+ "init_adapter_sha256": "b7a2c5f8503918e723bb8ccbd19ae9f6da10d339f9fc7c7d205354dfb92e17f5",
+ "teacher_file_sha256": "ab6ce0232da148e39dd35833b9e9cb2cf3e587a473cb7f20007228488c7fa9c7",
+ "lora": {
+  "r": 16,
+  "alpha": 32,
+  "dropout": 0.05,
+  "target_modules": [
+   "q_proj",
+   "k_proj",
+   "v_proj",
+   "o_proj"
+  ],
+  "trainable_params": 11796480,
+  "total_params": 4033581056,
+  "linear_modules_available": [
+   "down_proj",
+   "gate_proj",
+   "k_proj",
+   "lm_head",
+   "o_proj",
+   "q_proj",
+   "up_proj",
+   "v_proj"
+  ]
+ },
+ "data": {
+  "train_files": [
+   {
+    "path": "data/hf.jsonl",
+    "sha256": "fe29b29286d5a372271e925825e8b9794f3f64be9a9fc04cad458b4b94ada510"
+   },
+   {
+    "path": "data/synthetic.jsonl",
+    "sha256": "31b78b470a830766aaa0561426752bcc0a9ebf04d028d61e67c56c78bac4b566"
+   }
+  ],
+  "val_files": [
+   {
+    "path": "data/hf.jsonl",
+    "sha256": "fe29b29286d5a372271e925825e8b9794f3f64be9a9fc04cad458b4b94ada510"
+   },
+   {
+    "path": "data/synthetic.jsonl",
+    "sha256": "31b78b470a830766aaa0561426752bcc0a9ebf04d028d61e67c56c78bac4b566"
+   },
+   {
+    "path": "data/eval.jsonl",
+    "sha256": "be888eb38dcca063823924430e03985ddf2186b874e792d5734936ba93ba6910"
+   }
+  ],
+  "train_questions": 10080,
+  "train_states": 8556,
+  "val_questions": 978,
+  "train_by_family": {
+   "hf_emotions_multilabel": 1600,
+   "hf_intent_banking77": 1600,
+   "hf_nli": 1600,
+   "hf_sentiment_tweets": 1600,
+   "hf_topic_agnews": 1600,
+   "syn_adversarial": 304,
+   "syn_evidence": 328,
+   "syn_multilabel": 286,
+   "syn_policy": 223,
+   "syn_routing": 468,
+   "syn_urgency_sentiment": 471
+  },
+  "dropped_overlength": {
+   "train": {},
+   "val": {}
+  }
+ },
+ "best": {
+  "step": 80,
+  "loss": 0.30790588753355064,
+  "question_accuracy": 0.8159509202453987,
+  "accuracy_by_type_at_T1_t0.5": {
+   "binary": 0.9311740890688259,
+   "multiclass": 0.8633776091081594,
+   "multilabel": 0.553921568627451
+  }
+ },
+ "steps": 100,
+ "log": [
+  {
+   "step": 0,
+   "stage": "init (continued adapter)",
+   "val": {
+    "loss": 0.36301039869312374,
+    "question_accuracy": 0.7903885480572597,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.9109311740890689,
+     "multiclass": 0.8462998102466793,
+     "multilabel": 0.5
+    }
+   }
+  },
+  {
+   "step": 10,
+   "train_loss": 0.27289952177088705,
+   "grad_norm": 0.3713361322879791,
+   "questions_seen": 1935
+  },
+  {
+   "step": 20,
+   "train_loss": 0.27297570218797773,
+   "grad_norm": 0.37895309925079346,
+   "questions_seen": 4023
+  },
+  {
+   "step": 30,
+   "train_loss": 0.256269697798416,
+   "grad_norm": 0.37993448972702026,
+   "questions_seen": 5995
+  },
+  {
+   "step": 40,
+   "train_loss": 0.27374350222526117,
+   "grad_norm": 0.2908382713794708,
+   "questions_seen": 8203
+  },
+  {
+   "step": 40,
+   "stage": "train",
+   "val": {
+    "loss": 0.31015978854126725,
+    "question_accuracy": 0.8139059304703476,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.9311740890688259,
+     "multiclass": 0.8595825426944972,
+     "multilabel": 0.553921568627451
+    }
+   }
+  },
+  {
+   "step": 50,
+   "train_loss": 0.23808378109824843,
+   "grad_norm": 0.570411205291748,
+   "questions_seen": 10080
+  },
+  {
+   "step": 60,
+   "train_loss": 0.20601578321075067,
+   "grad_norm": 0.2381417602300644,
+   "questions_seen": 11848
+  },
+  {
+   "step": 70,
+   "train_loss": 0.2522147241514176,
+   "grad_norm": 0.20482268929481506,
+   "questions_seen": 13795
+  },
+  {
+   "step": 80,
+   "train_loss": 0.2463933953200467,
+   "grad_norm": 0.23460417985916138,
+   "questions_seen": 15747
+  },
+  {
+   "step": 80,
+   "stage": "train",
+   "val": {
+    "loss": 0.30790588753355064,
+    "question_accuracy": 0.8159509202453987,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.9311740890688259,
+     "multiclass": 0.8633776091081594,
+     "multilabel": 0.553921568627451
+    }
+   }
+  },
+  {
+   "step": 90,
+   "train_loss": 0.25230855038389566,
+   "grad_norm": 0.18436776101589203,
+   "questions_seen": 17938
+  },
+  {
+   "step": 100,
+   "train_loss": 0.2639381195069291,
+   "grad_norm": 0.203087717294693,
+   "questions_seen": 20160
+  },
+  {
+   "step": 100,
+   "stage": "end of data",
+   "val": {
+    "loss": 0.31052278545980316,
+    "question_accuracy": 0.8118609406952966,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.9311740890688259,
+     "multiclass": 0.8538899430740038,
+     "multilabel": 0.5588235294117647
+    }
+   }
+  }
+ ],
+ "reload_check": {
+  "questions": 64,
+  "max_abs_score_diff": 0.0
+ },
+ "hardware": {
+  "device": "cuda",
+  "chip": "x86_64",
+  "platform": "Linux-6.8.0-1063-aws-x86_64-with-glibc2.35"
+ },
+ "wall_s": 2124.7485231819996,
+ "versions": {
+  "torch": "2.14.0+cu130",
+  "transformers": "5.17.0",
+  "peft": "0.21.0"
+ },
+ "adapter_sha256": "0b51c5c717b44e0c85a6aae5d98899d128917add7a31448ea21a9ef5ab787a60"
+}

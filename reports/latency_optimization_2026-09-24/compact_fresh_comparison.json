@@ -1,0 +1,76 @@
+{
+ "reference_file": "reports/latency_optimization_2026-09-24/r1_fresh.json",
+ "candidate_file": "reports/latency_optimization_2026-09-24/compact_fresh.json",
+ "overall": {
+  "n": 720,
+  "sources": 120,
+  "reference_accuracy": 0.9541666666666667,
+  "candidate_accuracy": 0.9541666666666667,
+  "accuracy_delta": 0.0,
+  "source_cluster_bootstrap_95_ci": [
+   -0.004166666666666667,
+   0.004166666666666667
+  ],
+  "bootstrap_repeats": 10000,
+  "bootstrap_seed": 8431,
+  "candidate_only_correct": 1,
+  "reference_only_correct": 1,
+  "decision_changes": [
+   {
+    "id": "compact-challenge-071-q1",
+    "source_id": "compact-challenge-071",
+    "family": "compact_fresh_rules",
+    "reference_selected": false,
+    "candidate_selected": true,
+    "reference_correct": true,
+    "candidate_correct": false
+   },
+   {
+    "id": "compact-challenge-119-q1",
+    "source_id": "compact-challenge-119",
+    "family": "compact_fresh_rules",
+    "reference_selected": true,
+    "candidate_selected": false,
+    "reference_correct": false,
+    "candidate_correct": true
+   }
+  ]
+ },
+ "slices": {
+  "family:compact_fresh_rules": {
+   "n": 720,
+   "sources": 120,
+   "reference_accuracy": 0.9541666666666667,
+   "candidate_accuracy": 0.9541666666666667,
+   "accuracy_delta": 0.0,
+   "source_cluster_bootstrap_95_ci": [
+    -0.004166666666666667,
+    0.004166666666666667
+   ],
+   "bootstrap_repeats": 10000,
+   "bootstrap_seed": 8431,
+   "candidate_only_correct": 1,
+   "reference_only_correct": 1,
+   "decision_changes": [
+    {
+     "id": "compact-challenge-071-q1",
+     "source_id": "compact-challenge-071",
+     "family": "compact_fresh_rules",
+     "reference_selected": false,
+     "candidate_selected": true,
+     "reference_correct": true,
+     "candidate_correct": false
+    },
+    {
+     "id": "compact-challenge-119-q1",
+     "source_id": "compact-challenge-119",
+     "family": "compact_fresh_rules",
+     "reference_selected": true,
+     "candidate_selected": false,
+     "reference_correct": false,
+     "candidate_correct": true
+    }
+   ]
+  }
+ }
+}

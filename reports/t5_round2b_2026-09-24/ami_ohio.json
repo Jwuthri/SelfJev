@@ -1,0 +1,49 @@
+{
+  "PlatformDetails": "Linux/UNIX",
+  "UsageOperation": "RunInstances",
+  "BlockDeviceMappings": [
+    {
+      "Ebs": {
+        "DeleteOnTermination": true,
+        "Iops": 3000,
+        "SnapshotId": "snap-094a493eb78b2e558",
+        "VolumeSize": 75,
+        "VolumeType": "gp3",
+        "Throughput": 125,
+        "Encrypted": false
+      },
+      "DeviceName": "/dev/sda1"
+    },
+    {
+      "DeviceName": "/dev/sdb",
+      "VirtualName": "ephemeral0"
+    },
+    {
+      "DeviceName": "/dev/sdc",
+      "VirtualName": "ephemeral1"
+    }
+  ],
+  "Description": "Supported EC2 instances: G4dn, G5, G6, Gr6, G6e, G7, G7e, P4d, P4de, P5, P5e, P5en, P6-B200, P6-B300. Release notes: https://aws.amazon.com/releasenotes/aws-deep-learning-base-gpu-ami-ubuntu-24-04/",
+  "EnaSupport": true,
+  "Hypervisor": "xen",
+  "ImageOwnerAlias": "amazon",
+  "Name": "Deep Learning Base OSS Nvidia Driver GPU AMI (Ubuntu 24.04) 20260922",
+  "RootDeviceName": "/dev/sda1",
+  "RootDeviceType": "ebs",
+  "SriovNetSupport": "simple",
+  "VirtualizationType": "hvm",
+  "BootMode": "uefi-preferred",
+  "DeprecationTime": "2028-09-22T15:57:47.000Z",
+  "ImdsSupport": "v2.0",
+  "SourceImageId": "ami-03974addb01162606",
+  "SourceImageRegion": "us-east-1",
+  "FreeTierEligible": true,
+  "ImageId": "ami-0d8d53672833f7ea4",
+  "ImageLocation": "amazon/Deep Learning Base OSS Nvidia Driver GPU AMI (Ubuntu 24.04) 20260922",
+  "State": "available",
+  "OwnerId": "898082745236",
+  "CreationDate": "2026-09-22T15:57:47.000Z",
+  "Public": true,
+  "Architecture": "x86_64",
+  "ImageType": "machine"
+}

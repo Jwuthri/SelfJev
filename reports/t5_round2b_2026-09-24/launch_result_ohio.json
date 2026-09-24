@@ -1,0 +1,145 @@
+{
+  "ReservationId": "r-09095218155e2343f",
+  "OwnerId": "025462989760",
+  "Groups": [],
+  "Instances": [
+    {
+      "Architecture": "x86_64",
+      "BlockDeviceMappings": [],
+      "ClientToken": "selfjev-t5-r2b-20260924-ohio-g6e-4xlarge",
+      "EbsOptimized": false,
+      "EnaSupport": true,
+      "Hypervisor": "xen",
+      "NetworkInterfaces": [
+        {
+          "Attachment": {
+            "AttachTime": "2026-09-24T06:37:50+00:00",
+            "AttachmentId": "eni-attach-00ec0175a3192384b",
+            "DeleteOnTermination": true,
+            "DeviceIndex": 0,
+            "Status": "attaching",
+            "NetworkCardIndex": 0
+          },
+          "Description": "",
+          "Groups": [
+            {
+              "GroupId": "sg-0d740928d187b683e",
+              "GroupName": "selfjev-t5-r2b-20260924"
+            }
+          ],
+          "Ipv6Addresses": [],
+          "MacAddress": "06:ff:d5:9b:db:65",
+          "NetworkInterfaceId": "eni-0ccf574c519852858",
+          "OwnerId": "025462989760",
+          "PrivateDnsName": "ip-172-31-30-21.us-east-2.compute.internal",
+          "PrivateIpAddress": "172.31.30.21",
+          "PrivateIpAddresses": [
+            {
+              "Primary": true,
+              "PrivateDnsName": "ip-172-31-30-21.us-east-2.compute.internal",
+              "PrivateIpAddress": "172.31.30.21"
+            }
+          ],
+          "SourceDestCheck": true,
+          "Status": "in-use",
+          "SubnetId": "subnet-3e957243",
+          "VpcId": "vpc-941d9bff",
+          "InterfaceType": "interface",
+          "Operator": {
+            "Managed": false
+          }
+        }
+      ],
+      "RootDeviceName": "/dev/sda1",
+      "RootDeviceType": "ebs",
+      "SecurityGroups": [
+        {
+          "GroupId": "sg-0d740928d187b683e",
+          "GroupName": "selfjev-t5-r2b-20260924"
+        }
+      ],
+      "SourceDestCheck": true,
+      "StateReason": {
+        "Code": "pending",
+        "Message": "pending"
+      },
+      "Tags": [
+        {
+          "Key": "Project",
+          "Value": "personal-jev"
+        },
+        {
+          "Key": "Owner",
+          "Value": "julien"
+        },
+        {
+          "Key": "Name",
+          "Value": "selfjev-t5-r2b-20260924"
+        },
+        {
+          "Key": "Experiment",
+          "Value": "t5-round2b"
+        }
+      ],
+      "VirtualizationType": "hvm",
+      "CpuOptions": {
+        "CoreCount": 8,
+        "ThreadsPerCore": 2
+      },
+      "CapacityReservationSpecification": {
+        "CapacityReservationPreference": "open"
+      },
+      "MetadataOptions": {
+        "State": "pending",
+        "HttpTokens": "required",
+        "HttpPutResponseHopLimit": 2,
+        "HttpEndpoint": "enabled",
+        "HttpProtocolIpv6": "disabled",
+        "InstanceMetadataTags": "disabled"
+      },
+      "EnclaveOptions": {
+        "Enabled": false
+      },
+      "BootMode": "uefi-preferred",
+      "PrivateDnsNameOptions": {
+        "HostnameType": "ip-name",
+        "EnableResourceNameDnsARecord": false,
+        "EnableResourceNameDnsAAAARecord": false
+      },
+      "MaintenanceOptions": {
+        "AutoRecovery": "default",
+        "RebootMigration": "default"
+      },
+      "CurrentInstanceBootMode": "uefi",
+      "Operator": {
+        "Managed": false
+      },
+      "InstanceId": "i-087b024b35cff657b",
+      "ImageId": "ami-0d8d53672833f7ea4",
+      "State": {
+        "Code": 0,
+        "Name": "pending"
+      },
+      "PrivateDnsName": "ip-172-31-30-21.us-east-2.compute.internal",
+      "PublicDnsName": "",
+      "StateTransitionReason": "",
+      "KeyName": "selfjev-t5-r2b-20260924",
+      "AmiLaunchIndex": 0,
+      "ProductCodes": [],
+      "InstanceType": "g6e.4xlarge",
+      "LaunchTime": "2026-09-24T06:37:50+00:00",
+      "Placement": {
+        "AvailabilityZoneId": "use2-az2",
+        "GroupName": "",
+        "Tenancy": "default",
+        "AvailabilityZone": "us-east-2b"
+      },
+      "Monitoring": {
+        "State": "disabled"
+      },
+      "SubnetId": "subnet-3e957243",
+      "VpcId": "vpc-941d9bff",
+      "PrivateIpAddress": "172.31.30.21"
+    }
+  ]
+}

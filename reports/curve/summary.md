@@ -34,6 +34,26 @@ Same recipe as `runs/lora_4b` (LoRA r=16 on q/k/v/o, lr 2e-4, bf16, prompt answe
 
 Instruct prompt selected on validation: `answer-v1` (answer-v1 0.802, task-v1 0.781, task-v2 0.788, hybrid-v1 0.783).
 
+## Tree scorer: LoRA capacity (same data and recipe as `runs/tree_4b`, 84 steps)
+
+| run | LoRA | trainable params | validation acc % | old test acc % | binary acc % | binary AUROC | multiclass acc % | multilabel EM % | vs tree_4b on old test: run only / ref only / p | eval2 acc % | vs tree_4b on eval2: run only / ref only / p |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| tree_4b (reference) | r=16 on q/k/v/o | 11,796,480 | 80.2 | 81.6 | 87.1 | 0.953 | 83.9 | 51.7 | 0 / 0 / 1 | 85.1 | 0 / 0 / 1 |
+| tree_4b_r64 | r=64 on q/k/v/o | 47,185,920 | 81.8 | 81.5 | 88.5 | 0.956 | 83.0 | 52.3 | 82 / 84 / 0.94 | 87.2 | 77 / 36 / 0.00014 |
+| tree_4b_mlp | r=16 on q/k/v/o + gate/up/down | 33,030,144 | 81.4 | 81.6 | 87.9 | 0.955 | 83.4 | 51.7 | 72 / 73 / 1 | 86.3 | 62 / 38 / 0.021 |
+
+Validation = the trainer's own validation mix (in-distribution + authored families); the old test adds the six held-out public families; eval2 = the frozen 1,991-question target-task set (`data/eval2.jsonl`, `reports/eval2/summary.md`). The old test shows no capacity effect, eval2 does, in the direction validation predicted.
+
+## Tree scorer: round-2b data combined with more LoRA capacity (recipe of `runs/tree_4b_r2b`: + verified hard cases, 8K training length)
+
+| run | LoRA | trainable params | validation acc % | eval2 acc % | eval2 binary | eval2 multiclass | eval2 multilabel EM | vs tree_4b_r2b on eval2: run only / ref only / p | vs Jev on eval2 | old test acc % | vs tree_4b_r2b on old test |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| tree_4b_r2b (reference) | r=16 on q/k/v/o | 11,796,480 | 86.1 | 90.6 | 92.9 | 94.1 | 78.8 | 0 / 0 / 1 | 24 / 157 / 3.8e-25 | 81.2 | 0 / 0 / 1 |
+| tree_4b_r2b_r64 | r=64 on q/k/v/o | 47,185,920 | 86.6 | 90.3 | 92.9 | 94.9 | 75.9 | 44 / 50 / 0.61 | 22 / 161 / 2.7e-27 | 81.2 | 84 / 86 / 0.94 |
+| tree_4b_r2b_r64_mlp | r=64 on q/k/v/o + gate/up/down | 132,120,576 | 87.0 | 91.3 | 93.7 | 94.3 | 80.4 | 59 / 44 / 0.17 | 26 / 144 / 5.3e-21 | 82.4 | 129 / 88 / 0.0065 |
+
+Jev on eval2: 97.2%. The two combined runs trained on A10Gs with max_batch_tokens 8192 × grad_accum 4 (same 32K-token effective batch as the reference's 16384 × 2).
+
 ## Paired McNemar vs the reference (questions only one of the two gets right)
 
 | run | run only | reference only | p |

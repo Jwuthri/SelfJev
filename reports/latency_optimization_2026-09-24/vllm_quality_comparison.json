@@ -1,0 +1,10 @@
+{
+  "questions": 3471,
+  "vllm_accuracy": 0.815326995102276,
+  "reference_accuracy": 0.8150388936905791,
+  "flips": 14,
+  "vllm_only_correct": 6,
+  "reference_only_correct": 5,
+  "mean_abs_score_diff": 0.02891919723840148,
+  "max_abs_score_diff": 0.22943520545959473
+}

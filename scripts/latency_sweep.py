@@ -194,7 +194,7 @@ def report(a):
         lines += [f"Jev price: ${per_m:.4f} per million input tokens (reported cost / reported input tokens).", ""]
     for f in sorted(OUT.glob("throughput*.json")):
         t = json.loads(f.read_text())
-        lines += [f"## Batched throughput, ours ({f.stem}): {t['meta']['gpu']}, merged={t['meta'].get('merged')}", "",
+        lines += [f"## Batched throughput, ours ({f.stem}): {t['meta']['gpu']}, {t['meta']['architecture']}{', merged LoRA' if t['meta'].get('merged') else ''}", "",
                   f"Cost per 1,000 requests at ${a.gpu_price}/h, GPU fully busy; Jev = its reported cost for the same requests (median).", "",
                   "| text tokens | questions | requests/s | ours $ / 1K requests | Jev $ / 1K requests |", "|---|---|---|---|---|"]
         for r in t["rows"]:

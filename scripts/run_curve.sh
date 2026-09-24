@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Learning-curve runs on one GPU, in sequence: train from configs/curve/NAME.json, then validation + test evals.
-# Special names: instruct_zero (prompt selection + zero-shot evals of Qwen3-4B-Instruct) and instruct_lora (LoRA on it).
+# Names tree_* use `pjev train-tree` + `--tree` evals. Special names: instruct_zero (prompt selection + zero-shot evals of Qwen3-4B-Instruct) and instruct_lora (LoRA on it).
 # usage: CUDA_VISIBLE_DEVICES=0 scripts/run_curve.sh NAME [NAME...]     logs: runs/curve/NAME.log, results: reports/curve/NAME/
 set -euo pipefail
 cd "$(dirname "$0")/.."
@@ -32,6 +32,12 @@ for NAME in "$@"; do
       PROMPT=$($PY -c "import json; print(json.load(open('reports/curve/instruct_prompt_selection/selected.json'))['selected'])")
       $PJEV train configs/curve/instruct_lora.json --set prompt="\"$PROMPT\""
       evals instruct_lora "${INSTRUCT[@]}" --prompt "$PROMPT" --adapter runs/curve/instruct_lora/adapter
+    elif [[ $NAME == tree_* ]]; then  # tree scorer ablations (configs/curve/tree_*.json, e.g. LoRA rank / MLP targets)
+      $PJEV train-tree configs/curve/$NAME.json ${TRAIN_SET:+--set $TRAIN_SET}  # e.g. TRAIN_SET='max_batch_tokens=8192 grad_accum=4' on a 24 GB GPU (same effective batch)
+      if [[ $NAME == *instruct* ]]; then M=("${INSTRUCT[@]}"); else M=("${R4B[@]}"); fi  # base model follows the run name
+      evals $NAME --tree "${M[@]}" --adapter runs/curve/$NAME/adapter
+      $PJEV eval --tree --data data/eval2.jsonl --split test --out reports/curve/$NAME/eval2 --dtype bfloat16 --max-length 16384 "${M[@]}" --adapter runs/curve/$NAME/adapter > /dev/null
+      log "$NAME: $(grep -m1 'question accuracy' reports/curve/$NAME/eval2/report.md) (eval2)"
     else
       $PJEV train configs/curve/$NAME.json
       evals $NAME "${R4B[@]}" --prompt answer-v1 --adapter runs/curve/$NAME/adapter

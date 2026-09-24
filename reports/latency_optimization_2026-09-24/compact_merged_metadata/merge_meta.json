@@ -1,0 +1,6 @@
+{
+  "model_id": "Qwen/Qwen3-Reranker-4B",
+  "revision": "22e683669bc0f0bd69640a1354a6d0aebcfeede5",
+  "adapter_sha256": "0b51c5c717b44e0c85a6aae5d98899d128917add7a31448ea21a9ef5ab787a60",
+  "dtype": "bfloat16"
+}

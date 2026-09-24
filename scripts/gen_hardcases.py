@@ -11,6 +11,9 @@
   or --max-questions. Resumable: source_id counters continue from the files on disk.
 - Raw responses: reports/hardcases/gen_cache/<prefix>.jsonl. Per-call log: reports/hardcases/gen_log.jsonl.
 - Labels are LLM-intended. judge_hardcases.py re-labels blind; build_hardcases.py keeps only agreements.
+- --eval2: TEST-set mode (data/eval2/raw, reports/eval2, family e2_<tier>, provenance tag "eval2 test"): focus traps
+  balanced by kept questions, a third of the calls use domains/genres/instruction styles absent from BRIEF.md (transfer),
+  and the assignment asks for none-correct ≈ 1/6 and some 3-5-positive multilabel. build_eval2.py assembles data/eval2.jsonl.
 """
 import argparse
 import concurrent.futures as cf
@@ -70,6 +73,28 @@ CANDIDATE_STYLES = ["one or two words per candidate", "short noun phrases", "ful
                     "a mix of very short and very long descriptions within the same question",
                     "descriptions phrased from the sender's point of view ('I want my money back')",
                     "descriptions that avoid the words used in the text (paraphrased)"]
+NOVEL_DOMAINS = ["a veterinary clinic", "a municipal library", "an amateur sports league", "wedding photography", "solar panel installation",
+                 "podcast production", "a crypto exchange's support desk", "a university research lab", "a food truck", "airline crew scheduling",
+                 "museum ticketing", "nonprofit fundraising", "a car dealership", "a childcare center", "cybersecurity incident response"]
+NOVEL_GENRES = ["court filing excerpt", "podcast transcript", "software changelog", "recipe with cook's notes", "grant application section",
+                "onboarding checklist", "bug report", "medical intake form", "press release", "radio dispatch log", "product spec sheet",
+                "parking ticket appeal letter", "forum thread", "text-message thread with emojis", "auction listing"]
+NOVEL_INSTRUCTION_STYLES = [
+    "third-person yes/no questions about 'the author' ('Does the author agree to the new date?')",
+    "exam style ('Which of the following is true about the invoice?')",
+    "key-value prompts ('refund_requested:' expecting yes/no or a label)",
+    "a colleague's chat ping ('can u check if they actually cancelled?')",
+    "a long rubric paragraph listing several criteria, then asking about exactly one of them",
+    "questions that quote a phrase from the text and ask what it implies ('\"see you Monday\": is a meeting confirmed?')",
+]
+NOVEL_CANDIDATE_STYLES = ["numbered exam options ('(a) ... (b) ...' as descriptions)", "candidates that are direct quotes a sender might write",
+                          "terse tag-like descriptions with underscores"]
+R3_HINTS = ["- multiclass: when a question offers a 'none of the above' candidate, make it the correct answer in about 1 of 10 such questions "
+            "across the batch; otherwise a substantive option applies even if the text phrases it loosely",
+            "- multilabel: at least one question in the batch has 3-5 correct candidates"]  # --round3 (training)
+EVAL_HINTS = ["- multiclass: when a question offers a 'none of the above' candidate, make it the correct answer in about 1 of 6 such questions "
+              "across the batch; otherwise a substantive option applies even if the text phrases it loosely",
+              "- multilabel: at least one question in the batch has 3-5 correct candidates"]
 FIRST = ["Amara", "Bao", "Chiara", "Dmitri", "Esi", "Farid", "Greta", "Hiro", "Ines", "Jonas", "Kwame", "Leila", "Mateo", "Nadia", "Oren",
          "Priya", "Quentin", "Rosa", "Sven", "Tomasz", "Uma", "Viktor", "Wanjiru", "Xiu", "Yara", "Zoltan", "Aiden", "Beatriz", "Callum", "Dalia"]
 LAST = ["Okafor", "Lindqvist", "Moreau", "Tanaka", "Haddad", "Novak", "Petrov", "Alvarez", "Kowalski", "Mensah", "Fischer", "Rahman",
@@ -79,29 +104,34 @@ CO_B = ["Logistics", "Labs", "Supply", "Health", "Foods", "Software", "Studio", 
 lock = threading.Lock()
 
 
-def assignment(rng, tier, n, tokens):
+def assignment(rng, tier, n, tokens, traps=None, novel=False, hints=False):
     """One random ASSIGNMENT (the user message) for a call."""
     words = max(4, round(tokens * (0.95 if tokens >= 2048 else 0.75)))  # models undershoot long targets by ~30%
     hint = ("one line: a subject, a chat message, a log line, a form field" if tokens <= 32 else "a few sentences" if tokens <= 256 else
             "a full message or document" if tokens <= 1024 else "a long thread, a multi-section document, a log dump or a report with appendices")
-    traps, pool = [], dict(FOCUS)
+    pool = dict(FOCUS)
+    traps = list(traps) if traps is not None else []
     while tier != "simple" and len(traps) < (2 if tier == "very_hard" else 1):  # weighted, without replacement
         traps.append(rng.choices(list(pool), weights=list(pool.values()))[0])
         del pool[traps[-1]]
     names = [f"{rng.choice(FIRST)} {rng.choice(LAST)}" for _ in range(6)]
     cos = [f"{rng.choice(CO_A)} {rng.choice(CO_B)}" for _ in range(4)]
+    dom, gen, ist, cst = (NOVEL_DOMAINS, NOVEL_GENRES, NOVEL_INSTRUCTION_STYLES, NOVEL_CANDIDATE_STYLES) if novel else \
+        (DOMAINS, GENRES, INSTRUCTION_STYLES, CANDIDATE_STYLES)
     lines = [f"ASSIGNMENT", f"- tier: {tier}", f"- write {n} sources, 2-4 questions each",
              f"- state length: about {words} words each ({hint}); every state within ±30% of that",
              f"- instruction length: {rng.choice(QLEN)}",
-             f"- domain: {rng.choice(DOMAINS)}", f"- genres to spread across the sources: {', '.join(rng.sample(GENRES, 3))}",
-             f"- tone: {rng.choice(TONES)}", f"- instruction style for this batch: {rng.choice(INSTRUCTION_STYLES)}",
-             f"- candidate-description style for this batch: {rng.choice(CANDIDATE_STYLES)}",
+             f"- domain: {rng.choice(dom)}", f"- genres to spread across the sources: {', '.join(rng.sample(gen, 3))}",
+             f"- tone: {rng.choice(TONES)}", f"- instruction style for this batch: {rng.choice(ist)}",
+             f"- candidate-description style for this batch: {rng.choice(cst)}",
              f"- names you may use (never reuse a name across sources): {', '.join(names)}; companies: {', '.join(cos)}"]
     if traps:
         lines.append(f"- focus traps: {', '.join(traps)}. Every question in this batch uses "
                      + ("both, plus any other trap that fits" if tier == "very_hard" else "this trap (others may occur naturally)") + ".")
     else:
         lines.append("- no traps required: plain, clearly answerable questions, but keep the phrasing varied and natural")
+    if hints:
+        lines += hints
     return "\n".join(lines), traps
 
 
@@ -132,7 +162,7 @@ def parse_sources(text):
 QKEYS = {"type", "instruction", "candidates", "target", "hard_cases", "notes", "paraphrase_group"}
 
 
-def sanitize(src, tier, traps, model, sid, tokens):
+def sanitize(src, tier, traps, model, sid, tokens, fam="r2", tag="hard r2"):
     """Keep only known fields, fill ours, validate. Returns (source, None) or (None, reason)."""
     if not isinstance(src, dict) or not isinstance(src.get("state"), str) or not isinstance(src.get("questions"), list):
         return None, "shape"
@@ -154,7 +184,7 @@ def sanitize(src, tier, traps, model, sid, tokens):
             q["hard_cases"] = list(traps)  # the assignment said every question uses the focus trap(s)
         q["notes"] = str(q.get("notes", ""))[:300]
         qs.append(q)
-    out = {"source_id": sid, "family": f"r2_{tier}", "provenance": f"synthetic:openrouter/{model} (hard r2, tier={tier}, len={tokens})",
+    out = {"source_id": sid, "family": f"{fam}_{tier}", "provenance": f"synthetic:openrouter/{model} ({tag}, tier={tier}, len={tokens})",
            "state": src["state"], "questions": qs}
     try:
         expand_source(out)
@@ -172,17 +202,26 @@ def main():
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--max-tokens", type=int, default=32000)
     ap.add_argument("--seed", type=int, default=int(time.time()))
+    ap.add_argument("--eval2", action="store_true", help="TEST-set mode: see the module docstring")
+    ap.add_argument("--prefix", help="source_id prefix (default: from the model name)")
+    ap.add_argument("--round3", action="store_true", help="TRAINING round 3: data/hardcases_r3/raw, family r3_<tier>, R3_HINTS "
+                    "(none correct ≈ 1 in 10, some 3-5-positive multilabel); never the eval2 NOVEL_* lists")
     a = ap.parse_args()
-    prefix = PREFIX.get(a.model) or re.sub(r"\W", "", a.model.split("/")[-1])[:6]
-    out_path, cache_path = RAW / f"{prefix}.jsonl", REP / "gen_cache" / f"{prefix}.jsonl"
+    raw_dir, rep_dir = (ROOT / "data/eval2/raw", ROOT / "reports/eval2") if a.eval2 else \
+        (ROOT / "data/hardcases_r3/raw", ROOT / "reports/hardcases_r3") if a.round3 else (RAW, REP)
+    fam, tag = ("e2", "eval2 test") if a.eval2 else ("r3", "hard r3") if a.round3 else ("r2", "hard r2")
+    raw_dir.mkdir(parents=True, exist_ok=True)
+    prefix = a.prefix or PREFIX.get(a.model) or re.sub(r"\W", "", a.model.split("/")[-1])[:6]
+    out_path, cache_path = raw_dir / f"{prefix}.jsonl", rep_dir / "gen_cache" / f"{prefix}.jsonl"
     cache_path.parent.mkdir(parents=True, exist_ok=True)
     existing = read_jsonl(out_path) if out_path.exists() else []
     counter = [max((int(s["source_id"].split("-")[-1]) for s in existing), default=0)]
     kept_q = Counter({t: 0 for t in TIERS})  # questions kept per tier in this run (drives tier balance)
     inflight, kept_len, inflight_len = Counter(), Counter({t: 0 for t in LENGTHS}), Counter()
+    kept_trap, inflight_trap = Counter({t: 0 for t in FOCUS}), Counter()  # --eval2: focus traps balanced by kept questions
     paid, stop, errors, drops = [0.0], threading.Event(), [], Counter()
     seen = {hashlib.sha1(s["state"].strip().lower().encode()).hexdigest() for s in existing}
-    log = open(REP / "gen_log.jsonl", "a")
+    log = open(rep_dir / "gen_log.jsonl", "a")
     print(f"{a.model}: prefix {prefix}, {len(existing)} sources on disk, budget ${a.budget:.2f}, seed {a.seed}", flush=True)
 
     def one(i):
@@ -192,8 +231,15 @@ def main():
             tokens = min(LENGTHS, key=lambda t: kept_len[t] + 2 * inflight_len[t])  # and lengths balanced by kept states
             inflight[tier] += 1
             inflight_len[tokens] += 1
+            traps = None
+            if a.eval2 and tier != "simple":
+                order = sorted(FOCUS, key=lambda t: (kept_trap[t] + 4 * inflight_trap[t], rng.random()))
+                traps = order[:2 if tier == "very_hard" else 1]
+                for t in traps:
+                    inflight_trap[t] += 1
         n = max(1, min(a.per_call, 12000 // tokens))
-        user, traps = assignment(rng, tier, n, tokens)
+        user, traps = assignment(rng, tier, n, tokens, traps, novel=a.eval2 and rng.random() < 1 / 3,
+                                 hints=EVAL_HINTS if a.eval2 else R3_HINTS if a.round3 else None)
         body = {"model": a.model, "messages": [{"role": "system", "content": BRIEF}, {"role": "user", "content": user}],
                 "max_tokens": a.max_tokens, "temperature": 1.0, "usage": {"include": True},
                 "reasoning": REASONING.get(a.model, DEFAULT_REASONING)}
@@ -216,6 +262,8 @@ def main():
             with lock:
                 inflight[tier] -= 1
                 inflight_len[tokens] -= 1
+                for t in traps:
+                    inflight_trap[t] -= 1
                 errors.append(err)
                 log.write(json.dumps(row | {"error": err}) + "\n"); log.flush()
             return
@@ -234,7 +282,7 @@ def main():
                     drops["duplicate state"] += 1
                     continue
                 counter[0] += 1
-                s, why = sanitize(src, tier, traps, a.model, f"{prefix}-{counter[0]:04d}", tokens)
+                s, why = sanitize(src, tier, traps, a.model, f"{prefix}-{counter[0]:04d}", tokens, fam, tag)
                 if s is None:
                     counter[0] -= 1
                     drops[why] += 1
@@ -249,6 +297,9 @@ def main():
             kept_len[tokens] += len(kept)
             inflight[tier] -= 1
             inflight_len[tokens] -= 1
+            for t in traps:
+                kept_trap[t] += nq
+                inflight_trap[t] -= 1
             u = resp.get("usage") or {}
             log.write(json.dumps(row | {"cost": cost, "prompt_tokens": u.get("prompt_tokens"), "completion_tokens": u.get("completion_tokens"),
                                         "finish": choice.get("finish_reason"), "parsed": len(parsed), "kept": len(kept), "questions": nq,

@@ -1,0 +1,52 @@
+{
+ "temperature": {
+  "binary": 0.8912509381337456,
+  "multiclass": 1.023292992280754,
+  "multilabel": 1.0471285480508996
+ },
+ "threshold": {
+  "binary": 0.5291672982451667,
+  "multilabel": 0.35549928860856855
+ },
+ "fit": {
+  "method": "temperature scaling per output type, grid search on NLL",
+  "min_n": 30,
+  "model": "Qwen/Qwen3-Reranker-4B",
+  "revision": "22e683669bc0f0bd69640a1354a6d0aebcfeede5",
+  "adapter": "runs/tree_4b_r2b/adapter",
+  "adapter_sha256": "2a73e5f707e9d8bfdcad440d5c7c66f106f9cb3b0028851dfb5b6a3bf3f0ad86",
+  "prompt_sha": "bc025ae9f6bc",
+  "fit_report": "reports/tree_4b_r2b/calibration/report.json",
+  "fit_report_sha256": "ff63c2521173aec394e577eeb967d87efd3c7cfdaf93d613c0e5f972c3a8f724",
+  "fit_data": [
+   {
+    "path": "data/hf.jsonl",
+    "sha256": "fe29b29286d5a372271e925825e8b9794f3f64be9a9fc04cad458b4b94ada510"
+   },
+   {
+    "path": "data/eval.jsonl",
+    "sha256": "be888eb38dcca063823924430e03985ddf2186b874e792d5734936ba93ba6910"
+   }
+  ],
+  "created": "2026-09-24T04:15:04+0000",
+  "n": {
+   "binary": 210,
+   "multiclass": 476,
+   "multilabel": 1014
+  },
+  "nll_before": {
+   "binary": 0.12799114148519103,
+   "multiclass": 0.4016098562281788,
+   "multilabel": 0.27056187481897265
+  },
+  "nll_after": {
+   "binary": 0.12692342089821781,
+   "multiclass": 0.40147531013975923,
+   "multilabel": 0.27032397785676926
+  },
+  "skipped": {},
+  "threshold_report": "reports/tree_4b_r2b/validation/report.json",
+  "threshold_report_sha256": "3454b0480817c3f49d7203b9150f9182508e3e97e352a4c68ffc6a8e05e5de5d",
+  "threshold_rule": "max F1 on validation after temperature scaling"
+ }
+}

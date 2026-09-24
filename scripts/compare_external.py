@@ -8,6 +8,7 @@
 - Data sent: synthetic eval texts and public-dataset texts only (no private data).
 
 usage: zsh -ic 'uv run python scripts/compare_external.py --budget 20'
+       zsh -ic 'uv run python scripts/compare_external.py --data data/eval2.jsonl --ours tree_4b/eval2 --only jev --tag eval2 --budget 2'
 """
 import argparse
 import concurrent.futures as cf
@@ -210,16 +211,22 @@ def main():
     ap.add_argument("--only", choices=["jev", "llm"])
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--tag", default="subset", help="output folder under reports/external/")
+    ap.add_argument("--data", help="score every test question of this file instead of the default subset (e.g. data/eval2.jsonl)")
+    ap.add_argument("--ours", help="with --data: our report dir under reports/ on the same file (row layout + paired test)")
     a = ap.parse_args()
 
-    ours = {n: {r["id"]: r for r in json.loads((ROOT / f"reports/{p}/report.json").read_text())["predictions"]}
-            for n, p in (("base", "baseline/test"), ("LoRA", "lora_pilot/test"))}
-    rng = random.Random(7)
-    ev = load(ROOT / "data/eval.jsonl", {"test"})
-    hf_by_fam = defaultdict(list)
-    for ex in load(ROOT / "data/hf.jsonl", {"test"}):
-        hf_by_fam[ex["family"]].append(ex)
-    subset = ev + [ex for f in sorted(hf_by_fam) for ex in rng.sample(hf_by_fam[f], min(a.per_hf_family, len(hf_by_fam[f])))]
+    if a.data:
+        ours = {"LoRA": {r["id"]: r for r in json.loads((ROOT / f"reports/{a.ours}/report.json").read_text())["predictions"]}}
+        subset = load(ROOT / a.data, {"test"})
+    else:
+        ours = {n: {r["id"]: r for r in json.loads((ROOT / f"reports/{p}/report.json").read_text())["predictions"]}
+                for n, p in (("base", "baseline/test"), ("LoRA", "lora_pilot/test"))}
+        rng = random.Random(7)
+        ev = load(ROOT / "data/eval.jsonl", {"test"})
+        hf_by_fam = defaultdict(list)
+        for ex in load(ROOT / "data/hf.jsonl", {"test"}):
+            hf_by_fam[ex["family"]].append(ex)
+        subset = ev + [ex for f in sorted(hf_by_fam) for ex in rng.sample(hf_by_fam[f], min(a.per_hf_family, len(hf_by_fam[f])))]
     groups = {}
     for ex in subset:
         groups.setdefault(ex["source_id"], (ex["state"], []))[1].append(ex)

@@ -1,0 +1,23 @@
+{
+  "region": "us-east-2",
+  "name": "selfjev-t5-r2b-h100-20260924",
+  "instance_type": "p5.4xlarge",
+  "hourly_usd": 6.88,
+  "shutdown_hours": 3,
+  "shared_security_group": "sg-0d740928d187b683e",
+  "shared_key_name": "selfjev-t5-r2b-20260924",
+  "attempts": [
+    {
+      "availability_zone": "us-east-2a",
+      "error": "aws: [ERROR]: An error occurred (InsufficientInstanceCapacity) when calling the RunInstances operation (reached max retries: 2): We currently do not have sufficient p5.4xlarge capacity in the Availability Zone you requested (us-east-2a). Our system will be working on provisioning additional capacity. You can currently get p5.4xlarge capacity by not specifying an Availability Zone in your request or choosing us-east-2b, us-east-2c."
+    },
+    {
+      "availability_zone": "us-east-2b",
+      "error": "aws: [ERROR]: An error occurred (InsufficientInstanceCapacity) when calling the RunInstances operation (reached max retries: 2): We currently do not have sufficient p5.4xlarge capacity in the Availability Zone you requested (us-east-2b). Our system will be working on provisioning additional capacity. You can currently get p5.4xlarge capacity by not specifying an Availability Zone in your request or choosing us-east-2a, us-east-2c."
+    },
+    {
+      "availability_zone": "us-east-2c",
+      "error": "aws: [ERROR]: An error occurred (InsufficientInstanceCapacity) when calling the RunInstances operation (reached max retries: 2): We currently do not have sufficient p5.4xlarge capacity in the Availability Zone you requested (us-east-2c). Our system will be working on provisioning additional capacity. You can currently get p5.4xlarge capacity by not specifying an Availability Zone in your request or choosing us-east-2a, us-east-2b."
+    }
+  ]
+}

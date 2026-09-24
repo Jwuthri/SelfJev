@@ -1,7 +1,6 @@
 """LinkedIn chart: question accuracy on the identical 3,471 test questions, read straight from the report files.
 
 usage: uv run --with matplotlib python scripts/make_post_chart.py   -> docs/linkedin_accuracy.png (1200x1200)
-If reports/lora_4b_r2/test exists (round 2), it is added as its own highlighted bar.
 """
 import json
 from pathlib import Path
@@ -20,8 +19,7 @@ BARS = [  # (label, sublabel, report, highlighted); rows whose report is missing
     ("Qwen3-Reranker-4B", "open model, no training", "baseline_4b/test", False),
     ("Qwen3-Reranker-4B + LoRA", "trained in 42 min on 1 GPU", "lora_4b/test", True),
     ("Qwen3-Reranker-4B + LoRA, shared-prefix tree", "same training; text read once for all questions", "tree_4b/test", True),
-    ("Qwen3-Reranker-4B + LoRA, round 2", "+ targeted hard cases", "lora_4b_r2/test", True),
-    ("Shared-prefix tree, round 2", "+ targeted hard cases", "tree_4b_r2/test", True),
+    # ponytail: round 2 (tree_4b_r2 80.6, tree_4b_r2b 81.2) left out: same aggregate, its gain is on hard cases (see post text)
     ("Jev", "TypeSafe, via OpenRouter", "external/full/typesafe_jev-latest", False),
     ("GPT-6 Astra", "frontier LLM, reasoning low", "external/full/openai_gpt-6-astra", False),
 ]

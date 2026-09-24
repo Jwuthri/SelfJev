@@ -1,0 +1,70 @@
+{
+  "ImageId": "ami-0d8d53672833f7ea4",
+  "InstanceType": "p5.4xlarge",
+  "MinCount": 1,
+  "MaxCount": 1,
+  "KeyName": "selfjev-t5-r2b-20260924",
+  "NetworkInterfaces": [
+    {
+      "DeviceIndex": 0,
+      "SubnetId": "subnet-5b9bd417",
+      "Groups": [
+        "sg-0d740928d187b683e"
+      ],
+      "AssociatePublicIpAddress": true
+    }
+  ],
+  "BlockDeviceMappings": [
+    {
+      "DeviceName": "/dev/sda1",
+      "Ebs": {
+        "VolumeSize": 200,
+        "VolumeType": "gp3",
+        "DeleteOnTermination": true,
+        "Encrypted": true
+      }
+    }
+  ],
+  "MetadataOptions": {
+    "HttpTokens": "required"
+  },
+  "InstanceInitiatedShutdownBehavior": "terminate",
+  "UserData": "IyEvYmluL2Jhc2gKc2V0IC1ldQpzaHV0ZG93biAtaCArMTgwCg==",
+  "TagSpecifications": [
+    {
+      "ResourceType": "instance",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "selfjev-t5-r2b-h100-20260924"
+        },
+        {
+          "Key": "Project",
+          "Value": "personal-jev"
+        },
+        {
+          "Key": "Experiment",
+          "Value": "t5-round2b-h100"
+        }
+      ]
+    },
+    {
+      "ResourceType": "volume",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "selfjev-t5-r2b-h100-20260924"
+        },
+        {
+          "Key": "Project",
+          "Value": "personal-jev"
+        },
+        {
+          "Key": "Experiment",
+          "Value": "t5-round2b-h100"
+        }
+      ]
+    }
+  ],
+  "ClientToken": "selfjev-t5-r2b-h100-20260924-us-east-2c"
+}

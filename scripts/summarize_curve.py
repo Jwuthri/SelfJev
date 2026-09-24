@@ -72,6 +72,45 @@ sel = ROOT / "reports/curve/instruct_prompt_selection/selected.json"
 if sel.exists():
     s = json.loads(sel.read_text())
     print(f"\nInstruct prompt selected on validation: `{s['selected']}` ({', '.join(f'{k} {v:.3f}' for k, v in s['scores'].items())}).")
+TREF = ROOT / "reports/tree_4b/test/report.json"
+tref = json.loads(TREF.read_text()) if TREF.exists() else None
+print("\n## Tree scorer: LoRA capacity (same data and recipe as `runs/tree_4b`, 84 steps)\n")
+E2REF = ROOT / "reports/tree_4b/eval2/report.json"
+e2ref = json.loads(E2REF.read_text()) if E2REF.exists() else None
+print("| run | LoRA | trainable params | validation acc % | old test acc % | binary acc % | binary AUROC | multiclass acc % | multilabel EM % | vs tree_4b on old test: run only / ref only / p | eval2 acc % | vs tree_4b on eval2: run only / ref only / p |\n|---|---|---|---|---|---|---|---|---|---|---|---|")
+for name, label, rdir, tdir in [("tree_4b (reference)", "r=16 on q/k/v/o", "reports/tree_4b", "runs/tree_4b"),
+                                ("tree_4b_r64", "r=64 on q/k/v/o", "reports/curve/tree_4b_r64", "runs/curve/tree_4b_r64"),
+                                ("tree_4b_mlp", "r=16 on q/k/v/o + gate/up/down", "reports/curve/tree_4b_mlp", "runs/curve/tree_4b_mlp")]:
+    rp, tp = ROOT / rdir / "test/report.json", ROOT / tdir / "train_meta.json"
+    if not (rp.exists() and tp.exists()):
+        continue
+    r, t = json.loads(rp.read_text()), json.loads(tp.read_text())
+    ob, oa, p = mcnemar(correct(r), correct(tref)) if tref else (0, 0, 1.0)
+    e2p = ROOT / rdir / "eval2/report.json"
+    e2 = "— | — |"
+    if e2p.exists() and e2ref:
+        r2 = json.loads(e2p.read_text()); ob2, oa2, p2 = mcnemar(correct(r2), correct(e2ref))
+        e2 = f"{pct(r2['metrics']['question_accuracy'])} | {ob2} / {oa2} / {p2:.2g} |"
+    print(f"| {name} | {label} | {t['lora']['trainable_params']:,} | {pct(t['best']['question_accuracy'])} | " + " | ".join(row(r)) + f" | {ob} / {oa} / {p:.2g} | " + e2)
+print("\nValidation = the trainer's own validation mix (in-distribution + authored families); the old test adds the six held-out public families;"
+      " eval2 = the frozen 1,991-question target-task set (`data/eval2.jsonl`, `reports/eval2/summary.md`). The old test shows no capacity effect,"
+      " eval2 does, in the direction validation predicted.")
+R2B = ROOT / "reports/tree_4b_r2b"
+if (R2B / "eval2/report.json").exists():
+    r2b_e2, r2b_t = json.loads((R2B / "eval2/report.json").read_text()), json.loads((R2B / "test/report.json").read_text())
+    jev_e2 = json.loads((ROOT / "reports/external/eval2/typesafe_jev-latest/report.json").read_text())
+    print("\n## Tree scorer: round-2b data combined with more LoRA capacity (recipe of `runs/tree_4b_r2b`: + verified hard cases, 8K training length)\n")
+    print("| run | LoRA | trainable params | validation acc % | eval2 acc % | eval2 binary | eval2 multiclass | eval2 multilabel EM | vs tree_4b_r2b on eval2: run only / ref only / p | vs Jev on eval2 | old test acc % | vs tree_4b_r2b on old test |\n|---|---|---|---|---|---|---|---|---|---|---|---|")
+    for name, label, rdir, tdir in [("tree_4b_r2b (reference)", "r=16 on q/k/v/o", "reports/tree_4b_r2b", "runs/tree_4b_r2b"),
+                                    ("tree_4b_r2b_r64", "r=64 on q/k/v/o", "reports/curve/tree_4b_r2b_r64", "runs/curve/tree_4b_r2b_r64"),
+                                    ("tree_4b_r2b_r64_mlp", "r=64 on q/k/v/o + gate/up/down", "reports/curve/tree_4b_r2b_r64_mlp", "runs/curve/tree_4b_r2b_r64_mlp")]:
+        e2p, tp, mp = ROOT / rdir / "eval2/report.json", ROOT / rdir / "test/report.json", ROOT / tdir / "train_meta.json"
+        if not (e2p.exists() and tp.exists() and mp.exists()):
+            continue
+        e2, te, t = json.loads(e2p.read_text()), json.loads(tp.read_text()), json.loads(mp.read_text())
+        m = e2["metrics"]; a = mcnemar(correct(e2), correct(r2b_e2)); j = mcnemar(correct(e2), correct(jev_e2)); o = mcnemar(correct(te), correct(r2b_t))
+        print(f"| {name} | {label} | {t['lora']['trainable_params']:,} | {pct(t['best']['question_accuracy'])} | {pct(m['question_accuracy'])} | {pct(m['binary']['accuracy'])} | {pct(m['multiclass']['accuracy'])} | {pct(m['multilabel']['exact_match'])} | {a[0]} / {a[1]} / {a[2]:.2g} | {j[0]} / {j[1]} / {j[2]:.2g} | {pct(te['metrics']['question_accuracy'])} | {o[0]} / {o[1]} / {o[2]:.2g} |")
+    print("\nJev on eval2: " + pct(jev_e2["metrics"]["question_accuracy"]) + "%. The two combined runs trained on A10Gs with max_batch_tokens 8192 × grad_accum 4 (same 32K-token effective batch as the reference's 16384 × 2).")
 print("\n## Paired McNemar vs the reference (questions only one of the two gets right)\n")
 if ref:
     rc = correct(ref)

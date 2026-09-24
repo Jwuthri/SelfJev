@@ -1,0 +1,71 @@
+{
+  "ImageId": "ami-028e28e7fc9d87d00",
+  "InstanceType": "g6e.8xlarge",
+  "MinCount": 1,
+  "MaxCount": 1,
+  "KeyName": "selfjev-t5-r2b-20260924",
+  "BlockDeviceMappings": [
+    {
+      "DeviceName": "/dev/sda1",
+      "Ebs": {
+        "VolumeSize": 200,
+        "VolumeType": "gp3",
+        "DeleteOnTermination": true,
+        "Encrypted": true
+      }
+    }
+  ],
+  "MetadataOptions": {
+    "HttpTokens": "required"
+  },
+  "InstanceInitiatedShutdownBehavior": "terminate",
+  "UserData": "IyEvYmluL2Jhc2gKc2V0IC1ldQpzaHV0ZG93biAtaCArNDgwCg==",
+  "TagSpecifications": [
+    {
+      "ResourceType": "instance",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "selfjev-t5-r2b-20260924"
+        },
+        {
+          "Key": "Project",
+          "Value": "personal-jev"
+        },
+        {
+          "Key": "Experiment",
+          "Value": "t5-round2b"
+        },
+        {
+          "Key": "Owner",
+          "Value": "julien"
+        }
+      ]
+    },
+    {
+      "ResourceType": "volume",
+      "Tags": [
+        {
+          "Key": "Name",
+          "Value": "selfjev-t5-r2b-20260924"
+        },
+        {
+          "Key": "Project",
+          "Value": "personal-jev"
+        },
+        {
+          "Key": "Experiment",
+          "Value": "t5-round2b"
+        },
+        {
+          "Key": "Owner",
+          "Value": "julien"
+        }
+      ]
+    }
+  ],
+  "ClientToken": "selfjev-t5-r2b-20260924-auto-g6e-8xlarge",
+  "SecurityGroupIds": [
+    "sg-0fe60bef54db7609d"
+  ]
+}

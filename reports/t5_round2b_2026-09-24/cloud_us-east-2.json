@@ -1,0 +1,12 @@
+{
+  "region": "us-east-2",
+  "name": "selfjev-t5-r2b-20260924",
+  "shutdown_hours": 8,
+  "resources": [],
+  "security_group": "sg-0d740928d187b683e",
+  "key_name": "selfjev-t5-r2b-20260924",
+  "instance_id": "i-087b024b35cff657b",
+  "instance_type": "g6e.4xlarge",
+  "launch_time": "2026-09-24T06:37:50+00:00",
+  "availability_zone": "us-east-2b"
+}
