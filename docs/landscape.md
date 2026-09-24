@@ -25,7 +25,7 @@ marktechpost.com/2026/09/19/typesafe-ai-releases-jev/.
 | | result |
 |---|---|
 | accuracy | eval2 97.2%, dev benchmark 82.7% (GPT-6 Astra 85.8%) |
-| weakest slices on eval2 | temporal 89.2, numeric 92.0, exception 95.3, paraphrase 95.4 |
+| weakest slices on eval2 | temporal 89.2, numeric 92.0, multilabel exact match 94.2 |
 | latency | flat 143–178 ms p50 from California, 8 → 4,096 tokens, 1 or 16 questions |
 | marginal speed | 132–137 ms fixed + 2.2–2.6 ms per 1,000 tokens ≈ 400K tokens/s |
 | long texts | reads the whole text: 97.2% on evidence at the end of 4K–17.6K-token texts |
@@ -44,7 +44,7 @@ Nothing downloaded or run; claims are each model's own, on its own benchmark, an
 | camp | models | notes |
 |---|---|---|
 | small encoders, 0.15–0.4B | Laya (ModernBERT / mmBERT), open-jev-deberta-v3-large, rlcd-modernbert-151m (GLiClass) | advertise 33–46 ms; long texts truncated |
-| LoRA on decoders with answer-token readout, 0.6–27B | kev 0.5/0.8/4/9B, decider 0.8/2/4/35B-A3B, openjev, Bespoke-Nimble-9B, AutoJev-27B, Lumma-fev-0.6b, Eikos-4B | mostly Qwen3.5 bases; same recipe as ours (LoRA, logit readout, no generation) |
+| decoders with answer-token readout (mostly LoRA), 0.6–27B | kev 0.5/0.8/4/9B, decider 0.8/2/4/35B-A3B, openjev, Bespoke-Nimble-9B, AutoJev-27B, Lumma-fev-0.6b, Eikos-4B | mostly Qwen3.5 bases; same recipe as ours (LoRA, logit readout, no generation) |
 
 - Their claims: AutoJev-27B 84.6 vs Jev 82.8; kev-4b beats Jev in distribution but trails out of domain (0.817 vs
   0.857); kev-0.8b trails everywhere; decider-35b-a3b JevBench hard 0.676, decider-4b 0.541.

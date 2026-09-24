@@ -25,14 +25,14 @@ branch of one shared-prefix token tree, trained on public datasets plus about 10
 
 | when | step | result |
 |---|---|---|
-| 09-22 | Qwen3-Reranker-0.6B + LoRA on the laptop | 61.0 → 73.5% on the dev benchmark; Jev 82.7, GPT-6 Astra 85.8 |
-| 09-23 | Scale to 4B and 8B on AWS | 80.3 / 80.7%: 4B = 8B, and fine-tuning matters far more than size |
+| 09-22 | Qwen3-Reranker-0.6B + LoRA on the laptop | 61.0 → 73.5% on the dev benchmark |
+| 09-23 | Jev and GPT-6 Astra on the same questions; scale to 4B and 8B on AWS | Jev 82.7, Astra 85.8; 4B 80.3 = 8B 80.7: fine-tuning matters far more than size |
 | 09-23 | A custom cross-attention model that reads the text once | 38–43× faster but 39–58% accurate: yes/no never learned |
 | 09-23 | The **shared-prefix tree**: read once, but every branch attends to the text in every layer | 81.6%, 32–37× faster than stock pairs |
 | 09-23 | Learning curves, bigger adapters, an 8B, an Instruct base | everything lands at 80–82% on the dev benchmark |
-| 09-23 | Round-2 data: 10K hard cases written by 6 models, kept only when a blind judge agrees | better on every trap, but CLINC over-rejection |
+| 09-23 | Round-2 data: 10K hard cases written by 5 models, kept only when a blind judge agrees | better on the traps, but CLINC over-rejection |
 | 09-24 | **eval2**: a frozen 1,991-question target-task test set | the hidden effects appear: data +5.5, Instruct base +3.0, rank 64 +2.1 |
-| 09-24 | Combine the levers | **92.7%** on eval2; a 27B teacher + our model reach 94.5% together |
+| 09-24 | Combine the levers | **92.7%** on eval2; a 27B teacher averaged with a 91.6% tree reaches 94.5% |
 
 ## Where to go
 

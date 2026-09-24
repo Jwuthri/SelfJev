@@ -6,7 +6,7 @@ interesting result.
 | challenger | idea | eval2 | dev benchmark | verdict |
 |---|---|---|---|---|
 | *tree Qwen3-Reranker-4B, round-2b data (reference)* | shared-prefix tree | *90.6* | *81.2* | |
-| Qwen3.8-27B-FP8, zero-shot | a big model as a teacher | **91.4** | — | as good as our best 4B, with different errors |
+| Qwen3.8-27B-FP8, zero-shot | a big model as a teacher | **91.4** | — | matches `tree_4b_ova` (91.6), with different errors |
 | Qwen3.5-2B, shared document with forked native cache | linear attention, smaller | not scored | 79.9 (round-1 data) | promising on speed at 8K tokens; needs eval2 |
 | T5Gemma 2 1B–1B, shared encoder + decoder branches | pretrained encoder–decoder | 73.0 | 75.4 | 17 points behind |
 | jina-reranker-v3.5 (0.6B), listwise | one pass per text, pretrained relevance head | 73.3 | 76.6 | sub-1B ceiling; non-commercial license |
@@ -47,7 +47,7 @@ pretrained decoder against that shared memory. It had already been tried in an e
 - **The pilot bug:** the target filter used `model.encoder.layers`, but the native path is
   `model.encoder.text_model.layers`. The adapter had 208 decoder tensors and 0 encoder tensors. A unit test now checks
   PEFT coverage and non-zero gradients on both stacks.
-- **Verdict so far:** 14–17 points behind the tree on eval2. Faster than the tree at 2K × 16 × 3 on the same GPU, but
+- **Verdict so far:** 14–18 points behind the tree on eval2. Faster than the tree at 2K × 16 × 3 on the same GPU, but
   not by the 2× the promotion gate asked for, and not with acceptable quality.
 - Protocol, audits and raw results: [reports/t5_round2b_2026-09-24/](../reports/t5_round2b_2026-09-24/README.md).
   Code: [src/personal_jev/t5_shared.py](../src/personal_jev/t5_shared.py).

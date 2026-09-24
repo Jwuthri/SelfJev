@@ -7,7 +7,8 @@
       for short texts with one question; it is 5× slower at 4,096 tokens.
     - **Serving:** vLLM with the prefix cache and merged weights is the best general option. A shorter "compact" tree
       format did not pay off.
-    - **Cost:** a fully busy A10G is 1.3–3× cheaper per request than Jev; an idle one is not.
+    - **Cost:** a fully busy A10G is cheaper per request than Jev (up to 3×, less with many questions); an idle one is
+      not.
 
 ## Tree vs stock pairs (same A10G, bf16, unmerged LoRA)
 

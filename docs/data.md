@@ -48,7 +48,7 @@ All data is one JSONL line per (text, question, target), with `id`, `source_id`,
 | round 1: public sets (≤ 1,600 per family) + synthetic | every model until 2026-09-23 | 10,112 |
 | round 2: round 1 + `hardcases.jsonl`, 8K-token training length | `tree_4b_r2` | 16,357 |
 | round 2b: round 1 + `hardcases_nb.jsonl` | `tree_4b_r2b`, `tree_4b_ova`, the capacity runs | 16,375 |
-| round 2, r2_* families uncapped | `tree_4b_instruct_r2x64` (best) | 18,681 |
+| round 2b with the hard-case families exempt from the 1,600-per-family cap | `tree_4b_instruct_r2x64` (best) | 18,681 |
 | round 3: the above + `hardcases_r3.jsonl` | stopped run, step 300 scored | ≈ 52K |
 
 ## Generating and judging hard cases
@@ -68,7 +68,7 @@ The pipeline behind rounds 2 and 3 and eval2:
 
 | round | written | kept | author = judge | cost |
 |---|---|---|---|---|
-| 2 | 10,627 questions, 6 authors | 10,142 | 95.4% (DeepSeek V4 Flash 82.1 … Grok 4.7 98.9) | $22.86 writing + $36.24 judging |
+| 2 | 10,627 questions, 5 authoring models | 10,142 | 95.4% (DeepSeek V4 Flash 82.1 … Grok 4.7 98.9) | $22.86 writing + $36.24 judging |
 | 3 | 39,833 questions, 3 authors | 38,628 | 97.0% (simple 98.8, hard 96.5, very hard 95.6) | ≈ $280 |
 | eval2 | 2,070 questions, 3 authors | 1,991 | 96.2% unanimous (Astra 97.5, Gemini 97.0) | $32.72 |
 
@@ -85,7 +85,7 @@ Built because the dev benchmark could not see trap improvements (per-trap n was 
   the calls used domains, genres and instruction styles absent from the training brief.
 - **Judges:** GPT-6 Astra and Gemini 3.1 Pro, blind; a question is kept only when both give the author's answer.
 - **Composition:** tiers 673 hard / 664 simple / 654 very hard; 1,016 binary / 593 multiclass / 382 multilabel; 177–222
-  questions per length bucket; every trap tag n ≥ 57 except `evidence_start` (17); 245 of 382 multilabel questions have
+  questions per length bucket; n ≥ 57 for every main trap tag (`evidence_start` 17); 245 of 382 multilabel questions have
   3+ positives; `none` is offered in 391 multiclass questions and correct in 58 (14.8%).
 - **Jev: 97.2%.** Weakest on temporal (89.2) and numeric (92.0) reasoning. Never used to keep or drop a question.
   Two Jev runs agree on 1,981 of 1,991 decisions; the rest is Jev's own run-to-run noise.

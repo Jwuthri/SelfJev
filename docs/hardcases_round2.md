@@ -5,7 +5,7 @@ Written 2026-09-24. Everything below is measured; paths point at the evidence. T
 
 ## TL;DR
 
-- 4,103 states / 10,627 questions were written by six models, judged blind by GPT-6 Astra, and 10,142 kept
+- 4,103 states / 10,627 questions were written by five models, judged blind by GPT-6 Astra, and 10,142 kept
   (95.4% author = judge). Cost: $22.86 generation + $36.24 judge + $0.30 Jev. Build: `data/hardcases.jsonl`.
 - Retraining the shared-prefix tree 4B on it (`runs/tree_4b_r2`) **helps the target task and hurts the aggregate
   test number**: authored eval families 78.4 → 81.9%, every reasoning trap up (numeric +25, exception +29,

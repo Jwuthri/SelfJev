@@ -13,7 +13,7 @@ that decides between models.
 <div class="acc-chart" style="--ref: 97.2" role="img" aria-label="eval2 accuracy by model; Jev scores 97.2%">
   <div class="acc-head"><span>Jev 97.2</span></div>
   <div class="acc-row" title="tree_4b_instruct_r2x64: 92.7% on eval2">
-    <span class="acc-label">Tree, Qwen3-4B-Instruct, r64, round-2 data</span>
+    <span class="acc-label">Tree, Qwen3-4B-Instruct, r64, round-2b data</span>
     <span class="acc-track"><span class="acc-bar" style="--v: 92.7"></span></span>
     <span class="acc-value">92.7</span>
   </div>
@@ -63,7 +63,7 @@ that decides between models.
 | run | base | recipe | eval2 | binary | multiclass | multilabel EM | dev benchmark |
 |---|---|---|---|---|---|---|---|
 | **Jev** (API) | undisclosed | undisclosed | **97.2** | 97.8 | 98.1 | 94.2 | 82.7 |
-| **tree_4b_instruct_r2x64** | Qwen3-4B-Instruct-2507 | tree, r64, round-2 data uncapped | **92.7** | 94.6 | 95.4 | 83.5 | 82.7 |
+| **tree_4b_instruct_r2x64** | Qwen3-4B-Instruct-2507 | tree, r64, round-2b data, hard cases not capped per family | **92.7** | 94.6 | 95.4 | 83.5 | 82.7 |
 | tree_4b_ova | Qwen3-Reranker-4B | tree, r16, round-2b data, all options in the question | 91.6 | 93.8 | 94.9 | 80.4 | 82.6 |
 | Qwen3.8-27B-FP8, zero-shot (teacher) | Qwen3.8-27B | no training | 91.4 | 93.4 | 97.8 | 75.9 | — |
 | curve/tree_4b_r2b_r64_mlp | Qwen3-Reranker-4B | tree, r64 + MLP, round-2b data | 91.3 | 93.7 | 94.3 | 80.4 | 82.4 |
@@ -103,7 +103,7 @@ models from each other. Selected rows:
 |---|---|---|---|---|---|
 | GPT-6 Astra (reasoning low) | **85.8** | 0.971 | **95.3** | **55.8** | 0.050 |
 | Jev | 82.7 | **0.981** | 91.6 | 40.1 | **0.045** |
-| tree Instruct-4B, r64, round-2 data | 82.7 | 0.965 | 88.0 | 52.9 | **0.045** |
+| tree Instruct-4B, r64, round-2b data | 82.7 | 0.965 | 88.0 | 52.9 | **0.045** |
 | tree Reranker-4B, round-1 data | 81.6 | 0.953 | 89.7 | 51.7 | 0.077 |
 | stock 8B + LoRA | 80.7 | 0.945 | 88.7 | 48.0 | 0.051 |
 | stock 4B + LoRA | 80.3 | 0.945 | 86.2 | 47.7 | 0.056 |

@@ -12,7 +12,7 @@ table in the [experiment ledger](experiments.md#dead-ends-do-not-redo).
 | tried | result | measured on |
 |---|---|---|
 | A second epoch (stock 4B) | 79.8 vs 80.3; the best validation checkpoint is always inside epoch 1 | dev benchmark |
-| 8B instead of 4B (stock + LoRA) | 80.7 vs 80.3, p = 0.52, and 1.7× slower | dev benchmark |
+| 8B instead of 4B (stock + LoRA) | 80.7 vs 80.3, p = 0.52, and about 1.5× slower | dev benchmark |
 | More of the same data mix | ~1.5 points per doubling | dev benchmark |
 | +100 to +3,000 BoolQ training questions | BoolQ 83.3 → 86.7 at best (Jev 90.7); overall unchanged (p ≥ 0.09) | dev benchmark |
 | LoRA r64 on top of round-2b data | 90.3 vs 90.6 (p = 0.61): capacity and data overlap | eval2 |

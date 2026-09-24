@@ -32,8 +32,8 @@ included. About **$457 logged** over three days; a few GPU boxes (the early tree
 | g5.xlarge (A10G 24 GB) | $1.006/h: one 4B LoRA on 10K questions ≈ 40 min; the dev benchmark ≈ 4 min |
 | g6e.4xlarge (L40S 48 GB), us-east-2 | $3.00424/h |
 | p5.4xlarge (H100) | $6.88/h (never obtained) |
-| GPT-6 Luna as a data writer | ≈ $0.002 per 5 texts |
-| Gemini 3.8 Flash as a data writer | ≈ $0.014 per text; Grok 4.7 costs 4× more (mandatory reasoning) |
+| GPT-6 Luna as a data writer | ≈ $0.001 per text ($1.62 for 1,676 in round 2) |
+| Gemini 3.8 Flash as a data writer | ≈ $0.014 per text; Grok 4.7 ≈ $0.026 (mandatory hidden reasoning) |
 | GPT-6 Astra as a blind judge, OpenAI Batch API | ≈ $3.40–4.16 per 1,000 questions |
 | Jev | $0.042 per million input tokens |
 
