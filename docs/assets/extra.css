@@ -131,3 +131,7 @@
   font-size: 0.7rem;
   line-height: 1.4;
 }
+
+.md-typeset dl dt {
+  font-weight: 700;
+}

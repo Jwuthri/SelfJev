@@ -9,6 +9,9 @@ hide:
 one, pick many) into calibrated decisions in about 150 ms, with no text generation. SelfJev rebuilds that interface on
 open Qwen3 models with small LoRA adapters, and measures every step against Jev on the same questions.
 
+New to the shorthand (eval2, round 2b, r64, stock pairs…)? Hover any dotted-underlined term, or read the
+[glossary](glossary.md).
+
 <div class="stat-grid" markdown>
 <div class="stat"><strong>92.7%</strong><span>our best model on eval2, the target-task test set</span></div>
 <div class="stat"><strong>97.2%</strong><span>Jev on eval2: we are 4.5 points behind</span></div>
