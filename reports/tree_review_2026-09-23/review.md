@@ -26,7 +26,7 @@ The aggregate also hides a useful decomposition: relative to Jev, round-one tree
 
 ## Why the tree matters architecturally
 
-[tree.py](/Users/julien/Documents/Repos/SelfJev/src/personal_jev/tree.py) retains the pretrained transformer and yes/no readout. Each document root is processed once. Question tokens can attend to the document, and each answer leaf can attend to the document and its own question through every layer. Sibling branches are masked. Position IDs follow each root-to-leaf path.
+[tree.py](../../src/personal_jev/tree.py) retains the pretrained transformer and yes/no readout. Each document root is processed once. Question tokens can attend to the document, and each answer leaf can attend to the document and its own question through every layer. Sibling branches are masked. Position IDs follow each root-to-leaf path.
 
 The cached inference path is **two decoder passes**: document prefill, then all branch tokens against its cache. Packed training uses one whole-tree pass. There is no autoregressive answer generation. Saying simply “one forward pass” obscures the actual inference implementation, but the important saving is real: no repeated full document computation per candidate.
 
@@ -49,7 +49,7 @@ Both benchmarked adapters match the hashes in their respective quality reports. 
 
 The last row confirms the mechanism: one binary judgment has no repeated candidate encoding to eliminate. Conversely, even one multiclass question has several candidates and benefits from sharing.
 
-The measured speedups apply to this implementation and batching configuration. The stock benchmark still uses `task-v1`, whereas its quality report uses `answer-v1`; [benchmark.py](/Users/julien/Documents/Repos/SelfJev/src/personal_jev/benchmark.py:79) does not accept the selected prompt. That should be repaired before publishing a final matched quality/latency claim. It is unlikely to explain away a 32x reduction, but it prevents an exact same-format comparison. The 8K stock case runs 48 batches under its 16,384-token budget; an optimized stock baseline with a larger safe budget could change the ratio.
+The measured speedups apply to this implementation and batching configuration. The stock benchmark still uses `task-v1`, whereas its quality report uses `answer-v1`; [benchmark.py](../../src/personal_jev/benchmark.py#L79) does not accept the selected prompt. That should be repaired before publishing a final matched quality/latency claim. It is unlikely to explain away a 32x reduction, but it prevents an exact same-format comparison. The 8K stock case runs 48 batches under its 16,384-token budget; an optimized stock baseline with a larger safe budget could change the ratio.
 
 Tree benchmark cells have 3-10 samples; long stock cells have only 2. Their reported p95 values are essentially upper order statistics of a tiny sample, not production tail-latency evidence. The states are repetitive filler. These runs establish execution cost at long lengths, not long-document decision quality. Jev latency has not been measured on these requests.
 
@@ -77,7 +77,7 @@ Review label descriptions too. Some CLINC mappings are narrower than the origina
 ## What I would prioritize now
 
 1. **Keep `tree_4b` round one as the aggregate reference.** Round two is a useful specialized variant and diagnostic, not an automatic replacement. Keep tree Instruct as a control: it loses overall but has slightly better binary ranking and authored accuracy, so “reranker is always the better base” is stronger than the evidence.
-2. **Fix execution waste without changing model semantics.** [TreeModel.cached](/Users/julien/Documents/Repos/SelfJev/src/personal_jev/tree.py:183) still builds a complete T-by-T boolean mask and then discards the root query rows. A roughly 32K tree needs around a gigabyte for just one such CPU mask, plus temporaries. Build root visibility and the branch submask directly. Profile root prefill, branch attention, mask construction and projection work separately. Then test adapter merging and compatible structured attention kernels.
+2. **Fix execution waste without changing model semantics.** [TreeModel.cached](../../src/personal_jev/tree.py#L183) still builds a complete T-by-T boolean mask and then discards the root query rows. A roughly 32K tree needs around a gigabyte for just one such CPU mask, plus temporaries. Build root visibility and the branch submask directly. Profile root prefill, branch attention, mask construction and projection work separately. Then test adapter merging and compatible structured attention kernels.
 3. **Investigate candidate rejection before adding another large training batch.** The CLINC result gives a precise failure pattern and a cheap, falsifiable experiment. Add balanced in-scope/out-of-scope candidate-set examples and inspect description quality.
 4. **Target the remaining judgments.** Agent-output grading remains 61.5% in round one and 57.7% in round two, versus Jev's 92.3% on 26 questions. BoolQ and SST-2 also remain behind. Use a new task-balanced evaluation to decide whether improvements to these matter more than the present public-dataset mixture.
 5. **Make calibration goals explicit.** A temperature near one only says that this temperature-fitting procedure found little benefit on its calibration split. Round-one binary ECE is 0.077 versus stock's 0.056 and Jev's 0.045. The validation thresholds maximize F1, not overall accuracy; applying the full round-one calibration file drops test accuracy to 79.3%. Separate temperature effects from threshold objectives, and validate the deployment policy independently.
@@ -89,4 +89,4 @@ The hard-case builder now requires agreement with a blind Astra labeler by defau
 
 The earlier review's test-reuse and grouping limitations still apply. The new bootstrap is a robustness check, not a fresh final evaluation. No test-only threshold fix was applied, no model was trained by this review, and no live data-generation job was modified.
 
-Reproducible calculations: [audit_update.py](/Users/julien/Documents/Repos/SelfJev/reports/tree_review_2026-09-23/audit_update.py). Saved metrics, paired comparisons, document-bootstrap intervals, benchmark alignment, source hashes and the 34 affected CLINC IDs: [audit.json](/Users/julien/Documents/Repos/SelfJev/reports/tree_review_2026-09-23/audit.json).
+Reproducible calculations: [audit_update.py](audit_update.py). Saved metrics, paired comparisons, document-bootstrap intervals, benchmark alignment, source hashes and the 34 affected CLINC IDs: [audit.json](audit.json).

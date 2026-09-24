@@ -24,7 +24,7 @@ Adaptation used **10,080 training questions**, initialized from R1, with 50% gol
 
 The following are medians of ten measured repetitions, after warmup, on the same A10G. The model is resident. The request has **2,048 document tokens, 16 questions, and 3 candidate answers per question**. Network, model loading and compilation are excluded.
 
-![Measured latency as the number of questions increases](/Users/julien/Documents/Repos/SelfJev/reports/latency_optimization_2026-09-24/latency_vs_questions.png)
+![Measured latency as the number of questions increases](latency_vs_questions.png)
 
 | Implementation | New document / cold prefix |
 |---|---:|

@@ -2,6 +2,7 @@
 import html
 import json
 import re
+import os
 from pathlib import Path
 from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
@@ -12,7 +13,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, Tabl
 
 ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(__file__).resolve().parent
-PDF=ROOT/'output/pdf/selfjev-deep-review.pdf'
+PDF=OUT/'selfjev-deep-review.pdf'
 A=json.loads((OUT/'audit.json').read_text())
 B=json.loads((OUT/'component_ablation.json').read_text())
 C=json.loads((OUT/'closing_snapshot.json').read_text())
@@ -28,7 +29,7 @@ def diagram(p,kind):p['blocks'].append(('diagram',kind))
 def bar(p,labels,vals):p['blocks'].append(('bars',(labels,vals)))
 def pct(x):return f'{100*x:.1f}%'
 def metric(n,t,k):return A['reports'][n]['metrics'][t][k]
-def local(path,label=None):return f'[{label or path}]({ROOT/path})'
+def local(path,label=None):return f'[{label or path}]({os.path.relpath(ROOT/path, OUT)})'
 
 p=page('RESEARCH & ENGINEERING REVIEW / 23 SEPTEMBER 2026','SelfJev: what the project actually proves','A review of the current working tree, saved experiments and two trained architecture families, with a new validation-only component analysis.')
 text(p,'<b>You have demonstrated that useful typed classification can be built with familiar methods and modest adaptation compute.</b> The stock Qwen reranker plus LoRA is a credible working baseline. The shared-state system demonstrates a large reduction in repeated computation, but currently sacrifices too much decision quality. No measured configuration yet combines the best quality and the best scaling.')
@@ -318,7 +319,7 @@ doc=SimpleDocTemplate(str(PDF),pagesize=(595.28,841.89),leftMargin=50,rightMargi
 doc.build(story,onFirstPage=footer,onLaterPages=footer)
 (OUT/'review.md').write_text('\n'.join(md))
 css='''*{box-sizing:border-box}body{margin:0;background:#f3f5f1;color:#18302f;font:17px/1.65 system-ui,sans-serif}header{max-width:1040px;margin:auto;padding:38px 42px 16px}header a{margin-right:18px}main{max-width:1040px;margin:auto}section{background:white;margin:24px 0;padding:46px 54px;border-top:4px solid #11776f}h1{font-size:34px;line-height:1.16;letter-spacing:-1px;margin:14px 0}h2{font-size:20px;color:#11776f;margin:24px 0 6px}.kicker{font-size:12px;font-weight:700;letter-spacing:1px;color:#11776f}.deck{font-size:19px;color:#61716f}.note{font-size:15px;color:#61716f;border-left:3px solid #d4e2dc;padding-left:16px}a{color:#11776f;text-underline-offset:3px;overflow-wrap:anywhere}table{width:100%;border-collapse:collapse;font-size:15px;line-height:1.5;margin:18px 0}th{background:#11776f;color:white;text-align:left;font-size:13px}th,td{padding:12px;vertical-align:top}tbody tr:nth-child(odd){background:#eff6f3}.table-wrap{overflow-x:auto}.flow{display:flex;align-items:center;gap:12px;margin:26px 0;font-size:15px}.flow div{flex:1;background:#eff6f3;border:1px solid #d4e2dc;padding:16px}.arrow{color:#11776f}.bars{margin:28px 0}.bar{display:grid;grid-template-columns:240px 1fr 65px;align-items:center;gap:14px;margin:14px 0}.bar i{height:16px;background:linear-gradient(to right,#11776f var(--v),#d4e2dc var(--v))}.bar b{text-align:right}@media(max-width:700px){body{font-size:16px}section{padding:25px 20px;margin:16px 10px}h1{font-size:28px}header{padding:24px}.flow{flex-direction:column;align-items:stretch}.arrow{transform:rotate(90deg);align-self:center}.bar{grid-template-columns:1fr 65px}.bar span{grid-column:1/-1}table{min-width:540px}}@media print{body{background:white}header{display:none}section{break-before:page;border:0;margin:0;padding:0}}'''
-nav='<header><b>SelfJev / Deep review</b><p>Current evidence, architectural diagnosis and next experiments.</p><a href="../../output/pdf/selfjev-deep-review.pdf">PDF</a><a href="review.md">Markdown</a><a href="audit.json">Audit evidence</a></header>'
+nav='<header><b>SelfJev / Deep review</b><p>Current evidence, architectural diagnosis and next experiments.</p><a href="selfjev-deep-review.pdf">PDF</a><a href="review.md">Markdown</a><a href="audit.json">Audit evidence</a></header>'
 # PDF is two levels up from reports/deep_review_* to repository root.
 nav=nav.replace('../../output','../../output')
 (OUT/'review.html').write_text('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SelfJev - Deep Review</title><style>'+css+'</style></head><body>'+nav+'<main>'+''.join(ht)+'</main></body></html>')

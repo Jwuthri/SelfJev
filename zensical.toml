@@ -1,0 +1,117 @@
+[project]
+site_name = "SelfJev"
+site_description = "Rebuilding Jev's typed-decision engine with open Qwen models: every experiment, number and lesson."
+site_url = "https://jwuthri.github.io/SelfJev/"
+repo_url = "https://github.com/Jwuthri/SelfJev"
+repo_name = "Jwuthri/SelfJev"
+edit_uri = "edit/master/docs/"
+copyright = "SelfJev research notes · numbers come from the report files in the repo"
+extra_css = ["assets/extra.css"]
+
+nav = [
+  { "Home" = "index.md" },
+  { "Key findings" = "findings.md" },
+  { "Results" = [
+    { "Leaderboard" = "leaderboard.md" },
+    { "Speed and cost" = "speed.md" },
+    { "What didn't work" = "dead_ends.md" },
+  ] },
+  { "Models" = [
+    { "Stock reranker + LoRA" = "stock_model.md" },
+    { "Shared-prefix tree (best)" = "tree_model.md" },
+    { "Custom cross-attention" = "custom_model.md" },
+    { "Other challengers" = "challengers.md" },
+    { "jina-reranker-v3.5" = "jina_model.md" },
+  ] },
+  { "Data" = [
+    { "Datasets and labels" = "data.md" },
+    { "Round-2 hard cases" = "hardcases_round2.md" },
+  ] },
+  { "Context" = [
+    { "Jev and open alternatives" = "landscape.md" },
+    { "Open questions" = "next.md" },
+    { "Spend" = "costs.md" },
+  ] },
+  { "Use it" = [
+    { "How it works" = "how_it_works.md" },
+    { "Reproduce" = "reproduce.md" },
+  ] },
+  { "Lab notebook" = [
+    { "Experiment ledger" = "experiments.md" },
+    { "Journal" = "JOURNAL.md" },
+  ] },
+]
+
+# Links to repo files outside docs/ are valid: scripts/docs_links.py points them at GitHub after this check runs.
+validation.invalid_links = false
+
+[project.theme]
+language = "en"
+features = [
+  "content.action.edit",
+  "content.code.copy",
+  "content.tabs.link",
+  "content.tooltips",
+  "navigation.footer",
+  "navigation.indexes",
+  "navigation.instant",
+  "navigation.path",
+  "navigation.sections",
+  "navigation.tabs",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+  "toc.follow",
+]
+
+[project.theme.icon]
+logo = "lucide/scale"
+repo = "fontawesome/brands/github"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "indigo"
+accent = "amber"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "indigo"
+accent = "amber"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to system preference"
+
+[project.markdown_extensions]
+abbr = {}
+admonition = {}
+attr_list = {}
+def_list = {}
+footnotes = {}
+md_in_html = {}
+tables = {}
+toc.permalink = true
+pymdownx.betterem = {}
+pymdownx.details = {}
+pymdownx.emoji.emoji_generator = "zensical.extensions.emoji.to_svg"
+pymdownx.emoji.emoji_index = "zensical.extensions.emoji.twemoji"
+pymdownx.highlight.anchor_linenums = true
+pymdownx.highlight.pygments_lang_class = true
+pymdownx.inlinehilite = {}
+pymdownx.mark = {}
+pymdownx.smartsymbols = {}
+pymdownx.snippets.base_path = ["."]
+pymdownx.snippets.check_paths = true
+pymdownx.superfences.custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
+]
+pymdownx.tabbed.alternate_style = true
+pymdownx.tasklist.custom_checkbox = true
+"scripts.docs_links" = {}
