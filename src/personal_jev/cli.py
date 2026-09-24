@@ -85,6 +85,8 @@ def main(argv=None):
     model_args(p)
     p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=8000)
+    p.add_argument("--options-in-question", action="store_true", help="list every option in the question text "
+                   "(required for adapters trained on data/ova/)")
     p = sub.add_parser("train", help="stock backend: LoRA training from a JSON config")
     p.add_argument("config")
     p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
@@ -128,7 +130,7 @@ def main(argv=None):
     elif a.cmd == "serve":
         from .server import serve
         scorer = _scorer(a)
-        serve(scorer, a.host, a.port, _calibration(a, scorer), a.prompt)
+        serve(scorer, a.host, a.port, _calibration(a, scorer), a.prompt, a.options_in_question)
     elif a.cmd == "train":
         from .train import train
         train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})

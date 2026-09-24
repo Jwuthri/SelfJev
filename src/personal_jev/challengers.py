@@ -17,6 +17,7 @@ from .model import InputTooLong
 
 MODELS = {
  'qwen35': ('Qwen/Qwen3.5-2B','15852e8c16360a2fea060d615a32b45270f8a8fc'),
+ 'qwen35_4b': ('Qwen/Qwen3.5-4B','851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a'),
  'gemma4': ('google/gemma-4-E2B-it','3e22461f65e89153144f8adb70e3b8c2cc9845a7'),
  't5gemma2': ('google/t5gemma-2-1b-1b','dd0a2683227859151b1730ca3a63087df5b5f39b'),
  'gliclass': ('knowledgator/gliclass-instruct-large-v1.0','825e5478c1bf4bffbf297690517097ccbdb2e006'),
@@ -69,7 +70,7 @@ class ChallengerScorer:
         self.tokenizer = AutoTokenizer.from_pretrained(model_id, revision=revision)
         if self.tokenizer.pad_token_id is None:
             self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
-        if name == 'qwen35':
+        if name.startswith('qwen35'):
             from transformers import Qwen3_5ForCausalLM
             cls = Qwen3_5ForCausalLM
         elif name == 'gemma4':
@@ -106,7 +107,7 @@ class ChallengerScorer:
         self.meta = dict(rotary_buffer_precision='legacy blanket cast' if legacy_bf16_buffers else 'native',adapter_sha256=adapter_sha,model=model_id,revision=revision,adapter=adapter,device=device,dtype=dtype,
                          architecture=arch,prompt='challenger-state-first-v1',prompt_sha=hashlib.sha256(INSTRUCTION.encode()).hexdigest()[:12],
                          truncation='none',max_length=max_length,branch_batch=branch_batch,
-                         cache_storage='forked batch rows; prefix compute shared, storage materialized' if name in ['qwen35','gemma4'] else None)
+                         cache_storage='forked batch rows; prefix compute shared, storage materialized' if name.startswith('qwen35') or name=='gemma4' else None)
 
     def base(self):
         return self.model.get_base_model() if hasattr(self.model,'get_base_model') else self.model

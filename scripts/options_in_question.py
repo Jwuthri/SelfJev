@@ -7,23 +7,17 @@ Binary questions are unchanged. Apply the same transform at inference time (tran
 
 usage: uv run python scripts/options_in_question.py data/hf.jsonl data/eval2.jsonl ...   -> data/ova/<name>.jsonl
 """
-import hashlib
 import json
-import random
 import sys
 from pathlib import Path
 
-HEAD = {"multiclass": "Options (exactly one is correct):", "multilabel": "Options (any number can be correct, possibly none):"}
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+from personal_jev.options import with_options  # noqa: E402
 
 
 def transform(row):
-    q = row["question"]
-    if q["type"] == "binary":
-        return row
-    opts = list(q["candidates"])
-    random.Random(int(hashlib.sha256(row["id"].encode()).hexdigest()[:8], 16)).shuffle(opts)
-    listing = "\n".join(f"- {c['description']}" for c in opts)
-    return row | {"question": q | {"instruction": f"{q['instruction']}\n{HEAD[q['type']]}\n{listing}"}}
+    return row | {"question": with_options(row["question"], row["id"])}
 
 
 if __name__ == "__main__":

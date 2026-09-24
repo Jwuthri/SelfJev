@@ -17,6 +17,7 @@ import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from .classify import classify, run_meta
+from .options import with_options
 from .formatting import DEFAULT_PROMPT
 from .schemas import ValidationError
 
@@ -81,7 +82,13 @@ def answers_from(result: dict, decode: dict) -> dict:
     return out
 
 
-def make_handler(scorer, calibration=None, prompt=DEFAULT_PROMPT):
+def make_handler(scorer, calibration=None, prompt=DEFAULT_PROMPT, options_in_question=False):
+    def prepare(req):  # adapters trained on data/ova/ see every option in the question text (options.py)
+        if not options_in_question or not isinstance(req, dict) or not isinstance(req.get("questions"), list):
+            return req
+        return req | {"questions": [with_options(q, str(q.get("id"))) if isinstance(q, dict) and q.get("type") in ("multiclass", "multilabel")
+                                     and isinstance(q.get("candidates"), list) else q for q in req["questions"]]}
+
     lock = threading.Lock()  # ponytail: one model, one request at a time; a batching queue if throughput matters
 
     class Handler(BaseHTTPRequestHandler):
@@ -100,11 +107,11 @@ def make_handler(scorer, calibration=None, prompt=DEFAULT_PROMPT):
                 body = json.loads(self.rfile.read(int(self.headers.get("Content-Length") or 0)) or b"null")
                 if self.path == "/classify":
                     with lock:
-                        return self._send(200, classify(scorer, body, calibration, prompt))
+                        return self._send(200, classify(scorer, prepare(body), calibration, prompt))
                 if self.path == "/api/alpha/decisions":
                     req, decode = compat_to_request(body)
                     with lock:
-                        result = classify(scorer, req, calibration, prompt)
+                        result = classify(scorer, prepare(req), calibration, prompt)
                     meta = result["meta"] | {"note": "shape-compatible endpoint serving personal-jev, not the hosted model"}
                     return self._send(200, {"model": f"personal-jev/{run_meta(scorer)['model']}", "answers": answers_from(result, decode),
                                             "meta": meta})
@@ -122,7 +129,7 @@ def make_handler(scorer, calibration=None, prompt=DEFAULT_PROMPT):
     return Handler
 
 
-def serve(scorer, host="127.0.0.1", port=8000, calibration=None, prompt=DEFAULT_PROMPT):
-    httpd = ThreadingHTTPServer((host, port), make_handler(scorer, calibration, prompt))
+def serve(scorer, host="127.0.0.1", port=8000, calibration=None, prompt=DEFAULT_PROMPT, options_in_question=False):
+    httpd = ThreadingHTTPServer((host, port), make_handler(scorer, calibration, prompt, options_in_question))
     print(f"serving on http://{host}:{httpd.server_port}  (POST /classify, POST /api/alpha/decisions)", flush=True)
     httpd.serve_forever()

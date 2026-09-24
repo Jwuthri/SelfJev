@@ -99,12 +99,16 @@ if __name__ == "__main__":
     p = sub.add_parser("merge")
     p.add_argument("--adapter", required=True)
     p.add_argument("--out", required=True)
+    p.add_argument("--model-id", default=RERANKER_4B[0])
+    p.add_argument("--revision", default=RERANKER_4B[1])
     p = sub.add_parser("serve")
     p.add_argument("--model-dir", required=True)
+    p.add_argument("--model-id", default=RERANKER_4B[0], help="base model id (sets the tree format's chat suffix)")
     p.add_argument("--port", type=int, default=8002)
+    p.add_argument("--options-in-question", action="store_true", help="adapters trained on data/ova/")
     a = ap.parse_args()
     if a.cmd == "merge":
-        merge(a.adapter, a.out)
+        merge(a.adapter, a.out, a.model_id, a.revision)
     else:
         from .server import serve
-        serve(VllmTreeScorer(a.model_dir), port=a.port)
+        serve(VllmTreeScorer(a.model_dir, model_id=a.model_id), port=a.port, options_in_question=a.options_in_question)

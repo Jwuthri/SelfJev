@@ -8,6 +8,10 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
+| Combined recipe B `tree_4b_combo_r2` (`scripts/run_tree_combined.sh`, R3=0): tree + Qwen3-4B-Instruct-2507 + LoRA r64 + all options in the question (data/ova/), round-2 data uncapped, MBT 8192 × GA 4. Compare with tree_4b_instruct_r2x64; then latency with merged LoRA + vLLM | Jev classifier with Qwen reranker (fork) | AWS `i-07941d4e1b3626091` "selfjev-combo-r2" g5.xlarge (A10G) $1.006/h | 11:58 | results ≈ 15:30; 8 h power-off cap |
+| Combined recipe A `tree_4b_combo` (same, + round 3, R3=1): the "everything" model. Compare with tree_4b_instruct_r3 (running, owner Jev classifier with Qwen reranker), which differs only in the option lists | Jev classifier with Qwen reranker (fork) | AWS `i-01c9e9f63d2c0fa7d` "selfjev-combo-all" g5.xlarge (A10G) $1.006/h | 11:59 | results ≈ 23:00; 16 h power-off cap |
+| **Qwen3.5-4B shared-document run** (user OK 2026-09-24, ≈ $5, cap $7): `scripts/aws_qwen35.sh` + `scripts/run_qwen35_gpu.sh`. Train `qwen35_4b_r2x64` (r2x64 data + LoRA r64, full-sequence training, texts ≤ 2,048 tokens), old test + eval2 + bench; then Eikos-4B and the Qwen3.5-2B challenger zero-shot on eval2 | SelfJev state of play | AWS `selfjev-qwen35-4b-20260924` (g6e.xlarge $1.861/h, else g5.xlarge $1.006/h), auto-terminate cap | 2026-09-24 11:30 PDT | ≈ 15:00 PDT |
+| **Round 3 on the Instruct base, full rerun** (user request; the first run was stopped halfway). **DO NOT STOP THIS BOX.**<br>`tree_4b_instruct_r3`: the control recipe (`configs/tree_4b_instruct_r3.json`) + `data/hardcases_r3.jsonl` (sha `d20ecb98…`), 51,853 train questions, 910 steps (≈ 14 s/step on the L40S), MBT 16384 × GA 2 (same 32K-token effective batch as the control); evals on validation, old test and eval2 | Jev classifier with Qwen reranker | AWS **us-east-2** `i-067cb929be78ed826` "personal-jev-instruct-r3" g6e.2xlarge (L40S), $2.24/h (no H100 or g6e.xlarge free in us-east-1/2 or us-west-2) | 2026-09-24 11:05 PDT (training from 11:36) | ≈ 15:45; 10 h power-off cap |
 | T5Gemma matched round-2b: correcting decoder-only targeting bug; full encoder+decoder retraining, then same-L40S controls; H100 unavailable | Codex tree latency/compact | original master; Ohio L40S `i-087b024b35cff657b` ($3.00424/h) | 2026-09-24 UTC | cap 2026-09-24 14:38:54 UTC; collect/terminate earlier |
 | **owner unknown**: "selfjev-challengers-20260924" | not this session, fork or fork 2 (a Codex session?). Owner: add yourself here | AWS `i-03916322f7dd879be` g6e.4xlarge, `i-0683c5909b7440e8f` g5.4xlarge | 20:27–20:51 | ? |
 
@@ -49,6 +53,16 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
   - Absolute `/Users/julien/...` links in `reports/*.md` made repo-relative; `tmp/pdfs/` page renders removed; the two
     review PDFs moved from `output/pdf/` next to their sources.
 - **Merge note:** other sessions edit `docs/experiments.md` and this file on `master`; merge this branch with care.
+
+### 2026-09-24 11:50 PDT: combined runs started; the 10:17 stop was not the fork session; LFS pointers fixed (fork session)
+
+- The unlogged 10:17 PDT `stop-instances` was not this session. It never calls stop-instances; its last AWS action that
+  day before 11:58 was `terminate-instances` on its own box (selfjev-tree-ova-kd) at 06:19 PDT.
+- After commit ae5a581 the working tree held Git LFS **pointer files** for data/hardcases*.jsonl, data/ova/hardcases*.jsonl
+  and data/hardcases_r3.jsonl (134-byte files). `git lfs checkout` restored them from the local LFS store; the hashes match
+  the LFS oids and git status is clean. Check file sizes before syncing data to a box.
+- The user asked for all winning approaches combined and trained, then accuracy and latency measured. The owner of the
+  round-3 rerun agreed; runs A and B are in In flight.
 
 ### 2026-09-24 10:45 PDT: partial round-3 checkpoint scores 90.8 on eval2, inconclusive (the run was stopped at step ≈ 500 / 915)
 
@@ -110,6 +124,8 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
   - `StopInstances` at 17:17:57 UTC by `julien@connectly.ai`, from this Mac's IP.
   - User agent `aws-cli … md/command#ec2.stop-instances`: a CLI call, not the console.
   - No session logged it. Training was at step ≈ 500 of 915.
+  - Fork 2 (curve / capacity session): not this session. Its scratchpad and task logs contain no `stop-instances`; its only
+    lifecycle calls were `terminate-instances` on its own four boxes, the last at 03:10 PDT, and it was idle from 03:17.
 - Rule for every session: **never stop, terminate or modify another session's box.** Check JOURNAL In flight first; if a
   box looks orphaned, ask its owner session or the user.
 - Recovery (user's choice): score the best checkpoint saved before the stop.
