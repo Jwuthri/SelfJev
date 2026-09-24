@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="708" height="236" font-family="sans-serif" font-size="11">
+<rect width="100%" height="100%" fill="white"/>
+<rect x="28" y="28" width="180" height="180" fill="none" stroke="#888"/>
+<line x1="28" y1="208" x2="208" y2="28" stroke="#bbb" stroke-dasharray="4"/>
+<text x="28" y="20">binary (p_yes), n=210</text>
+<text x="28" y="224">confidence → observed ↑</text>
+<circle cx="28.2" cy="194.6" r="8.8" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="74.9" cy="208.0" r="2.6" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="149.7" cy="208.0" r="2.6" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="207.8" cy="63.2" r="7.8" fill="#2f6bd6" fill-opacity="0.65"/>
+<rect x="264" y="28" width="180" height="180" fill="none" stroke="#888"/>
+<line x1="264" y1="208" x2="444" y2="28" stroke="#bbb" stroke-dasharray="4"/>
+<text x="264" y="20">multiclass (top-label), n=486</text>
+<text x="264" y="224">confidence → observed ↑</text>
+<circle cx="316.3" cy="28.0" r="2.4" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="332.2" cy="28.0" r="2.4" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="343.0" cy="88.0" r="2.7" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="360.8" cy="208.0" r="3.1" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="382.0" cy="88.0" r="3.2" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="401.8" cy="136.0" r="2.9" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="417.4" cy="53.7" r="3.1" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="443.4" cy="59.0" r="10.7" fill="#2f6bd6" fill-opacity="0.65"/>
+<rect x="500" y="28" width="180" height="180" fill="none" stroke="#888"/>
+<line x1="500" y1="208" x2="680" y2="28" stroke="#bbb" stroke-dasharray="4"/>
+<text x="500" y="20">multilabel (p_yes), n=1010</text>
+<text x="500" y="224">confidence → observed ↑</text>
+<circle cx="500.1" cy="185.5" r="10.1" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="522.4" cy="118.0" r="2.4" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="545.1" cy="28.0" r="2.3" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="558.3" cy="118.0" r="2.4" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="578.5" cy="118.0" r="2.4" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="599.5" cy="28.0" r="2.3" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="614.2" cy="73.0" r="2.6" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="630.5" cy="208.0" r="2.3" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="646.9" cy="118.0" r="2.4" fill="#2f6bd6" fill-opacity="0.65"/>
+<circle cx="679.6" cy="107.4" r="5.9" fill="#2f6bd6" fill-opacity="0.65"/>
+</svg>

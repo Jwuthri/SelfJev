@@ -6,8 +6,9 @@
 - Splits by source_id hash: train 0.9 / validation 0.1. There is no test split: the test set stays hf.jsonl +
   eval.jsonl test, untouched.
 - Leakage guard: drops any state whose word 8-gram containment with an eval.jsonl state is >= 0.3.
-- Verification: data/hardcases/review/answers_*.jsonl hold blind re-labels. A question is kept only if the blind
-  answer equals the authored target. Without answers the build refuses (use --unverified to override).
+- Verification: blind re-labels from the judge file(s) given by --answers (default data/hardcases/review/
+  answers_astra.jsonl, GPT-6 Astra). A question is kept only if the judge's answer equals the authored target.
+  Other answer files (e.g. a Jev second opinion) are never read. Without answers the build refuses (--unverified).
 """
 import argparse
 import json
@@ -56,16 +57,20 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--blind", action="store_true")
     ap.add_argument("--unverified", action="store_true", help="build without blind answers (not recommended)")
+    ap.add_argument("--answers", nargs="+", default=["answers_astra.jsonl"],
+                    help="judge files in data/hardcases/review/ that decide what is kept (default: GPT-6 Astra only; "
+                         "second opinions such as Jev are reported elsewhere and never decide)")
     a = ap.parse_args()
     srcs = sources()
     if a.blind:
         return write_blind(srcs)
 
-    answers = {x["id"]: x for f in sorted(REVIEW.glob("answers_*.jsonl")) for x in read_jsonl(f)}
+    answers = {x["id"]: x for f in a.answers if (REVIEW / f).exists() for x in read_jsonl(REVIEW / f)}
     if not answers and not a.unverified:
         sys.exit("no blind answers in data/hardcases/review/; run the verification pass or pass --unverified")
     eval_sh = [shingles(s) for s in {e["state"] for e in read_jsonl(ROOT / "data/eval.jsonl")}]
     norm = lambda t: sorted(t) if isinstance(t, list) else t
+    judges = ", ".join(sorted({str(x.get("note", "?")).split(";")[0] for x in answers.values()})[:5])
     kept, stats, leak = [], defaultdict(Counter), 0
     for s in srcs:
         sh = shingles(s["state"])
@@ -86,8 +91,10 @@ def main():
     write_jsonl(ROOT / "data/hardcases.jsonl", kept)
     total = Counter()
     lines = ["# Hard-case data review (round 2)", "",
-             "Authored by Claude Sonnet ([BRIEF.md](../BRIEF.md)). Every question was re-labelled blind by Claude Opus, and only "
-             "questions where both agree are kept. LLM-verified, not human-reviewed.", "",
+             "Authors: 8 Claude Sonnet sub-agents ([BRIEF_sonnet_agents.md](../BRIEF_sonnet_agents.md), prefixes h*) and OpenRouter "
+             "models via scripts/gen_hardcases.py ([BRIEF.md](../BRIEF.md), prefixes gf/gk/df/lu; see each row's provenance). "
+             f"Blind judge: {judges or 'none'}. A question is kept only if the judge's answer equals the authored label. "
+             "LLM-verified, not human-reviewed.", "",
              f"States dropped for overlap with eval.jsonl: {leak}", "",
              "| family | kept | disagreed (dropped) | unanswered (dropped) | agreement % |", "|---|---|---|---|---|"]
     for fam, c in sorted(stats.items()):

@@ -54,15 +54,23 @@ Return ONLY a JSON array (no prose, no code fence). One element = one source: a 
 7. Multiclass is never ambiguous. If no substantive option applies, include an explicit "none" candidate.
 8. Every label must be defensible from the text alone by a careful reader with no access to your notes.
 
-## Tiers
+## Tiers (difficulty; the state length is set separately by the ASSIGNMENT)
 
-- **simple**: 40–200 words. The answer is stated plainly, one hop, no trap needed. Still obey the policy. Purpose:
-  the task itself, asked in many different ways. `hard_cases` may be `[]`.
-- **hard**: 150–600 words. Every question has exactly one real trap from the ASSIGNMENT's focus list (others may
-  occur naturally). A keyword matcher would get it wrong; a careful reader gets it right.
-- **very_hard**: 500–1500 words. Every question combines two or more traps (e.g. numeric + distractor + evidence in
-  the middle; injection + role reversal; sarcasm + negation; relative dates + business days). Long threads,
-  forwarded and quoted messages, tables or logs with near-miss numbers, the decisive evidence buried mid-text.
+- **simple**: the answer is stated plainly, one hop, no trap needed. Still obey the policy. Purpose: the task itself,
+  asked in many different ways. `hard_cases` may be `[]`.
+- **hard**: every question has exactly one real trap from the ASSIGNMENT's focus list (others may occur naturally).
+  A keyword matcher would get it wrong; a careful reader gets it right.
+- **very_hard**: every question combines two or more traps (e.g. numeric + distractor + evidence in the middle;
+  injection + role reversal; sarcasm + negation; relative dates + business days). Where the length allows: long
+  threads, forwarded and quoted messages, tables or logs with near-miss numbers, the decisive evidence buried mid-text.
+
+## Length
+
+The ASSIGNMENT gives a target state length in words; keep every state of the batch within ±30% of it. A very short
+state (a subject line, one chat message, one log line, a single form field) still needs a label a careful reader can
+defend. A very long one (thousands of words: a full policy with many sections, a long thread, a log dump, a report
+with appendices) must stay coherent and realistic, with the decisive evidence at one stated position and plenty of
+plausible near-miss material elsewhere (tag evidence_start / evidence_middle / evidence_end and long_state).
 
 ## Traps (tags)
 

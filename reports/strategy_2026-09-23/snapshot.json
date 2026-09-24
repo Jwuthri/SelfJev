@@ -1,0 +1,16 @@
+{
+  "created_at": "2026-09-23T16:41:44.515633-07:00",
+  "git_head": "4ec53718d51326e483e037d2b384ecd50a70207e",
+  "source_sha256": {
+    "reports/curve/instruct_zero/test/report.json": "3973397f482b07205ae4edf716fe0bd9553c85bfdc232e0713fa8a6fe5ff8274",
+    "reports/curve/instruct_zero/validation/report.json": "04b3481c617a41a75c1aa26af687e4ebf24bc8d77524f92b9a381d2df03a3475",
+    "reports/lora_4b/test/report.json": "d385af3b3b180b003d9f11a613305c2293ac1d35a0866b304bd881ef42a1c487",
+    "reports/lora_8b/test/report.json": "2749882e4717d8310b2aced826bd8712279d0b8258ca5317e5e0d6ab25322ecb",
+    "reports/external/full/typesafe_jev-latest/report.json": "02c56f7564b5d257194d996a0831d22f78f168b4247b14ac868c7106acf3add0",
+    "reports/deep_review_2026-09-23/audit.json": "9175afad4b1ab6176a7d6fe18d7fd5b13dde21081ed0508f8b839f3e6108bdea",
+    "reports/deep_review_2026-09-23/component_ablation.json": "d60320cc9218eb63041252265b4f541757ab70a513be403f8e4bb5ed0e4ce356",
+    "src/personal_jev/tree.py": "0095906ddb0a833270848e53424fd87b2f1d5c7310d1e1712ef19065073e818d"
+  },
+  "new_training_performed": false,
+  "experiment_targets": "Recommendations, not measured outcomes"
+}

@@ -12,7 +12,7 @@ def _scorer(a):
     if a.tree:
         from .tree import TreeScorer
         return TreeScorer(a.model, a.revision, adapter=a.adapter, device=a.device, dtype=a.dtype, max_length=a.max_length,
-                          max_batch_tokens=a.max_batch_tokens)
+                          max_batch_tokens=a.max_batch_tokens, merge=a.merge)
     if a.checkpoint:
         from .custom import CustomScorer
         return CustomScorer(a.checkpoint, device=a.device, dtype=a.dtype, max_length=a.max_length,
@@ -42,6 +42,7 @@ def main(argv=None):
                                             "default: the stock reranker backend")
         p.add_argument("--model", default=MODEL_ID, help="stock backend: Qwen3-Reranker checkpoint (0.6B / 4B / 8B)")
         p.add_argument("--revision", default=MODEL_REVISION, help="stock backend: pinned HF commit for --model")
+        p.add_argument("--merge", action="store_true", help="--tree: merge the LoRA adapter into the weights (inference speed)")
         p.add_argument("--adapter", help="stock backend only: LoRA adapter directory (default: unmodified base model)")
         p.add_argument("--device", help="cuda | mps | cpu (default: best available)")
         p.add_argument("--dtype", default="float32", choices=["float32", "bfloat16", "float16"])

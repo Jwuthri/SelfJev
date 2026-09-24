@@ -1,0 +1,73 @@
+{
+ "meta": {
+  "prompt": "task-v1",
+  "prompt_sha": "f7b8d8022dfb",
+  "model": "Qwen/Qwen3-Reranker-4B",
+  "revision": "22e683669bc0f0bd69640a1354a6d0aebcfeede5",
+  "adapter": "runs/lora_4b/adapter",
+  "adapter_sha256": "26d326d4fb6c9e86e3f6df88c91cdf50a8f4c816ff82f636deecc2c148be1cb7",
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "max_length": 32768,
+  "truncation": "none (overlength input raises InputTooLong)",
+  "max_batch_tokens": 16384,
+  "max_batch_size": 64,
+  "warmup": 1,
+  "chip": "x86_64",
+  "platform": "Linux-6.8.0-1063-aws-x86_64-with-glibc2.35",
+  "torch": "2.14.0+cu130",
+  "transformers": "5.17.0",
+  "created": "2026-09-24T01:04:11+0000"
+ },
+ "cold_start": {
+  "load_ms": 9427.701914999489,
+  "first_request_ms": 3036.591484999917,
+  "first_request_pairs": 3
+ },
+ "rows": [
+  {
+   "state_tokens": 16384,
+   "questions": 1,
+   "candidates": 1,
+   "type": "binary",
+   "pairs": 1,
+   "input_tokens": 16464,
+   "padded_tokens": 16464,
+   "batches": 1,
+   "state_encodes": 1,
+   "state_tokens_encoded": 16384,
+   "candidate_tokens_encoded": null,
+   "memory_rows": null,
+   "e2e_ms_p50": 4323.7726929996825,
+   "e2e_ms_p95": 4324.7115719996145,
+   "model_ms_p50": 4294.366869500209,
+   "tokenize_ms_p50": 29.183813499457756,
+   "pairs_per_s": 0.23127950311056591,
+   "tokens_per_s": 3807.785739212357,
+   "repeats": 2,
+   "cuda_peak_allocated_mb": 9026.8330078125
+  },
+  {
+   "state_tokens": 16384,
+   "questions": 16,
+   "candidates": 3,
+   "type": "multiclass",
+   "pairs": 48,
+   "input_tokens": 790725,
+   "padded_tokens": 790725,
+   "batches": 48,
+   "state_encodes": 48,
+   "state_tokens_encoded": 786432,
+   "candidate_tokens_encoded": null,
+   "memory_rows": null,
+   "e2e_ms_p50": 206915.08012849954,
+   "e2e_ms_p95": 206915.71049399953,
+   "model_ms_p50": 206227.53197049996,
+   "tokenize_ms_p50": 681.704273999916,
+   "pairs_per_s": 0.23197922534302853,
+   "tokens_per_s": 3821.4952699867968,
+   "repeats": 2,
+   "cuda_peak_allocated_mb": 9027.0283203125
+  }
+ ]
+}

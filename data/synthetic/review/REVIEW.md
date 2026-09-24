@@ -3,7 +3,7 @@
 - **Scope:** all 2,448 questions in `data/synthetic/raw/*.jsonl` (42 files, 924 states), plus the 136 questions in the round-2 hard-case files that existed when the review started (`hnum_01`, `hpar_01`, `hpar_02`). Not covered: `hinj_01`, `hmul_01` and `htmp_01`, which appeared mid-review, and `data/distill.jsonl`, whose labels come from a teacher model rather than a generator.
 - **Pass 1:** 11 Claude Opus reviewers each took about 4 files. For every question they answered first and then compared against the target, redid all date and number math, and checked the labeling policy in `data/synthetic/BRIEF.md`. One verdict per question is in `verdicts_<file>.jsonl`: ok / wrong / ambiguous / malformed, plus a suggested target and a reason. Every question has exactly one verdict, and the ids and targets match the raw files.
 - **Pass 2:** Claude Opus (the orchestrating session) re-read every non-ok item in full context, plus a random sample of 30 items marked ok (29 held up, and 1 new malformed item was found: roub-0110-q0).
-- **Result:** out of 2,584 questions reviewed, pass 1 flagged 53 (9 wrong, 44 ambiguous, 0 malformed). The final decisions in `flags.json` are **6 relabel, 37 drop, 11 keep**. Nothing has been changed or deleted in `raw/`.
+- **Result:** out of 2,584 questions reviewed, pass 1 flagged 53 (9 wrong, 44 ambiguous, 0 malformed). The final decisions in `flags.json` are **43 drop** (the 6 clear relabels were dropped too rather than fixed; their `suggested_target` is kept in the file) **and 11 keep**. `raw/` is untouched; `scripts/build_data.py` removes the dropped ids when it builds `data/synthetic.jsonl` (2,448 → 2,405 questions).
 - **Caveat:** these are LLM judgments of LLM-written labels (same model family), not human review. The flags are recommendations.
 
 ## Dropped or relabeled, by file prefix
@@ -25,7 +25,7 @@
 | urga | syn urgency (a) | 277 | 7 |
 | urgb | syn urgency (b) | 289 | 6 |
 
-## Relabel (clear error, clear fix)
+## Clear error with a clear fix (dropped too, rather than relabeled)
 
 | id | old target | new target | why |
 |---|---|---|---|
@@ -105,4 +105,4 @@
 
 ## Applying the flags
 
-`flags.json` uses the same shape as `data/eval/review/overrides.json` (`{id: {target, note} | {drop: true}}`), plus `action`/`old_target`/`reviewer_*` fields. `scripts/build_data.py` currently applies overrides only to the eval set; to use these flags for the synthetic set, apply entries whose `action` is `drop` or `relabel` after `build(...)`, then rebuild.
+`scripts/build_data.py` drops every id whose `action` is `drop`. To restore a question, delete its entry (or set `action` to `keep`) and rerun `uv run python scripts/build_data.py`.

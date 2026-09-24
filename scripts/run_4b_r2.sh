@@ -11,7 +11,7 @@ log() { echo "[$(date +%H:%M:%S)] r2: $*"; }
 
 log "LoRA training (round 2)"
 $PJEV train configs/lora_pilot.json --set model_id="\"$MODEL\"" revision="\"$REV\"" prompt="\"$PROMPT\"" dtype="\"$DTYPE\"" \
-  out_dir="\"runs/$TAG\"" max_batch_tokens=16384 grad_accum=2 \
+  out_dir="\"runs/$TAG\"" max_batch_tokens=16384 grad_accum=2 max_length=8192 eval_every=150 \
   train_files='["data/hf.jsonl", "data/synthetic.jsonl", "data/hardcases.jsonl"]' \
   val_files='["data/hf.jsonl", "data/synthetic.jsonl", "data/eval.jsonl", "data/hardcases.jsonl"]' max_val_questions=1400
 log "evals"

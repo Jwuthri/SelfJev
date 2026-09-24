@@ -1,0 +1,11 @@
+{
+ "model": "Qwen/Qwen3-4B-Instruct-2507",
+ "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+ "selected": "answer-v1",
+ "scores": {
+  "answer-v1": 0.8015110731915186,
+  "task-v1": 0.781190958631128,
+  "task-v2": 0.7878967526487329,
+  "hybrid-v1": 0.7830382513002098
+ }
+}

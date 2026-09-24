@@ -37,20 +37,21 @@
   "reviewer_reason": "Question asks what the procurement conclusion states; Vendor C's lowest price appears only in the scoring table, not in the conclusion text."
  },
  "evia-0016-q3": {
-  "action": "relabel",
-  "target": [
-   "custom_reporting_module",
-   "erp_api_integration"
-  ],
+  "action": "drop",
   "old_target": [
    "custom_reporting_module",
    "dedicated_support_line",
    "erp_api_integration"
   ],
-  "note": "Amara named only the reporting module and ERP integration; the support line was Daniel's line.",
+  "note": "Amara named only the reporting module and ERP integration; the support line was Daniel's line. (dropped instead of relabeled, per user)",
   "file": "evia_01.jsonl",
   "reviewer_verdict": "wrong",
-  "reviewer_reason": "Question asks what Amara said; the dedicated support line loss was stated by Daniel, not Amara. Amara named only the reporting module and ERP integration."
+  "reviewer_reason": "Question asks what Amara said; the dedicated support line loss was stated by Daniel, not Amara. Amara named only the reporting module and ERP integration.",
+  "drop": true,
+  "suggested_target": [
+   "custom_reporting_module",
+   "erp_api_integration"
+  ]
  },
  "evia-0040-q3": {
   "action": "keep",
@@ -141,21 +142,22 @@
   "reviewer_reason": "User asks whether the Team plan allows unlimited guests; that is a question about one plan's feature, and whether it counts as 'comparing two plans' is debatable (only the agent brings in Enterprise)."
  },
  "mula-0044-q1": {
-  "action": "relabel",
-  "target": [
-   "billed_119_99_annual",
-   "expected_12_99_monthly"
-  ],
+  "action": "drop",
   "old_target": [
    "billed_119_99_annual",
    "expected_12_99_monthly",
    "five_day_response_time",
    "three_days_of_notes_lost"
   ],
-  "note": "The 5-day response and the 3 days of lost notes are not about the billing mismatch.",
+  "note": "The 5-day response and the 3 days of lost notes are not about the billing mismatch. (dropped instead of relabeled, per user)",
   "file": "mula_02.jsonl",
   "reviewer_verdict": "wrong",
-  "reviewer_reason": "Question asks for numbers about the billing mismatch; 5-day support response and 3 days of lost notes are unrelated to billing."
+  "reviewer_reason": "Question asks for numbers about the billing mismatch; 5-day support response and 3 days of lost notes are unrelated to billing.",
+  "drop": true,
+  "suggested_target": [
+   "billed_119_99_annual",
+   "expected_12_99_monthly"
+  ]
  },
  "mula-0044-q2": {
   "action": "keep",
@@ -225,27 +227,29 @@
   "reviewer_reason": "Guidelines require equipment pre-approval before submission but never say what happens if it is late (ineligibility or return without review), unlike the preliminary-data rule."
  },
  "mulb-0062-q2": {
-  "action": "relabel",
-  "target": false,
+  "action": "drop",
   "old_target": true,
-  "note": "The memo only recommends approval; nothing says DeskFlow is approved.",
+  "note": "The memo only recommends approval; nothing says DeskFlow is approved. (dropped instead of relabeled, per user)",
   "file": "mulb_03.jsonl",
   "reviewer_verdict": "wrong",
-  "reviewer_reason": "The memo only contains IT's recommendation to approve; nothing says DeskFlow has actually been approved, so under the evidence rule the answer is false."
+  "reviewer_reason": "The memo only contains IT's recommendation to approve; nothing says DeskFlow has actually been approved, so under the evidence rule the answer is false.",
+  "drop": true,
+  "suggested_target": false
  },
  "mulb-0068-q0": {
-  "action": "relabel",
-  "target": [
-   "drivers_license_required"
-  ],
+  "action": "drop",
   "old_target": [
    "drivers_license_required",
    "paid_training_provided"
   ],
-  "note": "Paid training is something the employer offers, not a hiring requirement.",
+  "note": "Paid training is something the employer offers, not a hiring requirement. (dropped instead of relabeled, per user)",
   "file": "mulb_04.jsonl",
   "reviewer_verdict": "wrong",
-  "reviewer_reason": "Question asks for hiring requirements; paid training is a provided benefit, not a requirement of the applicant. Only the driver's license is a true requirement."
+  "reviewer_reason": "Question asks for hiring requirements; paid training is a provided benefit, not a requirement of the applicant. Only the driver's license is a true requirement.",
+  "drop": true,
+  "suggested_target": [
+   "drivers_license_required"
+  ]
  },
  "pola-0009-q2": {
   "action": "drop",
@@ -322,18 +326,19 @@
   "reviewer_reason": "Policy says prior authorization is required but never states the consequence (denial) of skipping it; 'will be denied' relies on outside knowledge."
  },
  "polb-0036-q2": {
-  "action": "relabel",
-  "target": [
-   "failed_to_mitigate"
-  ],
+  "action": "drop",
   "old_target": [
    "failed_to_mitigate",
    "roof_covered"
   ],
-  "note": "The state never says the windstorm roof damage is covered.",
+  "note": "The state never says the windstorm roof damage is covered. (dropped instead of relabeled, per user)",
   "file": "polb_02.jsonl",
   "reviewer_verdict": "wrong",
-  "reviewer_reason": "Nothing in the state says windstorm roof damage is a covered peril; only the mitigation duty is described. roof_covered is not supported by the state."
+  "reviewer_reason": "Nothing in the state says windstorm roof damage is a covered peril; only the mitigation duty is described. roof_covered is not supported by the state.",
+  "drop": true,
+  "suggested_target": [
+   "failed_to_mitigate"
+  ]
  },
  "polb-0041-q2": {
   "action": "keep",
@@ -374,22 +379,23 @@
   "reviewer_reason": "State is a 'Product review submission' with 5 stars; candidate product_feedback_review explicitly covers 'general product reviews and ratings', so it fits better than none. Injection is correctly ignored either way."
  },
  "roua-0082-q2": {
-  "action": "relabel",
-  "target": [
-   "backup_failure_undetected",
-   "ransomware_incident_reported",
-   "potential_data_loss",
-   "promotional_content_present"
-  ],
+  "action": "drop",
   "old_target": [
    "backup_failure_undetected",
    "ransomware_incident_reported",
    "potential_data_loss"
   ],
-  "note": "The state literally contains an unrelated promo_banner.",
+  "note": "The state literally contains an unrelated promo_banner. (dropped instead of relabeled, per user)",
   "file": "roua_04.jsonl",
   "reviewer_verdict": "wrong",
-  "reviewer_reason": "The report literally contains embedded promo_banner=\"Upgrade to Nightowl Pro today!\", which is unrelated promotional content; promotional_content_present is true (notes of q1 even call it noise)."
+  "reviewer_reason": "The report literally contains embedded promo_banner=\"Upgrade to Nightowl Pro today!\", which is unrelated promotional content; promotional_content_present is true (notes of q1 even call it noise).",
+  "drop": true,
+  "suggested_target": [
+   "backup_failure_undetected",
+   "ransomware_incident_reported",
+   "potential_data_loss",
+   "promotional_content_present"
+  ]
  },
  "roua-0083-q0": {
   "action": "drop",

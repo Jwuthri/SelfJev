@@ -194,7 +194,7 @@ class TreeScorer:
     """Scorer for classify / evaluate / calibrate / bench / serve (via score_requests), like CustomScorer."""
 
     def __init__(self, model_id=RERANKER_4B[0], revision=RERANKER_4B[1], adapter=None, device=None, dtype="bfloat16",
-                 max_length=MAX_CONTEXT, max_batch_tokens=32768, max_batch_size=64, lm=None):
+                 max_length=MAX_CONTEXT, max_batch_tokens=32768, max_batch_size=64, lm=None, merge=False):
         if not 0 < max_length <= MAX_CONTEXT:
             raise ValueError(f"max_length must be in (0, {MAX_CONTEXT}]")
         self.device, self.max_length = device or default_device(), max_length
@@ -208,10 +208,12 @@ class TreeScorer:
         if adapter:
             from peft import PeftModel
             lm = PeftModel.from_pretrained(lm, adapter)
+            if merge:  # inference only: fewer kernels per layer; weights re-rounded to dtype
+                lm = lm.merge_and_unload()
         self.model = TreeModel(lm.to(self.device).eval(), tok.pad_token_id)
         fmt = format_config(model_id)
         self.meta = {"model": model_id, "revision": revision, "architecture": f"shared-prefix tree ({FORMAT})",
-                     "adapter": str(adapter) if adapter else None,
+                     "adapter": str(adapter) if adapter else None, "merged": bool(adapter and merge),
                      "adapter_sha256": sha256_file(Path(adapter) / "adapter_model.safetensors") if adapter else None,
                      "prompt": FORMAT, "prompt_sha": fmt["sha"], "device": self.device, "dtype": dtype, "max_length": max_length,
                      "truncation": "none (overlength input raises InputTooLong)"}

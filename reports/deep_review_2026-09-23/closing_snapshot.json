@@ -1,0 +1,19 @@
+{
+  "time": "2026-09-23T16:26:23.119703-07:00",
+  "head": "4ec53718d51326e483e037d2b384ecd50a70207e",
+  "changed_since_core_audit": {
+    "scripts/build_data.py": "140c9ff460e773df3ce58e4e1a2727528934e9b3eaecd332e4bab11bfbd22481",
+    "README.md": "b8718ec192c1b7d2a9b534a77521016a66c48b363b5959056f192b1b62b6301f"
+  },
+  "hardcases_raw": {
+    "states": 448,
+    "questions": 1231
+  },
+  "hardcases_built": false,
+  "new_curve_reports": [
+    "reports/curve/instruct_prompt_selection/task-v1/report.json",
+    "reports/curve/instruct_prompt_selection/answer-v1/report.json",
+    "reports/curve/instruct_prompt_selection/task-v2/report.json"
+  ],
+  "trained_tree_metadata": []
+}

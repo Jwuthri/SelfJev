@@ -85,6 +85,8 @@ def make_handler(scorer, calibration=None, prompt=DEFAULT_PROMPT):
     lock = threading.Lock()  # ponytail: one model, one request at a time; a batching queue if throughput matters
 
     class Handler(BaseHTTPRequestHandler):
+        protocol_version = "HTTP/1.1"  # keep-alive: every response sets Content-Length
+
         def _send(self, code, obj):
             data = json.dumps(obj).encode()
             self.send_response(code)
