@@ -56,7 +56,7 @@ The code checks token IDs, retains the causal mask, includes template overhead i
 
 > The cost is repeated document encoding: 16 questions with 3 candidates mean 48 state-containing sequences. Batching them does not share their state computation. The underlying scoring pattern is public in the [official Qwen model card](https://huggingface.co/Qwen/Qwen3-Reranker-0.6B).
 
-Implementation: [model.py](/Users/julien/Documents/Repos/SelfJev/src/personal_jev/model.py), [train.py](/Users/julien/Documents/Repos/SelfJev/src/personal_jev/train.py), [formatting.py](/Users/julien/Documents/Repos/SelfJev/src/personal_jev/formatting.py) and [classify.py](/Users/julien/Documents/Repos/SelfJev/src/personal_jev/classify.py).
+Implementation: [model.py](../../src/personal_jev/model.py), [train.py](../../src/personal_jev/train.py), [formatting.py](../../src/personal_jev/formatting.py) and [classify.py](../../src/personal_jev/classify.py).
 
 
 ## Architecture B: learn a new interaction
@@ -85,7 +85,7 @@ MaxSim uses standardized 1,024-dimensional backbone features directly: for each 
 
 > New modules: 2,172,418 parameters, plus 2 similarity weights and optionally 4,587,520 LoRA parameters. Frozen-backbone runs are probes in the conventional sense; jointly adapted runs are learned scoring models. Identical states are encoded once per call, with shared memory K/V. There is no persistent state cache across requests.
 
-Implementation: [custom.py](/Users/julien/Documents/Repos/SelfJev/src/personal_jev/custom.py) and [train_custom.py](/Users/julien/Documents/Repos/SelfJev/src/personal_jev/train_custom.py).
+Implementation: [custom.py](../../src/personal_jev/custom.py) and [train_custom.py](../../src/personal_jev/train_custom.py).
 
 
 ## The quality results are real; the gap is real
@@ -114,7 +114,7 @@ The 4B model still trails Jev by 83 correct questions: 208 unique wins for 4B ve
 
 The plain custom LoRA continuation stopped at step 390/882 without a validation improvement and has no final test report. The completed mixed-label LoRA variant reaches 39.7%; the completed similarity + LoRA variant reaches 58.2%. Do not conflate these runs or treat the stopped continuation as a complete architecture comparison.
 
-> Precision differs: 0.6B and custom quality columns are fp32; 4B/8B are bf16. A separate 0.6B LoRA bf16 test reaches 73.7% with 43 decision flips. Provider rows are observed cached runs, not claims about all settings or current service behavior. Sources and hashes are in [audit.json](/Users/julien/Documents/Repos/SelfJev/reports/deep_review_2026-09-23/audit.json).
+> Precision differs: 0.6B and custom quality columns are fp32; 4B/8B are bf16. A separate 0.6B LoRA bf16 test reaches 73.7% with 43 decision flips. Provider rows are observed cached runs, not claims about all settings or current service behavior. Sources and hashes are in [audit.json](audit.json).
 
 
 ## The aggregate understates the reasoning gap
@@ -174,7 +174,7 @@ For multilabel, similarity-only probabilities select all candidates because the 
 
 **Established:** the similarity path is essential to current multiclass decisions; the learned head contribution adds little net accuracy on these validation examples. **Not established:** that the heads were useless during joint training, that a separately trained similarity-only model would perform identically, or that cross-attention cannot learn this task. LoRA was trained through both paths. Validation includes familiar public families and authored cases, not the six held-out public datasets.
 
-> Reproduction: [ablate_components.py](/Users/julien/Documents/Repos/SelfJev/reports/deep_review_2026-09-23/ablate_components.py); raw component scores and metrics: [component_ablation.json](/Users/julien/Documents/Repos/SelfJev/reports/deep_review_2026-09-23/component_ablation.json). Runtime 39.6 seconds. Checkpoint SHA begins f82add53c7b0, matching the saved quality and A10G speed reports.
+> Reproduction: [ablate_components.py](ablate_components.py); raw component scores and metrics: [component_ablation.json](component_ablation.json). Runtime 39.6 seconds. Checkpoint SHA begins f82add53c7b0, matching the saved quality and A10G speed reports.
 
 
 ## Data issue, architecture issue, or both?
@@ -224,7 +224,7 @@ Template families are not grouped explicitly. The previously identified epol-009
 
 ### Test feedback has influenced design
 
-[maxsim_heldout.py](/Users/julien/Documents/Repos/SelfJev/reports/custom_diagnostics/maxsim_heldout.py) loads the first 100 test examples per multiclass family to compare feature matching. The custom architecture notes use those results to motivate the similarity path. The hard-case plan also targets error categories found in test reports. This is ordinary exploratory research, but it means the old test is no longer a pristine confirmation set. Keeping individual test rows out of gradient training is necessary, but insufficient.
+[maxsim_heldout.py](../custom_diagnostics/maxsim_heldout.py) loads the first 100 test examples per multiclass family to compare feature matching. The custom architecture notes use those results to motivate the similarity path. The hard-case plan also targets error categories found in test reports. This is ordinary exploratory research, but it means the old test is no longer a pristine confirmation set. Keeping individual test rows out of gradient training is necessary, but insufficient.
 
 ### What to do with the current data
 
@@ -313,7 +313,7 @@ This retains cross-input processing inside all pretrained layers on the question
 
 Compare query-first stock, state-first sequential, and state-first cached tree on the same validation groups and backbone. First verify state-first sequential/tree scores agree, then measure how much the order change alone affects quality. Only then train tree LoRA with matched data and exposures. The reranker and instruction-model configurations are separate experiments; their relative merits are not known yet.
 
-> Tree branches still attend to document keys/values at every pretrained layer. Sharing removes repeated root encoding, not the branch-to-root attention cost. No result yet supports assuming it will match the custom model's 626 ms. Implementation: [tree.py](/Users/julien/Documents/Repos/SelfJev/src/personal_jev/tree.py), [train_tree.py](/Users/julien/Documents/Repos/SelfJev/src/personal_jev/train_tree.py) and [test_tree.py](/Users/julien/Documents/Repos/SelfJev/tests/test_tree.py).
+> Tree branches still attend to document keys/values at every pretrained layer. Sharing removes repeated root encoding, not the branch-to-root attention cost. No result yet supports assuming it will match the custom model's 626 ms. Implementation: [tree.py](../../src/personal_jev/tree.py), [train_tree.py](../../src/personal_jev/train_tree.py) and [test_tree.py](../../tests/test_tree.py).
 
 
 ## Fix the evidence pipeline before scaling claims
@@ -379,6 +379,6 @@ Reviewed the original brief, current source modules, training and data builders,
 
 ### Keep and reproduce the review
 
-[audit.json](/Users/julien/Documents/Repos/SelfJev/reports/deep_review_2026-09-23/audit.json) contains report/config/source hashes, data counts, recomputed metrics, external-cache checks and paired counts. [audit.py](/Users/julien/Documents/Repos/SelfJev/reports/deep_review_2026-09-23/audit.py) reruns that audit. [component_ablation.json](/Users/julien/Documents/Repos/SelfJev/reports/deep_review_2026-09-23/component_ablation.json) stores the new scores and [ablate_components.py](/Users/julien/Documents/Repos/SelfJev/reports/deep_review_2026-09-23/ablate_components.py) reproduces them. [review.md](/Users/julien/Documents/Repos/SelfJev/reports/deep_review_2026-09-23/review.md) is the editable reading copy.
+[audit.json](audit.json) contains report/config/source hashes, data counts, recomputed metrics, external-cache checks and paired counts. [audit.py](audit.py) reruns that audit. [component_ablation.json](component_ablation.json) stores the new scores and [ablate_components.py](ablate_components.py) reproduces them. [review.md](review.md) is the editable reading copy.
 
 > Core audit: HEAD 1078375efdcb plus its working tree. Closing check at 16:26 PDT: HEAD 4ec53718d513. Core model code and trained results were unchanged; new synthetic-drop filtering and multi-provider data generation were inspected. This report supersedes the earlier review for current experiment status: external comparisons and CUDA benchmarks now exist. Tree and round-2 training results were not found; instruction-model prompt selection was still partial. The changing inventory is recorded in closing_snapshot.json. No fixes or training were performed as part of this review.

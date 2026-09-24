@@ -11,6 +11,11 @@ in one forward pass with no text generation. It combines what we measured separa
 Code: [src/personal_jev/tree.py](../src/personal_jev/tree.py), [train_tree.py](../src/personal_jev/train_tree.py),
 tests in [tests/test_tree.py](../tests/test_tree.py).
 
+> **Update 2026-09-24.** This page describes the first tree runs (round-1 data, dev benchmark). Every later best model
+> is a tree too: round-2b data 90.6% on eval2, all options in the question 91.6%, and Qwen3-4B-Instruct-2507 + LoRA r64
+> + round-2 data **92.7%** (Jev 97.2%). The Instruct base, weaker here on the dev benchmark, is +3.0 on eval2. See the
+> [leaderboard](leaderboard.md) and [key findings](findings.md).
+
 **Bottom line (test split, 3,471 questions, measured 2026-09-23 on an AWS A10G, bf16).**
 - **Qwen3-Reranker-4B + LoRA in the tree format scores 81.6%.** On the same data with the same LoRA settings, the
   stock 4B scores 80.3% (p = 0.016) and the stock 8B scores 80.7%. Jev scores 82.7%; the gap is not significant

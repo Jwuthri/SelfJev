@@ -1,5 +1,6 @@
 """SelfJev design memo. Recommendations are hypotheses, not new training results."""
 import html, json, re, hashlib, subprocess
+import os
 from pathlib import Path
 from datetime import datetime
 from reportlab.lib import colors
@@ -9,7 +10,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, PageBreak, Flowable
 ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(__file__).resolve().parent
-PDF=ROOT/'output/pdf/selfjev-quality-speed-strategy.pdf'
+PDF=OUT/'selfjev-quality-speed-strategy.pdf'
 INK='#18302F'; TEAL='#11776F'; MUTED='#61716F'; PALE='#EFF6F3'; LINE='#D4E2DC'
 pages=[]
 def page(k,t,d):
@@ -18,7 +19,7 @@ def text(p,s):p['blocks'].append(('p',s))
 def h(p,s):p['blocks'].append(('h',s))
 def note(p,s):p['blocks'].append(('note',s))
 def table(p,hs,rs,ws):p['blocks'].append(('table',(hs,rs,ws)))
-def local(path,label):return f'[{label}]({ROOT/path})'
+def local(path,label):return f'[{label}]({os.path.relpath(ROOT/path, OUT)})'
 
 p=page('DESIGN MEMO / 23 SEPTEMBER 2026','A credible path toward Jev quality and speed','Recommendation: preserve pretrained judgment, share document computation, and train on evidence decisions. Treat the backbone and serving method as separate choices.')
 text(p,'<b>I would stop making the current two-block cross-attention model the main investment.</b> It demonstrates that sharing the state can save a great deal of computation, but its trained similarity path largely carries multiclass performance while binary discrimination remains weak. That is sufficient reason to choose a better starting point. It is not proof that cross-attention is intrinsically unsuitable.')

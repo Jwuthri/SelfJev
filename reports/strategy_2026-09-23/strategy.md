@@ -43,7 +43,7 @@ Separating state and question through every Qwen layer prevents the pretrained m
 
 Binary test AUROC near 0.514 is the decisive warning: the ordering of examples is weak, not merely the threshold. Calibration can improve multilabel decisions, but a monotone score transform cannot repair a near-random ranking. I would allocate more compute to a better pretrained interaction before adding more blocks to this one.
 
-> Sources: [new instruction-model test](/Users/julien/Documents/Repos/SelfJev/reports/curve/instruct_zero/test/report.json), [4B LoRA test](/Users/julien/Documents/Repos/SelfJev/reports/lora_4b/test/report.json), [review audit](/Users/julien/Documents/Repos/SelfJev/reports/deep_review_2026-09-23/audit.json) and [component ablation](/Users/julien/Documents/Repos/SelfJev/reports/deep_review_2026-09-23/component_ablation.json). The earlier test has already informed architecture choices; use it as a development benchmark, then create a fresh final holdout.
+> Sources: [new instruction-model test](../curve/instruct_zero/test/report.json), [4B LoRA test](../lora_4b/test/report.json), [review audit](../deep_review_2026-09-23/audit.json) and [component ablation](../deep_review_2026-09-23/component_ablation.json). The earlier test has already informed architecture choices; use it as a development benchmark, then create a fresh final holdout.
 
 
 ## Let a pretrained model read the shared state
@@ -212,6 +212,6 @@ The project can plausibly get much closer with these changes. The strongest evid
 
 ### Evidence files and provenance
 
-[Full project review](/Users/julien/Documents/Repos/SelfJev/reports/deep_review_2026-09-23/review.md) records architecture details, 78 passing tests, saved metrics, data limitations and the new component ablation. [Latest instruction-model test](/Users/julien/Documents/Repos/SelfJev/reports/curve/instruct_zero/test/report.json) is the main additional local result in this memo. [Memo snapshot](/Users/julien/Documents/Repos/SelfJev/reports/strategy_2026-09-23/snapshot.json) records hashes of the source reports and the repository revision.
+[Full project review](../deep_review_2026-09-23/review.md) records architecture details, 78 passing tests, saved metrics, data limitations and the new component ablation. [Latest instruction-model test](../curve/instruct_zero/test/report.json) is the main additional local result in this memo. [Memo snapshot](snapshot.json) records hashes of the source reports and the repository revision.
 
 > External links throughout this memo are primary model cards, original research or implementer documentation. Public benchmark figures are deliberately not converted into SelfJev predictions. Model choices, training schedules, architectural transfers and screening thresholds are recommendations to test. The published Jev architecture, model size and training details remain undisclosed.

@@ -1,0 +1,133 @@
+:root {
+  --viz-bar: #2a78d6;
+  --viz-ref: #52514e;
+  --viz-track: rgba(0, 0, 0, 0.05);
+}
+
+[data-md-color-scheme="slate"] {
+  --viz-bar: #3987e5;
+  --viz-ref: #c3c2b7;
+  --viz-track: rgba(255, 255, 255, 0.06);
+}
+
+.acc-chart {
+  display: grid;
+  grid-template-columns: minmax(9rem, 38%) 1fr 3rem;
+  gap: 6px 12px;
+  align-items: center;
+  margin: 1.5em 0;
+  font-size: 0.72rem;
+}
+
+.acc-chart .acc-head {
+  grid-column: 2;
+  position: relative;
+  height: 1.2em;
+  color: var(--md-default-fg-color--light);
+}
+
+.acc-chart .acc-head span {
+  position: absolute;
+  left: 97.2%;
+  transform: translateX(-100%);
+  padding-right: 4px;
+  white-space: nowrap;
+}
+
+.acc-chart .acc-label {
+  grid-column: 1;
+  color: var(--md-default-fg-color);
+  line-height: 1.25;
+}
+
+.acc-chart .acc-track {
+  position: relative;
+  height: 18px;
+  border-radius: 4px;
+  background: var(--viz-track);
+}
+
+.acc-chart .acc-track::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  left: calc(var(--ref) * 1%);
+  border-left: 2px dashed var(--viz-ref);
+}
+
+.acc-chart .acc-bar {
+  display: block;
+  height: 100%;
+  width: calc(var(--v) * 1%);
+  border-radius: 0 4px 4px 0;
+  background: var(--viz-bar);
+}
+
+.acc-chart .acc-value {
+  color: var(--md-default-fg-color);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.acc-chart .acc-row {
+  display: contents;
+}
+
+.acc-chart .acc-row:hover .acc-bar {
+  filter: brightness(1.15);
+}
+
+.acc-chart .acc-row:hover .acc-label,
+.acc-chart .acc-row:hover .acc-value {
+  font-weight: 700;
+}
+
+.acc-caption {
+  margin-top: -0.5em;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.7rem;
+}
+
+@media screen and (max-width: 44.9375em) {
+  .acc-chart {
+    grid-template-columns: 1fr 2.6rem;
+  }
+
+  .acc-chart .acc-head {
+    grid-column: 1;
+  }
+
+  .acc-chart .acc-label {
+    grid-column: 1 / -1;
+    margin-top: 4px;
+  }
+}
+
+.md-typeset .stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7.5rem, 1fr));
+  gap: 12px;
+  margin: 1.5em 0;
+}
+
+.md-typeset .stat {
+  padding: 12px 14px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 6px;
+}
+
+.md-typeset .stat strong {
+  display: block;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.md-typeset .stat span {
+  display: block;
+  margin-top: 4px;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.7rem;
+  line-height: 1.4;
+}

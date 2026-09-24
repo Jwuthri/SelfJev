@@ -1,5 +1,5 @@
-"""Results ledger: every test-split report under reports/ (+ Jev) in one table, written into docs/experiments.md
-between the ledger markers. Run after every eval:  uv run python scripts/ledger.py
+"""Results ledger: every test-split report under reports/ (+ Jev) in one table, sorted by eval2 then by the dev
+benchmark, written into docs/experiments.md between the ledger markers. Run after every eval:  uv run python scripts/ledger.py
 """
 import json
 import re
@@ -34,13 +34,14 @@ def rows():
         base = meta.get("model", "?").replace("Qwen/", "")
         arch = meta.get("architecture") or ("external API" if run.startswith("external") else f"stock pairs ({meta.get('prompt')})")
         e2p = p.parent.parent / "eval2/report.json" if not run.startswith("external") else ROOT / "reports/external/eval2" / p.parent.name / "report.json"
-        e2 = pct(json.loads(e2p.read_text())["metrics"]["question_accuracy"]) if e2p.exists() else "—"
-        yield (m["question_accuracy"], run, base, arch, trained, e2, pct(m["question_accuracy"]), pct(m["binary"]["accuracy"]),
+        e2_acc = json.loads(e2p.read_text())["metrics"]["question_accuracy"] if e2p.exists() else None
+        e2 = pct(e2_acc)
+        yield ((-1.0 if e2_acc is None else e2_acc, m["question_accuracy"]), run, base, arch, trained, e2, pct(m["question_accuracy"]), pct(m["binary"]["accuracy"]),
                f"{m['binary']['auroc']:.3f}", pct(m["multiclass"]["accuracy"]), pct(m["multilabel"]["exact_match"]),
-               pct(sum(auth) / len(auth)), f"[report](../reports/{run}/test/report.md)", adapter if tm else "—")
+               pct(sum(auth) / len(auth)), f"[report](../{p.with_suffix('.md').relative_to(ROOT)})", adapter if tm else "—")
 
 
-table = ["| run | base | architecture | trained on | **eval2 acc %** (target task, 1,991 q) | old-test question acc % | binary acc % | binary AUROC | multiclass acc % | multilabel EM % | authored eval_* acc % (n=171) | report | weights |",
+table = ["| run | base | architecture | trained on | **eval2 acc %** (target task, 1,991 q) | dev benchmark acc % (old test, 3,471 q) | binary acc % | binary AUROC | multiclass acc % | multilabel EM % | authored eval_* acc % (n=171) | report | weights |",
          "|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
 table += ["| " + " | ".join(r[1:]) + " |" for r in sorted(rows(), reverse=True)]
 body = "\n".join(table)

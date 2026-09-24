@@ -35,6 +35,21 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
 
 ## Log
 
+### 2026-09-24 11:50 PDT: docs site and cleanup (cloud session, branch `claude/modest-shannon-epq8g4`; $0, nothing run)
+
+- **What:** every finding of the project, formatted as a docs site built with Zensical from `docs/` (`zensical.toml`,
+  GitHub Pages workflow `.github/workflows/docs.yml`). New pages: `index`, `findings` (24 findings with evidence),
+  `leaderboard` (embeds the generated eval2 summary and the ledger), `speed`, `dead_ends`, `stock_model`,
+  `challengers`, `data`, `landscape`, `next`, `costs`, `how_it_works`, `reproduce`. Numbers copied from the generated
+  tables and report files; the 27B teacher's eval2 score re-computed from `reports/teacher/qwen38_27b_eval2.jsonl`.
+- **Cleanup:**
+  - README rewritten as a short landing page; its detailed 0.6B/4B/8B sections moved to `docs/stock_model.md`.
+  - `experiments.md` restructured: current conclusions first, done ideas moved out of the open-ideas table, and the
+    ledger sorted by eval2 (`scripts/ledger.py` now sorts that way and links Jev/Astra rows to their real reports).
+  - Absolute `/Users/julien/...` links in `reports/*.md` made repo-relative; `tmp/pdfs/` page renders removed; the two
+    review PDFs moved from `output/pdf/` next to their sources.
+- **Merge note:** other sessions edit `docs/experiments.md` and this file on `master`; merge this branch with care.
+
 ### 2026-09-24 10:45 PDT: partial round-3 checkpoint scores 90.8 on eval2, inconclusive (the run was stopped at step ≈ 500 / 915)
 
 - Owner: Jev classifier with Qwen reranker. Scored `runs/tree_4b_instruct_r3_step300`, the best-validation-loss checkpoint
@@ -291,7 +306,7 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
 ### 2026-09-24 07:58 UTC — T5 matched-R2b pilot: quality shortfall
 
 - Owner: Codex tree latency/compact. Training completed in 3,685 seconds, 228 steps; best validation loss selected the final checkpoint (77.59% validation accuracy, loss 0.379396). Reload matches scores exactly on 32 validation questions. Adapter SHA256 `4c4d1f9d683052f0f2b32196f409a9b46a250255ae84caf49b3288131bfa9c43`, saved locally at `runs/t5gemma2_r2b/adapter/`.
-- Fixed unmerged T5 with bounded 16-branch decoder batches: **73.84%** on the 3,471-question development benchmark, **76.80%** on eval2 (1,991 questions); primary same-L40S local latency **266.61 ms p50 / 269.38 ms p95**, 100 fresh-prefix 2K × 16 × 3 requests. [Predictions](../reports/t5_round2b_2026-09-24/t5_r2b/eval2/report.json), [timings](../reports/t5_round2b_2026-09-24/t5_r2b/bench.json), [protocol](../reports/t5_round2b_2026-09-24/README.md).
+- Fixed unmerged T5 with bounded 16-branch decoder batches: **73.84%** on the 3,471-question development benchmark, **76.80%** on eval2 (1,991 questions); primary same-L40S local latency **266.61 ms p50 / 269.38 ms p95**, 100 fresh-prefix 2K × 16 × 3 requests. [Predictions](../reports/t5_round2b_2026-09-24/decoder_only_audit/t5_r2b/eval2/report.md), [timings](../reports/t5_round2b_2026-09-24/decoder_only_audit/t5_r2b/bench.json), [protocol](../reports/t5_round2b_2026-09-24/README.md).
 - Verdict so far: large quality shortfall versus the existing round-2b eval2 report (90.56%); this pilot is not a replacement. Same-GPU tree controls, old-T5 rescore, merged/prefix-cache treatments and conditional hardware follow-up are still running. No test-driven retraining or checkpoint change. Compute spend and resource cleanup remain in progress. Ledger refreshed from report files.
 
 ### 2026-09-24 07:19 UTC — prior T5 experiment found; matched round-2b follow-up underway
