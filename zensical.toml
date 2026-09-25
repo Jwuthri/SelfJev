@@ -11,6 +11,7 @@ extra_css = ["assets/extra.css"]
 nav = [
   { "Home" = "index.md" },
   { "Key findings" = "findings.md" },
+  { "Glossary" = "glossary.md" },
   { "Results" = [
     { "Leaderboard" = "leaderboard.md" },
     { "Speed and cost" = "speed.md" },
@@ -109,6 +110,7 @@ pymdownx.mark = {}
 pymdownx.smartsymbols = {}
 pymdownx.snippets.base_path = ["."]
 pymdownx.snippets.check_paths = true
+pymdownx.snippets.auto_append = ["docs/.includes/abbreviations.md"]
 pymdownx.superfences.custom_fences = [
   { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" },
 ]

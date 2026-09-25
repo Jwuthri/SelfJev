@@ -8,7 +8,7 @@ hide:
 Everything we learned from 2026-09-22 to 2026-09-24, one finding per box. Each box gives the claim, the numbers and the
 evidence file.
 
-**How to read the numbers:**
+**How to read the numbers** (every other term is in the [glossary](glossary.md)):
 
 - **eval2** is the frozen target-task test set (1,991 questions). It has been the primary benchmark since 2026-09-24.
 - **dev benchmark** is the original 3,471-question test split (`hf.jsonl` test + `eval.jsonl` test). It is 95% public
