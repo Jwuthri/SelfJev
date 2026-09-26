@@ -21,7 +21,7 @@ Several AI sessions work on this repo at the same time. To avoid redoing work or
    findings, leaderboard, speed, models, data, open questions. Topic write-ups: [docs/tree_model.md](docs/tree_model.md)
    (the architecture of every best model), [docs/hardcases_round2.md](docs/hardcases_round2.md) (round-2 data),
    [reports/latency/summary.md](reports/latency/summary.md) (Jev vs ours), and the reviews in `reports/*_2026-09-2*/`.
-4. The system itself: [README.md](README.md). Best model: `tree_4b_instruct_r2x64` ([docs/leaderboard.md](docs/leaderboard.md)).
+4. The system itself: [README.md](README.md). Best model: `qwen35_4b_tree` (Qwen3.5-4B, r64, trained with the shared-prefix tree `personal_jev/qwen35_tree.py`, round-2b + round-3 data, all options listed in the question; eval2 95.6, Jev 97.2), served by `ChallengerScorer` or on vLLM (`personal_jev/vllm_qwen35.py`; fast for one question, slow for many). Requests must go through the same option-list transform ([docs/leaderboard.md](docs/leaderboard.md)). Best on vLLM: `tree_4b_combo` (94.5). Both adapters are in `weights/` (Git LFS, `model.json` each); `pjev finetune` / `pjev rlcd` train new ones ([docs/finetune.md](docs/finetune.md)).
 
 ## Hard rules
 

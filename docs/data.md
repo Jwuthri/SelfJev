@@ -48,8 +48,9 @@ All data is one JSONL line per (text, question, target), with `id`, `source_id`,
 | round 1: public sets (≤ 1,600 per family) + synthetic | every model until 2026-09-23 | 10,112 |
 | round 2: round 1 + `hardcases.jsonl`, 8K-token training length | `tree_4b_r2` | 16,357 |
 | round 2b: round 1 + `hardcases_nb.jsonl` | `tree_4b_r2b`, `tree_4b_ova`, the capacity runs | 16,375 |
-| round 2b with the hard-case families exempt from the 1,600-per-family cap | `tree_4b_instruct_r2x64` (best) | 18,681 |
-| round 3: the above + `hardcases_r3.jsonl` | stopped run, step 300 scored | ≈ 52K |
+| round 2b with the hard-case families exempt from the 1,600-per-family cap | `tree_4b_instruct_r2x64` | 18,681 |
+| round 3: the above + `hardcases_r3.jsonl` (r3 families exempt too) | `tree_4b_instruct_r3` | 51.9K |
+| round 3 with every option listed in the question (`data/ova/`) | `tree_4b_combo`, `qwen35_4b_combo` (texts ≤ 2K: 43.8K), **`qwen35_4b_tree`** (best, texts ≤ 8K) | 51.8K |
 
 ## Generating and judging hard cases
 

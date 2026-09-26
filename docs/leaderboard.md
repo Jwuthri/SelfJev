@@ -12,6 +12,31 @@ that decides between models.
 
 <div class="acc-chart" style="--ref: 97.2" role="img" aria-label="eval2 accuracy by model; Jev scores 97.2%">
   <div class="acc-head"><span>Jev 97.2</span></div>
+  <div class="acc-row" title="qwen35_4b_tree: 95.6% on eval2">
+    <span class="acc-label">Qwen3.5-4B trained with the tree, r64, round-2b + round-3 data, all options in question</span>
+    <span class="acc-track"><span class="acc-bar" style="--v: 95.6"></span></span>
+    <span class="acc-value">95.6</span>
+  </div>
+  <div class="acc-row" title="qwen35_4b_combo: 94.5% on eval2">
+    <span class="acc-label">Qwen3.5-4B, r64, round-2b + round-3 data, all options in question</span>
+    <span class="acc-track"><span class="acc-bar" style="--v: 94.5"></span></span>
+    <span class="acc-value">94.5</span>
+  </div>
+  <div class="acc-row" title="tree_4b_combo: 94.5% on eval2">
+    <span class="acc-label">Tree, Qwen3-4B-Instruct, r64, round-2b + round-3 data, all options in question</span>
+    <span class="acc-track"><span class="acc-bar" style="--v: 94.5"></span></span>
+    <span class="acc-value">94.5</span>
+  </div>
+  <div class="acc-row" title="tree_4b_instruct_r3: 93.3% on eval2">
+    <span class="acc-label">Tree, Qwen3-4B-Instruct, r64, round-2b + round-3 data</span>
+    <span class="acc-track"><span class="acc-bar" style="--v: 93.3"></span></span>
+    <span class="acc-value">93.3</span>
+  </div>
+  <div class="acc-row" title="tree_4b_combo_r2: 92.9% on eval2">
+    <span class="acc-label">Tree, Qwen3-4B-Instruct, r64, round-2b data, all options in question</span>
+    <span class="acc-track"><span class="acc-bar" style="--v: 92.9"></span></span>
+    <span class="acc-value">92.9</span>
+  </div>
   <div class="acc-row" title="tree_4b_instruct_r2x64: 92.7% on eval2">
     <span class="acc-label">Tree, Qwen3-4B-Instruct, r64, round-2b data</span>
     <span class="acc-track"><span class="acc-bar" style="--v: 92.7"></span></span>
@@ -63,7 +88,13 @@ that decides between models.
 | run | base | recipe | eval2 | binary | multiclass | multilabel EM | dev benchmark |
 |---|---|---|---|---|---|---|---|
 | **Jev** (API) | undisclosed | undisclosed | **97.2** | 97.8 | 98.1 | 94.2 | 82.7 |
+| **qwen35_4b_tree** | Qwen3.5-4B | shared-prefix tree in training (`qwen35_tree.py`, texts ≤ 8K: 51.8K q), text shared at inference, r64, round-2b + round-3 data, all options in the question | **95.6** | **96.9** | 96.8 | **90.1** | **84.4** |
+| **qwen35_4b_combo** | Qwen3.5-4B | each option trained as a full sequence (no tree in training, texts ≤ 2K: 43.8K q), text shared at inference, r64, round-2b + round-3 data, all options in the question | 94.5 | 96.2 | 95.8 | 88.2 | 84.3 |
+| **tree_4b_combo** | Qwen3-4B-Instruct-2507 | tree, r64, round-2b + round-3 data (51.8K q), hard cases not capped, all options in the question | **94.5** | 96.0 | 97.5 | 85.9 | 82.7 |
+| **tree_4b_instruct_r3** | Qwen3-4B-Instruct-2507 | tree, r64, round-2b + round-3 data (51.9K q), hard cases not capped | **93.3** | 95.1 | 96.1 | 84.3 | 82.8 |
+| **tree_4b_combo_r2** | Qwen3-4B-Instruct-2507 | tree, r64, round-2b data, hard cases not capped, all options in the question (served: merged + vLLM, 93.0) | **92.9** | 94.4 | 95.8 | 84.3 | **83.5** |
 | **tree_4b_instruct_r2x64** | Qwen3-4B-Instruct-2507 | tree, r64, round-2b data, hard cases not capped per family | **92.7** | 94.6 | 95.4 | 83.5 | 82.7 |
+| tree_4b_combo_ptr | Qwen3-4B-Instruct-2507 | as `tree_4b_combo_r2`, options numbered once, leaves say "option k" | 92.0 | 94.9 | 94.3 | 80.9 | 82.7 |
 | tree_4b_ova | Qwen3-Reranker-4B | tree, r16, round-2b data, all options in the question | 91.6 | 93.8 | 94.9 | 80.4 | 82.6 |
 | Qwen3.8-27B-FP8, zero-shot (teacher) | Qwen3.8-27B | no training | 91.4 | 93.4 | 97.8 | 75.9 | — |
 | curve/tree_4b_r2b_r64_mlp | Qwen3-Reranker-4B | tree, r64 + MLP, round-2b data | 91.3 | 93.7 | 94.3 | 80.4 | 82.4 |
@@ -103,6 +134,10 @@ models from each other. Selected rows:
 |---|---|---|---|---|---|
 | GPT-6 Astra (reasoning low) | **85.8** | 0.971 | **95.3** | **55.8** | 0.050 |
 | Jev | 82.7 | **0.981** | 91.6 | 40.1 | **0.045** |
+| Qwen3.5-4B trained with the tree, r64, round-2b + round-3 data, all options in question | 84.4 | 0.972 | 92.6 | 59.3 | 0.038 |
+| Qwen3.5-4B, r64, round-2b + round-3 data, all options in question | 84.3 | 0.963 | 92.2 | 62.2 | 0.047 |
+| tree Instruct-4B, r64, round-2b + round-3 data, all options in question | 82.7 | 0.959 | 89.3 | 57.6 | 0.064 |
+| tree Instruct-4B, r64, round-2b data, all options in question | 83.5 | 0.966 | 89.3 | 59.0 | 0.038 |
 | tree Instruct-4B, r64, round-2b data | 82.7 | 0.965 | 88.0 | 52.9 | **0.045** |
 | tree Reranker-4B, round-1 data | 81.6 | 0.953 | 89.7 | 51.7 | 0.077 |
 | stock 8B + LoRA | 80.7 | 0.945 | 88.7 | 48.0 | 0.051 |

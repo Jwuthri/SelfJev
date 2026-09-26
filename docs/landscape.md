@@ -33,7 +33,8 @@ marktechpost.com/2026/09/19/typesafe-ai-releases-jev/.
 | price | $0.042 per million input tokens; the whole dev benchmark cost $0.06 |
 | as an annotator | agrees with authoring models on 93.0% of round-2 questions; worst on temporal |
 
-**Our reading:** the gap is mostly training, not architecture. 4B → 8B, a bigger adapter and stock → tree each moved
+**Our reading** (2026-09-25 update: [what Jev's behaviour implies and what to build next](../reports/jev_hypothesis_2026-09-25.md)):
+the gap is mostly training, not architecture. 4B → 8B, a bigger adapter and stock → tree each moved
 the dev benchmark by ≤ 1.3 points, while 10K verified target-task questions moved eval2 by +5.5. Its speed points to a
 small model (~1B active parameters) on fast GPUs.
 

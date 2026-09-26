@@ -4,41 +4,46 @@ What we would do next, in priority order. To work on one, claim it in the *Open 
 [experiment ledger](experiments.md#open-ideas-claim-before-starting-edit-the-status-cell) first; paid runs need the
 user's OK with a price.
 
-## 1. Close the quality gap (4.5 points on eval2)
+## 1. Close the quality gap (1.6 points on eval2)
+
+The best model, `qwen35_4b_tree`, scores 95.6 against Jev's 97.2. Multilabel is still about half of the gap
+(exact match 90.1 vs 94.2), then numbers and dates.
 
 | idea | why | cost |
 |---|---|---|
-| **Round 3, full run**: best recipe + 38.6K new verified questions | data was the biggest lever (+5.5); the first run was stopped at step ≈ 500 of 915, and its step-300 checkpoint (90.8) is not a verdict | ~10 h A10G ≈ $10 |
-| **Multilabel with many positives** | multilabel exact match is the largest gap (83.5 vs 94.2); round 3 has 54% of multilabel questions with 3+ positives, round 2 had 21% | covered by round 3 |
-| **Numbers, dates and grading** with verified answers | numeric 82.1 vs 92.0, temporal 82.8 vs 89.2; the agent-output grading family is still excluded from training on purpose | generation + blind judge |
-| **Use the 27B teacher better**: multiclass-only distillation, a lower weight, an r64 student, or serve the ensemble | the 50/50 ensemble scores 94.5, distillation at weight 0.5 gave nothing | ≈ $3 GPU each |
-| **Rejection as its own decision**: a permutation-invariant `none` rule; balanced in/out-of-scope pairs | the round-2 regression was entirely over-rejection | data + small code |
-| **Tree full fine-tune** | the upper bound on capacity | needs ≥ 48 GB GPU and code |
+| **RLCD from the best model** (`pjev rlcd --init weights/qwen35_4b_tree`), compared on eval2 for accuracy, Brier and ECE | Jev's errors are hedged, ours are confidently wrong far more often; a proper-scoring-rule reward is the direct fix ([fine-tune and RLCD](finetune.md)) | ≈ 4 h L40S ≈ $10 |
+| **Multilabel with many positives**: more verified questions with 3+ correct labels and zero-positive ones | the largest remaining slice gap (90.1 vs 94.2 exact match) | generation + blind judge |
+| **Numbers, dates and grading** with verified answers | numeric 88.4 vs 92.0, temporal 85.7 vs 89.2 on eval2 | generation + blind judge |
+| **Question-level sharing in the Qwen3.5 tree for longer questions**, and texts beyond 8K in training | the tree made 8K training possible; 2,013 questions (3.7%) are still dropped | GPU time only |
+| **Parallel-readout branch** (one branch per question, a yes/no readout per option + `none`, listwise loss) | the shape Jev's disclosures imply; multilabel and `none` decided jointly ([memo](../reports/jev_hypothesis_2026-09-25.md)) | code + ≈ $12 |
+| **Serving cascade / ensemble**: the 50/50 average of `qwen35_4b_tree` and `tree_4b_combo` scores 95.9 on eval2, with the 27B teacher 96.5 (nothing fitted) | two models' errors overlap little (either is right on 97.6%) | $0 to decide; 2× serving compute |
+| **Use the 27B teacher better**: multiclass-only distillation, a lower weight | distillation at weight 0.5 gave nothing | ≈ $3 GPU each |
 
-## 2. Close the speed gap (5× at 4K tokens)
+## 2. Close the speed gap
+
+Jev answers in a flat ~100–130 ms server side. The Qwen3 tree on vLLM matches that for one question up to ~1K tokens
+and is cheaper per request; the Qwen3.5 model is slow with many questions on vLLM.
 
 | idea | why | cost |
 |---|---|---|
-| **The same sweep on an H100** (vLLM, bf16 and FP8) | Jev's flat ~150 ms at 4K tokens × 16 questions needs ≥ 10× an A10G's compute; tells whether our model can match it on better hardware | ≈ $5 (capacity permitting) |
-| **Qwen3.5-4B with a forked native cache**, best recipe | Qwen3.5-2B reached 79.9 on round-1 data and was 1.4–2× faster at 8K tokens | ≈ $5, claimed, awaiting OK |
-| **Smaller tree student** (0.6B / 1.7B) distilled from the 4B | the 0.6B trained directly is 17 points behind | 1 GPU-day |
-| **Structured attention kernel** for the tree | the direct branch mask is done; matmuls and attention dominate | code |
-| **vLLM path on eval2** | serving quality was only checked on the dev benchmark | ≈ 15 min GPU |
+| **Time `qwen35_tree.TreeServer` on a GPU** against Jev and the Qwen3 tree, same requests | it does the same work as the Qwen3 tree (text once), where vLLM recomputes up to 527 text tokens per candidate; exact in the CPU test | ≈ 1 h L40S ≈ $2.50 |
+| **Route by question count**: vLLM for 1–2 questions, the tree server for more | vLLM wins on one question (87 vs 156 ms at 512 tokens), the tree path on many | half a day |
+| **Patch vLLM** to checkpoint the recurrent state where prompts stop sharing tokens | the root cause of the slow multi-question case; 0.30 does it only for speculative decoding | code |
+| **An H100 sweep** (vLLM, bf16 and FP8) | per-token speed is the limit once the text is shared; never obtained on AWS | ≈ $5 (capacity permitting) |
+| **Smaller tree student** (0.6B / 1.7B) distilled from the best model | the 0.6B trained directly is 17 points behind | 1 GPU-day |
 
 ## 3. Trust the numbers
 
 | idea | why | cost |
 |---|---|---|
 | **Fresh final test set** (new authors, templates, documents) | both current test sets have informed decisions | ≈ $40 API |
-| **Second seeds** for `tree_4b_ova` and `tree_4b_instruct_r2x64` | every result is one run; several wins are p ≈ 0.06–0.07 | ≈ $3 each |
-| **Public JevBench items** for our best tree; Laya, open-jev-deberta and kev-4b on eval2 | the only shared yardstick across open Jev-like models | $0 |
-| **Calibration policy**: temperatures separate from thresholds, thresholds for accuracy on a separate split | the current file costs 2.3 points | code |
-| **Label-free binary bias fix** (e.g. contextual calibration) chosen on validation | SST-2 ranks well (AUROC 0.973) but predicts positive 34.7% of the time | ≈ 1 h GPU |
-| **Stock 4B on round-2 data** | the stock-vs-tree control for round 2 was never finished | ~1 h A10G |
+| **Second seeds** for the best runs | every result is one run; several wins are p ≈ 0.03–0.07 | ≈ $10 each on an L40S |
+| **Public JevBench items** for our best model; Laya, open-jev-deberta and kev-4b on eval2 | the only shared yardstick across open Jev-like models | $0 |
+| **Calibration policy**: temperatures separate from thresholds, thresholds for accuracy on a separate split | the current fitted file costs accuracy; RLCD may make it unnecessary | code |
 
-## Smaller follow-ups
+## Done since the last version of this page
 
-- jina 0.6B: 2 epochs, r64 + MLP, pairwise layout (configs ready in `configs/jina_r2b_*.json`).
-- Round-2 mix: add `none`-offered-but-wrong intent-like texts; subsample hard cases to ≈ 30% of training.
-- Prompt-template robustness: a random prompt mapping per training example, averaged at eval.
-- T5Gemma 2 with the encoder adapted too (in progress in another session).
+- Round 3 (38.6K verified questions) and options in the question: 94.5 each way, and they stack.
+- Qwen3.5-4B with a forked cache (94.5), then trained with its own tree (**95.6**).
+- The vLLM path scored on eval2: the same accuracy as transformers for both best models.
+- `pjev finetune` and `pjev rlcd`, and the best weights in the repo ([weights/](../weights/README.md)).

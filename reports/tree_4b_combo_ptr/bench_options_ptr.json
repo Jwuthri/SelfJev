@@ -1,0 +1,181 @@
+{
+ "meta": {
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "architecture": "tree paths (tree-v1) on vLLM",
+  "adapter": "merged into runs/tree_4b_combo_ptr/merged",
+  "adapter_sha256": "ddaf19f773903fc3ed24d0c62bcb022f645205e0b979b93d6b9b4c27e46cca30",
+  "vllm_version": "0.30.0",
+  "enable_prefix_caching": true,
+  "quantization": null,
+  "prompt": "tree-v1",
+  "prompt_sha": "c8963d819128",
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "max_length": 16384,
+  "truncation": "none (overlength input raises InputTooLong)",
+  "created": "2026-09-25T01:08:23+0000"
+ },
+ "rows": [
+  {
+   "mode": "ptr",
+   "text_tokens": 512,
+   "questions": 1,
+   "options": 3,
+   "p50_ms": 135.39869049964182,
+   "p95_ms": 135.62849900154106,
+   "input_tokens": 700,
+   "leaf_tokens_submitted": 2046
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 512,
+   "questions": 1,
+   "options": 8,
+   "p50_ms": 143.91166950008483,
+   "p95_ms": 158.2448330009356,
+   "input_tokens": 855,
+   "leaf_tokens_submitted": 6336
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 512,
+   "questions": 1,
+   "options": 32,
+   "p50_ms": 330.2216045003661,
+   "p95_ms": 331.144667999979,
+   "input_tokens": 1691,
+   "leaf_tokens_submitted": 44471
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 512,
+   "questions": 1,
+   "options": 64,
+   "p50_ms": 614.6987484999045,
+   "p95_ms": 622.0646449983178,
+   "input_tokens": 2811,
+   "leaf_tokens_submitted": 140151
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 512,
+   "questions": 16,
+   "options": 3,
+   "p50_ms": 419.97899249963666,
+   "p95_ms": 443.95081299990125,
+   "input_tokens": 2882,
+   "leaf_tokens_submitted": 32757
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 512,
+   "questions": 16,
+   "options": 8,
+   "p50_ms": 833.4403654998823,
+   "p95_ms": 845.9837870013871,
+   "input_tokens": 5362,
+   "leaf_tokens_submitted": 101432
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 512,
+   "questions": 16,
+   "options": 32,
+   "p50_ms": 3691.6043769997486,
+   "p95_ms": 3704.671397999846,
+   "input_tokens": 18738,
+   "leaf_tokens_submitted": 711760
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 512,
+   "questions": 16,
+   "options": 64,
+   "p50_ms": 8549.173020499438,
+   "p95_ms": 8799.53383800057,
+   "input_tokens": 36658,
+   "leaf_tokens_submitted": 2242864
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 2048,
+   "questions": 1,
+   "options": 3,
+   "p50_ms": 360.77546299929963,
+   "p95_ms": 361.0600250012794,
+   "input_tokens": 2236,
+   "leaf_tokens_submitted": 6654
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 2048,
+   "questions": 1,
+   "options": 8,
+   "p50_ms": 378.4698320005191,
+   "p95_ms": 400.1483640004153,
+   "input_tokens": 2391,
+   "leaf_tokens_submitted": 18624
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 2048,
+   "questions": 1,
+   "options": 32,
+   "p50_ms": 592.1794844998658,
+   "p95_ms": 593.6253660001967,
+   "input_tokens": 3227,
+   "leaf_tokens_submitted": 93623
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 2048,
+   "questions": 1,
+   "options": 64,
+   "p50_ms": 941.3508099996761,
+   "p95_ms": 944.9369899994053,
+   "input_tokens": 4347,
+   "leaf_tokens_submitted": 238455
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 2048,
+   "questions": 16,
+   "options": 3,
+   "p50_ms": 733.2977710011619,
+   "p95_ms": 734.3135840001196,
+   "input_tokens": 4418,
+   "leaf_tokens_submitted": 106485
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 2048,
+   "questions": 16,
+   "options": 8,
+   "p50_ms": 1307.6492634991155,
+   "p95_ms": 1309.977261998938,
+   "input_tokens": 6898,
+   "leaf_tokens_submitted": 298040
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 2048,
+   "questions": 16,
+   "options": 32,
+   "p50_ms": 4921.230205999564,
+   "p95_ms": 4936.10649600123,
+   "input_tokens": 20274,
+   "leaf_tokens_submitted": 1498192
+  },
+  {
+   "mode": "ptr",
+   "text_tokens": 2048,
+   "questions": 16,
+   "options": 64,
+   "p50_ms": 10742.8001545004,
+   "p95_ms": 10800.062375999914,
+   "input_tokens": 38194,
+   "leaf_tokens_submitted": 3815728
+  }
+ ]
+}

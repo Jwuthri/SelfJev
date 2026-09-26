@@ -181,6 +181,29 @@ already calibrated: binary ECE 0.077, multiclass 0.029, multilabel 0.017. The th
 test accuracy from 81.6% to 79.3%, so **serve `tree_4b` without the calibration file**, with the default 0.5
 thresholds.
 
+## Qwen3.5 (hybrid DeltaNet)
+
+Qwen3.5-4B is three Gated DeltaNet layers (a gated linear recurrence with a width-4 causal convolution) for every
+full-attention layer. A tree mask cannot hide one branch from its siblings inside a recurrence, so
+[`personal_jev/qwen35_tree.py`](../src/personal_jev/qwen35_tree.py) runs the same packed tree two ways:
+
+- **Full-attention layers** read the packed row through `tree_mask`, exactly as above.
+- **DeltaNet layers** run level by level: every root; then every question segment, starting from its root's final
+  recurrent state and last three convolution inputs; then every leaf, starting from its question's. Gradients flow back
+  through those copied states. Right padding inside a level leaves the state untouched (q = k = v = 0, beta = 0,
+  g = 0).
+
+Every leaf equals its standalone sequence (root + question + leaf). `tests/test_qwen35_tree.py` checks scores and every
+gradient against full sequences on a tiny random model in fp32. On the real model, fp32 scores agree within 0.004 and
+LoRA gradients at cosine 0.99997; in bf16 the tree is as close to full sequences as full sequences are to themselves
+re-batched (`reports/qwen35_4b_tree/checks/`). Token ids are `ChallengerScorer.entry`'s, so inference forks the native
+cache and needs no tree code.
+
+Training with it (`scripts/run_qwen35.py --tree`) encodes each text once per state instead of once per candidate:
+texts up to 8K tokens fit, 51.8K questions in 4.1 h on one L40S, where full-sequence training had to drop 18.5% of the
+data at 2K tokens and took 6.6 h. `qwen35_4b_tree` scores 95.6 on eval2 against 94.5 without the tree
+([JOURNAL 2026-09-25](JOURNAL.md)).
+
 ## Limitations
 
 - One seed and one hyperparameter setting per backbone.

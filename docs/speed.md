@@ -8,7 +8,11 @@
     - **Serving:** vLLM with the prefix cache and merged weights is the best general option. A shorter "compact" tree
       format did not pay off.
     - **Cost:** a fully busy A10G is cheaper per request than Jev (up to 3×, less with many questions); an idle one is
-      not.
+      not. On an L40S the Qwen3 tree on vLLM is cheaper than Jev in every cell measured.
+    - **Qwen3.5 (the most accurate model) on vLLM** keeps its accuracy and is fast for one question (87–131 ms server
+      side up to 2K tokens on an L40S), but slow for many: vLLM reuses a hybrid model's recurrent state only every 528
+      tokens, so each candidate recomputes part of the text. Serving it with its own tree fixes the work; it is not
+      timed on a GPU yet.
 
 ## Tree vs stock pairs (same A10G, bf16, unmerged LoRA)
 
@@ -70,6 +74,41 @@ request, model resident, network excluded ([conclusions](../reports/latency_opti
   request takes 185 ms. Those are different workloads from a new document.
 - Faster GPUs (L40S, H100, Blackwell, A100) could not be launched in three regions: no faster-GPU numbers exist.
 
+## Qwen3.5 on vLLM (2026-09-25, L40S)
+
+`qwen35_4b_tree` merged into Qwen3.5-4B and served by vLLM 0.30 (`personal_jev/vllm_qwen35.py`), next to the Qwen3 tree
+(`tree_4b_combo`) on the same GPU, with Jev in the same sweep from California. Accuracy through vLLM is unchanged: eval2
+95.58% (transformers 95.58%), and 94.53% for the Qwen3 tree (94.48%). Server-side p50 (ms; Jev: time inside
+OpenRouter):
+
+| text tokens × questions | Jev | Qwen3 tree, vLLM | Qwen3.5, vLLM |
+|---|---|---|---|
+| 512 × 1 | 106 | **55** | 87 |
+| 2,048 × 1 | **102** | 121 | 131 |
+| 4,096 × 1 | **114** | 228 | 230 |
+| 512 × 16 | **106** | 163 | 454 |
+| 2,048 × 16 | **123** | 268 | 908 |
+| 4,096 × 16 | **130** | 424 | 1,138 |
+
+Both models run at about the same speed per token (17–24K tokens/s); the difference is how much of the text each has
+to recompute. vLLM's prefix cache shares an attention model's text at any 16-token boundary, so the Qwen3 tree computes
+the text once and each candidate only adds its own tokens. For Qwen3.5 the cache has to store the recurrent state
+itself (tens of MB), and vLLM sets its block to 528 tokens for that; every candidate prompt recomputes the text after
+the last block boundary plus its question:
+
+| 16 questions | Qwen3 tree: tokens computed → time | Qwen3.5: tokens computed → time |
+|---|---|---|
+| 256 tokens | 3,346 → 139 ms | 20,064 → 993 ms (nothing shared below 528 tokens) |
+| 2,048 tokens | 5,138 → 254 ms | 16,320 → 855 ms |
+| 4,096 tokens | 7,186 → 400 ms | 17,424 → 1,025 ms |
+
+`mamba_block_size` does not change this in vLLM 0.30; caching the state in bf16 halves the block to 272 tokens, with
+mixed effects (256 tokens 407 ms, 1K 744 ms, 4K 689 ms). The fix is to serve Qwen3.5 with its own tree, as in
+training: `personal_jev.qwen35_tree.TreeServer` computes the text once, each question once and each candidate's own
+tokens, the same work as the Qwen3 tree. It matches standalone sequences exactly in a CPU test; GPU timings are still to
+do. Sources: [JOURNAL 2026-09-25 18:05](JOURNAL.md), `reports/latency/requests_qwen35.jsonl`,
+`reports/qwen35_4b_tree/vllm/probe.log`.
+
 ## Cost vs Jev
 
 Jev charges $0.042 per million input tokens and bills about 372 tokens of overhead per request plus about 113 per
@@ -84,6 +123,16 @@ extra 3-option question. Our cost assumes the A10G ($1.006/h) is fully busy ([ba
 | 4,096 tokens, 16 questions | $0.2675 | $0.2653 |
 
 A g5.xlarge left on all month (≈ $734) beats Jev only above about 7 requests/s sustained, for 512-token requests.
+
+On an L40S ($2.242/h, fully busy; `reports/latency/throughput_*_l40s.json`), per 1,000 requests:
+
+| request | Qwen3 tree, vLLM | Qwen3.5, vLLM | Jev |
+|---|---|---|---|
+| 8 tokens, 1 question | **$0.0054** | $0.0168 | $0.0160 |
+| 1,024 tokens, 1 question | **$0.0320** | $0.0422 | $0.0602 |
+| 4,096 tokens, 1 question | **$0.1239** | $0.1268 | $0.1938 |
+| 256 tokens, 16 questions | **$0.0787** | $0.6330 | $0.0982 |
+| 4,096 tokens, 16 questions | **$0.2426** | $0.6330 | $0.2653 |
 
 ## Other backends, for scale
 

@@ -1,44 +1,71 @@
 # Latency sweep: Jev vs our tree scorer
 
-- 2026-09-23T20:24:46-0700; 2 sweep run(s) of 10 timed rounds each (after 1 warm-up round), one request at a time, endpoints in random order; Jev is in every run, so it has 20 samples per cell, each of ours 10.
-- network round trip (TCP connect, median): openrouter.ai:443 12 ms, 98.84.140.190:22 71 ms
-- Jev spend for the whole sweep: $0.0383; failed requests: 0
+- 2026-09-24T14:55:15-0700; 4 sweep run(s) of 10 timed rounds each (after 1 warm-up round), one request at a time, endpoints in random order; Jev is in every run, so it has 40 samples per cell, each of ours 10.
+- network round trip (TCP connect, median): openrouter.ai:443 7 ms, 98.89.35.156:22 67 ms
+- Jev spend for the whole sweep: $0.0765; failed requests: 0
 
 ## 1 question × 3 options
 
 Wall = at the client (this machine), p50 / p95 ms. Server = ours: parse + tokenize + GPU; Jev: time inside OpenRouter incl. Jev.
 
-| text tokens | jev wall p50 | jev wall p95 | jev server p50 | ours wall p50 | ours wall p95 | ours server p50 | ours_merged wall p50 | ours_merged wall p95 | ours_merged server p50 | ours_vllm wall p50 | ours_vllm wall p95 | ours_vllm server p50 |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 8 | 148 | 286 | 127 | 196 | 198 | 127 | 153 | 157 | 85 | 120 | 191 | 49 |
-| 16 | 165 | 227 | 144 | 196 | 200 | 127 | 156 | 220 | 85 | 123 | 189 | 52 |
-| 32 | 143 | 197 | 124 | 198 | 267 | 126 | 154 | 221 | 85 | 124 | 198 | 53 |
-| 64 | 162 | 216 | 142 | 196 | 197 | 126 | 156 | 225 | 86 | 126 | 192 | 56 |
-| 128 | 150 | 188 | 133 | 195 | 198 | 126 | 157 | 225 | 87 | 133 | 200 | 63 |
-| 256 | 142 | 225 | 124 | 215 | 218 | 145 | 189 | 257 | 118 | 154 | 228 | 84 |
-| 512 | 156 | 201 | 137 | 263 | 265 | 192 | 230 | 232 | 161 | 197 | 264 | 126 |
-| 1,024 | 145 | 233 | 128 | 384 | 387 | 315 | 343 | 412 | 272 | 273 | 277 | 204 |
-| 2,048 | 144 | 278 | 123 | 598 | 667 | 527 | 530 | 612 | 459 | 424 | 493 | 353 |
-| 4,096 | 154 | 249 | 132 | 1,062 | 1,130 | 991 | 938 | 1,012 | 865 | 755 | 824 | 682 |
+| text tokens | jev wall p50 | jev wall p95 | jev server p50 | combo_vllm wall p50 | combo_vllm wall p95 | combo_vllm server p50 | combo_vllm_l40s wall p50 | combo_vllm_l40s wall p95 | combo_vllm_l40s server p50 | ours wall p50 | ours wall p95 | ours server p50 | ours_merged wall p50 | ours_merged wall p95 | ours_merged server p50 | ours_vllm wall p50 | ours_vllm wall p95 | ours_vllm server p50 | qwen35_vllm_l40s wall p50 | qwen35_vllm_l40s wall p95 | qwen35_vllm_l40s server p50 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 8 | 136 | 209 | 117 | 124 | 193 | 55 | 158 | 162 | 36 | 196 | 198 | 127 | 153 | 157 | 85 | 120 | 191 | 49 | 201 | 204 | 79 |
+| 16 | 143 | 196 | 125 | 140 | 190 | 54 | 156 | 161 | 36 | 196 | 200 | 127 | 156 | 220 | 85 | 123 | 189 | 52 | 201 | 202 | 78 |
+| 32 | 135 | 222 | 118 | 123 | 125 | 55 | 157 | 159 | 36 | 198 | 267 | 126 | 154 | 221 | 85 | 124 | 198 | 53 | 200 | 204 | 78 |
+| 64 | 156 | 222 | 134 | 128 | 194 | 60 | 157 | 161 | 36 | 196 | 197 | 126 | 156 | 225 | 86 | 126 | 192 | 56 | 201 | 204 | 78 |
+| 128 | 139 | 188 | 123 | 153 | 241 | 84 | 160 | 164 | 39 | 195 | 198 | 126 | 157 | 225 | 87 | 133 | 200 | 63 | 206 | 209 | 84 |
+| 256 | 137 | 225 | 114 | 167 | 254 | 98 | 165 | 168 | 45 | 215 | 218 | 145 | 189 | 257 | 118 | 154 | 228 | 84 | 208 | 212 | 88 |
+| 512 | 143 | 196 | 119 | 204 | 271 | 136 | 177 | 181 | 55 | 263 | 265 | 192 | 230 | 232 | 161 | 197 | 264 | 126 | 206 | 215 | 87 |
+| 1,024 | 144 | 233 | 122 | 279 | 346 | 210 | 195 | 197 | 73 | 384 | 387 | 315 | 343 | 412 | 272 | 273 | 277 | 204 | 154 | 216 | 92 |
+| 2,048 | 135 | 259 | 110 | 429 | 499 | 361 | 244 | 257 | 121 | 598 | 667 | 527 | 530 | 612 | 459 | 424 | 493 | 353 | 193 | 198 | 131 |
+| 4,096 | 146 | 222 | 125 | 770 | 841 | 698 | 354 | 454 | 227 | 1,062 | 1,130 | 991 | 938 | 1,012 | 865 | 755 | 824 | 682 | 297 | 389 | 230 |
 
 ## 16 questions × 3 options
 
 Wall = at the client (this machine), p50 / p95 ms. Server = ours: parse + tokenize + GPU; Jev: time inside OpenRouter incl. Jev.
 
-| text tokens | jev wall p50 | jev wall p95 | jev server p50 | ours wall p50 | ours wall p95 | ours server p50 | ours_merged wall p50 | ours_merged wall p95 | ours_merged server p50 | ours_vllm wall p50 | ours_vllm wall p95 | ours_vllm server p50 |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 8 | 159 | 215 | 138 | 688 | 757 | 616 | 602 | 650 | 530 | 336 | 339 | 264 |
-| 16 | 170 | 219 | 153 | 689 | 758 | 618 | 605 | 612 | 534 | 375 | 441 | 303 |
-| 32 | 165 | 212 | 147 | 688 | 693 | 618 | 606 | 673 | 534 | 375 | 396 | 304 |
-| 64 | 147 | 192 | 131 | 690 | 760 | 619 | 606 | 616 | 536 | 378 | 446 | 306 |
-| 128 | 170 | 241 | 149 | 690 | 699 | 621 | 608 | 610 | 538 | 384 | 424 | 314 |
-| 256 | 178 | 198 | 154 | 700 | 770 | 629 | 626 | 695 | 556 | 415 | 505 | 344 |
-| 512 | 160 | 216 | 140 | 757 | 827 | 686 | 678 | 680 | 608 | 467 | 537 | 396 |
-| 1,024 | 164 | 251 | 145 | 901 | 905 | 831 | 807 | 879 | 737 | 569 | 572 | 497 |
-| 2,048 | 156 | 220 | 134 | 1,155 | 1,162 | 1,086 | 1,034 | 1,038 | 962 | 767 | 768 | 696 |
-| 4,096 | 174 | 222 | 153 | 1,700 | 1,705 | 1,629 | 1,517 | 1,628 | 1,445 | 1,195 | 1,202 | 1,123 |
+| text tokens | jev wall p50 | jev wall p95 | jev server p50 | combo_vllm wall p50 | combo_vllm wall p95 | combo_vllm server p50 | combo_vllm_l40s wall p50 | combo_vllm_l40s wall p95 | combo_vllm_l40s server p50 | ours wall p50 | ours wall p95 | ours server p50 | ours_merged wall p50 | ours_merged wall p95 | ours_merged server p50 | ours_vllm wall p50 | ours_vllm wall p95 | ours_vllm server p50 | qwen35_vllm_l40s wall p50 | qwen35_vllm_l40s wall p95 | qwen35_vllm_l40s server p50 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| 8 | 144 | 202 | 120 | 470 | 540 | 400 | 199 | 264 | 135 | 688 | 757 | 616 | 602 | 650 | 530 | 336 | 339 | 264 | 583 | 679 | 464 |
+| 16 | 150 | 207 | 126 | 455 | 523 | 385 | 197 | 255 | 130 | 689 | 758 | 618 | 605 | 612 | 534 | 375 | 441 | 303 | 600 | 616 | 483 |
+| 32 | 149 | 212 | 126 | 459 | 549 | 386 | 252 | 257 | 130 | 688 | 693 | 618 | 606 | 673 | 534 | 375 | 396 | 304 | 581 | 650 | 513 |
+| 64 | 135 | 192 | 114 | 463 | 558 | 392 | 248 | 258 | 130 | 690 | 760 | 619 | 606 | 616 | 536 | 378 | 446 | 306 | 703 | 765 | 577 |
+| 128 | 150 | 241 | 132 | 491 | 557 | 421 | 257 | 266 | 136 | 690 | 699 | 621 | 608 | 610 | 538 | 384 | 424 | 314 | 793 | 924 | 725 |
+| 256 | 148 | 198 | 128 | 516 | 582 | 443 | 266 | 275 | 144 | 700 | 770 | 629 | 626 | 695 | 556 | 415 | 505 | 344 | 1,103 | 1,160 | 998 |
+| 512 | 147 | 205 | 126 | 566 | 589 | 496 | 279 | 288 | 163 | 757 | 827 | 686 | 678 | 680 | 608 | 467 | 537 | 396 | 524 | 608 | 454 |
+| 1,024 | 153 | 251 | 133 | 669 | 734 | 600 | 257 | 321 | 193 | 901 | 905 | 831 | 807 | 879 | 737 | 569 | 572 | 497 | 518 | 621 | 455 |
+| 2,048 | 156 | 255 | 134 | 879 | 942 | 808 | 335 | 426 | 268 | 1,155 | 1,162 | 1,086 | 1,034 | 1,038 | 962 | 767 | 768 | 696 | 979 | 1,049 | 907 |
+| 4,096 | 168 | 222 | 147 | 1,335 | 1,338 | 1,263 | 503 | 594 | 424 | 1,700 | 1,705 | 1,629 | 1,517 | 1,628 | 1,445 | 1,195 | 1,202 | 1,123 | 1,201 | 1,292 | 1,137 |
 
 Jev price: $0.0420 per million input tokens (reported cost / reported input tokens).
+
+## Batched throughput, ours (throughput_combo_vllm_l40s): NVIDIA L40S, tree paths (tree-v1) on vLLM
+
+Cost per 1,000 requests at $2.242/h, GPU fully busy; Jev = its reported cost for the same requests (median).
+
+| text tokens | questions | requests/s | ours $ / 1K requests | Jev $ / 1K requests |
+|---|---|---|---|---|
+| 8 | 1 | 114.4 | 0.0054 | 0.0160 |
+| 8 | 16 | 8.8 | 0.0710 | 0.0874 |
+| 16 | 1 | 118.0 | 0.0053 | 0.0163 |
+| 16 | 16 | 9.1 | 0.0688 | 0.0878 |
+| 32 | 1 | 110.2 | 0.0057 | 0.0170 |
+| 32 | 16 | 9.1 | 0.0685 | 0.0885 |
+| 64 | 1 | 95.8 | 0.0065 | 0.0184 |
+| 64 | 16 | 8.5 | 0.0730 | 0.0899 |
+| 128 | 1 | 77.6 | 0.0080 | 0.0212 |
+| 128 | 16 | 8.5 | 0.0736 | 0.0927 |
+| 256 | 1 | 54.3 | 0.0115 | 0.0268 |
+| 256 | 16 | 7.9 | 0.0787 | 0.0982 |
+| 512 | 1 | 35.1 | 0.0177 | 0.0379 |
+| 512 | 16 | 6.8 | 0.0919 | 0.1094 |
+| 1,024 | 1 | 19.5 | 0.0320 | 0.0602 |
+| 1,024 | 16 | 5.4 | 0.1145 | 0.1317 |
+| 2,048 | 1 | 9.8 | 0.0634 | 0.1047 |
+| 2,048 | 16 | 4.0 | 0.1544 | 0.1762 |
+| 4,096 | 1 | 5.0 | 0.1239 | 0.1938 |
+| 4,096 | 16 | 2.6 | 0.2426 | 0.2653 |
 
 ## Batched throughput, ours (throughput_merged): NVIDIA A10G, shared-prefix tree (tree-v1), merged LoRA
 
@@ -66,6 +93,33 @@ Cost per 1,000 requests at $1.006/h, GPU fully busy; Jev = its reported cost for
 | 2,048 | 16 | 1.2 | 0.2415 | 0.1762 |
 | 4,096 | 1 | 1.3 | 0.2168 | 0.1938 |
 | 4,096 | 16 | 0.7 | 0.3735 | 0.2653 |
+
+## Batched throughput, ours (throughput_qwen35_vllm_l40s): NVIDIA L40S, shared document on vLLM (prefix cache), readout logprob(yes) - logprob(no) over {yes, no}
+
+Cost per 1,000 requests at $2.242/h, GPU fully busy; Jev = its reported cost for the same requests (median).
+
+| text tokens | questions | requests/s | ours $ / 1K requests | Jev $ / 1K requests |
+|---|---|---|---|---|
+| 8 | 1 | 37.1 | 0.0168 | 0.0160 |
+| 8 | 16 | 2.4 | 0.2643 | 0.0874 |
+| 16 | 1 | 35.4 | 0.0176 | 0.0163 |
+| 16 | 16 | 2.2 | 0.2801 | 0.0878 |
+| 32 | 1 | 31.7 | 0.0197 | 0.0170 |
+| 32 | 16 | 2.0 | 0.3097 | 0.0885 |
+| 64 | 1 | 28.1 | 0.0222 | 0.0184 |
+| 64 | 16 | 1.8 | 0.3481 | 0.0899 |
+| 128 | 1 | 22.4 | 0.0279 | 0.0212 |
+| 128 | 16 | 1.4 | 0.4413 | 0.0927 |
+| 256 | 1 | 15.6 | 0.0400 | 0.0268 |
+| 256 | 16 | 1.0 | 0.6330 | 0.0982 |
+| 512 | 1 | 20.4 | 0.0306 | 0.0379 |
+| 512 | 16 | 2.4 | 0.2649 | 0.1094 |
+| 1,024 | 1 | 14.7 | 0.0422 | 0.0602 |
+| 1,024 | 16 | 2.3 | 0.2676 | 0.1317 |
+| 2,048 | 1 | 9.3 | 0.0667 | 0.1047 |
+| 2,048 | 16 | 1.2 | 0.5340 | 0.1762 |
+| 4,096 | 1 | 4.9 | 0.1268 | 0.1938 |
+| 4,096 | 16 | 1.0 | 0.6330 | 0.2653 |
 
 ## Batched throughput, ours (throughput_vllm): NVIDIA A10G, shared-prefix tree (tree-v1) on vLLM prefix cache
 

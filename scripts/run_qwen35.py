@@ -20,15 +20,18 @@ from pathlib import Path
 
 import torch
 
-from personal_jev import benchmark, evaluate
+from personal_jev import benchmark, evaluate, qwen35_tree
 from personal_jev.challengers import ChallengerScorer
 from personal_jev.classify import classify
 from personal_jev.data import sha256_file
 from personal_jev.model import InputTooLong
 from personal_jev.schemas import parse_question
-from personal_jev.train import DEFAULTS, grouped_loss, question_correct, select_data
+from personal_jev.train import DEFAULTS, grouped_loss, question_correct, select_data, shuffle_candidates
+from personal_jev.train_tree import group_by_state, trees_for
+from personal_jev.train_tree import micro_batches as tree_batches
 
 R2 = ["r2_simple", "r2_hard", "r2_very_hard"]
+R3 = ["r3_simple", "r3_hard", "r3_very_hard"]
 LINEAR = ["q_proj", "k_proj", "v_proj", "o_proj", "in_proj_qkv", "in_proj_z", "in_proj_b", "in_proj_a", "out_proj"]
 
 
@@ -78,29 +81,51 @@ def validate(sc, data, budget):
     return dict(loss=loss / len(data), accuracy=correct / len(data), n=len(data))
 
 
+@torch.no_grad()
+def validate_tree(sc, data, roots, budget):
+    sc.model.eval(); loss = correct = 0
+    for b in tree_batches(data, roots, budget, random.Random(0)):
+        chunk = group_by_state([data[i] for i in b])
+        s = qwen35_tree.score(sc, trees_for(chunk, roots)).float()
+        loss += grouped_loss(s, chunk).item(); k = 0
+        for it in chunk:
+            n = len(it["ids"]); correct += question_correct(s[k:k + n].tolist(), it); k += n
+    return dict(loss=loss / len(data), accuracy=correct / len(data), n=len(data))
+
+
 def train(sc, args, out):
     from peft import LoraConfig, get_peft_model
     torch.manual_seed(13); rng = random.Random(13)
-    cfg = DEFAULTS | dict(train_files=["data/hf.jsonl", "data/synthetic.jsonl", "data/hardcases_nb.jsonl"],
-                          val_files=["data/hf.jsonl", "data/synthetic.jsonl", "data/eval.jsonl", "data/hardcases.jsonl"],
-                          max_train_per_family=1600, cap_exempt_families=R2, max_val_questions=1200,
+    d = args.data_dir  # data/ova: every option listed in the question (scripts/options_in_question.py)
+    r3 = [f"{d}/hardcases_r3.jsonl"] if args.r3 else []
+    cfg = DEFAULTS | dict(train_files=[f"{d}/hf.jsonl", f"{d}/synthetic.jsonl", f"{d}/hardcases_nb.jsonl"] + r3,
+                          val_files=[f"{d}/hf.jsonl", f"{d}/synthetic.jsonl", f"{d}/eval.jsonl", f"{d}/hardcases.jsonl"] + r3,
+                          max_train_per_family=1600, cap_exempt_families=R2 + (R3 if args.r3 else []), max_val_questions=1200,
                           max_train_questions=args.train_limit)
     train_ex, val_ex = select_data(cfg, rng)
-    before = sc.max_length; sc.max_length = args.train_max_len
-    tr, dropped = items(sc, train_ex); va, vd = items(sc, val_ex); sc.max_length = before
+    if args.tree:  # shared-prefix tree (personal_jev.qwen35_tree): the text once per state, so long texts fit
+        tr, roots, dropped = qwen35_tree.encode_items(sc, train_ex, args.train_max_len)
+        va, vroots, vd = qwen35_tree.encode_items(sc, val_ex, args.train_max_len)
+        dropped, vd = [f for f, n in dropped.items() for _ in range(n)], [f for f, n in vd.items() for _ in range(n)]
+    else:
+        before = sc.max_length; sc.max_length = args.train_max_len
+        tr, dropped = items(sc, train_ex); va, vd = items(sc, val_ex); sc.max_length = before
     available = {n.rsplit(".", 1)[-1] for n, m in sc.model.named_modules() if isinstance(m, torch.nn.Linear)}
     targets = sorted(set(LINEAR) & available)
     sc.model = get_peft_model(sc.model, LoraConfig(r=args.lora_r, lora_alpha=2 * args.lora_r, lora_dropout=0.05,
                                                     target_modules=targets, bias="none"))
-    sc.model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
+    if not args.tree:  # the tree checkpoints its own layers (qwen35_tree.score)
+        sc.model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})
     params = [p for p in sc.model.parameters() if p.requires_grad]
     opt = torch.optim.AdamW(params, lr=2e-4, weight_decay=0.01)
-    schedule = batches(tr, args.batch_tokens, rng); ga = args.grad_accum
+    make_schedule = (lambda: tree_batches(tr, roots, args.batch_tokens, rng)) if args.tree else (lambda: batches(tr, args.batch_tokens, rng))
+    schedule = make_schedule(); ga = args.grad_accum
     steps = math.ceil(len(schedule) / ga) * args.epochs
     warm = max(1, int(0.05 * steps))
     sched = torch.optim.lr_scheduler.LambdaLR(opt, lambda s: min((s + 1) / warm, max(0.0, (steps - s) / max(1, steps - warm))))
-    pair_tokens = sum(it["entry"]["n"] * it["entry"]["length"] for it in tr)
-    meta = dict(model=sc.meta, config=cfg, recipe="tree_4b_instruct_r2x64 data and LoRA rank; full-sequence training",
+    pair_tokens = (sum(len(roots[s]) for s in {it["state"] for it in tr}) + sum(len(it["q"]) + sum(map(len, it["ids"])) for it in tr)
+                   if args.tree else sum(it["entry"]["n"] * it["entry"]["length"] for it in tr))  # tree: every state once
+    meta = dict(model=sc.meta, config=cfg, recipe="tree_4b_instruct_r2x64 data and LoRA rank; " + ("shared-prefix tree training (qwen35_tree)" if args.tree else "full-sequence training"), tree=args.tree, data_dir=args.data_dir, round3=args.r3,
                 train_max_len=args.train_max_len, seed=13, epochs=args.epochs, lr=2e-4, weight_decay=0.01,
                 batch_tokens=args.batch_tokens, grad_accum=ga, lora=dict(r=args.lora_r, alpha=2 * args.lora_r, targets=targets),
                 trainable=sum(p.numel() for p in params), train_questions=len(tr), val_questions=len(va),
@@ -114,7 +139,7 @@ def train(sc, args, out):
 
     def checkpoint():
         nonlocal best
-        v = validate(sc, va, args.batch_tokens)
+        v = validate_tree(sc, va, vroots, args.batch_tokens) if args.tree else validate(sc, va, args.batch_tokens)
         meta["log"].append(dict(step=step, validation=v, wall_s=time.perf_counter() - start)); print("VALIDATION", step, v, flush=True)
         sc.model.save_pretrained(out / "adapter_last")
         if v["loss"] < best:
@@ -124,13 +149,17 @@ def train(sc, args, out):
     checkpoint()
     for epoch in range(args.epochs):
         if epoch:
-            schedule = batches(tr, args.batch_tokens, rng)
+            schedule = make_schedule()
         for b0 in range(0, len(schedule), ga):
             chunks = schedule[b0:b0 + ga]; nq = sum(len(b) for b in chunks)
             sc.model.train(); total = 0.0; opt.zero_grad(set_to_none=True)
             for b in chunks:
-                its = [tr[i] for i in b]
-                loss = grouped_loss(sc.forward_entries([x["entry"] for x in its]).float(), its) / nq
+                if args.tree:
+                    its = group_by_state([shuffle_candidates(tr[i], rng) for i in b])
+                    s = qwen35_tree.score(sc, trees_for(its, roots))
+                else:
+                    its = [tr[i] for i in b]; s = sc.forward_entries([x["entry"] for x in its])
+                loss = grouped_loss(s.float(), its) / nq
                 if not torch.isfinite(loss):
                     raise FloatingPointError("nonfinite loss")
                 loss.backward(); total += float(loss.detach())
@@ -167,10 +196,61 @@ def bench(sc, out, repeats=10):
         save(out / "bench.json", dict(meta=sc.meta, gpu=torch.cuda.get_device_name(), rows=rows))
 
 
+def tree_check(sc, args):
+    """The tree vs full sequences on real training questions (bf16, fla kernels): scores, LoRA gradients, then the
+    time and peak memory of one training micro-batch at --batch-tokens and of one 8K-token text. Raises on mismatch."""
+    from peft import LoraConfig, get_peft_model
+    rows = [r for f in ("hardcases_r3.jsonl", "hf.jsonl") for r in map(json.loads, open(f"{args.data_dir}/{f}")) if r["split"] == "train"]
+    random.Random(0).shuffle(rows)
+    its, roots, _ = qwen35_tree.encode_items(sc, rows[:400], args.train_max_len)
+    size = lambda it: len(it["ids"]) * (len(roots[it["state"]]) + len(it["q"]) + max(map(len, it["ids"])))  # noqa: E731
+    small = [it for it in its if size(it) <= 6000][:16]  # full-sequence tokens per question
+    parts = [group_by_state([small[i] for i in b]) for b in tree_batches(small, roots, args.batch_tokens, random.Random(0))]
+    small = [it for c in parts for it in c]  # training-sized micro-batches, in the tree's item order
+    sc.model = get_peft_model(sc.model, LoraConfig(r=8, lora_alpha=16, lora_dropout=0.0, target_modules=LINEAR, bias="none"))
+    for n, w in sc.model.named_parameters():  # nonzero B so every LoRA matrix gets a gradient
+        if "lora_B" in n:
+            torch.nn.init.normal_(w, std=1e-3)
+    ex = {r["id"]: r for r in rows}
+    full = lambda chunk: torch.cat([sc.forward_entries([sc.entry(ex[it["id"]]["state"], parse_question({"id": "q", **ex[it["id"]]["question"]}))])
+                                   for it in chunk])  # noqa: E731
+    with torch.no_grad():
+        a, b = torch.cat([qwen35_tree.score(sc, trees_for(c, roots)).float() for c in parts]), full(small).float()
+    d = float((a - b).abs().max())
+    print("CHECK tree vs full: scores", len(a), "max |diff|", round(d, 4), flush=True)
+    sc.model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": False})  # for the reference's memory;
+    sc.model.train()  # HF checkpoints only in train mode; LoRA dropout is 0 here. The tree checkpoints its own layers.
+    entry = lambda it: sc.entry(ex[it["id"]]["state"], parse_question({"id": "q", **ex[it["id"]]["question"]}))  # noqa: E731
+    by_branch = lambda it: torch.cat([sc.forward_entries([dict(e, branches=[br], n=1)]) for e in [entry(it)] for br in e["branches"]])  # noqa: E731
+    grads = {}
+    for kind in ("tree", "full", "full, one branch at a time"):  # the last one: the precision noise floor of the reference
+        sc.model.zero_grad()
+        for c in (parts if kind == "tree" else [[it] for it in small]):  # the loss is a sum over questions
+            s = qwen35_tree.score(sc, trees_for(c, roots)) if kind == "tree" else full(c) if kind == "full" else by_branch(c[0])
+            grouped_loss(s.float(), c).backward()
+        grads[kind] = torch.cat([w.grad.flatten().float() for n, w in sc.model.named_parameters() if w.grad is not None])
+    cos = {k: float(torch.nn.functional.cosine_similarity(g, grads["full"], dim=0)) for k, g in grads.items() if k != "full"}
+    rel = {k: float((g - grads["full"]).norm() / grads["full"].norm()) for k, g in grads.items() if k != "full"}
+    print("CHECK LoRA gradients vs full sequences (", args.dtype, "): cosine", {k: round(v, 5) for k, v in cos.items()},
+          "rel", {k: round(v, 4) for k, v in rel.items()}, flush=True)
+    if not torch.isfinite(a).all() or d > 0.5 or cos["tree"] < min(0.999, cos["full, one branch at a time"] - 0.005):
+        raise SystemExit("the tree disagrees with full sequences beyond the reference's own precision noise")
+    long = [it for it in its if len(roots[it["state"]]) > 6000][:1]
+    for name, chunk in (("micro-batch", group_by_state([its[i] for i in tree_batches(its, roots, args.batch_tokens, random.Random(1))[0]])),
+                        ("8K text", long)):
+        if not chunk:
+            continue
+        sc.model.zero_grad(); torch.cuda.synchronize(); torch.cuda.reset_peak_memory_stats(); t = time.perf_counter()
+        trees = trees_for(chunk, roots)
+        grouped_loss(qwen35_tree.score(sc, trees).float(), chunk).backward(); torch.cuda.synchronize()
+        print("CHECK", name, len(chunk), "questions", sum(len(t["ids"]) for t in trees), "tokens", round(time.perf_counter() - t, 2), "s fwd+bwd",
+              round(torch.cuda.max_memory_allocated() / 2 ** 30, 1), "GB peak", flush=True)
+
+
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("name", choices=["qwen35", "qwen35_4b"])
-    ap.add_argument("--stage", choices=["check", "train", "eval", "bench"], required=True)
+    ap.add_argument("--stage", choices=["check", "check-tree", "train", "eval", "bench"], required=True)
     ap.add_argument("--tag", default="")
     ap.add_argument("--adapter")
     ap.add_argument("--lora-r", type=int, default=64)
@@ -181,10 +261,18 @@ if __name__ == "__main__":
     ap.add_argument("--epochs", type=int, default=1)
     ap.add_argument("--train-limit", type=int)
     ap.add_argument("--sets", default="test,eval2")
+    ap.add_argument("--data-dir", default="data", help="data/ova: options listed in the question (same files, transformed)")
+    ap.add_argument("--r3", action="store_true", help="add data/<dir>/hardcases_r3.jsonl, r3_* families uncapped")
+    ap.add_argument("--dtype", default="bfloat16", help="float32 for an exactness check-tree")
+    ap.add_argument("--tree", action="store_true", help="train with the shared-prefix tree (personal_jev.qwen35_tree; "
+                    "--train-max-len then bounds root + question + longest leaf); with eval / bench: score with it")
     args = ap.parse_args()
     run = args.name + args.tag
     out, report = Path("runs") / run, Path("reports") / run
-    sc = ChallengerScorer(args.name, adapter=args.adapter)
+    if args.tree and args.stage in ("eval", "bench"):  # serve with the training tree (qwen35_tree.TreeServer), LoRA merged
+        sc = qwen35_tree.TreeServer(args.adapter)
+    else:
+        sc = ChallengerScorer(args.name, adapter=args.adapter, dtype=args.dtype)
     if args.stage == "check":  # forked-cache inference vs full sequences, on the example request and a 1K-token one
         reqs = [json.load(open("examples/request.json")), benchmark.make_request(sc.tokenizer, 1024, 2, 3, "multiclass")]
         from personal_jev.schemas import parse_request
@@ -195,11 +283,14 @@ if __name__ == "__main__":
             d = float((a - b).abs().max()); print("CHECK shared vs full max |diff|", round(d, 4), "scores", [round(x, 3) for x in a.tolist()], flush=True)
             if not torch.isfinite(a).all() or d > 0.5:
                 raise SystemExit(f"forked cache disagrees with full sequences: {d}")
+    elif args.stage == "check-tree":
+        tree_check(sc, args)
     elif args.stage == "train":
         train(sc, args, out)
     elif args.stage == "eval":
         for s in args.sets.split(","):
-            files, splits = (["data/eval2.jsonl"], None) if s == "eval2" else (["data/hf.jsonl", "data/eval.jsonl"], [s])
+            d = args.data_dir
+            files, splits = ([f"{d}/eval2.jsonl"], None) if s == "eval2" else ([f"{d}/hf.jsonl", f"{d}/eval.jsonl"], [s])
             r = evaluate.run(sc, files, splits, out_dir=report / s)
             print("EVAL", run, s, round(r["metrics"]["question_accuracy"], 4), flush=True)
     else:

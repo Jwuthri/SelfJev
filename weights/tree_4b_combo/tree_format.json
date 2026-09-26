@@ -1,0 +1,21 @@
+{
+  "name": "tree-v1",
+  "prefix": "<|im_start|>system\nJudge whether the Document meets the requirements based on the Query and the Instruct provided. Note that the answer can only be \"yes\" or \"no\".<|im_end|>\n<|im_start|>user\n",
+  "state": [
+    "<Document>: ",
+    "\n"
+  ],
+  "question": [
+    "<Instruct>: Judge whether the proposed answer to the question is correct, using only the Document as evidence.\n<Query>: Question: ",
+    "\nProposed answer:"
+  ],
+  "leaf": " ",
+  "suffix": "<|im_end|>\n<|im_start|>assistant\n",
+  "binary_answer": "Yes",
+  "readout": [
+    "yes",
+    "no"
+  ],
+  "user_text": "split_special_tokens=True",
+  "sha": "c8963d819128"
+}

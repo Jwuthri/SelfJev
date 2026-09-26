@@ -8,10 +8,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| Combined recipe B `tree_4b_combo_r2` (`scripts/run_tree_combined.sh`, R3=0): tree + Qwen3-4B-Instruct-2507 + LoRA r64 + all options in the question (data/ova/), round-2 data uncapped, MBT 8192 × GA 4. Compare with tree_4b_instruct_r2x64; then latency with merged LoRA + vLLM | Jev classifier with Qwen reranker (fork) | AWS `i-07941d4e1b3626091` "selfjev-combo-r2" g5.xlarge (A10G) $1.006/h | 11:58 | results ≈ 15:30; 8 h power-off cap |
-| Combined recipe A `tree_4b_combo` (same, + round 3, R3=1): the "everything" model. Compare with tree_4b_instruct_r3 (running, owner Jev classifier with Qwen reranker), which differs only in the option lists | Jev classifier with Qwen reranker (fork) | AWS `i-01c9e9f63d2c0fa7d` "selfjev-combo-all" g5.xlarge (A10G) $1.006/h | 11:59 | results ≈ 23:00; 16 h power-off cap |
-| **Qwen3.5-4B shared-document run** (user OK 2026-09-24, ≈ $5, cap $7): `scripts/aws_qwen35.sh` + `scripts/run_qwen35_gpu.sh`. Train `qwen35_4b_r2x64` (r2x64 data + LoRA r64, full-sequence training, texts ≤ 2,048 tokens), old test + eval2 + bench; then Eikos-4B and the Qwen3.5-2B challenger zero-shot on eval2 | SelfJev state of play | AWS `selfjev-qwen35-4b-20260924` (g6e.xlarge $1.861/h, else g5.xlarge $1.006/h), auto-terminate cap | 2026-09-24 11:30 PDT | ≈ 15:00 PDT |
-| **Round 3 on the Instruct base, full rerun** (user request; the first run was stopped halfway). **DO NOT STOP THIS BOX.**<br>`tree_4b_instruct_r3`: the control recipe (`configs/tree_4b_instruct_r3.json`) + `data/hardcases_r3.jsonl` (sha `d20ecb98…`), 51,853 train questions, 910 steps (≈ 14 s/step on the L40S), MBT 16384 × GA 2 (same 32K-token effective batch as the control); evals on validation, old test and eval2 | Jev classifier with Qwen reranker | AWS **us-east-2** `i-067cb929be78ed826` "personal-jev-instruct-r3" g6e.2xlarge (L40S), $2.24/h (no H100 or g6e.xlarge free in us-east-1/2 or us-west-2) | 2026-09-24 11:05 PDT (training from 11:36) | ≈ 15:45; 10 h power-off cap |
+| LLM-evaluation data (score/judge/verify/guardrail/jailbreak): training ≈ 11K q + test slice ≈ 1.1K q, generation + Astra batch judge + Sonnet 5 judge (test) | Synthetic data generation strategy | OpenRouter + OpenAI Batch from the Mac (API only); `data/hardcases_llm/`, `data/eval_llm/`, `reports/hardcases_llm/`, `reports/eval_llm/` | 2026-09-25 | approved ≈ $100, cap $125 |
 | T5Gemma matched round-2b: correcting decoder-only targeting bug; full encoder+decoder retraining, then same-L40S controls; H100 unavailable | Codex tree latency/compact | original master; Ohio L40S `i-087b024b35cff657b` ($3.00424/h) | 2026-09-24 UTC | cap 2026-09-24 14:38:54 UTC; collect/terminate earlier |
 | **owner unknown**: "selfjev-challengers-20260924" | not this session, fork or fork 2 (a Codex session?). Owner: add yourself here | AWS `i-03916322f7dd879be` g6e.4xlarge, `i-0683c5909b7440e8f` g5.4xlarge | 20:27–20:51 | ? |
 
@@ -19,6 +16,13 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | item | cost | who |
 |---|---|---|
+| AWS: Qwen3.5 box `i-0c4633f37c41491d5` g5.xlarge us-east-1, 18:33–23:16 UTC (4.7 h), terminated; SG and key pair deleted (two earlier g6e launch attempts found no capacity, $0) | ≈ $4.75 | SelfJev state of play |
+| AWS: `tree_4b_combo` box g5.xlarge us-east-1, 09-24 11:59–23:38, terminated; SG and key pair deleted | ≈ $11.70 | fork |
+| AWS: `tree_4b_combo_ptr` box g5.xlarge, 09-24 15:17–18:23, terminated; SG and key pair deleted | ≈ $3.10 | fork |
+| AWS: `tree_4b_combo_r2` box g5.xlarge, 09-24 11:58–15:02, terminated; SG and key pair deleted, + Jev $0.02 | ≈ $3.12 | fork |
+| AWS: Qwen3.5 vLLM box `i-0971a5f2783c0651e` g6e.2xlarge (L40S) us-east-2, 00:05–00:55 UTC 09-26 (0.83 h), terminated; SG and key pair deleted; + Jev calls in the sweep $0.019 | ≈ $1.88 | fork |
+| AWS: `qwen35_4b_tree` box `i-071ef1ae0f0e64101` g6e.2xlarge (L40S) us-east-2, 18:08–22:58 UTC (4.8 h), terminated; SG and key pair deleted | ≈ $10.80 | fork |
+| AWS: `qwen35_4b_combo` box `i-0ecb5ba494f7e2bed` g6e.2xlarge (L40S) us-east-2, 06:44–13:47 UTC (7.0 h), terminated; SG and key pair deleted, also those of two no-capacity attempts (us-east-1, us-west-2) | ≈ $15.80 | fork |
 | Jev + GPT-6 Astra on the 3,471 test questions (`reports/external/full`) | $19.34 (Jev $0.06, Astra $19.27 on the OpenAI key) | Jev classifier with Qwen reranker |
 | AWS: stock 4B and 8B pipelines, one g6e.xlarge, 3.16 h | ≈ $5.89 | Jev classifier with Qwen reranker |
 | AWS: 10 learning-curve runs on 8 g5.xlarge | ≈ $23 | fork 2 |
@@ -30,6 +34,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 | AWS 09-24: all-options box ≈ $2.90, 27B teacher box ≈ $6.20, distillation box ≈ $2.90 (all terminated) | ≈ $12.00 | fork |
 | eval2 build (generation + 2 judges + Jev second opinion) | $32.72 | Synthetic data generation strategy |
 | Jev scored on eval2 (`reports/external/eval2`) | $0.05 | Jev classifier with Qwen reranker |
+| AWS: round-3 rerun `i-067cb929be78ed826` g6e.2xlarge (L40S) us-east-2, 11:28–15:36 PDT, terminated; SG and key pair deleted | ≈ $9.25 | Jev classifier with Qwen reranker |
 | AWS: round-3 box `i-01e7e056786127d8e` g5.xlarge 04:24–10:17 (stopped by someone else) + g5.2xlarge 10:32–10:47 for scoring, terminated; SG, key pair deleted | ≈ $6.25 | Jev classifier with Qwen reranker |
 | AWS: Instruct control box `i-093d2861dcb9d84fb` g5.xlarge, 01:10–03:36 PDT, terminated | ≈ $2.45 | Jev classifier with Qwen reranker |
 | AWS: eval2 scoring box `i-08aed2c38168e5da6` g5.xlarge, 23:52–00:58 PDT, terminated; SG and key pair deleted | ≈ $1.12 | Jev classifier with Qwen reranker |
@@ -38,6 +43,322 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-25 PDT: LLM-evaluation data generator ready (score, judge, verify, guardrail, jailbreak), not run yet ($0)
+
+- Owner: Synthetic data generation strategy. The user asked for about 2K synthetic questions per use case of Jev's pitch
+  ("score, judge, verify, guardrail, and detect jailbreaks of LLM prompts, reasoning traces, and/or outputs").
+- Why: only ≈ 6% of round-2/3 training texts and 3% of eval2 are LLM artifacts (keyword scan). The one test slice that
+  grades AI replies, `eval_agent_output` on the dev benchmark (26 q), has tree 61.5 vs Jev 92.3.
+- Built: `gen_hardcases.py --usecases train|test` with brief `data/hardcases/BRIEF_llm.md` (use cases, artifacts,
+  17 new trap tags, labeling additions, a mandatory rule that harmful payloads stay non-actionable); balanced over use
+  case × tier × length. `build_eval2.py` takes `--raw/--review/--out/--guard` for a frozen test slice. Runbook
+  `scripts/run_llm_data.sh train|test`.
+- This data drops BRIEF.md's held-out rule for graded AI replies: once trained on, `eval_agent_output` is in-domain.
+- Estimate: training ≈ 11K questions ≈ $36 writing + ≈ $46 Astra judge; test slice ≈ 1.1K ≈ $19. Awaiting the price OK.
+- Test-slice judges: Astra + Claude Sonnet 5. The user ruled out Gemini 3.1 Pro ("bad and too expensive"; it cost
+  $4.76 for eval2's 652 texts).
+
+### 2026-09-25 19:30 PDT: weights in the repo, `pjev finetune` / `pjev rlcd`, a Qwen3.5 tree server, docs refresh (fork session; $0)
+
+- **Weights:** `weights/qwen35_4b_tree` (eval2 95.6) and `weights/tree_4b_combo` (94.5) copied from `runs/`, tracked
+  with Git LFS (`weights/**/*.safetensors`), each with a `model.json` (base model and revision, recipe, prompt, scores,
+  sha256, serve commands); `weights/README.md`. Not committed.
+- **`pjev finetune` / `pjev rlcd`** (`src/personal_jev/finetune.py`, `cli.py`): the Qwen3.5 tree recipe on any JSONL of
+  (state, question, target), from scratch or `--init weights/qwen35_4b_tree`; validation reports accuracy, cross-entropy,
+  Brier, ECE and confidently-wrong counts. RLCD = policy gradient on strictly proper scoring-rule rewards (log, Brier,
+  spherical; `accuracy` optional): per question, `--samples` reports sampled from a Gaussian around the logits,
+  reward minus the question's mean reward as the advantage, `--beta` KL to the starting model. Tests
+  (`tests/test_finetune.py`, CPU): trained only on RLCD, a shared question with 70% "yes" learns p = 0.70 and a
+  60/30/10 choice p = 0.60 (calibration); finetune then rlcd end to end on a tiny random Qwen3.5. Not run on the real
+  model yet ([finetune.md](finetune.md)).
+- **`qwen35_tree.TreeServer`**: serves Qwen3.5 with the training tree, forward only (text once, each question once,
+  each candidate's own tokens), LoRA merged; `python -m personal_jev.qwen35_tree serve`, `run_qwen35.py --stage eval
+  --tree`, `latency_sweep.py throughput --qwen35-tree`. Exact vs standalone sequences in a CPU test (mixed requests,
+  several packed batches); not timed on a GPU.
+- **Docs:** home page, how it works, speed (Qwen3.5 on vLLM, L40S costs), reproduce, open questions, dead ends, spend
+  ($517 logged; three runs added to the spend table), data mixes, challengers, findings box 22, README; new page
+  "Fine-tune and RLCD" in the nav.
+
+### 2026-09-25 18:05 PDT: Qwen3.5 on vLLM keeps its 95.6 and is fast for one question, slow for sixteen (fork session)
+
+- What: `src/personal_jev/vllm_qwen35.py`.
+  - `merge`: the LoRA merged into a copy of the original (multimodal) checkpoint, replacing exactly the 152
+    LoRA-targeted tensors (a first version also replaced tensors that differed only by dtype; the count check caught it).
+  - `VllmQwen35Scorer`: one prompt per candidate with `ChallengerScorer.entry`'s token ids, vLLM's prefix cache, readout
+    logprob(yes) − logprob(no) over the two allowed tokens (= z_yes − z_no); `serve` CLI.
+  - Also: `scripts/eval_vllm.py --qwen35` (now under a main guard: vLLM spawns its engine), `latency_sweep.py
+    throughput --qwen35 --options-in-question --gpu-price --name`, `vllm_tree serve --gpu-memory-utilization`.
+- Accuracy through vLLM 0.30 on eval2: `qwen35_4b_tree` **95.58**, identical to transformers (4 / 4 flips, max score
+  difference 0.40; `reports/qwen35_4b_tree/eval2_vllm`); `tree_4b_combo` 94.53 vs 94.48 (3 / 2;
+  `reports/tree_4b_combo/eval2_vllm`). All of eval2 in 112 s and 51 s.
+- Latency, server side p50 ms (L40S, both models served on one GPU, Jev in the same sweep from the Mac;
+  `reports/latency/requests_qwen35.jsonl`, `reports/latency/summary.md`; the transformers column is `bench.json`):
+
+  | text tokens × questions | Jev | Qwen3 tree, vLLM | Qwen3.5, vLLM | Qwen3.5, transformers fork |
+  |---|---|---|---|---|
+  | 512 × 1 | 106 | 55 | 87 | 156 |
+  | 2,048 × 1 | 102 | 121 | 131 | 252 |
+  | 4,096 × 1 | 114 | 228 | 230 | — |
+  | 512 × 16 | 106 | 163 | 454 | 341 |
+  | 2,048 × 16 | 123 | 268 | 908 | 508 |
+  | 4,096 × 16 | 130 | 424 | 1,138 | — |
+
+  End to end from California add ≈ 60–120 ms to ours (us-east-2 box through an SSH tunnel).
+- Why 16 questions are slow: for this hybrid model vLLM sets the attention block to 528 tokens (one DeltaNet state per
+  page) and caches the recurrent state only at block boundaries (`mamba_cache_mode` "align"). Each of the 48 prompts
+  recomputes the text after the last boundary plus its question; texts under ≈ 500 tokens share nothing (993 ms at 256
+  tokens). `mamba_block_size` 64 or 16 changes nothing (hits stay on the 528 lcm); a bf16 state cache halves the block to
+  272 (256 tokens 407 ms, 4K 689 ms, but 1K 744 ms). Probe: `reports/qwen35_4b_tree/vllm/probe.log`.
+- Cost per 1,000 requests, GPU fully busy (L40S $2.242/h; `reports/latency/throughput_*_l40s.json`): the Qwen3 tree on
+  vLLM is below Jev in every cell (1 q × 8 tokens $0.005 vs $0.016; 16 q × 4K $0.243 vs $0.265). Qwen3.5 is at Jev's
+  price for one question from 1K tokens up ($0.127 vs $0.194 at 4K) and 2–6× Jev with 16 questions.
+- Cost: ≈ $1.88 (spend table).
+- Verdict: Qwen3.5 serves on vLLM at full accuracy and 1.7–1.9× faster than transformers for one question; for many
+  questions vLLM's coarse hybrid prefix cache makes it 1.3–1.8× slower than our own fork path and 2–4× slower than the
+  Qwen3 tree. Options: route by question count; patch vLLM to checkpoint the state at the shared-prefix junction (0.30
+  does it only for EAGLE, `enable_mamba_fine_grained_prefix_cache`); or a faster custom fork server.
+
+### 2026-09-25 16:05 PDT: Qwen3.5-4B trained with a real tree scores 95.6 on eval2, our best, 1.6 behind Jev (fork session)
+
+- What: a shared-prefix tree for Qwen3.5 training (`src/personal_jev/qwen35_tree.py`, `run_qwen35.py --tree`).
+  - One packed row per state: root (system + document), question segments (the longest common prefix of the question's
+    branches), one leaf per candidate. Same token ids as `ChallengerScorer.entry`, so the existing forked-cache inference
+    serves the adapter unchanged.
+  - Full-attention layers read the row through `tree.tree_mask`. Gated DeltaNet layers run level by level (roots, then
+    question segments from their root's final recurrent and conv state, then leaves), with gradients through those
+    states; right padding inside a level is a no-op for the state (q = k = v = 0, beta = 0, g = 0). Own per-layer
+    activation checkpointing (HF's drops the cache path).
+  - Exactness: `tests/test_qwen35_tree.py` (tiny random hybrid model, fp32, CPU): scores within 5e-6 and every gradient
+    within 1e-4 of full sequences. On the real model (`--stage check-tree`, reports in `reports/qwen35_4b_tree/checks/`):
+    fp32 scores within 0.004, LoRA-gradient cosine 0.99997; bf16 cosine 0.981, the same as the full-sequence reference
+    against itself re-batched (0.980), so the bf16 gap is rounding. The fla kernel's initial-state gradient was checked
+    separately against the torch reference (rel 1.8e-3 in bf16).
+- Run: `qwen35_4b_tree` = `qwen35_4b_combo`'s data and LoRA (option lists, round-2b + round-3, r64) with the tree,
+  texts ≤ 8K (was 2K), batch 8192 × GA 4 as `tree_4b_combo`.
+  - 51,774 training questions (2,013 = 3.7% dropped, was 18.5%), 24.4M tree tokens (the combo run: 54.9M pair tokens),
+    941 steps, 4.1 h on one L40S (the combo run: 6.6 h).
+  - Validation (1,170 q): 78.1 at step 0, 92.7 at the end; the evals use the final checkpoint (lowest loss, 0.128).
+- eval2 (`reports/qwen35_4b_tree/eval2`, paired):
+  - **95.6**: binary 96.9, multiclass 96.8, multilabel EM **90.1** (Jev 97.8 / 98.1 / 94.2).
+  - vs `qwen35_4b_combo` 94.5: 52 / 31, p = 0.028: the tree (more and longer training texts) adds +1.1 on the same base.
+  - vs `tree_4b_combo` 94.5: 63 / 41, p = 0.039.
+  - vs Jev 97.2: 31 / 64, p = 0.0009 (the gap was 2.7). Simple tier 98.6 vs Jev 98.5.
+  - Errors: 88, of which 23 with margin ≥ 0.4 (`tree_4b_combo`: 110 and 26).
+  - Diagnostic only (fixed 50/50 averages, nothing fitted): with `tree_4b_combo` 95.9; with it + the 27B teacher 96.5.
+- Dev benchmark (`reports/qwen35_4b_tree/test`): **84.4** (binary AUROC 0.972, ECE 0.038; multiclass macro-F1 92.6;
+  multilabel EM 59.3). vs `qwen35_4b_combo` 84.3 (p = 0.84); vs `tree_4b_combo` 82.7 (154 / 94, p = 0.0002); vs Jev 82.7
+  (238 / 178, p = 0.004).
+- Speed (`reports/qwen35_4b_tree/bench.json`): unchanged, same inference code (transformers + forked cache, L40S): 156 ms
+  at 512 tokens, 252 ms at 2K, 950 ms at 8K for 1 question. No vLLM path for Qwen3.5 yet.
+- Cost: ≈ $10.80 (spend table). Three check attempts failed first on memory in the check itself (the full-sequence
+  reference, and an unbucketed batch), not in training.
+- Verdict: **new best model**. The tree was the missing piece for Qwen3.5: same data and base as `qwen35_4b_combo`,
+  +1.1 on eval2, 38% less training time. Next: serve it on vLLM (hybrid prefix cache) for latency.
+
+### 2026-09-25 06:55 PDT: Qwen3.5-4B + option lists + round 3 ties the best on eval2 (94.5) and beats Jev on the dev benchmark (84.3) (fork session)
+
+- Run: `qwen35_4b_combo` (`scripts/run_qwen35.py qwen35_4b --stage train --tag _combo --data-dir data/ova --r3`; the
+  `--data-dir` and `--r3` flags are new and additive).
+  - Recipe: `qwen35_4b_r2x64` (Qwen3.5-4B rev 851bf6e, LoRA r64 / alpha 128, every candidate trained as its own full
+    sequence, training texts ≤ 2K, batch 8192 × GA 4, 1 epoch) + every option listed in the question (`data/ova/`) +
+    round-3 data with r3_* uncapped.
+  - 43,827 training questions, 2,474 steps, 6.6 h on one L40S. **9,960 questions (18.5%) dropped for > 2K tokens**
+    (7.8% in `qwen35_4b_r2x64`): round-3 texts are longer and the option lists lengthen every question.
+  - Validation (992 q, round 3 included): 77.5 at step 0, 90.7 at the end. The evals use the lowest-loss checkpoint,
+    step 2,250 (loss 0.165, 90.5).
+- eval2 (`reports/qwen35_4b_combo/eval2`, paired):
+  - **94.5**: binary 96.2, multiclass 95.8, multilabel EM **88.2** (our best multilabel; Jev 94.2).
+  - vs `tree_4b_combo` 94.5: 61 / 60, p = 1. A tie with different strengths: multilabel +2.3, multiclass −1.7,
+    temporal reasoning 80.3 vs 85.2, multi-turn 90.6 vs 94.0, sarcasm 94.0 vs 91.3.
+  - vs `qwen35_4b_r2x64` 93.7: 62 / 46, p = 0.15. The two levers add +0.8 here (not significant) vs +1.8 on Qwen3
+    (p = 0.001); the 2K training cap is the likely reason.
+  - vs Jev 97.2: 23 / 77, p = 6e-8.
+  - Diagnostic only (fixed 50/50 probability average, nothing fitted, 2× the compute): with `tree_4b_combo` 95.5 (either
+    right 97.5); with `tree_4b_combo` + the 27B teacher 95.9.
+- Dev benchmark (`reports/qwen35_4b_combo/test`): **84.3**, our best (binary 90.0, multiclass 85.3, multilabel EM 62.2).
+  vs `tree_4b_combo` 82.7: 172 / 116, p = 0.001; vs Jev 82.7: 250 / 194, p = 0.009; vs `qwen35_4b_r2x64` 83.4: p = 0.053.
+- Speed (`reports/qwen35_4b_combo/bench.json`; transformers + forked cache, in-process p50 on the L40S; bench requests
+  have 3 short options and no option list): 512 tokens 157 ms (1 question) / 343 ms (16); 2K 252 / 510 ms; 8K 943 /
+  1,504 ms. The same code on the A10G (`qwen35_4b_r2x64`) was 1.5–2.6× slower. Not comparable with the Qwen3 tree's
+  vLLM numbers; vLLM serving of Qwen3.5 is untested.
+- Cost: ≈ $15.80 (spend table).
+- Verdict: ties the best on eval2 and is the first model significantly above Jev on the dev benchmark. `tree_4b_combo`
+  stays the served model (vLLM path). Next for Qwen3.5: a real tree in training (fork the recurrent state with
+  gradients) to lift the 2K cap, then vLLM serving.
+
+### 2026-09-25 00:45 PDT: how Jev probably works, and the next architecture (fork 2 session; $0, nothing run)
+
+- The user asked what all the findings say about how Jev was built and whether a new architecture is needed.
+- Memo: [reports/jev_hypothesis_2026-09-25.md](../reports/jev_hypothesis_2026-09-25.md). Measured facts first, then
+  inference: shared state + isolated per-question branches (the "state plus the longest question" limit), options
+  inline with one readout per option (113 billed tokens per 3-option question), ≤ a few B parameters on fast GPUs
+  (400K tokens/s marginal; the 113–136 ms floor at 8 tokens is hop + batching), trained on frontier judgments (dev
+  benchmark multilabel EM 40.1 vs our 57.6) with a calibration objective. Nothing measured requires a from-scratch
+  backbone; our three failed new-architecture attempts say the pretrained LM's joint reading and readout are the quality.
+- New $0 analysis, `scripts/ensemble_eval2.py` → [reports/eval2/ensembles.md](../reports/eval2/ensembles.md):
+  - Jev's probabilities are rounded to 0.01, 19.3% graded (ours 10.8%); 7 of its 55 eval2 errors have margin ≥ 0.4,
+    26 of our 110. On 44 of the 82 questions Jev wins over `tree_4b_combo`, our margin is below 0.2.
+  - Fixed 50/50 averages, nothing fitted: combo + Eikos-4B 95.3, combo + Qwen3.5-4B 95.0, combo + 27B teacher 95.8
+    (multilabel 89.5), all four 95.8. Cascade combo → average with the 27B when margin < 0.3: 9.1% deferred, 95.5; with
+    Jev as the fallback (upper bound) 96.7 at 12% deferred. Deferring to the 27B alone gains nothing (94.9).
+  - Thresholds must come from validation, never eval2; the curve is flat between tau 0.2 and 0.45.
+- Proposals added to the open ideas (awaiting the user's OK): A parallel-readout branch (one branch per question,
+  verdict block with a readout per option + `none`, listwise loss; ≈ $12), B a calibration term in the same run,
+  C the serving cascade ($0 to decide), D the H100/H200 latency sweep first (RunPod H100 SXM $3.49/h, H200 $4.59/h,
+  low stock; AWS had none), E a prefix-LM (bidirectional state) pilot (≈ $5).
+- Eikos report: 3 of 1,991 predictions have a `correct` flag that a 0.5-threshold recomputation does not reproduce;
+  its own flags are used.
+- 01:05 update: the fork's `qwen35_4b_tree` (95.6) landed meanwhile; ensembles.md regenerated with it as the primary:
+  + `tree_4b_combo` 95.9, + the 27B 96.3, + both 96.5; cascade to the 27B average at 7% deferred 96.1. The memo's gates
+  now refer to 95.6.
+
+### 2026-09-24 23:40 PDT: everything combined scores 94.5 on eval2, the best of our runs, 2.7 behind Jev (fork session)
+
+- Run: `tree_4b_combo` (`scripts/run_tree_combined.sh`, R3=1).
+  - Recipe: tree + Qwen3-4B-Instruct-2507 + LoRA r64, every option listed in the question (`data/ova/`), hf + synthetic
+    + hardcases_nb + hardcases_r3 with r2_*/r3_* uncapped.
+  - Batching: MBT 8192 × GA 4, 51,826 questions, 967 steps, g5.xlarge.
+  - It differs from `tree_4b_instruct_r3` only in the option lists.
+- eval2 (paired):
+  - **94.5**: binary 96.0, multiclass 97.5, multilabel EM 85.9.
+  - vs `tree_4b_instruct_r3` 93.3: 60 / 37, p = 0.025. The option lists stack with round 3.
+  - vs `tree_4b_combo_r2` 92.9: 63 / 31, p = 0.001. Round 3 stacks with the option lists.
+  - vs `tree_4b_instruct_r2x64` 92.7: 75 / 40, p = 0.001.
+  - vs Jev 97.2: 27 / 82, p = 1e-7. The gap narrows from 4.5 to 2.7 points.
+  - It matches the 50/50 ensemble of the 27B teacher with `tree_4b_ova` (94.5), with one 4B model.
+- Dev benchmark: 82.7, the same as Jev (230 / 230) and the control. This benchmark cannot rank these models.
+- Validation 92.5, loss 0.126.
+- Latency: same architecture and option format as `tree_4b_combo_r2`, so its vLLM numbers apply (JOURNAL 15:05). The
+  vLLM path was not re-scored for this run; B's and C's matched transformers within 0.1.
+- Cost: g5.xlarge 11:59–23:38 ≈ $11.70 (terminated; SG and key pair deleted).
+- Serving: merge with `vllm_tree merge --model-id Qwen/Qwen3-4B-Instruct-2507 ...`, then serve with `--options-in-question`.
+
+### 2026-09-24 18:25 PDT: option pointers lose about a point and are only ~1.1x faster, so a dead end on vLLM (fork session)
+
+- Idea (the hybrid "read deeply once, score the options cheaply"): number the options once in the question and let each
+  leaf say only "option k" (`personal_jev/options.py` pointers=True, `data/ptr/`, serve `--option-pointers`), instead
+  of repeating the option's description at its leaf.
+- Run: `tree_4b_combo_ptr`, the recipe of `tree_4b_combo_r2` (B) with only the leaf text changed. 18.7K questions, 232
+  steps, g5.xlarge.
+- Accuracy vs B (paired):
+  - eval2: 92.0 vs 92.9 (41 / 58, p = 0.11); multiclass 94.3 vs 95.8, multilabel 80.9 vs 84.3, binary 94.9 vs 94.4.
+  - Dev benchmark: 82.7 vs 83.5 (88 / 116, p = 0.06).
+  - vLLM path: 91.9 / 82.7.
+  - The loss is where the pointer applies: the readout position no longer holds the option's text.
+- Latency, `scripts/bench_options.py`: vLLM, same A10G, in-process, cold prefix, p50, `reports/tree_4b_combo_ptr/bench_options_*.json`.
+  - Pointers are 1.00–1.38x faster: 1 × 3 options at 512 tokens 136 → 135 ms; 16 × 8 at 512 1,146 → 833 ms; 16 × 64
+    at 2,048 11.8 → 10.7 s.
+  - Why so little: vLLM still receives one full prompt per option (text + question + option list + leaf). Prefix caching
+    saves the compute, but 16 × 64 options means 1,024 prompts and 2–4M submitted tokens to hash and schedule per
+    request, whatever the leaf length.
+  - A real many-options speed-up needs one sequence per question with a readout at every option (e.g. vLLM per-token
+    pooling), which means a new readout and training.
+- Cost: g5.xlarge 15:17–18:23 ≈ $3.10 (terminated; SG and key pair deleted). The Jev sweep was skipped: it would not
+  change the verdict.
+
+### 2026-09-24 16:18 PDT: Qwen3.5-4B scores 93.7 on eval2, our best; Eikos-4B zero-shot 92.8 (session "SelfJev state of play")
+
+- **Run** `qwen35_4b_r2x64` (`scripts/run_qwen35.py`, pipeline `scripts/run_qwen35_gpu.sh`, launcher `scripts/aws_qwen35.sh`):
+  - Qwen3.5-4B (rev `851bf6e8`), LoRA r64 / alpha 128 on q/k/v/o + in_proj_qkv/z/b/a + out_proj (57.5M trainable).
+  - Data: the `tree_4b_instruct_r2x64` mix (hf + synthetic + hardcases_nb, r2_* uncapped), **training texts ≤ 2,048 tokens**
+    (17,435 questions kept, 1,484 dropped). One epoch, 769 steps, grad accumulation 4, lr 2e-4, 3.8 h on one A10G.
+  - Training scores each candidate as its own full sequence (14.3M pair tokens): the Qwen3.5 cache writes its recurrent
+    state in place, so the tree's shared-root backward pass is not available. Inference shares the text by forking the native
+    cache; check vs full sequences: max |Δscore| 0.10 (bf16).
+  - Validation (≤ 2K-token items, not comparable with the tree runs' mix): 74.3 → 81.4 (150) → 86.0 (300) → 88.5 (769, best).
+- **eval2** (`reports/eval2/summary.md`; reports `reports/qwen35_4b_r2x64/eval2`, `reports/eikos_4b/eval2`, `reports/qwen35_r1/eval2`):
+
+  | model | eval2 | binary | multiclass | multilabel EM | old test |
+  |---|---|---|---|---|---|
+  | Jev | 97.2 | 97.8 | 98.1 | 94.2 | 82.7 |
+  | **qwen35_4b_r2x64** | **93.7** | 95.6 | 95.1 | **86.6** | **83.4** |
+  | tree_4b_instruct_r3 (Qwen3 Instruct, round-3 data, 51.9K q) | 93.3 | 95.1 | 96.1 | 84.3 | 82.8 |
+  | Eikos-4B, zero-shot (our mapping, as for Jev) | 92.8 | 94.9 | 95.8 | 82.5 | — |
+  | tree_4b_instruct_r2x64 (same data, Qwen3 Instruct) | 92.7 | 94.6 | 95.4 | 83.5 | 82.7 |
+  | Qwen3.5-2B challenger, round-1 data | 84.3 | 87.5 | 88.7 | 68.8 | 79.9 |
+
+  - Paired (only-row / only-other): vs r2x64 73 / 53, p = 0.09; vs r3 65 / 57, p = 0.53; vs Eikos 75 / 56, p = 0.12;
+    vs Jev 21 / 91, p = 1e-11 (Jev still +3.5). Eikos vs Jev 20 / 109.
+  - Long texts, although it never trained on > 2K tokens: > 2,048 tokens 97.6 (r2x64 95.7, Jev 98.9); > 4,096 97.0
+    (r2x64 94.6, Jev 98.8). Sarcasm 92.6 (r2x64 86.6), multi-positive 88.2 (86.3); numeric 80.4 and temporal 82.8 unchanged.
+  - Old test 83.4: the first run above Jev's 82.7 there. Binary ECE on eval2 0.024 (Jev 0.061).
+  - Either Qwen3.5-4B or Eikos right: 96.5% of eval2 (their errors differ).
+- **Speed** (`reports/qwen35_4b_r2x64/bench.json`, same A10G, transformers, forked cache, branch batches of 16; p50 ms) vs the
+  Qwen3 tree R1 transformers path (`reports/latency_optimization_2026-09-24/results.md`): 512 × 1 q 239 vs 160; 2K × 16 q
+  1,300 vs 967; 8K × 1 q 1,988 vs 1,777; 8K × 16 q 3,332 vs 2,506. **Slower**, 1.1–1.5×: at ≤ 8K tokens linear attention does
+  not pay for the per-batch cache copies. vLLM ≥ 0.30 with its hybrid prefix cache (as Eikos ships) is untested here.
+- **Verdict:** best eval2 and old-test scores, but not a significant gain over the Qwen3 Instruct tree (p = 0.09 on the same
+  data, 0.53 vs round 3), with 3× less training data than round 3 and texts ≤ 2K in training. Worth: round-3 data on this base,
+  a vLLM serving path, and (cheap) a Qwen3.5-4B + Eikos ensemble check. Cost ≈ $4.75.
+
+### 2026-09-24 15:35 PDT: round 3 on the Instruct base: 93.3 on eval2, only +0.6 over round 2 (not significant)
+
+- Owner: Jev classifier with Qwen reranker.
+- Run: `tree_4b_instruct_r3`.
+  - Recipe: `configs/tree_4b_instruct_r3.json` = Qwen3-4B-Instruct-2507, tree, LoRA r64, max_length 8192.
+  - Data: hf + synthetic + `hardcases_nb` + `hardcases_r3` (sha `d20ecb98…`), r2_*/r3_* uncapped. 51,853 questions
+    after 1,934 overlength drops; 910 steps.
+  - Hardware: g6e.2xlarge (L40S) us-east-2, MBT 16384 × GA 2 (same 32K-token effective batch as the control), ≈ 14 s/step,
+    3.9 h. Cost ≈ $9.25, terminated.
+  - Best checkpoint: step 900 (val loss 0.1447, val acc 91.7%, still improving at the end); reload exact.
+  - Reports: `reports/tree_4b_instruct_r3/{validation,test,eval2}`; adapter `runs/tree_4b_instruct_r3/adapter`.
+- Scores:
+
+  | model | eval2 | binary | multiclass | multilabel EM | old test |
+  |---|---|---|---|---|---|
+  | tree_4b_instruct_r3 | **93.3** | 95.1 | 96.1 | 84.3 | 82.8 |
+  | control `tree_4b_instruct_r2x64` | 92.7 | 94.6 | 95.4 | 83.5 | 82.7 |
+
+- Paired tests on eval2 (only-row / only-other):
+
+  | vs | only-row / only-other | p |
+  |---|---|---|
+  | control | 62 / 50 | 0.3 |
+  | r2b | 96 / 41 | 3e-6 |
+  | tree_4b_ova | 86 / 51 | 0.004 |
+  | Jev | 21 / 99 | 3e-13 |
+
+  - Old test vs control: 92 / 87 (p = 0.77). vs Jev: 216 / 212, a tie.
+- Verdict:
+  - This is the highest eval2 score so far, but 35K more verified hard cases buy only a non-significant +0.6 on top of
+    round 2's ~7K. More of this kind of data has hit diminishing returns.
+  - Jev still leads by 3.9 points; multilabel EM (84.3 vs 94.2) is the biggest gap.
+  - Next levers: the options-in-question format (fork's runs A/B, in flight), teacher ensembles / distillation, and
+    multilabel-specific work.
+  - Updated `docs/findings.md` (1, 1b), `docs/leaderboard.md`, the ledger and the eval2 summary.
+
+
+### 2026-09-24 15:05 PDT: combined recipe B, the best accuracy so far on both test sets; latency on vLLM (fork session)
+
+- Run: `tree_4b_combo_r2` (`scripts/run_tree_combined.sh`, R3=0).
+  - Recipe: tree + Qwen3-4B-Instruct-2507 + LoRA r64, every option listed in the question (`data/ova/`), hf + synthetic
+    + hardcases_nb with the r2_* families uncapped.
+  - Batching: MBT 8192 × GA 4, 18,676 questions, 240 steps.
+  - Otherwise identical to `tree_4b_instruct_r2x64`.
+- Accuracy vs that control (paired):
+  - eval2: **92.9** vs 92.7 (45 / 42, p = 0.83).
+  - Old test: **83.5** vs 82.7 (121 / 94, p = 0.08); Jev scores 82.7 (p = 0.22).
+  - By type, old test: multilabel 59.0 vs 52.9, multiclass 84.4 vs 83.7, binary 90.0 vs 90.9.
+  - Validation 88.1 vs 85.8.
+  - So on the Instruct base the option lists help mainly the old test's multilabel questions and tie on eval2.
+- Serving path: merged LoRA (bf16) + vLLM, via `scripts/eval_vllm.py` → `reports/tree_4b_combo_r2/{eval2,test}_vllm`.
+  - Scores: eval2 **93.02**, old test **83.52**; merging and vLLM cost no accuracy.
+  - Throughput: all 1,991 eval2 questions in 144 s, 3,471 old-test questions in 104 s.
+  - `pjev serve` / `vllm_tree serve` have a new `--options-in-question` flag (`src/personal_jev/options.py`, shared with
+    `scripts/options_in_question.py`; test in tests/test_server.py).
+- Latency, end to end from the Mac (p50, 10 rounds, `reports/latency/requests_combo.jsonl`; box RTT 67 ms, OpenRouter 7 ms):
+
+  | text | Jev (1 / 16 q) | combined, 1 q | combined, 16 q |
+  |---|---|---|---|
+  | 8 tokens | 133 / 124 ms | 125 ms | 471 ms |
+  | 512 | 124 / 145 ms | 204 ms | 566 ms |
+  | 2,048 | 138 / 158 ms | 429 ms | 882 ms |
+  | 4,096 | 141 / 147 ms | 770 ms | 1,336 ms |
+
+  - Against the round-1 reranker on vLLM: the option lists cost about +120 ms at 16 questions (each question carries its
+    list) and nothing at 1 question. The A10G is still the limit.
+- Cost: g5.xlarge 11:58–15:02 ≈ $3.10 (terminated; SG and key pair deleted) and Jev $0.02.
 
 ### 2026-09-24 11:50 PDT: docs site and cleanup (cloud session, branch `claude/modest-shannon-epq8g4`; $0, nothing run)
 

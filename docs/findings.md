@@ -18,17 +18,44 @@ evidence file.
 
 ## The headline
 
-!!! success "1. Best model: 92.7% on eval2, 4.5 points behind Jev"
-    **Qwen3-4B-Instruct-2507 + LoRA r=64, shared-prefix tree, round-2b data with every hard case kept**
-    (`tree_4b_instruct_r2x64`) scores
-    **92.7%** on eval2 and **82.7%** on the dev benchmark.
+!!! success "1. Best model: 95.6% on eval2, 1.6 points behind Jev"
+    **Qwen3.5-4B + LoRA r=64, trained with the shared-prefix tree, every option listed in the question, round-2b +
+    round-3 verified data** (`qwen35_4b_tree`, 51.8K training questions, texts up to 8K tokens) scores **95.6%** on
+    eval2 and **84.4%** on the dev benchmark.
 
-    - Jev scores 97.2% on eval2 (25 / 115, p = 5e-15) and 82.7% on the dev benchmark, a tie (213 / 214).
-    - Binary 94.6 vs 97.8, multiclass 95.4 vs 98.1, multilabel exact match 83.5 vs 94.2.
-    - It is the only one of our runs above 92%. Next: listing all options in the question (91.6) and rank 64 + MLP
-      adapters (91.3).
+    - Jev scores 97.2% on eval2 (31 / 64, p = 0.0009) and 82.7% on the dev benchmark (238 / 178, p = 0.004: ours is
+      higher).
+    - Binary 96.9 vs 97.8, multiclass 96.8 vs 98.1, multilabel exact match 90.1 vs 94.2; the simple tier 98.6 vs 98.5.
+    - Above both previous best models, which tied at 94.5:
+      - `qwen35_4b_combo`, the same base and data trained on full sequences capped at 2K tokens (18.5% of the data
+        dropped): 52 / 31, p = 0.028. The tree in training is worth +1.1, in 38% less training time.
+      - `tree_4b_combo`, Qwen3-4B-Instruct with the same levers: 63 / 41, p = 0.039.
+    - The levers that got here stack: round-2b and round-3 verified data, the options listed in the question, LoRA
+      r=64, the Qwen3.5 base, and the tree in training (which lets that base train on long texts).
+    - Qwen3.5 is mostly Gated DeltaNet (a recurrence), which a tree mask cannot isolate: its tree runs those layers
+      level by level from copied states, with gradients through them ([tree scorer](tree_model.md#qwen35-hybrid-deltanet)).
 
     Evidence: [eval2 summary](../reports/eval2/summary.md), [leaderboard](leaderboard.md).
+
+!!! warning "1b. More verified hard cases from the same kind of writers has hit diminishing returns"
+    On the Instruct base with r=64, each data round adds less on eval2:
+
+    | data | eval2 | gain | paired test |
+    |---|---|---|---|
+    | round-1 data (`tree_4b_instruct`, r16) | 88.1 | | |
+    | + round-2b hard cases, ~7K (`tree_4b_instruct_r2x64`) | 92.7 | +4.6 | 123 / 32, p = 9e-14 |
+    | + round-3 hard cases, ~35K (`tree_4b_instruct_r3`) | 93.3 | +0.6 | 62 / 50, p = 0.3 |
+
+    - The round-1 row also used r16, not r64, so its gain mixes data and capacity.
+    - Round 3 had more multi-positive multilabel questions and far fewer "none" answers than round 2, but it came from
+      the same kind of LLM writers (Luna, Gemini Flash, Grok) and the same Astra judge.
+    - What moved eval2 after round 3 was the question format, not more data. Listing the options in the question adds
+      +1.2 on top of round 3 (`tree_4b_combo`, 94.5; 60 / 37, p = 0.025; finding 1).
+      - On round-2b data alone the same change ties (`tree_4b_combo_r2`, 92.9 vs 92.7, p = 0.83).
+      - "Option pointers" (`tree_4b_combo_ptr`) is a dead end: −0.9 and only ~1.1× faster.
+    - The remaining 2.7 points to Jev (97.2) need something other than more of this data:
+      - multilabel exact match (85.9 vs 94.2) is still the biggest gap;
+      - teacher ensembles scored 94.5 at 27B cost, and distilling them at weight 0.5 gave nothing (`tree_4b_ova_kd`).
 
 !!! success "2. A frozen open 4B model plus a small adapter gets most of the way"
     The core idea behind Jev is not a moat. A LoRA adapter on 0.3% of the weights, trained on about 10K examples for
@@ -236,8 +263,13 @@ evidence file.
       (dev benchmark 81.68 → 81.50). bf16 inference itself costs no quality (0.6B: 73.7 vs 73.5).
     - A compact tree format (38.5% fewer branch tokens) failed its 15% speed gate (7.4% on vLLM) and added CLINC
       over-rejection. It stays experimental.
+    - Qwen3.5 on vLLM keeps its accuracy (eval2 95.58, as in transformers) and answers one question in 87–131 ms
+      server side up to 2K tokens (L40S; Jev 102–106 ms). With 16 questions it is slow (454–1,138 ms): vLLM caches its
+      recurrent state only every 528 tokens, so each candidate recomputes the end of the text. The Qwen3 tree on vLLM
+      takes 163–424 ms there.
 
-    Evidence: [latency optimization](../reports/latency_optimization_2026-09-24/conclusions.md).
+    Evidence: [latency optimization](../reports/latency_optimization_2026-09-24/conclusions.md),
+    [JOURNAL 2026-09-25 18:05](JOURNAL.md).
 
 !!! info "21. A busy GPU is cheaper than Jev; an idle one is not"
     - Fully busy, one A10G with vLLM costs $0.005–0.27 per 1,000 requests; Jev charges $0.016–0.27 ($0.042 per
@@ -245,29 +277,31 @@ evidence file.
       4,096 tokens × 16 questions.
     - A g5.xlarge left on all month (≈ $734) beats Jev only above about 7 requests/s sustained, for 512-token
       requests.
+    - On an L40S ($2.24/h) the Qwen3 tree on vLLM is below Jev in every cell ($0.005 vs $0.016 per 1,000 one-question
+      requests at 8 tokens; $0.243 vs $0.265 at 4,096 tokens × 16 questions); Qwen3.5 costs 2–6× Jev with 16 questions.
 
 ## Where the gap to Jev is
 
-!!! abstract "22. Multilabel, numbers, dates, sarcasm and injections"
-    Best model (`tree_4b_instruct_r2x64`) vs Jev on eval2, every slice with n ≥ 100 and a gap of 5 points or more:
+!!! abstract "22. Multilabel, negations, numbers and dates"
+    Best model (`qwen35_4b_tree`) vs Jev on eval2, every slice with n ≥ 100 and a gap of 3 points or more:
 
     | slice | n | ours | Jev | gap |
     |---|---|---|---|---|
-    | multilabel exact match | 382 | 83.5 | 94.2 | 10.7 |
-    | sarcasm | 149 | 86.6 | 97.3 | 10.7 |
-    | numeric reasoning | 224 | 82.1 | 92.0 | 9.9 |
-    | multi-positive | 322 | 86.3 | 96.0 | 9.7 |
-    | injection | 151 | 88.7 | 97.4 | 8.7 |
-    | double negation | 126 | 90.5 | 99.2 | 8.7 |
-    | paraphrase | 218 | 88.1 | 95.4 | 7.3 |
-    | temporal reasoning | 203 | 82.8 | 89.2 | 6.4 |
-    | long state | 191 | 92.7 | 99.0 | 6.3 |
-    | hard tier | 673 | 90.5 | 96.7 | 6.2 |
-    | `none` of the above offered | 118 | 89.8 | 95.8 | 6.0 |
-    | distractor | 474 | 91.1 | 97.0 | 5.9 |
-    | very hard tier | 654 | 90.8 | 96.5 | 5.7 |
+    | double negation | 126 | 94.4 | 99.2 | 4.8 |
+    | multi-positive | 322 | 91.3 | 96.0 | 4.7 |
+    | distractor | 474 | 92.8 | 97.0 | 4.2 |
+    | multilabel exact match | 382 | 90.1 | 94.2 | 4.1 |
+    | hypothetical | 128 | 94.5 | 98.4 | 3.9 |
+    | numeric reasoning | 224 | 88.4 | 92.0 | 3.6 |
+    | temporal reasoning | 203 | 85.7 | 89.2 | 3.5 |
+    | paraphrase | 218 | 92.2 | 95.4 | 3.2 |
+    | long state | 191 | 95.8 | 99.0 | 3.2 |
+    | very hard tier | 654 | 93.4 | 96.5 | 3.1 |
 
-    Text length is not our weakness: 96.1% at 1K–4K tokens and 94.6% above 4K. Numbers and dates are also Jev's
+    Every gap is now under 5 points (with `tree_4b_instruct_r2x64` they reached 10.7). On the simple tier we are level
+    (98.6 vs 98.5).
+
+    Text length is not our weakness: 96.6% at 1K–4K tokens and 97.0% above 4K (Jev 98.0 and 98.8). Numbers and dates are also Jev's
     weakest slices (92.0, 89.2), with multilabel (94.2).
 
 ## Process lessons

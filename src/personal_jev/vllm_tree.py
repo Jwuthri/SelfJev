@@ -105,10 +105,13 @@ if __name__ == "__main__":
     p.add_argument("--model-dir", required=True)
     p.add_argument("--model-id", default=RERANKER_4B[0], help="base model id (sets the tree format's chat suffix)")
     p.add_argument("--port", type=int, default=8002)
+    p.add_argument("--gpu-memory-utilization", type=float, default=0.85)
     p.add_argument("--options-in-question", action="store_true", help="adapters trained on data/ova/")
+    p.add_argument("--option-pointers", action="store_true", help="adapters trained on data/ptr/")
     a = ap.parse_args()
     if a.cmd == "merge":
         merge(a.adapter, a.out, a.model_id, a.revision)
     else:
         from .server import serve
-        serve(VllmTreeScorer(a.model_dir, model_id=a.model_id), port=a.port, options_in_question=a.options_in_question)
+        serve(VllmTreeScorer(a.model_dir, model_id=a.model_id, gpu_memory_utilization=a.gpu_memory_utilization), port=a.port, options_in_question=a.options_in_question,
+              option_pointers=a.option_pointers)

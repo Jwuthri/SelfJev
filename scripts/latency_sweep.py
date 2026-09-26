@@ -137,15 +137,24 @@ def throughput(a):
     from personal_jev.classify import classify_many
     from personal_jev.server import compat_to_request
     from personal_jev.tree import RERANKER_4B, TreeScorer
-    if a.vllm:
+    if a.qwen35_tree:
+        from personal_jev.qwen35_tree import TreeServer
+        sc = TreeServer(a.qwen35_tree)
+    elif a.qwen35:
+        from personal_jev.vllm_qwen35 import VllmQwen35Scorer
+        sc = VllmQwen35Scorer(a.qwen35)
+    elif a.vllm:
         from personal_jev.vllm_tree import VllmTreeScorer
-        sc = VllmTreeScorer(a.vllm)
+        sc = VllmTreeScorer(a.vllm, model_id=a.model_id)
     else:
         sc = TreeScorer(*RERANKER_4B, adapter=a.adapter, dtype="bfloat16", max_batch_tokens=a.max_batch_tokens, merge=a.merge)
     rng, rows = random.Random(a.seed), []
     for n_tokens in LENGTHS:
         for n_q in SHAPES:
             reqs = [compat_to_request(body(sc.tokenizer, n_tokens, n_q, rng.randrange(10 ** 6)))[0] for _ in range(a.batch)]
+            if a.options_in_question:  # as the server does for adapters trained on data/ova/
+                from personal_jev.options import with_options
+                reqs = [r | {"questions": [with_options(q, str(q["id"])) for q in r["questions"]]} for r in reqs]
             classify_many(sc, reqs[:8])  # warm-up
             torch.cuda.synchronize()
             t = time.perf_counter()
@@ -155,10 +164,12 @@ def throughput(a):
             rows.append({"text_tokens": n_tokens, "questions": n_q, "requests": a.batch, "seconds": s, "requests_per_s": a.batch / s,
                          "input_tokens": stats["input_tokens"], "padded_tokens": stats["padded_tokens"]})
             print(json.dumps(rows[-1]), flush=True)
-    out = {"meta": sc.meta | {"gpu": torch.cuda.get_device_name(), "max_batch_tokens": a.max_batch_tokens, "torch": torch.__version__,
+    out = {"meta": sc.meta | {"gpu": torch.cuda.get_device_name(), "gpu_price_per_h": a.gpu_price, "max_batch_tokens": a.max_batch_tokens,
+                             "options_in_question": a.options_in_question, "torch": torch.__version__,
                              "created": time.strftime("%Y-%m-%dT%H:%M:%S%z")}, "rows": rows}
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / f"throughput{'_vllm' if a.vllm else '_merged' if a.merge else ''}.json").write_text(json.dumps(out, indent=1))
+    name = a.name or f"throughput{'_vllm' if a.vllm else '_merged' if a.merge else ''}"
+    (OUT / f"{name}.json").write_text(json.dumps(out, indent=1))
 
 
 def report(a):
@@ -195,11 +206,11 @@ def report(a):
     for f in sorted(OUT.glob("throughput*.json")):
         t = json.loads(f.read_text())
         lines += [f"## Batched throughput, ours ({f.stem}): {t['meta']['gpu']}, {t['meta']['architecture']}{', merged LoRA' if t['meta'].get('merged') else ''}", "",
-                  f"Cost per 1,000 requests at ${a.gpu_price}/h, GPU fully busy; Jev = its reported cost for the same requests (median).", "",
+                  f"Cost per 1,000 requests at ${t['meta'].get('gpu_price_per_h', a.gpu_price)}/h, GPU fully busy; Jev = its reported cost for the same requests (median).", "",
                   "| text tokens | questions | requests/s | ours $ / 1K requests | Jev $ / 1K requests |", "|---|---|---|---|---|"]
         for r in t["rows"]:
             jev = cell(r["text_tokens"], r["questions"], "jev", "cost")
-            lines.append(f"| {r['text_tokens']:,} | {r['questions']} | {r['requests_per_s']:.1f} | {1e3 * a.gpu_price / 3600 / r['requests_per_s']:.4f} | "
+            lines.append(f"| {r['text_tokens']:,} | {r['questions']} | {r['requests_per_s']:.1f} | {1e3 * t['meta'].get('gpu_price_per_h', a.gpu_price) / 3600 / r['requests_per_s']:.4f} | "
                          f"{'—' if jev is None else f'{1e3 * jev:.4f}'} |")
         lines.append("")
     (OUT / "summary.md").write_text("\n".join(lines))
@@ -220,6 +231,12 @@ if __name__ == "__main__":
     p.add_argument("--adapter", default="runs/tree_4b/adapter")
     p.add_argument("--merge", action="store_true")
     p.add_argument("--vllm", metavar="MERGED_DIR", help="vLLM backend on a merged checkpoint (vllm_tree.py) instead of transformers")
+    p.add_argument("--model-id", default="Qwen/Qwen3-Reranker-4B", help="--vllm checkpoint's base (sets the tree format's chat suffix)")
+    p.add_argument("--qwen35", metavar="MERGED_DIR", help="a merged Qwen3.5 shared-document model on vLLM (vllm_qwen35.py)")
+    p.add_argument("--qwen35-tree", metavar="ADAPTER", help="Qwen3.5 served with the training tree (qwen35_tree.TreeServer)")
+    p.add_argument("--options-in-question", action="store_true", help="adapters trained on data/ova/")
+    p.add_argument("--gpu-price", type=float, default=1.006, help="$/h of this GPU box, recorded for the cost table")
+    p.add_argument("--name", help="output reports/latency/<name>.json")
     p.add_argument("--batch", type=int, default=64, help="requests per timed batch")
     p.add_argument("--max-batch-tokens", type=int, default=32768)
     p.add_argument("--seed", type=int, default=1)

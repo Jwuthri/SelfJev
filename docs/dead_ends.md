@@ -19,6 +19,7 @@ table in the [experiment ledger](experiments.md#dead-ends-do-not-redo).
 | Distilling the 27B teacher at weight 0.5 | 91.0 vs 91.6 (p = 0.21) | eval2 |
 | Astra's verbalized probabilities as soft labels | 98.8% of questions are all ≤ 0.05 or ≥ 0.95: the same as hard labels | data check |
 | Round-2 data with `none` over-represented | CLINC 94.7 → 83.3: the model rejects valid intents | dev benchmark |
+| Qwen3.5 trained on full sequences (one per candidate), texts capped at 2K | 94.5: 18.5% of the data dropped; the tree, same data up to 8K, scores 95.6 (p = 0.028) | eval2 |
 
 ## Architectures
 
@@ -30,6 +31,7 @@ table in the [experiment ledger](experiments.md#dead-ends-do-not-redo).
 | ... + MaxSim similarity term + joint LoRA (best variant) | 58.2%, still at chance on yes/no questions |
 | jina-reranker-v3.5 (0.6B) with the best data recipe | eval2 73.3 vs 90.6 for the tree 4B |
 | T5Gemma 2 1B–1B with a shared encoder | eval2 73.0 (round 1) and 76.8 (round 2b, decoder-only adapter) |
+| Option pointers: options numbered once in the question, each leaf only "option k" | eval2 92.0 vs 92.9 with the full descriptions, and only 1.0–1.4× faster on vLLM (one prompt per option either way) |
 
 Why the custom model failed is written up in [custom model](custom_model.md#why-the-spec-version-scored-39): it
 removed the pretrained yes/no readout and the deep joint reading of text and question, and its heads memorized the
@@ -44,6 +46,8 @@ training label sets.
 | Explicit attention mask in the custom encoder | identical outputs, 1.7–2.2× slower on MPS, loses the fast kernel on CUDA |
 | Compact tree format (shorter branches) | 7.4% faster on vLLM (gate: 15%), CLINC 94.7 → 91.7 |
 | Direct branch-mask construction | exact scores, but only 967 → 961 ms: attention and matmuls dominate |
+| Qwen3.5 on vLLM for many questions per text | exact, but 454–1,138 ms for 16 questions (Qwen3 tree: 163–424): vLLM reuses the recurrent state only every 528 tokens, so each candidate recomputes part of the text ([speed](speed.md#qwen35-on-vllm-2026-09-25-l40s)) |
+| vLLM `mamba_block_size` 64 or 16 for Qwen3.5 | no effect in vLLM 0.30: cache hits stay on the 528-token attention block |
 
 ## Operations
 

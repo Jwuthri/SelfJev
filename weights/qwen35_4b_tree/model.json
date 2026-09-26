@@ -1,0 +1,17 @@
+{
+  "name": "qwen35_4b_tree",
+  "base": "Qwen/Qwen3.5-4B",
+  "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+  "recipe": "shared-prefix tree training (personal_jev.qwen35_tree), LoRA r64 on attention + DeltaNet projections, round-2b + round-3 data, options listed in the question, texts <= 8K",
+  "prompt": "challenger-state-first-v1 (personal_jev.challengers.ChallengerScorer.entry)",
+  "options_in_question": true,
+  "eval2": 95.6,
+  "dev_benchmark": 84.4,
+  "serve": [
+    "python -m personal_jev.qwen35_tree serve --adapter weights/qwen35_4b_tree --options-in-question",
+    "python -m personal_jev.vllm_qwen35 merge --adapter weights/qwen35_4b_tree --out runs/qwen35_4b_tree/merged  # then vllm_qwen35 serve"
+  ],
+  "note": "best accuracy; on vLLM fast for 1 question, slow for many (docs/speed.md)",
+  "adapter_sha256": "a4ed230a118b6fb8b90c4b0f2e1347521553f19faa162ac422b3784920c148d4",
+  "source_run": "runs/qwen35_4b_tree"
+}

@@ -64,9 +64,11 @@ entry of 2026-09-24 10:42):
 - Speed vs the tree 4B on the same L40S, p50: 512 tokens × 1 question 125 vs 114 ms; 2K × 16 questions 319 vs 339 ms;
   8K × 1 question 394 vs 805 ms; 8K × 16 questions 765 vs 1,050 ms. Linear attention pays off only on long texts; at
   ≤ 2K the MLPs dominate.
-- Why it is not in the tree: Qwen3.5 makes 3 of every 4 layers recurrent, which cannot keep sibling branches isolated
-  in one packed pass; the forked cache does it in several.
-- Next step, claimed and awaiting approval: Qwen3.5-4B with the best recipe ([open questions](next.md)).
+- Why it was not in the tree at first: Qwen3.5 makes 3 of every 4 layers recurrent, which a tree mask cannot keep
+  isolated in one packed pass. The forked cache does it at inference, and training ran one full sequence per candidate.
+- What came next: Qwen3.5-4B with the best recipe scored 93.7 on eval2 (round-2b data), 94.5 with option lists and
+  round 3, and **95.6**, the best model, once it was trained with its own tree (DeltaNet layers level by level from
+  copied states: [shared-prefix tree](tree_model.md#qwen35-hybrid-deltanet)).
 
 ## jina-reranker-v3.5 (0.6B, listwise)
 

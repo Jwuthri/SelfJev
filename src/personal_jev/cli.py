@@ -1,4 +1,4 @@
-"""pjev: classify | eval | calibrate | compare | bench | serve | train | train-custom | train-tree"""
+"""pjev: classify | eval | calibrate | compare | bench | serve | train | train-custom | train-tree | finetune | rlcd"""
 import argparse
 import json
 import sys
@@ -87,6 +87,8 @@ def main(argv=None):
     p.add_argument("--port", type=int, default=8000)
     p.add_argument("--options-in-question", action="store_true", help="list every option in the question text "
                    "(required for adapters trained on data/ova/)")
+    p.add_argument("--option-pointers", action="store_true", help="numbered options in the question, "
+                   "'option k' leaves (adapters trained on data/ptr/)")
     p = sub.add_parser("train", help="stock backend: LoRA training from a JSON config")
     p.add_argument("config")
     p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
@@ -99,6 +101,30 @@ def main(argv=None):
     p = sub.add_parser("train-jina", help="jina-reranker-v3.5 listwise scorer: LoRA + projector + head scalars")
     p.add_argument("config")
     p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
+    def finetune_args(p, rlcd=False):  # personal_jev.finetune: the Qwen3.5 tree recipe on your JSONL data, one CUDA GPU
+        p.add_argument("--data", required=True, help="training JSONL (state, question, target per line)")
+        p.add_argument("--val", help="validation JSONL (default: 5%% of --data, at most 1,000 questions)")
+        p.add_argument("--out", required=True, help="run directory: adapter/, adapter_last/, train_meta.json")
+        p.add_argument("--init", required=rlcd, help="adapter to start from, e.g. weights/qwen35_4b_tree" + (" or a finetune run" if rlcd else ""))
+        p.add_argument("--base", default="qwen35_4b", choices=["qwen35_4b", "qwen35"], help="Qwen3.5-4B, or Qwen3.5-2B for quick runs")
+        p.add_argument("--no-options-in-question", action="store_true", help="do not list every option in the question text")
+        p.add_argument("--epochs", type=int, default=1)
+        p.add_argument("--lr", type=float, help="default 2e-4 (finetune), 5e-5 (rlcd)")
+        p.add_argument("--lora-r", type=int, default=64, help="LoRA rank when starting without --init")
+        p.add_argument("--max-length", type=int, default=8192, help="longer questions are dropped and counted, never truncated")
+        p.add_argument("--batch-tokens", type=int, default=8192, help="packed tree tokens per micro-batch")
+        p.add_argument("--grad-accum", type=int, default=4)
+        p.add_argument("--eval-every", type=int, default=150)
+        p.add_argument("--seed", type=int, default=13)
+        if rlcd:
+            p.add_argument("--reward", default="log=1,brier=1,spherical=1", help="weighted rewards: log, brier, spherical "
+                           "(proper scoring rules), accuracy (not proper)")
+            p.add_argument("--samples", type=int, default=8, help="sampled reports per question")
+            p.add_argument("--sigma", type=float, default=0.3, help="sd of the Gaussian around the logits")
+            p.add_argument("--beta", type=float, default=0.05, help="KL penalty to the --init model")
+
+    finetune_args(sub.add_parser("finetune", help="LoRA fine-tune the best recipe (Qwen3.5 + shared-prefix tree) on your data"))
+    finetune_args(sub.add_parser("rlcd", help="Reinforcement Learning for Calibrated Decisions, from a fine-tuned adapter"), rlcd=True)
     a = ap.parse_args(argv)
 
     if a.cmd == "classify":
@@ -130,7 +156,7 @@ def main(argv=None):
     elif a.cmd == "serve":
         from .server import serve
         scorer = _scorer(a)
-        serve(scorer, a.host, a.port, _calibration(a, scorer), a.prompt, a.options_in_question)
+        serve(scorer, a.host, a.port, _calibration(a, scorer), a.prompt, a.options_in_question, a.option_pointers)
     elif a.cmd == "train":
         from .train import train
         train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
@@ -143,6 +169,12 @@ def main(argv=None):
     elif a.cmd == "train-jina":
         from .train_jina import train
         train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
+    elif a.cmd in ("finetune", "rlcd"):
+        from .finetune import train
+        extra = {"reward_weights": {k: float(v) for k, v in (x.split("=") for x in a.reward.split(","))}, "samples": a.samples,
+                 "sigma": a.sigma, "beta": a.beta} if a.cmd == "rlcd" else {}
+        train(a.cmd, a.data, a.out, a.val, a.init, a.base, not a.no_options_in_question, a.epochs, a.lr, a.lora_r, a.max_length,
+              a.batch_tokens, a.grad_accum, a.eval_every, a.seed, **extra)
 
 
 if __name__ == "__main__":

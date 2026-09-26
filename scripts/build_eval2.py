@@ -47,6 +47,16 @@ def table(title, rows, cols):
 
 
 def main():
+    global RAW, REVIEW, OUT, TRAIN_FILES
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--raw", default=str(RAW))
+    ap.add_argument("--review", default=str(REVIEW))
+    ap.add_argument("--out", default=str(OUT), help="the LLM-evaluation test slice: data/eval_llm.jsonl (raw data/eval_llm/raw)")
+    ap.add_argument("--guard", nargs="+", default=TRAIN_FILES, help="files whose states must not overlap (8-gram containment >= 0.3)")
+    a = ap.parse_args()
+    RAW, REVIEW, OUT, TRAIN_FILES = ROOT / a.raw, ROOT / a.review, ROOT / a.out, a.guard
+    name, report_md = OUT.stem, REVIEW.parent / "REVIEW.md"
     judges = {f.stem.replace("answers_", ""): {r["id"]: r for r in read_jsonl(f)} for f in sorted(REVIEW.glob("answers_*.jsonl"))}
     if len(judges) < 2:
         sys.exit(f"need two judges in {REVIEW}, found {list(judges)}")
@@ -122,15 +132,15 @@ def main():
                     c[k]["jev_ok"] += norm(jev[e["id"]]["answer"]) == norm(e["target"])
         return [(k, [v["n"], pct(v["jev_ok"], v["jev_n"])]) for k, v in sorted(c.items(), key=lambda kv: str(kv[0]))]
     author = lambda e: e["provenance"].split(" (")[0].replace("synthetic:openrouter/", "")
-    lines = ["# eval2: frozen target-task test set", "",
-             f"`data/eval2.jsonl` sha256 `{digest}` — {len(kept)} questions / {len(kept_srcs)} states, every row split=test. "
+    lines = [f"# {name}: frozen test set", "",
+             f"`{OUT.relative_to(ROOT)}` sha256 `{digest}` — {len(kept)} questions / {len(kept_srcs)} states, every row split=test. "
              "**Frozen: never train, select prompts, fit thresholds or temperatures on it.** Authors: "
              + ", ".join(sorted({author(e) for e in kept})) + f". Judges (blind, both must agree with the author): {', '.join(judges)}. "
              "Jev is reported, never used to keep or drop. LLM-verified; human spot-check list in review/SPOTCHECK.md. "
-             "Rows are expanded (one question per line) so ids are the raw `<source_id>-q<i>` and join `review/answers_*.jsonl`; "
-             "a first export on 2026-09-24 used source-format lines whose ids were renumbered after drops (sha `f18549eb…`): "
+             "Rows are expanded (one question per line) so ids are the raw `<source_id>-q<i>` and join `review/answers_*.jsonl`" +
+             ("; a first export on 2026-09-24 used source-format lines whose ids were renumbered after drops (sha `f18549eb…`): "
              "`review/id_map_sourceformat_to_real.json` maps those ids to the real ones, and the 95.2% Jev figure computed on "
-             "that misalignment was wrong.", "",
+             "that misalignment was wrong." if name == "eval2" else "."), "",
              f"States dropped for 8-gram overlap ≥ 0.3 with training/eval files: {len(leaked)} {leaked[:10]}", "",
              "## Agreement (before the keep rule)", "", "| family | judged | " + " | ".join(f"author = {j} %" for j in judges) + " | kept (unanimous) | dropped | unanswered |",
              "|---|---|" + "---|" * len(judges) + "---|---|---|"]
@@ -149,11 +159,11 @@ def main():
     none_q = [e for e in kept if e["question"]["type"] == "multiclass" and any(c["id"] == "none" or c["description"].lower().startswith("none") for c in e["question"]["candidates"])]
     none_ok = sum(e["target"] == "none" or any(c["id"] == e["target"] and c["description"].lower().startswith("none") for c in e["question"]["candidates"]) for e in none_q)
     lines += [f"Multilabel positives: {dict(sorted(ml.items()))}. Multiclass questions offering a none candidate: {len(none_q)}, none correct in {none_ok} ({pct(none_ok, len(none_q))}%).", ""]
-    (ROOT / "data/eval2/REVIEW.md").write_text("\n".join(lines) + "\n")
+    report_md.write_text("\n".join(lines) + "\n")
     print("\n".join(lines[:4 + len(stats) + 8]))
 
     rng = random.Random(2)
-    rows = ["# eval2 spot-check: 50 random kept questions (human review)", "",
+    rows = [f"# {name} spot-check: 50 random kept questions (human review)", "",
             "Mark each as OK / wrong / ambiguous. The model never sees notes, tags or ids.", ""]
     for src, ex, answers in rng.sample(spot, min(50, len(spot))):
         q = ex["question"]
@@ -163,7 +173,7 @@ def main():
         rows += [f"- `{c['id']}`: {c['description']}" for c in q.get("candidates", [])]
         rows += ["", f"**Target** `{json.dumps(ex['target'])}` (judges: {', '.join(json.dumps(a) for a in answers)}). Author's note: {ex.get('notes', '')}", "", "Verdict: ☐ OK ☐ wrong ☐ ambiguous", ""]
     (REVIEW / "SPOTCHECK.md").write_text("\n".join(rows) + "\n")
-    print(f"wrote {OUT} ({len(kept)} questions, sha256 {digest[:12]}…), data/eval2/REVIEW.md, {REVIEW / 'SPOTCHECK.md'}")
+    print(f"wrote {OUT} ({len(kept)} questions, sha256 {digest[:12]}…), {report_md}, {REVIEW / 'SPOTCHECK.md'}")
 
 
 if __name__ == "__main__":
