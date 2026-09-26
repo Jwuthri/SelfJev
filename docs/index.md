@@ -14,7 +14,7 @@ open Qwen3 and Qwen3.5 models with small LoRA adapters, and measures every step 
 <div class="stat"><strong>97.2%</strong><span>Jev on eval2: we are 1.6 points behind</span></div>
 <div class="stat"><strong>84.4%</strong><span>on the 3,471-question dev benchmark, above Jev's 82.7%</span></div>
 <div class="stat"><strong>37×</strong><span>speed-up from reading the text once (shared-prefix tree)</span></div>
-<div class="stat"><strong>~$517</strong><span>logged spend: data, judges, GPUs, Jev calls</span></div>
+<div class="stat"><strong>~$619</strong><span>logged spend: data, judges, GPUs, Jev calls</span></div>
 </div>
 
 **The best model** is Qwen3.5-4B with a rank-64 LoRA adapter (`qwen35_4b_tree`, in [weights/](../weights/README.md)),
@@ -39,8 +39,8 @@ is its Qwen3 sibling `tree_4b_combo` (94.5%), which on vLLM is cheaper per reque
 | 09-25 | A **tree for Qwen3.5**: its recurrent layers run level by level from copied states | **95.6%**, trained on texts up to 8K in 4.1 h |
 
 After that: Qwen3.5 on vLLM keeps its accuracy but is slow with many questions (vLLM reuses its recurrent state only
-every 528 tokens), and a first version of RLCD, reinforcement learning toward calibrated probabilities, is ready to
-run ([fine-tune and RLCD](finetune.md)).
+every 528 tokens), and a first version of RLCD, reinforcement learning toward calibrated probabilities, gave no gain on hard labels
+([fine-tune and RLCD](finetune.md)).
 
 ## Where to go
 

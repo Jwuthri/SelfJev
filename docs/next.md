@@ -11,7 +11,7 @@ The best model, `qwen35_4b_tree`, scores 95.6 against Jev's 97.2. Multilabel is 
 
 | idea | why | cost |
 |---|---|---|
-| **RLCD from the best model** (`pjev rlcd --init weights/qwen35_4b_tree`), compared on eval2 for accuracy, Brier and ECE | Jev's errors are hedged, ours are confidently wrong far more often; a proper-scoring-rule reward is the direct fix ([fine-tune and RLCD](finetune.md)) | ≈ 4 h L40S ≈ $10 |
+| **RLCD with a reward that carries more than the label**: soft targets (the two judges' agreement, a teacher's probabilities) or a cost that punishes confident mistakes | the first RLCD test on hard labels gave nothing (accuracy 95.63 vs 95.58, ECE 0.010 vs 0.005); Jev's edge is hedged mistakes (7 of 57 at ≥ 0.9, ours 30 of 99) | ≈ $6 per test on an L40S |
 | **Multilabel with many positives**: more verified questions with 3+ correct labels and zero-positive ones | the largest remaining slice gap (90.1 vs 94.2 exact match) | generation + blind judge |
 | **Numbers, dates and grading** with verified answers | numeric 88.4 vs 92.0, temporal 85.7 vs 89.2 on eval2 | generation + blind judge |
 | **Question-level sharing in the Qwen3.5 tree for longer questions**, and texts beyond 8K in training | the tree made 8K training possible; 2,013 questions (3.7%) are still dropped | GPU time only |
@@ -39,7 +39,7 @@ and is cheaper per request; the Qwen3.5 model is slow with many questions on vLL
 | **Fresh final test set** (new authors, templates, documents) | both current test sets have informed decisions | ≈ $40 API |
 | **Second seeds** for the best runs | every result is one run; several wins are p ≈ 0.03–0.07 | ≈ $10 each on an L40S |
 | **Public JevBench items** for our best model; Laya, open-jev-deberta and kev-4b on eval2 | the only shared yardstick across open Jev-like models | $0 |
-| **Calibration policy**: temperatures separate from thresholds, thresholds for accuracy on a separate split | the current fitted file costs accuracy; RLCD may make it unnecessary | code |
+| **Calibration policy**: temperatures separate from thresholds, thresholds for accuracy on a separate split | the current fitted file costs accuracy; RLCD on hard labels did not change calibration | code |
 
 ## Done since the last version of this page
 

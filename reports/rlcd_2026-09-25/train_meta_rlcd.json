@@ -1,0 +1,85 @@
+{
+ "mode": "rlcd",
+ "base": "Qwen/Qwen3.5-4B",
+ "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+ "prompt": "challenger-state-first-v1",
+ "init": "weights/qwen35_4b_tree",
+ "options_in_question": false,
+ "data": {
+  "runs/rlcd_data/train.jsonl": "2f64684ad14978beb44d79f4501e13ecd1c1dc05c79c1e1253c359865fd0d892",
+  "runs/rlcd_data/val.jsonl": "be407bc491a455c72268e4bc31d12cc72f18290ca2b45d8739113d6782dc6d97"
+ },
+ "train_questions": 15369,
+ "val_questions": 1170,
+ "dropped_over_max_length": {
+  "train": {
+   "r3_very_hard": 268,
+   "r3_hard": 171,
+   "r3_simple": 104,
+   "r2_hard": 23,
+   "r2_very_hard": 46,
+   "r2_simple": 19
+  },
+  "val": {
+   "r3_hard": 7,
+   "r3_simple": 10,
+   "r2_hard": 3,
+   "r2_very_hard": 2,
+   "r3_very_hard": 8
+  }
+ },
+ "max_length": 8192,
+ "epochs": 1,
+ "lr": 5e-05,
+ "lora_r": 64,
+ "batch_tokens": 8192,
+ "grad_accum": 4,
+ "steps": 504,
+ "seed": 13,
+ "select_by": "validation brier",
+ "log": [
+  {
+   "step": 0,
+   "validation": {
+    "loss": 0.1277090255229694,
+    "accuracy": 0.9273504273504274,
+    "brier": 0.07247633042330442,
+    "ece": 0.004558266924439574,
+    "n": 1170,
+    "confidently_wrong": 15
+   },
+   "wall_s": 158.249902388
+  },
+  {
+   "step": 100,
+   "validation": {
+    "loss": 0.2307907788677927,
+    "accuracy": 0.9205128205128205,
+    "brier": 0.09379389904083857,
+    "ece": 0.023522985496109337,
+    "n": 1170,
+    "confidently_wrong": 40
+   },
+   "wall_s": 1922.831398372
+  }
+ ],
+ "rlcd": {
+  "reward": {
+   "log": 1.0,
+   "brier": 1.0,
+   "spherical": 1.0
+  },
+  "samples": 8,
+  "sigma": 0.3,
+  "beta": 0.05
+ },
+ "best": {
+  "step": 0,
+  "loss": 0.1277090255229694,
+  "accuracy": 0.9273504273504274,
+  "brier": 0.07247633042330442,
+  "ece": 0.004558266924439574,
+  "n": 1170,
+  "confidently_wrong": 15
+ }
+}

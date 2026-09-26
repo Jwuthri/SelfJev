@@ -8,7 +8,6 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| LLM-evaluation data (score/judge/verify/guardrail/jailbreak): training ≈ 11K q + test slice ≈ 1.1K q, generation + Astra batch judge + Sonnet 5 judge (test) | Synthetic data generation strategy | OpenRouter + OpenAI Batch from the Mac (API only); `data/hardcases_llm/`, `data/eval_llm/`, `reports/hardcases_llm/`, `reports/eval_llm/` | 2026-09-25 | approved ≈ $100, cap $125 |
 | T5Gemma matched round-2b: correcting decoder-only targeting bug; full encoder+decoder retraining, then same-L40S controls; H100 unavailable | Codex tree latency/compact | original master; Ohio L40S `i-087b024b35cff657b` ($3.00424/h) | 2026-09-24 UTC | cap 2026-09-24 14:38:54 UTC; collect/terminate earlier |
 | **owner unknown**: "selfjev-challengers-20260924" | not this session, fork or fork 2 (a Codex session?). Owner: add yourself here | AWS `i-03916322f7dd879be` g6e.4xlarge, `i-0683c5909b7440e8f` g5.4xlarge | 20:27–20:51 | ? |
 
@@ -17,6 +16,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 | item | cost | who |
 |---|---|---|
 | AWS: Qwen3.5 box `i-0c4633f37c41491d5` g5.xlarge us-east-1, 18:33–23:16 UTC (4.7 h), terminated; SG and key pair deleted (two earlier g6e launch attempts found no capacity, $0) | ≈ $4.75 | SelfJev state of play |
+| AWS: RLCD test box `i-05354315b38ac654d` g6e.2xlarge (L40S) us-east-2, 03:56–06:42 UTC 09-26 (2.8 h), terminated; SG and key pair deleted | ≈ $6.20 | fork |
 | AWS: `tree_4b_combo` box g5.xlarge us-east-1, 09-24 11:59–23:38, terminated; SG and key pair deleted | ≈ $11.70 | fork |
 | AWS: `tree_4b_combo_ptr` box g5.xlarge, 09-24 15:17–18:23, terminated; SG and key pair deleted | ≈ $3.10 | fork |
 | AWS: `tree_4b_combo_r2` box g5.xlarge, 09-24 11:58–15:02, terminated; SG and key pair deleted, + Jev $0.02 | ≈ $3.12 | fork |
@@ -28,6 +28,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 | AWS: 10 learning-curve runs on 8 g5.xlarge | ≈ $23 | fork 2 |
 | AWS: tree LoRA-capacity ablation, 2 g5.xlarge, 21:05–21:46 and 21:05–21:59 | ≈ $1.60 | fork 2 |
 | AWS: combined levers (r2b data + r=64 / + MLP), 2 g5.xlarge, 00:17–02:38 and 00:17–03:10 | ≈ $5.26 | fork 2 |
+| LLM-evaluation data: training writing $37.09 + Astra batch judge $37.95; `eval_llm` test writing $15.55 + Astra $3.39 + Sonnet 5 $2.37 + Jev $0.03 | $96.38 (approved ≈ $100) | Synthetic data generation strategy |
 | Round-2 hard-case generation (OpenRouter) + blind Astra judge (OpenAI batch) + Jev second opinion | $22.86 + $36.24 + $0.27 | Synthetic data generation strategy |
 | Latency sweep: Jev calls $0.04 + AWS g5.xlarge `selfjev-latency` 20:16–21:09 (52 min, terminated) ≈ $0.87 | ≈ $0.91 | fork |
 | Round-3 data: writing (Luna $10.17, Gemini $55.30, Grok $49.06) + Astra batch judge (28.5M in / 0.93M out tokens, ≈ $165.61 at list batch prices, an upper bound) | ≈ $280 (approved ≈ $250) | fork |
@@ -44,21 +45,61 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
 
 ## Log
 
-### 2026-09-25 PDT: LLM-evaluation data generator ready (score, judge, verify, guardrail, jailbreak), not run yet ($0)
+### 2026-09-25 23:45 PDT: first RLCD test: no gain in accuracy or calibration (fork session)
 
-- Owner: Synthetic data generation strategy. The user asked for about 2K synthetic questions per use case of Jev's pitch
-  ("score, judge, verify, guardrail, and detect jailbreaks of LLM prompts, reasoning traces, and/or outputs").
-- Why: only ≈ 6% of round-2/3 training texts and 3% of eval2 are LLM artifacts (keyword scan). The one test slice that
-  grades AI replies, `eval_agent_output` on the dev benchmark (26 q), has tree 61.5 vs Jev 92.3.
-- Built: `gen_hardcases.py --usecases train|test` with brief `data/hardcases/BRIEF_llm.md` (use cases, artifacts,
-  17 new trap tags, labeling additions, a mandatory rule that harmful payloads stay non-actionable); balanced over use
-  case × tier × length. `build_eval2.py` takes `--raw/--review/--out/--guard` for a frozen test slice. Runbook
-  `scripts/run_llm_data.sh train|test`.
-- This data drops BRIEF.md's held-out rule for graded AI replies: once trained on, `eval_agent_output` is in-domain.
-- Estimate: training ≈ 11K questions ≈ $36 writing + ≈ $46 Astra judge; test slice ≈ 1.1K ≈ $19. Awaiting the price OK.
-- Test-slice judges: Astra + Claude Sonnet 5. The user ruled out Gemini 3.1 Pro ("bad and too expensive"; it cost
-  $4.76 for eval2's 652 texts).
+- What: `pjev rlcd` from `weights/qwen35_4b_tree` (reward log + Brier + spherical, 8 sampled reports per question,
+  sd 0.3), validated on the fine-tune run's 1,200 validation questions. Logs and settings: `reports/rlcd_2026-09-25/`.
+- Take 1, on 16K of the model's own training questions (lr 5e-5, KL 0.05): worse on every validation measure by step
+  100 of 504 (accuracy 92.74 → 92.05, cross-entropy 0.128 → 0.231, ECE 0.005 → 0.024, confidently wrong 15 → 40).
+  Stopped. On questions it already fits, a proper score keeps pushing the given answer toward 100%, like a second
+  fine-tuning epoch.
+- Take 2, on 4,412 questions it never trained on (validation-split rows outside the 1,200-question sample), lr 1e-5,
+  KL 0.2, against a plain fine-tune control on the same questions and settings. Both select their last step.
 
+  | eval2 (1,991 q) | accuracy | Brier | ECE | wrong decisions | of which ≥ 0.9 sure | mean confidence when wrong |
+  |---|---|---|---|---|---|---|
+  | `qwen35_4b_tree` (start) | 95.58 | 0.0480 | 0.0051 | 99 | 30 | 0.755 |
+  | + RLCD | 95.63 (3 / 2, p = 1) | 0.0481 | 0.0096 | 96 | 34 | 0.776 |
+  | + fine-tune, same data (control) | 95.43 (4 / 7, p = 0.55) | 0.0480 | 0.0053 | 100 | 31 | 0.756 |
+  | Jev | 97.24 | 0.0335 | 0.0406 | 57 | 7 | 0.670 |
+
+  Dev benchmark: start 84.44 (ECE 0.0056, 83 confident mistakes), RLCD 84.36 (ECE 0.020, 118), control 84.50 (ECE
+  0.011, 91). Reports `reports/qwen35_4b_tree_rlcd_fresh_/`, `reports/qwen35_4b_tree_sft_fresh_/`.
+- Reading:
+  - Our model is already better calibrated than Jev by ECE (0.005 vs 0.041); what Jev has is fewer mistakes and
+    hedged ones (7 of 57 at ≥ 0.9 against our 30 of 99). With one hard label per question, a proper-score reward gives
+    the same signal as cross-entropy, only noisier, so it cannot teach "be less sure here"; RLCD came out slightly
+    more confident when wrong.
+  - The Gaussian sampling of reports also biases the optimum toward overconfidence as the noise grows (CPU check, 70%
+    base rate: sd 0.3 → 0.695, sd 0.6 → 0.717, sd 1.0 → 0.754); small at the sd used, so not the main cause.
+- Cost: ≈ $6.20 (L40S 2.8 h; the duplicate evals of identical checkpoints were skipped).
+- Verdict: RLCD v1 as implemented is not worth running on hard labels. For it to matter the reward has to carry
+  something labels don't: soft targets (the judges' agreement, a teacher's probabilities) or a cost that punishes
+  confident mistakes more than it rewards confident rights.
+
+### 2026-09-25 23:40 PDT: LLM-evaluation data built: 10.4K training questions + frozen 1.1K test set `eval_llm` ($96.38)
+
+- Owner: Synthetic data generation strategy. The user asked for ≈ 2K synthetic questions per use case of Jev's pitch
+  ("score, judge, verify, guardrail, and detect jailbreaks of LLM prompts, reasoning traces, and/or outputs"). Before
+  this, ≈ 6% of round-2/3 texts and 3% of eval2 were LLM artifacts; the dev benchmark's `eval_agent_output` slice
+  (26 q) had the tree at 61.5 vs Jev 92.3. Write-up: [llm_eval_data.md](llm_eval_data.md).
+- **Training: `data/hardcases_llm.jsonl`, 10,369 verified questions / 4,243 texts** (train 9,333 / validation 1,036,
+  sha256 `cf46e0cf…`); judge 2,040, guardrail 2,101, score 2,053, jailbreak 2,084, verify 2,091; ≈ 1K per length step
+  8 → 8K tokens. Writers Luna / Gemini 3.8 Flash / Grok 4.7 / DeepSeek V4 Flash via `gen_hardcases.py --usecases train`
+  (brief `data/hardcases/BRIEF_llm.md`). Blind Astra batch judge: 92.3% agree (Grok 97.7, Gemini 96.9, Luna 93.1,
+  DeepSeek 73.7). `data/hardcases_llm/review/`.
+- **Test: `data/eval_llm.jsonl`, 1,106 questions / 398 texts, frozen like eval2** (sha256 `6f163506…`): eval2's writers
+  (Opus 5.5, Kimi K3, GLM 5.3), a third of the calls on LLM applications absent from training, judges Astra 94.5% and
+  Claude Sonnet 5 95.1% (not Gemini 3.1 Pro: the user's call), kept only when both agree with the author.
+  **Jev scores 93.3%** (verify 88.6, guardrail 93.8, score 93.8, jailbreak 94.7, judge 95.3; multilabel EM 83.2).
+  `data/eval_llm/REVIEW.md`, `review/SPOTCHECK.md`.
+- Safety scan of the kept texts: two working exploit snippets (`lgf-0135` reverse shell, `lgf-0251` netcat injection)
+  removed from the raw file and scrubbed from `reports/hardcases_llm/gen_cache/lgf.jsonl`. 0 texts dropped by the
+  8-gram overlap guards.
+- Not done: no model trained on it or scored on `eval_llm` yet. Next: baseline the best models on `eval_llm`, then
+  retrain with `hardcases_llm.jsonl` (AWS, needs a price OK). Training on it ends `eval_agent_output`'s held-out status.
+- Cost $96.38 (approved ≈ $100): training writing $37.09 + Astra $37.95; test writing $15.55 + judges $5.76 + Jev $0.03.
+- Fixes: `build_eval2.py` takes `--raw/--review/--out/--guard` (its report title used a shadowed variable, fixed).
 ### 2026-09-25 19:30 PDT: weights in the repo, `pjev finetune` / `pjev rlcd`, a Qwen3.5 tree server, docs refresh (fork session; $0)
 
 - **Weights:** `weights/qwen35_4b_tree` (eval2 95.6) and `weights/tree_4b_combo` (94.5) copied from `runs/`, tracked
