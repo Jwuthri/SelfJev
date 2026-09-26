@@ -66,6 +66,7 @@ def main():
     ap.add_argument("--out", default=str(ROOT / "data/hardcases.jsonl"))
     ap.add_argument("--guard", nargs="+", default=["data/eval.jsonl"], help="test files whose states must not overlap "
                     "(8-gram containment >= 0.3); round 3 adds data/eval2.jsonl")
+    ap.add_argument("--strict", action="store_true", help="drop a whole text when any of its questions is flagged by the judge")
     a = ap.parse_args()
     RAW, REVIEW = Path(a.raw), Path(a.review)
     srcs = sources()
@@ -84,7 +85,9 @@ def main():
         if any(len(sh & e) / min(len(sh), len(e)) >= 0.3 for e in eval_sh if e):
             leak += 1
             continue
-        for ex in expand_source(s | {"split": split_for(s["source_id"], {"train": 0.9, "validation": 0.1}, "hard-r2")}):
+        exs = expand_source(s | {"split": split_for(s["source_id"], {"train": 0.9, "validation": 0.1}, "hard-r2")})
+        ks = []
+        for ex in exs:
             fam = ex["family"]
             if answers:
                 if ex["id"] not in answers:
@@ -93,8 +96,14 @@ def main():
                 if norm(answers[ex["id"]]["answer"]) != norm(ex["target"]):
                     stats[fam]["disagreed"] += 1
                     continue
-            stats[fam]["kept"] += 1
-            kept.append(ex)
+            ks.append(ex)
+        if a.strict and len(ks) < len(exs):  # a flagged sibling makes the text suspect
+            for ex in ks:
+                stats[ex["family"]]["strict"] += 1
+            continue
+        for ex in ks:
+            stats[ex["family"]]["kept"] += 1
+        kept.extend(ks)
     write_jsonl(Path(a.out), kept)
     total = Counter()
     lines = ["# Hard-case data review (round 2)", "",
@@ -106,10 +115,12 @@ def main():
              "| family | kept | disagreed (dropped) | unanswered (dropped) | agreement % |", "|---|---|---|---|---|"]
     for fam, c in sorted(stats.items()):
         total.update(c)
-        judged = c["kept"] + c["disagreed"]
-        lines.append(f"| {fam} | {c['kept']} | {c['disagreed']} | {c['unanswered']} | {100 * c['kept'] / judged:.1f} |" if judged else f"| {fam} | 0 | 0 | {c['unanswered']} | — |")
-    judged = total["kept"] + total["disagreed"]
-    lines.append(f"| **total** | {total['kept']} | {total['disagreed']} | {total['unanswered']} | {100 * total['kept'] / max(judged, 1):.1f} |")
+        judged = c["kept"] + c["disagreed"] + c["strict"]
+        lines.append(f"| {fam} | {c['kept']} | {c['disagreed']} | {c['unanswered']} | {100 * (c['kept'] + c['strict']) / judged:.1f} |" if judged else f"| {fam} | 0 | 0 | {c['unanswered']} | — |")
+    judged = total["kept"] + total["disagreed"] + total["strict"]
+    lines.append(f"| **total** | {total['kept']} | {total['disagreed']} | {total['unanswered']} | {100 * (total['kept'] + total['strict']) / max(judged, 1):.1f} |")
+    if a.strict:
+        lines += ["", f"--strict: {total['strict']} more questions dropped because another question of their text was flagged."]
     REVIEW.mkdir(parents=True, exist_ok=True)
     (REVIEW / "REVIEW.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines))

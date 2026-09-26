@@ -39,7 +39,8 @@ is its Qwen3 sibling `tree_4b_combo` (94.5%), which on vLLM is cheaper per reque
 | 09-25 | A **tree for Qwen3.5**: its recurrent layers run level by level from copied states | **95.6%**, trained on texts up to 8K in 4.1 h |
 
 After that: Qwen3.5 on vLLM keeps its accuracy but is slow with many questions (vLLM reuses its recurrent state only
-every 528 tokens), and a first version of RLCD, reinforcement learning toward calibrated probabilities, gave no gain on hard labels
+every 528 tokens), and a first version of RLCD (Jev's name for training on calibration scores; despite the name, no reinforcement
+learning is involved) gave no gain on hard labels
 ([fine-tune and RLCD](finetune.md)).
 
 ## Where to go
@@ -86,13 +87,13 @@ every 528 tokens), and a first version of RLCD, reinforcement learning toward ca
 
     ---
 
-    Train the best recipe on your own data, then reinforcement learning for calibrated decisions.
+    Train the best recipe on your own data, then calibration training (what Jev calls RLCD).
 
 -   :material-compass-outline: **[Open questions](next.md)**
 
     ---
 
-    What to do next to close the last 1.6 points and the speed gap on many-question requests.
+    What to do next to close the last 1.6 points; speed is a deployment question since the H100 sweep (2026-09-26).
 
 -   :material-notebook-outline: **[Lab notebook](experiments.md)**
 

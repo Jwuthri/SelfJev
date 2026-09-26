@@ -27,8 +27,9 @@ if __name__ == "__main__":  # vLLM may spawn its engine process, which re-import
     ap.add_argument("--split", nargs="+", default=["test"])
     ap.add_argument("--out", required=True)
     ap.add_argument("--max-length", type=int, default=16384)
+    ap.add_argument("--quantization", help="vLLM quantization for a bf16 checkpoint, e.g. fp8 (tree path only)")
     a = ap.parse_args()
-    sc = VllmQwen35Scorer(a.model_dir, max_length=a.max_length) if a.qwen35 else VllmTreeScorer(a.model_dir, model_id=a.model_id, max_length=a.max_length)
+    sc = VllmQwen35Scorer(a.model_dir, max_length=a.max_length) if a.qwen35 else VllmTreeScorer(a.model_dir, model_id=a.model_id, max_length=a.max_length, quantization=a.quantization)
     examples = load(a.data, set(a.split))
     t0, preds = time.perf_counter(), []
     for k in range(0, len(examples), 128):

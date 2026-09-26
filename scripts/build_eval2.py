@@ -53,10 +53,11 @@ def main():
     ap.add_argument("--raw", default=str(RAW))
     ap.add_argument("--review", default=str(REVIEW))
     ap.add_argument("--out", default=str(OUT), help="the LLM-evaluation test slice: data/eval_llm.jsonl (raw data/eval_llm/raw)")
+    ap.add_argument("--strict", action="store_true", help="drop a whole text when any of its questions is dropped")
     ap.add_argument("--guard", nargs="+", default=TRAIN_FILES, help="files whose states must not overlap (8-gram containment >= 0.3)")
     a = ap.parse_args()
     RAW, REVIEW, OUT, TRAIN_FILES = ROOT / a.raw, ROOT / a.review, ROOT / a.out, a.guard
-    name, report_md = OUT.stem, REVIEW.parent / "REVIEW.md"
+    set_name, report_md = OUT.stem, REVIEW.parent / "REVIEW.md"
     judges = {f.stem.replace("answers_", ""): {r["id"]: r for r in read_jsonl(f)} for f in sorted(REVIEW.glob("answers_*.jsonl"))}
     if len(judges) < 2:
         sys.exit(f"need two judges in {REVIEW}, found {list(judges)}")
@@ -100,11 +101,17 @@ def main():
             for name, ok in zip(judges, agree):
                 stats[key][f"agree_{name}"] += ok
             if all(agree):
-                stats[key]["kept"] += 1
-                keep_q.append(ex | {"split": "test"})
-                spot.append((src, ex, [a["answer"] for a in answers]))
+                keep_q.append((ex | {"split": "test"}, [a["answer"] for a in answers]))
             else:
                 stats[key]["dropped"] += 1
+        if a.strict and len(keep_q) < len(exs):  # a dropped sibling makes the text suspect
+            for ex, _ in keep_q:
+                stats[ex["family"]]["strict"] += 1
+            continue
+        for ex, ans in keep_q:
+            stats[ex["family"]]["kept"] += 1
+            spot.append((src, ex, ans))
+        keep_q = [ex for ex, _ in keep_q]
         if keep_q:
             kept_srcs.append(src)
             kept.extend(keep_q)
@@ -132,7 +139,7 @@ def main():
                     c[k]["jev_ok"] += norm(jev[e["id"]]["answer"]) == norm(e["target"])
         return [(k, [v["n"], pct(v["jev_ok"], v["jev_n"])]) for k, v in sorted(c.items(), key=lambda kv: str(kv[0]))]
     author = lambda e: e["provenance"].split(" (")[0].replace("synthetic:openrouter/", "")
-    lines = [f"# {name}: frozen test set", "",
+    lines = [f"# {set_name}: frozen test set", "",
              f"`{OUT.relative_to(ROOT)}` sha256 `{digest}` — {len(kept)} questions / {len(kept_srcs)} states, every row split=test. "
              "**Frozen: never train, select prompts, fit thresholds or temperatures on it.** Authors: "
              + ", ".join(sorted({author(e) for e in kept})) + f". Judges (blind, both must agree with the author): {', '.join(judges)}. "
@@ -140,7 +147,7 @@ def main():
              "Rows are expanded (one question per line) so ids are the raw `<source_id>-q<i>` and join `review/answers_*.jsonl`" +
              ("; a first export on 2026-09-24 used source-format lines whose ids were renumbered after drops (sha `f18549eb…`): "
              "`review/id_map_sourceformat_to_real.json` maps those ids to the real ones, and the 95.2% Jev figure computed on "
-             "that misalignment was wrong." if name == "eval2" else "."), "",
+             "that misalignment was wrong." if set_name == "eval2" else "."), "",
              f"States dropped for 8-gram overlap ≥ 0.3 with training/eval files: {len(leaked)} {leaked[:10]}", "",
              "## Agreement (before the keep rule)", "", "| family | judged | " + " | ".join(f"author = {j} %" for j in judges) + " | kept (unanimous) | dropped | unanswered |",
              "|---|---|" + "---|" * len(judges) + "---|---|---|"]
@@ -149,6 +156,8 @@ def main():
         tot.update(c)
         lines.append(f"| {fam} | {c['judged']} | " + " | ".join(pct(c[f'agree_{j}'], c['judged']) for j in judges) + f" | {c['kept']} | {c['dropped']} | {c['unanswered']} |")
     lines.append(f"| **all** | {tot['judged']} | " + " | ".join(pct(tot[f'agree_{j}'], tot['judged']) for j in judges) + f" | {tot['kept']} | {tot['dropped']} | {tot['unanswered']} |")
+    if a.strict:
+        lines += ["", f"--strict: {tot['strict']} more questions dropped because another question of their text was dropped."]
     lines += ["", "## Composition of the kept set, with Jev accuracy on it", ""]
     lines += table("tier (family)", comp(lambda e: [e["family"]]), ["n", "Jev acc %"])
     lines += table("author", comp(lambda e: [author(e)]), ["n", "Jev acc %"])
@@ -163,7 +172,7 @@ def main():
     print("\n".join(lines[:4 + len(stats) + 8]))
 
     rng = random.Random(2)
-    rows = [f"# {name} spot-check: 50 random kept questions (human review)", "",
+    rows = [f"# {set_name} spot-check: 50 random kept questions (human review)", "",
             "Mark each as OK / wrong / ambiguous. The model never sees notes, tags or ids.", ""]
     for src, ex, answers in rng.sample(spot, min(50, len(spot))):
         q = ex["question"]

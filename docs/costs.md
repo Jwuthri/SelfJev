@@ -1,7 +1,7 @@
 # Spend
 
 Real costs logged in the [journal](JOURNAL.md#spend-so-far-real-cost-byok-upstream-included), BYOK upstream charges
-included. About **$619 logged** over four days (09-22 to 09-25); a few GPU boxes (the early tree and custom-model runs,
+included. About **$695 logged** over four days (09-22 to 09-25); a few GPU boxes (the early tree and custom-model runs,
 the jina box ≈ $1.60, the latency/compact and T5Gemma L40S boxes) were not reconciled.
 
 | item | cost |
@@ -10,10 +10,15 @@ the jina box ≈ $1.60, the latency/compact and T5Gemma L40S boxes) were not rec
 | Round-3 training data: writing (Luna $10.17, Gemini $55.30, Grok $49.06) + Astra batch judge (upper bound at list batch prices) | ≈ $280 |
 | Round-2 hard cases: writing $22.86 + blind Astra judge $36.24 + Jev second opinion $0.27 | $59.37 |
 | eval2: writing, two judges, Jev second opinion | $32.72 |
-| LLM-evaluation data ([llm_eval_data.md](llm_eval_data.md)): 10.4K training questions (writing $37.09 + Astra $37.95) + `eval_llm` test set (writing $15.55, judges $5.76, Jev $0.03) | $96.38 |
+| LLM-evaluation data ([llm_eval_data.md](llm_eval_data.md)): 9.4K training questions after safety passes (writing $37.09 + Astra $37.95) + `eval_llm` test set (writing $15.55, judges $5.76, Jev $0.03) | $96.38 |
 | **Evaluation against Jev and GPT-6 Astra** | |
 | Jev + GPT-6 Astra on the 3,471 dev-benchmark questions (Jev $0.06, Astra $19.27) | $19.34 |
 | Jev on eval2 | $0.05 |
+| Jev on every question of `data/all.jsonl.gz` (33,707 texts not cached) | $1.95 |
+| `numdate_neg_v1`: 549 double-negation / number / date questions (Luna $0.28 + Astra $2.78 + Jev $0.02) | $3.08 |
+| `llm_multilabel_v1` multilabel batch: writing $26.60 + Astra judge $42.36 | $68.96 |
+| Test-failure audit (Opus 5.5 relabel, 968 questions) | $4.92 |
+| Jev predictions for `llm_multilabel_v1` | $0.30 |
 | **AWS GPU** | |
 | `qwen35_4b_combo`: Qwen3.5 + option lists + round 3, full sequences (L40S, 7.0 h) | ≈ $15.80 |
 | `tree_4b_combo`: Qwen3 tree + option lists + round 3 (g5.xlarge, 11.7 h) | ≈ $11.70 |
@@ -23,6 +28,8 @@ the jina box ≈ $1.60, the latency/compact and T5Gemma L40S boxes) were not rec
 | `tree_4b_combo_r2` and `tree_4b_combo_ptr` (2 g5.xlarge) | ≈ $6.22 |
 | Qwen3.5 on vLLM: eval2 parity, latency sweep vs Jev, throughput (L40S, 50 min, + Jev $0.02) | ≈ $1.88 |
 | First RLCD test: RLCD and a fine-tune control on fresh questions (L40S, 2.8 h) | ≈ $6.20 |
+| Jev soft targets on all data: RLCD (L40S, 7.2 h) + fine-tune (L40S, 6.0 h) | ≈ $29.70 |
+| Jev soft targets, C: RLCD with a confident-mistake cost from B (L40S, 7.1 h) | ≈ $15.90 |
 | 10 learning-curve runs, 8 g5.xlarge | ≈ $23.00 |
 | All-options, 27B teacher and distillation boxes | ≈ $12.00 |
 | Round-2 box: tree r2, stopped stock r2, tree r2b (g6e.4xlarge) | ≈ $6.70 |

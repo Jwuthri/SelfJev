@@ -116,15 +116,17 @@ def main(argv=None):
         p.add_argument("--grad-accum", type=int, default=4)
         p.add_argument("--eval-every", type=int, default=150)
         p.add_argument("--seed", type=int, default=13)
+        p.add_argument("--soft-weight", type=float, default=0.5, help="rows with \"soft\" (a teacher's probabilities, e.g. "
+                       "scripts/jev_soft_targets.py) train on (1 - w) x label + w x soft")
         if rlcd:
             p.add_argument("--reward", default="log=1,brier=1,spherical=1", help="weighted rewards: log, brier, spherical "
-                           "(proper scoring rules), accuracy (not proper)")
+                           "(proper scoring rules), accuracy (not proper), confident_miss (a cost per decision >= 0.9 sure and wrong)")
             p.add_argument("--samples", type=int, default=8, help="sampled reports per question")
             p.add_argument("--sigma", type=float, default=0.3, help="sd of the Gaussian around the logits")
             p.add_argument("--beta", type=float, default=0.05, help="KL penalty to the --init model")
 
     finetune_args(sub.add_parser("finetune", help="LoRA fine-tune the best recipe (Qwen3.5 + shared-prefix tree) on your data"))
-    finetune_args(sub.add_parser("rlcd", help="Reinforcement Learning for Calibrated Decisions, from a fine-tuned adapter"), rlcd=True)
+    finetune_args(sub.add_parser("rlcd", help="calibration training with proper scoring rules (Jev's \"RLCD\"), from a fine-tuned adapter"), rlcd=True)
     a = ap.parse_args(argv)
 
     if a.cmd == "classify":
@@ -174,7 +176,7 @@ def main(argv=None):
         extra = {"reward_weights": {k: float(v) for k, v in (x.split("=") for x in a.reward.split(","))}, "samples": a.samples,
                  "sigma": a.sigma, "beta": a.beta} if a.cmd == "rlcd" else {}
         train(a.cmd, a.data, a.out, a.val, a.init, a.base, not a.no_options_in_question, a.epochs, a.lr, a.lora_r, a.max_length,
-              a.batch_tokens, a.grad_accum, a.eval_every, a.seed, **extra)
+              a.batch_tokens, a.grad_accum, a.eval_every, a.seed, soft_weight=a.soft_weight, **extra)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,1 @@
+Double negation, numeric and temporal reasoning (every question uses one of these traps; round-3 hints), written by GPT-6 Luna, blind Astra judge. Motivated by a test-set diagnosis (eval2 failure audit, reports/audit_2026-09-26/AUDIT.md): the writer saw only the abstract trap names, never test items.

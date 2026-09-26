@@ -4,7 +4,9 @@
     - **Sharing the text is the big win.** The shared-prefix tree is 32–37× faster than stock pairs for 16 questions ×
       3 candidates on 8K–16K-token texts, at the same quality.
     - **Jev is flat at ~150 ms**, from 8 to 4,096 tokens and 1 to 16 questions. Our tree 4B on one A10G matches it only
-      for short texts with one question; it is 5× slower at 4,096 tokens.
+      for short texts with one question and is 5× slower at 4,096 tokens. **On one H100 the same 4B is faster than Jev
+      inside the machine at every size** (22 vs 110 ms server-side for short texts, 82 vs 122 ms at 4,096 tokens); the
+      remaining end-to-end gap is network distance. FP8 adds nothing.
     - **Serving:** vLLM with the prefix cache and merged weights is the best general option. A shorter "compact" tree
       format did not pay off.
     - **Cost:** a fully busy A10G is cheaper per request than Jev (up to 3×, less with many questions); an idle one is
@@ -51,6 +53,41 @@ questions with 3 options. Full tables with p95 and server-side times: [reports/l
 touch each token, so the flat curve means a very small cost per token: consistent with a ~0.5–1B-parameter model (or
 an MoE with ~1B active) on H100/B200-class GPUs, or a larger model split over several GPUs. Jev does read the whole
 text: 97.2% on round-2 questions whose evidence is at the end of a text over 4K tokens (up to 17.6K).
+
+## The same model on an H100 (2026-09-26)
+
+The same sweep, same day, same client: Jev through OpenRouter (11 ms away) against `tree_4b_combo` merged on vLLM 0.30
+on one **p5.4xlarge spot** (1× H100 80 GB, ≈ $2.54/h, us-east-2, 61 ms away), in bf16 and with vLLM's dynamic FP8
+(`--quantization fp8`). The A10G and L40S columns are the earlier sweeps of the same model. p50 ms, wall at the client /
+server inside the box (Jev: inside OpenRouter). Raw rows: `reports/latency/requests_h100.jsonl`.
+
+| text tokens | questions | Jev wall / server | A10G | L40S | H100 bf16 | H100 FP8 |
+|---|---|---|---|---|---|---|
+| 8 | 1 | 130 / 110 | 125 / 55 | 158 / 36 | **140 / 22** | 139 / 22 |
+| 512 | 1 | 135 / 115 | 204 / 136 | 177 / 55 | **149 / 30** | 146 / 29 |
+| 2,048 | 1 | 132 / 110 | 429 / 361 | 244 / 121 | **164 / 47** | 163 / 46 |
+| 4,096 | 1 | 142 / 122 | 770 / 698 | 356 / 228 | **200 / 82** | 195 / 75 |
+| 8 | 16 | 140 / 117 | 471 / 401 | 199 / 135 | **179 / 58** | 175 / 56 |
+| 512 | 16 | 145 / 123 | 566 / 496 | 279 / 163 | **166 / 76** | 190 / 71 |
+| 2,048 | 16 | 153 / 134 | 882 / 808 | 342 / 268 | **186 / 120** | 231 / 114 |
+| 4,096 | 16 | 156 / 134 | 1,336 / 1,263 | 505 / 424 | **250 / 189** | 245 / 179 |
+
+- **Inside the machine the H100 is 2–5× faster than Jev's server time**, at every size with one question and up to
+  2,048 tokens with 16; the one slower cell is 4,096 tokens × 16 questions (189 vs 134 ms).
+- **End to end we trail by 10–100 ms, and that is the network**: 61 ms to Ohio against 11 ms to OpenRouter's edge.
+  Served from a point as close as theirs, this model beats Jev's latency.
+- **FP8 changes nothing**: a 4B on an H100 is bound by per-request overhead at these sizes, not by arithmetic.
+- Per-token cost, one question, server-side: ours ≈ 20 ms fixed + ≈ 15 ms per 1,000 text tokens (≈ 68K tokens/s);
+  Jev 132–137 ms fixed + 2.2–2.6 ms per 1,000 (≈ 400K tokens/s). Jev's marginal cost per token is still ≈ 6× lower,
+  so it is a smaller model or more GPUs per request, but at request sizes up to 4K tokens the fixed costs decide.
+- **Accuracy is kept:** eval2 through vLLM on the H100 scores 94.42 in bf16 (5 of 1,991 decisions differ from the
+  transformers run's 94.48) and 94.48 with FP8 (25 differ); all 1,991 questions take 16–18 s (A10G: 144 s).
+- **Cost, GPU fully busy** (`reports/latency/throughput_h100.json`, at $2.63/h): 294 requests/s and $0.0025 per 1,000
+  at 8 tokens × 1 question (Jev $0.016); 105 requests/s and $0.007 at 512 × 1 (Jev $0.038); 5.9 requests/s and $0.124 at
+  4,096 × 16 (Jev $0.265). 2.1–6.5× cheaper than Jev in every cell on spot; at $6.88/h on demand still below Jev
+  everywhere except within 10% at 4,096 × 16.
+- So the speed gap was hardware, not architecture. Speed is now a deployment question (GPU class and placement); the
+  open work is accuracy.
 
 ## Serving optimizations (2026-09-24)
 

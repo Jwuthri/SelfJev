@@ -10,13 +10,21 @@ Data: JSONL, one question per line in the eval format: {"state": "...", "questio
 the laptop). Writes <out>/adapter (best validation), <out>/adapter_last and <out>/train_meta.json.
 
 finetune: cross-entropy on the targets (the log score), the recipe of weights/qwen35_4b_tree.
-rlcd: Reinforcement Learning for Calibrated Decisions. A question's probabilities are the model's report; the reward is
+rlcd: what Jev calls RLCD ("Reinforcement Learning for Calibrated Decisions"). Here it is supervised training on
+proper scoring rules, not RL: no environment, and the grade of every answer is known from the label. A question's
+probabilities are the model's report; the reward is
 a weighted sum of strictly proper scoring rules of that report against the target (log, Brier, spherical), so the
 policy that maximizes it reports calibrated probabilities. Each step samples --samples reports per question from a
 Gaussian around the model's logits (sd --sigma), weights their log-density by the reward minus the question's mean
 reward (a policy gradient with a per-question baseline), and adds --beta x KL to the starting model's probabilities.
 "accuracy" (the argmax decision is right) can be mixed in; it is not proper, so keep a proper term next to it.
+
+Soft targets (both modes): a row may carry "soft", a teacher's probabilities (P(yes) for binary, {candidate id: p}
+otherwise; scripts/jev_soft_targets.py writes Jev's). Training then scores against (1 - --soft-weight) x the label +
+--soft-weight x "soft" (default 0.5: the label still decides, the teacher only says how sure to be); validation stays
+on the labels.
 """
+import gzip
 import hashlib
 import json
 import math
@@ -28,17 +36,20 @@ import torch
 import torch.nn.functional as F
 
 LINEAR = ["q_proj", "k_proj", "v_proj", "o_proj", "in_proj_qkv", "in_proj_z", "in_proj_b", "in_proj_a", "out_proj"]
-PROPER = {  # p: [..., labels, outcomes] reported distributions, y: one-hot outcomes -> [..., labels]
-    "log": lambda p, y: (p * y).sum(-1).clamp_min(1e-6).log(),
+PROPER = {  # p: [..., labels, outcomes] reported distributions, y: target outcome distributions -> [..., labels]
+    "log": lambda p, y: (y * p.clamp_min(1e-6).log()).sum(-1),  # expected under y: right for soft targets too
     "brier": lambda p, y: -((p - y) ** 2).sum(-1),
     "spherical": lambda p, y: (p * y).sum(-1) / p.norm(dim=-1),
     "accuracy": lambda p, y: (p.argmax(-1) == y.argmax(-1)).float(),  # not proper: mix with a proper term
+    # a cost, not proper: -1 for a decision made with confidence >= 0.9 that the target says is wrong (expected under a
+    # soft target), so a weight of 5 makes a confident mistake cost 5x; non-differentiable, the sampled reports handle it
+    "confident_miss": lambda p, y: -(p.max(-1).values >= 0.9).float() * (1 - (y * F.one_hot(p.argmax(-1), p.shape[-1])).sum(-1)),
 }
 
 
 def load_rows(path, options_in_question=True):
     from .options import with_options
-    rows = [json.loads(line) for line in open(path) if line.strip()]
+    rows = [json.loads(line) for line in (gzip.open(path, "rt") if str(path).endswith(".gz") else open(path)) if line.strip()]
     for i, r in enumerate(rows):
         r.setdefault("family", "data")
         if options_in_question:  # seeded by the row's own id, as scripts/options_in_question.py built data/ova/
@@ -57,10 +68,36 @@ def report(z, typ):
 
 
 def onehot(it, n, device=None):
+    if "y" in it:  # soft target, set by train()
+        return torch.tensor(it["y"], device=device)
     if it["type"] == "multiclass":
         return F.one_hot(torch.tensor(it["target"], device=device), n).float()[None]
     y = torch.tensor(it["target"] if it["type"] == "multilabel" else [it["target"]], dtype=torch.float, device=device)
     return torch.stack([y, 1 - y], -1)
+
+
+def soft_target(it, soft, w):
+    """The label's outcome distributions mixed with a teacher's probabilities (a row's "soft"), weight w on the teacher."""
+    if it["type"] == "binary":
+        t = torch.tensor([[soft, 1 - soft]])
+    elif it["type"] == "multiclass":
+        t = torch.tensor([[soft[c] for c in it["candidate_ids"]]])
+        t = t / t.sum().clamp_min(1e-9)
+    else:
+        t = torch.tensor([[soft[c], 1 - soft[c]] for c in it["candidate_ids"]])
+    return ((1 - w) * onehot(it, len(it["ids"])) + w * t).tolist()
+
+
+def log_loss(scores, items):
+    """Cross-entropy of each question's report against its target, soft or hard (= grouped_loss on hard targets)."""
+    total, j = scores.new_zeros(()), 0
+    for it in items:
+        s = scores[j:j + len(it["ids"])]
+        j += len(it["ids"])
+        lp = s.log_softmax(-1)[None] if it["type"] == "multiclass" else torch.stack([F.logsigmoid(s), F.logsigmoid(-s)], -1)
+        total = total - (onehot(it, len(s), s.device) * lp).sum(-1).mean()
+    assert j == len(scores), "scores and items are misaligned"
+    return total
 
 
 def reward(z, it, weights):
@@ -127,7 +164,7 @@ def score_items(sc, items, roots, budget):
 
 def train(mode, data, out, val=None, init=None, base="qwen35_4b", options_in_question=True, epochs=1, lr=None, lora_r=64,
           max_length=8192, batch_tokens=8192, grad_accum=4, eval_every=150, seed=13, reward_weights=None, samples=8,
-          sigma=0.3, beta=0.05):
+          sigma=0.3, beta=0.05, soft_weight=0.5):
     from peft import LoraConfig, PeftModel, get_peft_model
 
     from . import qwen35_tree
@@ -149,6 +186,10 @@ def train(mode, data, out, val=None, init=None, base="qwen35_4b", options_in_que
     sc = ChallengerScorer(base)
     tr, roots, dropped = qwen35_tree.encode_items(sc, rows, max_length)
     va, vroots, vdropped = qwen35_tree.encode_items(sc, vrows, max_length)
+    soft = {r["id"]: r["soft"] for r in rows if "soft" in r}
+    for it in tr:  # training items only: validation keeps scoring against the labels
+        if it["id"] in soft:
+            it["y"] = soft_target(it, soft[it["id"]], soft_weight)
     if init:
         sc.model = PeftModel.from_pretrained(sc.model, init, is_trainable=True)
     else:
@@ -170,7 +211,7 @@ def train(mode, data, out, val=None, init=None, base="qwen35_4b", options_in_que
             for p in [data] + ([val] if val else [])}, "train_questions": len(tr), "val_questions": len(va),
             "dropped_over_max_length": {"train": dropped, "val": vdropped}, "max_length": max_length, "epochs": epochs,
             "lr": lr, "lora_r": lora_r, "batch_tokens": batch_tokens, "grad_accum": grad_accum, "steps": steps, "seed": seed,
-            "select_by": f"validation {select}", "log": []}
+            "select_by": f"validation {select}", "soft_targets": sum("y" in it for it in tr), "soft_weight": soft_weight, "log": []}
     if mode == "rlcd":
         meta["rlcd"] = {"reward": reward_weights, "samples": samples, "sigma": sigma, "beta": beta}
     out.mkdir(parents=True, exist_ok=True)
@@ -202,7 +243,8 @@ def train(mode, data, out, val=None, init=None, base="qwen35_4b", options_in_que
             for b in group:
                 its = group_by_state([tr[i] for i in b])
                 s = qwen35_tree.score(sc, trees_for(its, roots)).float()
-                loss = (grouped_loss(s, its) if mode == "finetune" else rlcd_loss(s, its, reward_weights, samples, sigma, beta)) / nq
+                fit = log_loss if soft else grouped_loss
+                loss = (fit(s, its) if mode == "finetune" else rlcd_loss(s, its, reward_weights, samples, sigma, beta)) / nq
                 loss.backward()
                 total += float(loss.detach())
             torch.nn.utils.clip_grad_norm_(params, 1.0)

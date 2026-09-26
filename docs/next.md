@@ -21,8 +21,10 @@ The best model, `qwen35_4b_tree`, scores 95.6 against Jev's 97.2. Multilabel is 
 
 ## 2. Close the speed gap
 
-Jev answers in a flat ~100–130 ms server side. The Qwen3 tree on vLLM matches that for one question up to ~1K tokens
-and is cheaper per request; the Qwen3.5 model is slow with many questions on vLLM.
+Jev answers in a flat ~100–130 ms server side. On one H100 the Qwen3 tree on vLLM is faster than that at every size
+(22–82 ms for one question, 58–189 ms for 16; 2026-09-26), so the remaining end-to-end gap is network distance and
+speed is a deployment question (GPU class and placement), not a model question. On an A10G or L40S it matches Jev
+only for one question up to ~1K tokens; the Qwen3.5 model is slow with many questions on vLLM.
 
 | idea | why | cost |
 |---|---|---|

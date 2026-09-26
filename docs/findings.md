@@ -246,21 +246,39 @@ evidence file.
 
 ## Speed and cost
 
-!!! warning "19. Jev is flat at ~150 ms; we scale with the text"
-    Same requests from California, one at a time, text 8 → 4,096 tokens:
+!!! success "19. The speed gap was hardware: on one H100 the 4B tree beats Jev's server time"
+    Same requests from California, one at a time, text 8 → 4,096 tokens; `tree_4b_combo` merged on vLLM. Jev through
+    OpenRouter (11 ms away); ours on one p5.4xlarge spot (1× H100, ≈ $2.54/h, 61 ms away), 2026-09-26. p50 ms, wall /
+    server-side:
 
-    - **Jev:** 143–178 ms p50 at every size, even 4,096 tokens × 16 questions. A fit gives 132–137 ms fixed +
-      2.2–2.6 ms per 1,000 input tokens, about 400K tokens/s of marginal speed.
-    - **Ours (tree 4B, vLLM, one A10G, 71 ms away):** 120 ms at 8 tokens × 1 question, faster than Jev end to end
-      up to 128 tokens; 755 ms at 4,096 tokens (5×) and 336–1,195 ms with 16 questions (2–7×).
-    - The A10G is compute-bound at 6.5–10K tokens/s. Matching Jev needs much faster GPUs, a smaller model, or both.
+    | text tokens | questions | Jev wall / server | A10G | L40S | H100 bf16 | H100 FP8 |
+    |---|---|---|---|---|---|---|
+    | 8 | 1 | 130 / 110 | 125 / 55 | 158 / 36 | **140 / 22** | 139 / 22 |
+    | 512 | 1 | 135 / 115 | 204 / 136 | 177 / 55 | **149 / 30** | 146 / 29 |
+    | 2,048 | 1 | 132 / 110 | 429 / 361 | 244 / 121 | **164 / 47** | 163 / 46 |
+    | 4,096 | 1 | 142 / 122 | 770 / 698 | 356 / 228 | **200 / 82** | 195 / 75 |
+    | 8 | 16 | 140 / 117 | 471 / 401 | 199 / 135 | **179 / 58** | 175 / 56 |
+    | 512 | 16 | 145 / 123 | 566 / 496 | 279 / 163 | **166 / 76** | 190 / 71 |
+    | 2,048 | 16 | 153 / 134 | 882 / 808 | 342 / 268 | **186 / 120** | 231 / 114 |
+    | 4,096 | 16 | 156 / 134 | 1,336 / 1,263 | 505 / 424 | **250 / 189** | 245 / 179 |
 
-    Evidence: [speed](speed.md), [latency summary](../reports/latency/summary.md).
+    - Inside the machine the H100 is 2–5× faster than Jev's server time; the only slower cell is 4,096 tokens × 16
+      questions (189 vs 134 ms). On the A10G the same model was 5× slower than Jev at 4,096 tokens.
+    - End to end we trail by 10–100 ms, which is the network hop (61 vs 11 ms). Placed as close to the client as
+      OpenRouter's edge, this model beats Jev's latency.
+    - FP8 (vLLM dynamic) changes nothing: at 4B the H100 is overhead-bound, not compute-bound.
+    - Jev's marginal cost per token is still ≈ 6× lower (2.2–2.6 vs ≈ 15 ms per 1,000 tokens), so it is a smaller model
+      or more GPUs per request; up to 4K tokens the fixed costs decide.
+
+    Evidence: [speed](speed.md#the-same-model-on-an-h100-2026-09-26), [latency summary](../reports/latency/summary.md),
+    [JOURNAL 2026-09-26](JOURNAL.md).
 
 !!! success "20. Serving: vLLM and merged weights are the useful speed-ups"
     - vLLM with the prefix cache: 967 → 700 ms at 2K tokens × 16 × 3; dev benchmark accuracy 81.53% vs 81.50%.
     - Merging the LoRA into the weights: 11–22% faster end to end in the latency sweep, for a small precision cost
       (dev benchmark 81.68 → 81.50). bf16 inference itself costs no quality (0.6B: 73.7 vs 73.5).
+    - The vLLM path keeps `tree_4b_combo`'s eval2 accuracy: 94.42 in bf16 (5 of 1,991 decisions differ from
+      transformers' 94.48) and 94.48 with dynamic FP8 (25 differ). On an H100, all of eval2 runs in 16–18 s.
     - A compact tree format (38.5% fewer branch tokens) failed its 15% speed gate (7.4% on vLLM) and added CLINC
       over-rejection. It stays experimental.
     - Qwen3.5 on vLLM keeps its accuracy (eval2 95.58, as in transformers) and answers one question in 87–131 ms
@@ -279,6 +297,9 @@ evidence file.
       requests.
     - On an L40S ($2.24/h) the Qwen3 tree on vLLM is below Jev in every cell ($0.005 vs $0.016 per 1,000 one-question
       requests at 8 tokens; $0.243 vs $0.265 at 4,096 tokens × 16 questions); Qwen3.5 costs 2–6× Jev with 16 questions.
+    - On an H100 spot ($2.54–2.63/h) it is 2.1–6.5× cheaper than Jev in every cell: 294 requests/s and $0.0025 per
+      1,000 at 8 tokens × 1 question (Jev $0.016), 5.9 requests/s and $0.124 at 4,096 × 16 (Jev $0.265). At the
+      on-demand price ($6.88/h) it stays below Jev everywhere except within 10% at 4,096 × 16.
 
 ## Where the gap to Jev is
 

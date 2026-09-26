@@ -35,8 +35,10 @@ marktechpost.com/2026/09/19/typesafe-ai-releases-jev/.
 
 **Our reading** (2026-09-25 update: [what Jev's behaviour implies and what to build next](../reports/jev_hypothesis_2026-09-25.md)):
 the gap is mostly training, not architecture. 4B → 8B, a bigger adapter and stock → tree each moved
-the dev benchmark by ≤ 1.3 points, while 10K verified target-task questions moved eval2 by +5.5. Its speed points to a
-small model (~1B active parameters) on fast GPUs.
+the dev benchmark by ≤ 1.3 points, while 10K verified target-task questions moved eval2 by +5.5. Its speed is mostly the
+hardware: on one H100 our 4B tree is faster than Jev inside the machine at every size (2026-09-26, [speed](speed.md#the-same-model-on-an-h100-2026-09-26));
+its per-token cost is still ≈ 6× ours, so a smaller model or more GPUs per request, and the end-to-end difference is
+network distance.
 
 ## Open "Jev-like" models (survey of Hugging Face model cards, 2026-09-24)
 

@@ -1,0 +1,188 @@
+{
+ "mode": "finetune",
+ "base": "Qwen/Qwen3.5-4B",
+ "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+ "prompt": "challenger-state-first-v1",
+ "init": "weights/qwen35_4b_tree",
+ "options_in_question": true,
+ "data": {
+  "runs/jev_all/train.jsonl.gz": "ac4ac3b5e4c1f5add04c7094485440c13d37cdfa467b74af8dc9f5b93a6b0086",
+  "runs/jev_all/val.jsonl.gz": "bf25af519b9f26fb1d19fa3757b69ca989b17688c072932860119ebb2d54604b"
+ },
+ "train_questions": 69528,
+ "val_questions": 1170,
+ "dropped_over_max_length": {
+  "train": {
+   "r2_very_hard": 138,
+   "r2_hard": 75,
+   "r2_simple": 59,
+   "r3_simple": 397,
+   "r3_hard": 610,
+   "r3_very_hard": 913,
+   "llm_verify_very_hard": 39,
+   "llm_guardrail_hard": 11,
+   "llm_judge_very_hard": 19,
+   "llm_guardrail_simple": 28,
+   "llm_guardrail_very_hard": 11,
+   "llm_judge_simple": 11,
+   "llm_score_hard": 25,
+   "llm_verify_hard": 21,
+   "llm_score_very_hard": 10,
+   "llm_jailbreak_very_hard": 9,
+   "llm_verify_simple": 12,
+   "llm_jailbreak_hard": 22,
+   "llm_judge_hard": 14,
+   "llm_score_simple": 18,
+   "llm_jailbreak_simple": 4
+  },
+  "val": {
+   "r2_very_hard": 2,
+   "r2_hard": 3,
+   "r3_hard": 7,
+   "r3_simple": 10,
+   "r3_very_hard": 8
+  }
+ },
+ "max_length": 8192,
+ "epochs": 1,
+ "lr": 2e-05,
+ "lora_r": 64,
+ "batch_tokens": 8192,
+ "grad_accum": 4,
+ "steps": 1230,
+ "seed": 13,
+ "select_by": "validation loss",
+ "soft_targets": 69528,
+ "soft_weight": 0.5,
+ "log": [
+  {
+   "step": 0,
+   "validation": {
+    "loss": 0.12776098447489395,
+    "accuracy": 0.9290598290598291,
+    "brier": 0.07250128291970494,
+    "ece": 0.0035439979544074703,
+    "n": 1170,
+    "confidently_wrong": 15
+   },
+   "wall_s": 257.352612989
+  },
+  {
+   "step": 150,
+   "validation": {
+    "loss": 0.14874509510887154,
+    "accuracy": 0.9222222222222223,
+    "brier": 0.07791608730855315,
+    "ece": 0.023150076954770716,
+    "n": 1170,
+    "confidently_wrong": 9
+   },
+   "wall_s": 2878.510852307
+  },
+  {
+   "step": 300,
+   "validation": {
+    "loss": 0.14964379509048398,
+    "accuracy": 0.9264957264957265,
+    "brier": 0.07834164720448913,
+    "ece": 0.025087167676404225,
+    "n": 1170,
+    "confidently_wrong": 10
+   },
+   "wall_s": 5244.644392021
+  },
+  {
+   "step": 450,
+   "validation": {
+    "loss": 0.14768300094908468,
+    "accuracy": 0.9213675213675213,
+    "brier": 0.07764600231933981,
+    "ece": 0.02573749687460115,
+    "n": 1170,
+    "confidently_wrong": 10
+   },
+   "wall_s": 7531.592298881
+  },
+  {
+   "step": 600,
+   "validation": {
+    "loss": 0.14682734400596686,
+    "accuracy": 0.9324786324786325,
+    "brier": 0.07607360193988556,
+    "ece": 0.02733769368210571,
+    "n": 1170,
+    "confidently_wrong": 10
+   },
+   "wall_s": 9783.752102274
+  },
+  {
+   "step": 750,
+   "validation": {
+    "loss": 0.14794514874473605,
+    "accuracy": 0.9282051282051282,
+    "brier": 0.0760851596241071,
+    "ece": 0.03147095144509698,
+    "n": 1170,
+    "confidently_wrong": 10
+   },
+   "wall_s": 12099.782011759
+  },
+  {
+   "step": 900,
+   "validation": {
+    "loss": 0.14404286619949114,
+    "accuracy": 0.9324786324786325,
+    "brier": 0.0740886633782522,
+    "ece": 0.02373476877486963,
+    "n": 1170,
+    "confidently_wrong": 12
+   },
+   "wall_s": 14374.170355454
+  },
+  {
+   "step": 1050,
+   "validation": {
+    "loss": 0.14408202153144806,
+    "accuracy": 0.9324786324786325,
+    "brier": 0.07447507993941953,
+    "ece": 0.02416329366697682,
+    "n": 1170,
+    "confidently_wrong": 12
+   },
+   "wall_s": 16640.26426822
+  },
+  {
+   "step": 1200,
+   "validation": {
+    "loss": 0.1433133908573098,
+    "accuracy": 0.9324786324786325,
+    "brier": 0.0739896207204718,
+    "ece": 0.02389574163823391,
+    "n": 1170,
+    "confidently_wrong": 12
+   },
+   "wall_s": 18909.888032963998
+  },
+  {
+   "step": 1230,
+   "validation": {
+    "loss": 0.14327084697803608,
+    "accuracy": 0.9324786324786325,
+    "brier": 0.07397610701076557,
+    "ece": 0.02427057260803753,
+    "n": 1170,
+    "confidently_wrong": 12
+   },
+   "wall_s": 19469.722895271
+  }
+ ],
+ "best": {
+  "step": 0,
+  "loss": 0.12776098447489395,
+  "accuracy": 0.9290598290598291,
+  "brier": 0.07250128291970494,
+  "ece": 0.0035439979544074703,
+  "n": 1170,
+  "confidently_wrong": 15
+ }
+}

@@ -290,7 +290,7 @@ if __name__ == "__main__":
     elif args.stage == "eval":
         for s in args.sets.split(","):
             d = args.data_dir
-            files, splits = ([f"{d}/eval2.jsonl"], None) if s == "eval2" else ([f"{d}/hf.jsonl", f"{d}/eval.jsonl"], [s])
+            files, splits = ([f"{d}/{s}.jsonl"], None) if s in ("eval2", "eval_llm") else ([f"{d}/hf.jsonl", f"{d}/eval.jsonl"], [s])
             r = evaluate.run(sc, files, splits, out_dir=report / s)
             print("EVAL", run, s, round(r["metrics"]["question_accuracy"], 4), flush=True)
     else:

@@ -108,10 +108,11 @@ if __name__ == "__main__":
     p.add_argument("--gpu-memory-utilization", type=float, default=0.85)
     p.add_argument("--options-in-question", action="store_true", help="adapters trained on data/ova/")
     p.add_argument("--option-pointers", action="store_true", help="adapters trained on data/ptr/")
+    p.add_argument("--quantization", help="vLLM quantization for a bf16 checkpoint, e.g. fp8 (dynamic weights + activations on H100-class GPUs)")
     a = ap.parse_args()
     if a.cmd == "merge":
         merge(a.adapter, a.out, a.model_id, a.revision)
     else:
         from .server import serve
-        serve(VllmTreeScorer(a.model_dir, model_id=a.model_id, gpu_memory_utilization=a.gpu_memory_utilization), port=a.port, options_in_question=a.options_in_question,
+        serve(VllmTreeScorer(a.model_dir, model_id=a.model_id, gpu_memory_utilization=a.gpu_memory_utilization, quantization=a.quantization), port=a.port, options_in_question=a.options_in_question,
               option_pointers=a.option_pointers)

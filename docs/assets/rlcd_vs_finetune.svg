@@ -8,7 +8,7 @@
 
   <!-- title -->
   <text x="600" y="44" text-anchor="middle" font-size="23" font-weight="700" fill="#0f172a">Fine-tune vs RLCD: same questions, a different learning signal</text>
-  <text x="600" y="70" text-anchor="middle" font-size="14.5" fill="#64748b">Fine-tuning learns the answer. RLCD (reinforcement learning for calibrated decisions) learns how sure to be.</text>
+  <text x="600" y="70" text-anchor="middle" font-size="14.5" fill="#64748b">Fine-tuning learns the answer. RLCD, Jev's name for training on calibration scores, learns how sure to be.</text>
 
   <!-- ============ left panel: fine-tune ============ -->
   <rect x="30" y="92" width="555" height="508" rx="14" fill="#f8fafc" stroke="#e2e8f0"/>

@@ -5,6 +5,12 @@ All data is one JSONL line per (text, question, target), with `id`, `source_id`,
 `notes`. Authored files use a compact form (one text, several questions) that `data.load` expands. Check any file with
 `uv run python -m personal_jev.data check FILE`.
 
+**`data/all.jsonl.gz` is the dataset**: every original question in one file, tagged by `dataset`, with Jev's prediction
+in `jev` (`uv run python scripts/build_all.py`). Catalog, usage snippet and the growth procedure:
+[data/README.md](../data/README.md). Always start from it, and add new training data as a **batch**
+(`gen_hardcases.py --batch <name>`, then `scripts/grow_batch.sh`), never as a new stand-alone file. The files below are
+its sources.
+
 ## Labeling policy (all sources)
 
 - Binary `true` means **the text supports answering yes**. Contradicted and simply-not-stated are both `false`:
@@ -27,13 +33,15 @@ All data is one JSONL line per (text, question, target), with `id`, `source_id`,
 | `data/hardcases_nb.jsonl` | round 2b: round 2 with `none`-correct capped at 10% | 9,982 questions | [scripts/rebalance_nota.py](../scripts/rebalance_nota.py) |
 | `data/hardcases_r3.jsonl` | **round 3**: verified hard-case training data | 38,628 questions (train 34,868 / validation 3,760) | GPT-6 Luna, Gemini 3.8 Flash, Grok 4.7; blind Astra judge |
 | `data/eval2.jsonl` | **eval2**: frozen target-task test set | 1,991 questions / 647 texts, all `test` | Claude Opus 5.5, Kimi K3, GLM 5.3; two blind judges |
+| `data/hardcases_llm.jsonl` | **LLM-evaluation** training data: score, judge, verify, guardrail, jailbreak ([llm_eval_data.md](llm_eval_data.md)) | 9,443 questions (train 8,497 / validation 946) | GPT-6 Luna, Gemini 3.8 Flash, Grok 4.7, DeepSeek V4 Flash; blind Astra judge; strict build + moderation review |
+| `data/eval_llm.jsonl` | **eval_llm**: frozen LLM-evaluation test set | 946 questions / 317 texts, all `test` | Claude Opus 5.5, Kimi K3, GLM 5.3; blind Astra + Claude Sonnet 5; strict build |
 | `data/dev.jsonl` | development fixtures for tests | 14 texts / 28 questions | written by Claude Code |
 
 - **Splits** hash `source_id`, so every question about one text shares a split. `build_data.py` drops any synthetic
   text whose word-8-gram containment with an eval text is ≥ 0.3; round 2, round 3 and eval2 apply the same guard. None
   was dropped.
 - **Held-out families** never appear in training: CLINC150 intents (with an out-of-scope `none` option), DBpedia-14,
-  TREC question types, dair-ai emotion, BoolQ and SST-2. The authored `eval_agent_output` family (grading AI replies)
+  TREC question types, dair-ai emotion, BoolQ and SST-2. The authored `eval_agent_output` family (grading AI replies; no longer held out once a model trains on `hardcases_llm.jsonl`)
   is also excluded from all training data.
 - **Known leaks in the dev benchmark** (review of 2026-09-23): MNLI rows share premises across splits (22 test
   questions), and some authored policy texts have near-duplicate variants across splits. The effect on results is

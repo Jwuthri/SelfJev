@@ -1,0 +1,968 @@
+{"id": "banking77-eval-639", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "pending_card_payment"}
+{"id": "banking77-eval-554", "test": "dev", "verdict": "label right, model wrong", "opus": "pin_blocked"}
+{"id": "banking77-eval-1323", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "transfer_into_account"}
+{"id": "banking77-eval-2098", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "contactless_not_working"}
+{"id": "banking77-eval-280", "test": "dev", "verdict": "label right, model wrong", "opus": "card_delivery_estimate"}
+{"id": "banking77-eval-2848", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "getting_spare_card"}
+{"id": "banking77-eval-1346", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "receiving_money"}
+{"id": "banking77-eval-616", "test": "dev", "verdict": "label right, model wrong", "opus": "top_up_by_bank_transfer_charge"}
+{"id": "banking77-eval-382", "test": "dev", "verdict": "label right, model wrong", "opus": "card_not_working"}
+{"id": "banking77-eval-2671", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "declined_transfer"}
+{"id": "banking77-eval-41", "test": "dev", "verdict": "label right, model wrong", "opus": "card_linking"}
+{"id": "banking77-eval-1319", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": "extra_charge_on_statement"}
+{"id": "banking77-eval-1692", "test": "dev", "verdict": "label right, model wrong", "opus": "request_refund"}
+{"id": "banking77-eval-2992", "test": "dev", "verdict": "label right, model wrong", "opus": "apple_pay_or_google_pay"}
+{"id": "banking77-eval-1110", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "compromised_card"}
+{"id": "go_emotions-test-5182", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-1813", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-5401", "test": "dev", "verdict": "label right, model wrong", "opus": ["disappointment"]}
+{"id": "go_emotions-test-5186", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["surprise"]}
+{"id": "go_emotions-test-1070", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["annoyance"]}
+{"id": "go_emotions-test-5049", "test": "dev", "verdict": "label right, model wrong", "opus": ["amusement"]}
+{"id": "go_emotions-test-1497", "test": "dev", "verdict": "label right, model wrong", "opus": ["joy"]}
+{"id": "go_emotions-test-2798", "test": "dev", "verdict": "label right, model wrong", "opus": ["love", "admiration"]}
+{"id": "go_emotions-test-2260", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-4775", "test": "dev", "verdict": "label right, model wrong", "opus": ["confusion"]}
+{"id": "go_emotions-test-4208", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-3722", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["admiration"]}
+{"id": "go_emotions-test-190", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["gratitude"]}
+{"id": "go_emotions-test-3982", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-3830", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-1038", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-4995", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-4791", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-420", "test": "dev", "verdict": "label right, model wrong", "opus": ["remorse"]}
+{"id": "go_emotions-test-2746", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["disgust"]}
+{"id": "go_emotions-test-2776", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["optimism"]}
+{"id": "go_emotions-test-4889", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["approval", "joy"]}
+{"id": "go_emotions-test-2084", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-4826", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["neutral"]}
+{"id": "go_emotions-test-5126", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-1651", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-4194", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-1074", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-929", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-4600", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-924", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-269", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-811", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-4365", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["love"]}
+{"id": "go_emotions-test-846", "test": "dev", "verdict": "label right, model wrong", "opus": ["caring"]}
+{"id": "go_emotions-test-677", "test": "dev", "verdict": "label right, model wrong", "opus": ["love"]}
+{"id": "go_emotions-test-4046", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-1732", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-870", "test": "dev", "verdict": "label right, model wrong", "opus": ["gratitude"]}
+{"id": "go_emotions-test-2884", "test": "dev", "verdict": "label right, model wrong", "opus": ["disappointment"]}
+{"id": "go_emotions-test-84", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-152", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["sadness"]}
+{"id": "go_emotions-test-4527", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["gratitude"]}
+{"id": "go_emotions-test-717", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["fear"]}
+{"id": "go_emotions-test-873", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-4763", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-1923", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["amusement"]}
+{"id": "go_emotions-test-1097", "test": "dev", "verdict": "label right, model wrong", "opus": ["joy"]}
+{"id": "go_emotions-test-1032", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-2949", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-1248", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-4425", "test": "dev", "verdict": "label right, model wrong", "opus": ["caring"]}
+{"id": "go_emotions-test-1042", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-3428", "test": "dev", "verdict": "label right, model wrong", "opus": ["disapproval"]}
+{"id": "go_emotions-test-15", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-418", "test": "dev", "verdict": "label right, model wrong", "opus": ["confusion"]}
+{"id": "go_emotions-test-4074", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-853", "test": "dev", "verdict": "label right, model wrong", "opus": ["disgust"]}
+{"id": "go_emotions-test-1624", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-1442", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-5169", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-3420", "test": "dev", "verdict": "label right, model wrong", "opus": ["approval"]}
+{"id": "go_emotions-test-4281", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration", "gratitude"]}
+{"id": "go_emotions-test-2540", "test": "dev", "verdict": "label right, model wrong", "opus": ["gratitude"]}
+{"id": "go_emotions-test-2535", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3778", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["annoyance"]}
+{"id": "go_emotions-test-2417", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["amusement", "confusion"]}
+{"id": "go_emotions-test-1079", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["confusion"]}
+{"id": "go_emotions-test-4691", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disgust", "disapproval"]}
+{"id": "go_emotions-test-4752", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3617", "test": "dev", "verdict": "label right, model wrong", "opus": ["joy"]}
+{"id": "go_emotions-test-2113", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["approval"]}
+{"id": "go_emotions-test-4040", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["fear", "nervousness"]}
+{"id": "go_emotions-test-2835", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["confusion"]}
+{"id": "go_emotions-test-4998", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-909", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["approval", "gratitude"]}
+{"id": "go_emotions-test-5162", "test": "dev", "verdict": "label right, model wrong", "opus": ["annoyance"]}
+{"id": "go_emotions-test-2880", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-4081", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-1753", "test": "dev", "verdict": "label right, model wrong", "opus": ["nervousness"]}
+{"id": "go_emotions-test-595", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["annoyance", "disapproval"]}
+{"id": "go_emotions-test-85", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["surprise"]}
+{"id": "go_emotions-test-2552", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-4815", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["neutral"]}
+{"id": "go_emotions-test-3842", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-1916", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-1990", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-1326", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3303", "test": "dev", "verdict": "label right, model wrong", "opus": ["approval"]}
+{"id": "go_emotions-test-5341", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-313", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-4265", "test": "dev", "verdict": "label right, model wrong", "opus": ["approval"]}
+{"id": "go_emotions-test-4311", "test": "dev", "verdict": "label right, model wrong", "opus": ["caring"]}
+{"id": "go_emotions-test-5386", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-485", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-4530", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-4187", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["realization"]}
+{"id": "go_emotions-test-1499", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-2392", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["annoyance"]}
+{"id": "go_emotions-test-951", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disapproval", "disgust"]}
+{"id": "go_emotions-test-5383", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3914", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-1716", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-1551", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["excitement"]}
+{"id": "go_emotions-test-4001", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-114", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-1328", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-4154", "test": "dev", "verdict": "label right, model wrong", "opus": ["desire"]}
+{"id": "go_emotions-test-3207", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-352", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["excitement"]}
+{"id": "go_emotions-test-246", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-2624", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["caring"]}
+{"id": "go_emotions-test-2053", "test": "dev", "verdict": "label right, model wrong", "opus": ["fear"]}
+{"id": "go_emotions-test-3429", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["nervousness"]}
+{"id": "go_emotions-test-3454", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-2687", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3251", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration"]}
+{"id": "go_emotions-test-3552", "test": "dev", "verdict": "label right, model wrong", "opus": ["optimism"]}
+{"id": "go_emotions-test-5362", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["disappointment"]}
+{"id": "go_emotions-test-1455", "test": "dev", "verdict": "label right, model wrong", "opus": ["joy"]}
+{"id": "go_emotions-test-4118", "test": "dev", "verdict": "label right, model wrong", "opus": ["disapproval"]}
+{"id": "go_emotions-test-2307", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["joy"]}
+{"id": "go_emotions-test-2285", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-1686", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["neutral"]}
+{"id": "go_emotions-test-3432", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-2092", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["caring"]}
+{"id": "go_emotions-test-5376", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-207", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["neutral"]}
+{"id": "go_emotions-test-479", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-2101", "test": "dev", "verdict": "label right, model wrong", "opus": ["disapproval"]}
+{"id": "go_emotions-test-5166", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["admiration"]}
+{"id": "go_emotions-test-438", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disapproval", "annoyance"]}
+{"id": "go_emotions-test-5139", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3267", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["annoyance", "disapproval"]}
+{"id": "go_emotions-test-2466", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3992", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["desire"]}
+{"id": "go_emotions-test-2718", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-2431", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-1307", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["excitement"]}
+{"id": "go_emotions-test-2621", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disappointment", "approval"]}
+{"id": "go_emotions-test-4739", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-443", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["realization", "disapproval"]}
+{"id": "go_emotions-test-952", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-5395", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-5116", "test": "dev", "verdict": "label right, model wrong", "opus": ["amusement"]}
+{"id": "go_emotions-test-1759", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-3490", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-2355", "test": "dev", "verdict": "label right, model wrong", "opus": ["annoyance"]}
+{"id": "go_emotions-test-2067", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-4240", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-212", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["approval"]}
+{"id": "go_emotions-test-4897", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-2452", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["excitement"]}
+{"id": "go_emotions-test-608", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["curiosity"]}
+{"id": "go_emotions-test-188", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3437", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["confusion"]}
+{"id": "go_emotions-test-5320", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["sadness"]}
+{"id": "go_emotions-test-2989", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration", "gratitude"]}
+{"id": "go_emotions-test-4943", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-2865", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-5060", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3063", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-444", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration"]}
+{"id": "go_emotions-test-3596", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-2035", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-3117", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-4113", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["joy", "approval"]}
+{"id": "go_emotions-test-599", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3188", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3861", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-4051", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["optimism"]}
+{"id": "go_emotions-test-4694", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-2565", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-1582", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disgust"]}
+{"id": "go_emotions-test-713", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-1797", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3107", "test": "dev", "verdict": "label right, model wrong", "opus": ["disappointment"]}
+{"id": "go_emotions-test-1344", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-2073", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["disapproval", "disgust"]}
+{"id": "go_emotions-test-1620", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["caring", "joy"]}
+{"id": "go_emotions-test-862", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["anger"]}
+{"id": "go_emotions-test-1502", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-4085", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-4357", "test": "dev", "verdict": "label right, model wrong", "opus": ["amusement"]}
+{"id": "go_emotions-test-5030", "test": "dev", "verdict": "label right, model wrong", "opus": ["caring"]}
+{"id": "go_emotions-test-234", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["admiration", "optimism"]}
+{"id": "go_emotions-test-3438", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-4405", "test": "dev", "verdict": "label right, model wrong", "opus": ["approval"]}
+{"id": "go_emotions-test-4351", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration"]}
+{"id": "go_emotions-test-3948", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-2991", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["joy", "surprise"]}
+{"id": "go_emotions-test-2515", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["approval"]}
+{"id": "go_emotions-test-3625", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["amusement"]}
+{"id": "go_emotions-test-3268", "test": "dev", "verdict": "label right, model wrong", "opus": ["optimism"]}
+{"id": "go_emotions-test-1671", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-1356", "test": "dev", "verdict": "label right, model wrong", "opus": ["disapproval"]}
+{"id": "go_emotions-test-702", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-1666", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-395", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-4071", "test": "dev", "verdict": "label right, model wrong", "opus": ["love"]}
+{"id": "go_emotions-test-4383", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-2691", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["annoyance"]}
+{"id": "go_emotions-test-959", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-1155", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-2329", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["neutral"]}
+{"id": "go_emotions-test-1746", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["admiration", "disapproval"]}
+{"id": "go_emotions-test-3081", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-5374", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["amusement"]}
+{"id": "go_emotions-test-2280", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-3003", "test": "dev", "verdict": "label right, model wrong", "opus": ["anger", "disgust"]}
+{"id": "go_emotions-test-3036", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration"]}
+{"id": "go_emotions-test-5057", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration"]}
+{"id": "go_emotions-test-3686", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-4423", "test": "dev", "verdict": "label right, model wrong", "opus": ["fear"]}
+{"id": "go_emotions-test-2081", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["annoyance", "disapproval"]}
+{"id": "go_emotions-test-5130", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-591", "test": "dev", "verdict": "label right, model wrong", "opus": ["neutral"]}
+{"id": "go_emotions-test-3827", "test": "dev", "verdict": "label right, model wrong", "opus": ["joy"]}
+{"id": "go_emotions-test-5212", "test": "dev", "verdict": "label right, model wrong", "opus": ["gratitude"]}
+{"id": "go_emotions-test-1515", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["approval"]}
+{"id": "go_emotions-test-4373", "test": "dev", "verdict": "label right, model wrong", "opus": ["joy"]}
+{"id": "go_emotions-test-4223", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-671", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration"]}
+{"id": "go_emotions-test-3611", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration"]}
+{"id": "go_emotions-test-3537", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": ["desire"]}
+{"id": "go_emotions-test-5343", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": []}
+{"id": "go_emotions-test-2848", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["annoyance"]}
+{"id": "go_emotions-test-1684", "test": "dev", "verdict": "label right, model wrong", "opus": ["amusement"]}
+{"id": "go_emotions-test-1349", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["neutral"]}
+{"id": "go_emotions-test-675", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration"]}
+{"id": "go_emotions-test-2139", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["neutral"]}
+{"id": "go_emotions-test-2290", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["disapproval"]}
+{"id": "go_emotions-test-3413", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": []}
+{"id": "go_emotions-test-3472", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration", "pride"]}
+{"id": "go_emotions-test-4298", "test": "dev", "verdict": "label right, model wrong", "opus": ["admiration"]}
+{"id": "go_emotions-test-5078", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": ["admiration"]}
+{"id": "go_emotions-test-4301", "test": "dev", "verdict": "label right, model wrong", "opus": ["joy"]}
+{"id": "mnli-eval-2695", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-4010", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-8835", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-8106", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-1103", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-3594", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "mnli-eval-9029", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-2431", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-5774", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-497", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "mnli-eval-3999", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "mnli-eval-1640", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-6192", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-4656", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-3340", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-6638", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "mnli-eval-6789", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-3555", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "mnli-eval-2459", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-2838", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "mnli-eval-2741", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-6717", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "mnli-eval-9341", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "mnli-eval-5773", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "mnli-eval-8297", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "mnli-eval-5156", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "mnli-eval-343", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "mnli-eval-1258", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "ag_news-eval-4264", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-5902", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "world"}
+{"id": "ag_news-eval-2786", "test": "dev", "verdict": "label right, model wrong", "opus": "business"}
+{"id": "ag_news-eval-3186", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sports"}
+{"id": "ag_news-eval-4564", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-3787", "test": "dev", "verdict": "label right, model wrong", "opus": "sci_tech"}
+{"id": "ag_news-eval-4234", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sports"}
+{"id": "ag_news-eval-2234", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sci_tech"}
+{"id": "ag_news-eval-3081", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-3488", "test": "dev", "verdict": "label right, model wrong", "opus": "business"}
+{"id": "ag_news-eval-6843", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-6058", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-207", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-7282", "test": "dev", "verdict": "label right, model wrong", "opus": "business"}
+{"id": "ag_news-eval-279", "test": "dev", "verdict": "label right, model wrong", "opus": "sci_tech"}
+{"id": "ag_news-eval-1001", "test": "dev", "verdict": "label right, model wrong", "opus": "business"}
+{"id": "ag_news-eval-5436", "test": "dev", "verdict": "label right, model wrong", "opus": "sci_tech"}
+{"id": "ag_news-eval-7456", "test": "dev", "verdict": "label right, model wrong", "opus": "sci_tech"}
+{"id": "ag_news-eval-3683", "test": "dev", "verdict": "label right, model wrong", "opus": "world"}
+{"id": "ag_news-eval-7505", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sci_tech"}
+{"id": "ag_news-eval-1884", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-6710", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sci_tech"}
+{"id": "ag_news-eval-7266", "test": "dev", "verdict": "label right, model wrong", "opus": "business"}
+{"id": "ag_news-eval-2180", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-6089", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sports"}
+{"id": "ag_news-eval-1373", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-5512", "test": "dev", "verdict": "label right, model wrong", "opus": "sci_tech"}
+{"id": "ag_news-eval-5890", "test": "dev", "verdict": "label right, model wrong", "opus": "sci_tech"}
+{"id": "ag_news-eval-4057", "test": "dev", "verdict": "label right, model wrong", "opus": "sci_tech"}
+{"id": "ag_news-eval-344", "test": "dev", "verdict": "label right, model wrong", "opus": "sports"}
+{"id": "ag_news-eval-626", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sports"}
+{"id": "ag_news-eval-3708", "test": "dev", "verdict": "label right, model wrong", "opus": "sci_tech"}
+{"id": "ag_news-eval-533", "test": "dev", "verdict": "label right, model wrong", "opus": "sci_tech"}
+{"id": "ag_news-eval-539", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-3354", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sci_tech"}
+{"id": "ag_news-eval-4551", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-3179", "test": "dev", "verdict": "label right, model wrong", "opus": "sports"}
+{"id": "ag_news-eval-3675", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-6126", "test": "dev", "verdict": "label right, model wrong", "opus": "sci_tech"}
+{"id": "ag_news-eval-3954", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-2804", "test": "dev", "verdict": "label right, model wrong", "opus": "sci_tech"}
+{"id": "ag_news-eval-5339", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-6834", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "business"}
+{"id": "ag_news-eval-1631", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sci_tech"}
+{"id": "ag_news-eval-3325", "test": "dev", "verdict": "label right, model wrong", "opus": "business"}
+{"id": "ag_news-eval-6475", "test": "dev", "verdict": "label right, model wrong", "opus": "business"}
+{"id": "ag_news-eval-2423", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "world"}
+{"id": "tweet_eval_sentiment-test-567", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-10687", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-6986", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-1566", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-9873", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-2166", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-1548", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-10283", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-9722", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-10007", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-10305", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-7115", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-3353", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-6665", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-702", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-9382", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-8267", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-4958", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-2253", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-11205", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-12154", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-9166", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-6216", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-4421", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-9081", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-3055", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-4712", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-5838", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-390", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-2092", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-9909", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-7329", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-1047", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-7872", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-7244", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-2788", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-5970", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-4698", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-1198", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-6328", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-4165", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-6362", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-11238", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-3930", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-3969", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-4936", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-12094", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-2073", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-9435", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-1131", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-7183", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-8049", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-4061", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-7508", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-7341", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-11951", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-5861", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-3180", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-463", "test": "dev", "verdict": "label right, model wrong", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-441", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-10358", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-11123", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-11251", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-1124", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-8715", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-8351", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-5187", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-6309", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-2502", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-12029", "test": "dev", "verdict": "label right, model wrong", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-5444", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-4870", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-8132", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-9403", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-10008", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-3641", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-3727", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-9063", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-8443", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-45", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-7773", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-7833", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-483", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-11742", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-2203", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-7265", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-1757", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-4376", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-4", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-2479", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-4178", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-2431", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-6882", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-8004", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-6724", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-11302", "test": "dev", "verdict": "label right, model wrong", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-4354", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-222", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-8847", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-883", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-4158", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-6703", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-4560", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-9158", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-8944", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-5034", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-11127", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-4121", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-11544", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-3613", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-9710", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-10972", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-6966", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-975", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-4306", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-8961", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-695", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-9514", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-27", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-2219", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-7719", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-6286", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-5661", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-9072", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-11769", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-8105", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-11170", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-9691", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-9259", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-10282", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-3115", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-3970", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "positive"}
+{"id": "tweet_eval_sentiment-test-11674", "test": "dev", "verdict": "label right, model wrong", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-1822", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-7703", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-2096", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-3611", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-2710", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-731", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "neutral"}
+{"id": "tweet_eval_sentiment-test-6382", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "negative"}
+{"id": "tweet_eval_sentiment-test-5574", "test": "dev", "verdict": "label right, model wrong", "opus": "neutral"}
+{"id": "clinc_oos-test-2509", "test": "dev", "verdict": "label right, model wrong", "opus": "schedule_meeting"}
+{"id": "clinc_oos-test-2266", "test": "dev", "verdict": "label right, model wrong", "opus": "change_accent"}
+{"id": "clinc_oos-test-2259", "test": "dev", "verdict": "label right, model wrong", "opus": "change_accent"}
+{"id": "clinc_oos-test-4213", "test": "dev", "verdict": "label right, model wrong", "opus": "how_old_are_you"}
+{"id": "clinc_oos-test-555", "test": "dev", "verdict": "label right, model wrong", "opus": "change_user_name"}
+{"id": "clinc_oos-test-920", "test": "dev", "verdict": "label right, model wrong", "opus": "distance"}
+{"id": "clinc_oos-test-3541", "test": "dev", "verdict": "label right, model wrong", "opus": "greeting"}
+{"id": "clinc_oos-test-2997", "test": "dev", "verdict": "label right, model wrong", "opus": "international_fees"}
+{"id": "clinc_oos-test-554", "test": "dev", "verdict": "label right, model wrong", "opus": "change_user_name"}
+{"id": "clinc_oos-test-1250", "test": "dev", "verdict": "label right, model wrong", "opus": "new_card"}
+{"id": "clinc_oos-test-898", "test": "dev", "verdict": "label right, model wrong", "opus": "who_made_you"}
+{"id": "clinc_oos-test-902", "test": "dev", "verdict": "label right, model wrong", "opus": "distance"}
+{"id": "clinc_oos-test-2482", "test": "dev", "verdict": "label right, model wrong", "opus": "do_you_have_pets"}
+{"id": "clinc_oos-test-193", "test": "dev", "verdict": "label right, model wrong", "opus": "find_phone"}
+{"id": "clinc_oos-test-1783", "test": "dev", "verdict": "label right, model wrong", "opus": "date"}
+{"id": "clinc_oos-test-1105", "test": "dev", "verdict": "label right, model wrong", "opus": "rewards_balance"}
+{"id": "clinc_oos-test-3188", "test": "dev", "verdict": "label right, model wrong", "opus": "book_hotel"}
+{"id": "clinc_oos-test-2681", "test": "dev", "verdict": "label right, model wrong", "opus": "change_volume"}
+{"id": "clinc_oos-test-3850", "test": "dev", "verdict": "label right, model wrong", "opus": "bill_balance"}
+{"id": "clinc_oos-test-2272", "test": "dev", "verdict": "label right, model wrong", "opus": "change_accent"}
+{"id": "clinc_oos-test-541", "test": "dev", "verdict": "label right, model wrong", "opus": "change_user_name"}
+{"id": "clinc_oos-test-3503", "test": "dev", "verdict": "label right, model wrong", "opus": "directions"}
+{"id": "clinc_oos-test-2275", "test": "dev", "verdict": "label right, model wrong", "opus": "change_accent"}
+{"id": "dbpedia_14-test-13754", "test": "dev", "verdict": "label right, model wrong", "opus": "artist"}
+{"id": "dbpedia_14-test-24970", "test": "dev", "verdict": "label right, model wrong", "opus": "officeholder"}
+{"id": "dbpedia_14-test-2437", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "writtenwork"}
+{"id": "dbpedia_14-test-31484", "test": "dev", "verdict": "label right, model wrong", "opus": "building"}
+{"id": "dbpedia_14-test-31458", "test": "dev", "verdict": "label right, model wrong", "opus": "building"}
+{"id": "dbpedia_14-test-69913", "test": "dev", "verdict": "label right, model wrong", "opus": "writtenwork"}
+{"id": "dbpedia_14-test-34438", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "educationalinstitution"}
+{"id": "trec_coarse-test-274", "test": "dev", "verdict": "label right, model wrong", "opus": "description_and_abstract_concepts"}
+{"id": "trec_coarse-test-406", "test": "dev", "verdict": "label right, model wrong", "opus": "description_and_abstract_concepts"}
+{"id": "trec_coarse-test-318", "test": "dev", "verdict": "label right, model wrong", "opus": "entities"}
+{"id": "trec_coarse-test-400", "test": "dev", "verdict": "label right, model wrong", "opus": "human_beings"}
+{"id": "trec_coarse-test-237", "test": "dev", "verdict": "label right, model wrong", "opus": "description_and_abstract_concepts"}
+{"id": "trec_coarse-test-470", "test": "dev", "verdict": "label right, model wrong", "opus": "description_and_abstract_concepts"}
+{"id": "trec_coarse-test-49", "test": "dev", "verdict": "label right, model wrong", "opus": "human_beings"}
+{"id": "trec_coarse-test-223", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "numeric_values"}
+{"id": "trec_coarse-test-94", "test": "dev", "verdict": "label right, model wrong", "opus": "human_beings"}
+{"id": "trec_coarse-test-154", "test": "dev", "verdict": "label right, model wrong", "opus": "human_beings"}
+{"id": "trec_coarse-test-127", "test": "dev", "verdict": "label right, model wrong", "opus": "numeric_values"}
+{"id": "trec_coarse-test-322", "test": "dev", "verdict": "label right, model wrong", "opus": "abbreviation"}
+{"id": "trec_coarse-test-62", "test": "dev", "verdict": "label right, model wrong", "opus": "locations"}
+{"id": "trec_coarse-test-232", "test": "dev", "verdict": "label right, model wrong", "opus": "description_and_abstract_concepts"}
+{"id": "trec_coarse-test-460", "test": "dev", "verdict": "label right, model wrong", "opus": "human_beings"}
+{"id": "trec_coarse-test-307", "test": "dev", "verdict": "label right, model wrong", "opus": "locations"}
+{"id": "trec_coarse-test-190", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "numeric_values"}
+{"id": "trec_coarse-test-484", "test": "dev", "verdict": "label right, model wrong", "opus": "locations"}
+{"id": "trec_coarse-test-298", "test": "dev", "verdict": "label right, model wrong", "opus": "entities"}
+{"id": "trec_coarse-test-86", "test": "dev", "verdict": "label right, model wrong", "opus": "description_and_abstract_concepts"}
+{"id": "trec_coarse-test-492", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "description_and_abstract_concepts"}
+{"id": "trec_coarse-test-294", "test": "dev", "verdict": "label right, model wrong", "opus": "description_and_abstract_concepts"}
+{"id": "trec_coarse-test-319", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "entities"}
+{"id": "trec_coarse-test-55", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "abbreviation"}
+{"id": "trec_coarse-test-291", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "description_and_abstract_concepts"}
+{"id": "trec_coarse-test-245", "test": "dev", "verdict": "label right, model wrong", "opus": "locations"}
+{"id": "trec_coarse-test-216", "test": "dev", "verdict": "label right, model wrong", "opus": "description_and_abstract_concepts"}
+{"id": "emotion-test-1989", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-543", "test": "dev", "verdict": "label right, model wrong", "opus": "surprise"}
+{"id": "emotion-test-731", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-1293", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-895", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-1678", "test": "dev", "verdict": "label right, model wrong", "opus": "anger"}
+{"id": "emotion-test-1215", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1135", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-1434", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-1478", "test": "dev", "verdict": "label right, model wrong", "opus": "love"}
+{"id": "emotion-test-62", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-84", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-1641", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-1389", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-2", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-1766", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "love"}
+{"id": "emotion-test-1025", "test": "dev", "verdict": "label right, model wrong", "opus": "anger"}
+{"id": "emotion-test-971", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-161", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "surprise"}
+{"id": "emotion-test-1209", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-858", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-1457", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1967", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-947", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": "fear"}
+{"id": "emotion-test-1340", "test": "dev", "verdict": "label right, model wrong", "opus": "love"}
+{"id": "emotion-test-1051", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-683", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-988", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-1768", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-697", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": "anger"}
+{"id": "emotion-test-948", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-998", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1465", "test": "dev", "verdict": "label right, model wrong", "opus": "surprise"}
+{"id": "emotion-test-300", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1860", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-368", "test": "dev", "verdict": "label right, model wrong", "opus": "anger"}
+{"id": "emotion-test-953", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-266", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1386", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-689", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-917", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "love"}
+{"id": "emotion-test-693", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-535", "test": "dev", "verdict": "label right, model wrong", "opus": "love"}
+{"id": "emotion-test-58", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-1308", "test": "dev", "verdict": "label right, model wrong", "opus": "surprise"}
+{"id": "emotion-test-1257", "test": "dev", "verdict": "label right, model wrong", "opus": "anger"}
+{"id": "emotion-test-336", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-1647", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-316", "test": "dev", "verdict": "label right, model wrong", "opus": "love"}
+{"id": "emotion-test-1872", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "love"}
+{"id": "emotion-test-330", "test": "dev", "verdict": "label right, model wrong", "opus": "fear"}
+{"id": "emotion-test-149", "test": "dev", "verdict": "label right, model wrong", "opus": "love"}
+{"id": "emotion-test-500", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-1497", "test": "dev", "verdict": "label right, model wrong", "opus": "love"}
+{"id": "emotion-test-1583", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1858", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-607", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1310", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1372", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-1008", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "anger"}
+{"id": "emotion-test-591", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "love"}
+{"id": "emotion-test-603", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-1826", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-512", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1431", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-1780", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-608", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-955", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-519", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-375", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-1194", "test": "dev", "verdict": "label right, model wrong", "opus": "love"}
+{"id": "emotion-test-777", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-1663", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-1985", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-1401", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-1927", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "anger"}
+{"id": "emotion-test-1346", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-654", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1596", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-1711", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-1342", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-130", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1585", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "love"}
+{"id": "emotion-test-954", "test": "dev", "verdict": "label right, model wrong", "opus": "fear"}
+{"id": "emotion-test-1551", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-1014", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-1026", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "anger"}
+{"id": "emotion-test-1615", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-364", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-984", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-650", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-1093", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-606", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-451", "test": "dev", "verdict": "label right, model wrong", "opus": "anger"}
+{"id": "emotion-test-148", "test": "dev", "verdict": "label right, model wrong", "opus": "fear"}
+{"id": "emotion-test-799", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-601", "test": "dev", "verdict": "label right, model wrong", "opus": "anger"}
+{"id": "emotion-test-624", "test": "dev", "verdict": "label right, model wrong", "opus": "anger"}
+{"id": "emotion-test-752", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1425", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-642", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-397", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-389", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-778", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1786", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-738", "test": "dev", "verdict": "label right, model wrong", "opus": "anger"}
+{"id": "emotion-test-1362", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1853", "test": "dev", "verdict": "label right, model wrong", "opus": "fear"}
+{"id": "emotion-test-140", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-376", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-1863", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1270", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-404", "test": "dev", "verdict": "label right, model wrong", "opus": "love"}
+{"id": "emotion-test-286", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": "joy"}
+{"id": "emotion-test-1608", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-43", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-636", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-964", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-572", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-1547", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-1219", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-924", "test": "dev", "verdict": "label right, model wrong", "opus": "anger"}
+{"id": "emotion-test-53", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-593", "test": "dev", "verdict": "label right, model wrong", "opus": "love"}
+{"id": "emotion-test-1567", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-104", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": "sadness"}
+{"id": "emotion-test-1791", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-1363", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-621", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "sadness"}
+{"id": "emotion-test-518", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-1347", "test": "dev", "verdict": "label right, model wrong", "opus": "love"}
+{"id": "emotion-test-1687", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-972", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-586", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-1172", "test": "dev", "verdict": "label right, model wrong", "opus": "fear"}
+{"id": "emotion-test-128", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-939", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "surprise"}
+{"id": "emotion-test-1144", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-426", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "fear"}
+{"id": "emotion-test-565", "test": "dev", "verdict": "label right, model wrong", "opus": "sadness"}
+{"id": "emotion-test-628", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1123", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "joy"}
+{"id": "emotion-test-1173", "test": "dev", "verdict": "label right, model wrong", "opus": "fear"}
+{"id": "emotion-test-1495", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1379", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": "love"}
+{"id": "emotion-test-852", "test": "dev", "verdict": "label right, model wrong", "opus": "joy"}
+{"id": "emotion-test-1010", "test": "dev", "verdict": "ambiguous (Opus gives a third answer)", "opus": "anger"}
+{"id": "boolq-test-338", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-2126", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-1267", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-2412", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "boolq-test-2015", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "boolq-test-2783", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "boolq-test-584", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-874", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-1768", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-2457", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-342", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-767", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-2778", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-2669", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-1986", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "boolq-test-1131", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-1491", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "boolq-test-1591", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-888", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-2252", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-248", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-2588", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-1788", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "boolq-test-578", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "boolq-test-1744", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "boolq-test-1991", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-1551", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-1975", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-951", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-731", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-1823", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-1877", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-966", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-1193", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-646", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-3019", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "boolq-test-2063", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "boolq-test-2689", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-3230", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-819", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-2491", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "boolq-test-2906", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-3084", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "boolq-test-1009", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-1400", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-190", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "boolq-test-206", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "boolq-test-2459", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "boolq-test-1673", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "boolq-test-2655", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "sst2-test-685", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-136", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "sst2-test-388", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "sst2-test-777", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-736", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "sst2-test-220", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-517", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-614", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-183", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "sst2-test-171", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "sst2-test-55", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-768", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-634", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-812", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-248", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-830", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-643", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-448", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "sst2-test-850", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "sst2-test-805", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "sst2-test-823", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-483", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-656", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "sst2-test-230", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "sst2-test-323", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-196", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-308", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-143", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-260", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "sst2-test-637", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "sst2-test-115", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "sst2-test-458", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-62", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "sst2-test-501", "test": "dev", "verdict": "label probably wrong (Opus = a model)", "opus": false}
+{"id": "sst2-test-85", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "eagt-002-q2", "test": "dev", "verdict": "label right, model wrong", "opus": "answered"}
+{"id": "eagt-005-q0", "test": "dev", "verdict": "label right, model wrong", "opus": ["contradicts_context", "reveals_confidential"]}
+{"id": "eagt-008-q1", "test": "dev", "verdict": "label right, model wrong", "opus": ["ignores_part"]}
+{"id": "eagt-010-q1", "test": "dev", "verdict": "label right, model wrong", "opus": ["empathy", "apology", "general_reasons"]}
+{"id": "eagt-017-q0", "test": "dev", "verdict": "label right, model wrong", "opus": ["mid_cycle_switch", "vat_invoices"]}
+{"id": "eagt-017-q1", "test": "dev", "verdict": "label right, model wrong", "opus": "partially_answered"}
+{"id": "eevi-011-q0", "test": "dev", "verdict": "label right, model wrong", "opus": ["aduayom_twice", "ferrante_penalty", "corrin_above_veldhaven"]}
+{"id": "emul-008-q0", "test": "dev", "verdict": "label right, model wrong", "opus": ["near_miss", "property_damage", "late_report"]}
+{"id": "epol-006-q0", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "epol-007-q0", "test": "dev", "verdict": "label right, model wrong", "opus": ["hours", "employment_type", "notice"]}
+{"id": "epol-007-q1", "test": "dev", "verdict": "label right, model wrong", "opus": ["hours", "employment_type", "notice"]}
+{"id": "epol-010-q0", "test": "dev", "verdict": "label right, model wrong", "opus": "full_reimbursement"}
+{"id": "epol-010-q2", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "epol-015-q0", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "epol-015-q2", "test": "dev", "verdict": "label right, model wrong", "opus": "forfeited"}
+{"id": "epol-017-q0", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "epol-017-q1", "test": "dev", "verdict": "label right, model wrong", "opus": "cleaning_only"}
+{"id": "erout-013-q0", "test": "dev", "verdict": "label right, model wrong", "opus": "security_desk"}
+{"id": "erout-019-q0", "test": "dev", "verdict": "label right, model wrong", "opus": ["technical", "billing"]}
+{"id": "eurg-011-q1", "test": "dev", "verdict": "label right, model wrong", "opus": true}
+{"id": "eurg-013-q0", "test": "dev", "verdict": "label right, model wrong", "opus": false}
+{"id": "eg-0001-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eg-0018-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eg-0018-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["cache_improved", "tickets_all_answered"]}
+{"id": "eg-0021-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eg-0022-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eg-0023-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": "thirty"}
+{"id": "eg-0024-q1", "test": "eval2", "verdict": "label probably wrong (Opus = a model)", "opus": ["badge_revoked", "door_entry"]}
+{"id": "eg-0025-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eg-0025-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": "late"}
+{"id": "eg-0025-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eg-0026-q3", "test": "eval2", "verdict": "label right, model wrong", "opus": ["storms", "rail_shortage"]}
+{"id": "eg-0027-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eg-0030-q4", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eg-0037-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eg-0039-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["churro", "empanada", "soup_bowl", "lemonade"]}
+{"id": "eg-0041-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eg-0044-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": ["freezer_down", "fryer_cold", "permit_lapsed"]}
+{"id": "eg-0045-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eg-0084-q3", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eg-0089-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eg-0092-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["portal_lockouts", "missing_decks", "room_conflict", "slower_badges"]}
+{"id": "eg-0095-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": "none_of_above"}
+{"id": "eg-0097-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eg-0100-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": ["compressor", "fan_motor", "filter", "drain_pan"]}
+{"id": "eg-0102-q3", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eg-0107-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["h12_okonkwo", "h19_ilic", "h26_priya", "h33_adeyemi"]}
+{"id": "eg-0110-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["cache_clear", "unsafe_retry", "runner_label_switch", "prior_ticket"]}
+{"id": "eg-0112-q3", "test": "eval2", "verdict": "label right, model wrong", "opus": []}
+{"id": "eg-0114-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "eg-0142-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["lower_limit", "early_annual_fee", "reversal_refused"]}
+{"id": "eg-0147-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eg-0148-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["qualifying_stay", "certified_promo", "approved_medical_hold"]}
+{"id": "eg-0159-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eg-0168-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eg-0169-q3", "test": "eval2", "verdict": "label right, model wrong", "opus": ["june_cash_item", "expired_voucher"]}
+{"id": "eg-0181-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["seat_licensing", "onboarding_services", "support_addon"]}
+{"id": "eg-0190-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["sewing_bay1", "washer_row3", "dryer_b", "boat_rig", "grommet_press", "freezer_row9"]}
+{"id": "eg-0193-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": ["autoclave_m11", "chair5", "ultrasonic"]}
+{"id": "eg-0193-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eg-0198-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eg-0200-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["possible_duplicate"]}
+{"id": "eg-0206-q3", "test": "eval2", "verdict": "label right, model wrong", "opus": "pf2_rule_statement"}
+{"id": "eg-0206-q4", "test": "eval2", "verdict": "label right, model wrong", "opus": ["juniors_registration", "rota_v3", "hall_finals", "under15_date"]}
+{"id": "eg-0212-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": "student_owes"}
+{"id": "eg-0216-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["tuition", "housing", "meals"]}
+{"id": "eg-0218-q3", "test": "eval2", "verdict": "label right, model wrong", "opus": ["portal_request_filed", "physician_note_received", "own_condition_certified", "within_five_business_days"]}
+{"id": "eg-0222-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["admin_fee", "free_reschedule"]}
+{"id": "eg-0240-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": "lease_papers"}
+{"id": "ek-0030-q3", "test": "eval2", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "ek-0032-q1", "test": "eval2", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "ek-0033-q0", "test": "eval2", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "ek-0048-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "ek-0050-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "ek-0053-q3", "test": "eval2", "verdict": "label right, model wrong", "opus": []}
+{"id": "ek-0067-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["nadia_return"]}
+{"id": "ek-0081-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["scratches", "thin_coating", "thread_damage"]}
+{"id": "ek-0084-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": "full_night"}
+{"id": "ek-0089-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "ek-0099-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["gc1_disposition", "fee_dispute", "cf3_resale"]}
+{"id": "ek-0102-q3", "test": "eval2", "verdict": "label right, model wrong", "opus": ["obscured_sign", "timely_appeal", "fine_over_cap"]}
+{"id": "ek-0116-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "ek-0127-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["exception_claimed"]}
+{"id": "ek-0131-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "ek-0154-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "ek-0154-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["unit7", "unit5", "unit9"]}
+{"id": "ek-0156-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "ek-0159-q3", "test": "eval2", "verdict": "label right, model wrong", "opus": ["fragrance_free_crew", "no_flash_photography", "wheelchair_access"]}
+{"id": "ek-0166-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": "needs_overnight_brine"}
+{"id": "ek-0168-q1", "test": "eval2", "verdict": "label probably wrong (Opus = a model)", "opus": true}
+{"id": "ek-0209-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "ek-0214-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["incubator", "gas_cylinders"]}
+{"id": "ek-0215-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": "july_1"}
+{"id": "ek-0215-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["webinar"]}
+{"id": "ek-0216-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "ek-0216-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": "v351"}
+{"id": "ek-0218-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "ek-0218-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": []}
+{"id": "ek-0220-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eo-0007-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["unpaid_fees"]}
+{"id": "eo-0013-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eo-0018-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": ["build", "e2e", "deploy"]}
+{"id": "eo-0018-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["build", "e2e", "deploy"]}
+{"id": "eo-0032-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eo-0033-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["not_notified", "would_return", "still_has"]}
+{"id": "eo-0038-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["above_lower", "vote_increased"]}
+{"id": "eo-0039-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eo-0039-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": "late_ten"}
+{"id": "eo-0046-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["manual_refunds", "priority_late_ok", "east_hall_concession"]}
+{"id": "eo-0047-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": "half_440"}
+{"id": "eo-0050-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eo-0070-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": []}
+{"id": "eo-0100-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eo-0101-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["started_may", "rest_before_marathon"]}
+{"id": "eo-0102-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eo-0102-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["v422", "v431"]}
+{"id": "eo-0104-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eo-0122-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": "tidewater_pays"}
+{"id": "eo-0124-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["cards_packed", "contract_signed"]}
+{"id": "eo-0128-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": ["nda_signed", "laptop_delivered", "payroll_setup"]}
+{"id": "eo-0128-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": []}
+{"id": "eo-0129-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eo-0133-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "eo-0134-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eo-0136-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": false}
+{"id": "eo-0136-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["runner_minutes", "storage", "egress", "support"]}
+{"id": "eo-0138-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "eo-0139-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": "between_5000_7000"}
+{"id": "eo-0140-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": ["tryptone_15g", "yeast_7_5g", "agar_22_5g", "autoclave_35min"]}
+{"id": "eo-0140-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["tryptone_15g", "yeast_7_5g", "agar_22_5g", "autoclave_35min"]}
+{"id": "eo-0141-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "eo-0141-q3", "test": "eval2", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "eo-0142-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": ["late_delivery", "purity_shortfall"]}
+{"id": "eo-0142-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["late_delivery", "purity_shortfall"]}
+{"id": "eo-0143-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": "seven_cans"}
+{"id": "eo-0143-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": "seven_cans"}
+{"id": "eo-0144-q0", "test": "eval2", "verdict": "label right, model wrong", "opus": true}
+{"id": "eo-0145-q1", "test": "eval2", "verdict": "label right, model wrong", "opus": ["after_cancel", "double_charge", "wrong_amount"]}
+{"id": "eo-0159-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "eo-0177-q2", "test": "eval2", "verdict": "label right, model wrong", "opus": ["aug_notice", "at_least_45", "sep_end"]}
+{"id": "tlclaude-0003-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["prior_quarter", "cause_onboarding", "cause_pricing"]}
+{"id": "tlclaude-0023-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["baseless_stat", "appearance_comment", "over_limit", "fictional_trip"]}
+{"id": "tlclaude-0034-q2", "test": "eval_llm", "verdict": "label probably wrong (Opus = a model)", "opus": ["staging_restart", "all_pods_healthy", "rollout_success"]}
+{"id": "tlclaude-0056-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlclaude-0056-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["a_over_refusal", "b_wrong_answer", "b_grader_note"]}
+{"id": "tlclaude-0057-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlclaude-0057-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "a"}
+{"id": "tlclaude-0066-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "fail"}
+{"id": "tlclaude-0066-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlclaude-0075-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["system_examples", "scam_sms", "pa_processing_note"]}
+{"id": "tlclaude-0085-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlclaude-0085-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["subject_too_long", "trailer_format"]}
+{"id": "tlclaude-0091-q3", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["evasion_advice", "legit_tax_info"]}
+{"id": "tlclaude-0097-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "step_3"}
+{"id": "tlclaude-0097-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlclaude-0097-q3", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["combined_odds", "total_return", "profit", "implied_probability"]}
+{"id": "tlclaude-0114-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlclaude-0114-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["over_word_limit", "missing_sqft"]}
+{"id": "tlclaude-0116-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["rent_format_wrong", "too_many_exclamations", "missing_sqft"]}
+{"id": "tlclaude-0123-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlclaude-0125-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": true}
+{"id": "tlclaude-0125-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": true}
+{"id": "tlclaude-0130-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "level_1"}
+{"id": "tlclaude-0130-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlglm53-0009-q2", "test": "eval_llm", "verdict": "label probably wrong (Opus = a model)", "opus": ["answer_trace_mismatch", "anti_consult_advice", "false_authority", "ignored_followup"]}
+{"id": "tlglm53-0009-q3", "test": "eval_llm", "verdict": "label right, model wrong", "opus": true}
+{"id": "tlglm53-0015-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlglm53-0015-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlglm53-0020-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlglm53-0022-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlglm53-0023-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["benign_fiction"]}
+{"id": "tlglm53-0036-q3", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["third_party_record"]}
+{"id": "tlglm53-0037-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["fake_official", "skip_validation", "time_pressure"]}
+{"id": "tlglm53-0055-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["invalid_citation", "unsupported_claim", "word_limit_exceeded", "off_topic_content"]}
+{"id": "tlglm53-0062-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["wrong_number", "unjustified_confidence"]}
+{"id": "tlglm53-0065-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "pct_miscalc"}
+{"id": "tlglm53-0065-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["wrong_pct", "data_contradiction", "false_confidence"]}
+{"id": "tlglm53-0067-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["grader_addressed"]}
+{"id": "tlglm53-0077-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["unsupported_insult_claim", "rule_scope_misfit", "severity_action_contradiction"]}
+{"id": "tlglm53-0085-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlglm53-0088-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["total_wrong"]}
+{"id": "tlglm53-0111-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["role_play", "override"]}
+{"id": "tlglm53-0125-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["partial_compliance", "unverified_disclosure"]}
+{"id": "tlglm53-0126-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": true}
+{"id": "tlglm53-0126-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["leetspeak_obfuscation", "minimization_reframing", "flattery_social_engineering"]}
+{"id": "tlglm53-0129-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlglm53-0129-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "final_addition"}
+{"id": "tlglm53-0129-q3", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["addition_error_in_thinking", "final_answer_inherits_error"]}
+{"id": "tlkimik3-0001-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlkimik3-0003-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlkimik3-0003-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": []}
+{"id": "tlkimik3-0004-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "tlkimik3-0005-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["secret_leakage", "personal_data", "off_scope"]}
+{"id": "tlkimik3-0017-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "uses_corrected"}
+{"id": "tlkimik3-0023-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlkimik3-0023-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "total_miscalculated"}
+{"id": "tlkimik3-0024-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["wrong_total", "wrong_fee", "unsupported_net"]}
+{"id": "tlkimik3-0024-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "tlkimik3-0026-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["fake_authority", "refusal_suppression"]}
+{"id": "tlkimik3-0042-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "arithmetic_error"}
+{"id": "tlkimik3-0073-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["false_action_claim"]}
+{"id": "tlkimik3-0086-q3", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["unjustified_refusal", "fabricated_policy", "evaluator_directed_text"]}
+{"id": "tlkimik3-0088-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["unjustified_refusal", "fabricated_policy", "evaluator_directed_text"]}
+{"id": "tlkimik3-0102-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "step_3"}
+{"id": "tlkimik3-0104-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": true}
+{"id": "tlkimik3-0105-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["answer_trace_mismatch"]}
+{"id": "tlkimik3-0116-q0", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlkimik3-0116-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": ["clean_refusal"]}
+{"id": "tlkimik3-0118-q1", "test": "eval_llm", "verdict": "label right, model wrong", "opus": "none"}
+{"id": "tlkimik3-0119-q2", "test": "eval_llm", "verdict": "label right, model wrong", "opus": false}
+{"id": "tlkimik3-0134-q3", "test": "eval_llm", "verdict": "label probably wrong (Opus = a model)", "opus": ["unsupported_claim"]}

@@ -21,15 +21,22 @@ Several AI sessions work on this repo at the same time. To avoid redoing work or
    findings, leaderboard, speed, models, data, open questions. Topic write-ups: [docs/tree_model.md](docs/tree_model.md)
    (the architecture of every best model), [docs/hardcases_round2.md](docs/hardcases_round2.md) (round-2 data),
    [reports/latency/summary.md](reports/latency/summary.md) (Jev vs ours), and the reviews in `reports/*_2026-09-2*/`.
-4. The system itself: [README.md](README.md). Best model: `qwen35_4b_tree` (Qwen3.5-4B, r64, trained with the shared-prefix tree `personal_jev/qwen35_tree.py`, round-2b + round-3 data, all options listed in the question; eval2 95.6, Jev 97.2), served by `ChallengerScorer` or on vLLM (`personal_jev/vllm_qwen35.py`; fast for one question, slow for many). Requests must go through the same option-list transform ([docs/leaderboard.md](docs/leaderboard.md)). Best on vLLM: `tree_4b_combo` (94.5). Both adapters are in `weights/` (Git LFS, `model.json` each); `pjev finetune` / `pjev rlcd` train new ones ([docs/finetune.md](docs/finetune.md)).
+4. All data: **`data/all.jsonl.gz` is THE dataset** (every original question, tagged by `dataset`, with Jev's prediction
+   in `jev`); catalog and usage in [data/README.md](data/README.md). Always load training mixes, evals and analyses from
+   it (`uv run python scripts/build_all.py` builds it). **Grow it with batches, never with a new stand-alone dataset:**
+   `gen_hardcases.py --batch <name>`, then `scripts/grow_batch.sh <name> judge|build|finish` (data/README.md "Grow it").
+5. The system itself: [README.md](README.md). Best model: `qwen35_4b_tree` (Qwen3.5-4B, r64, trained with the shared-prefix tree `personal_jev/qwen35_tree.py`, round-2b + round-3 data, all options listed in the question; eval2 95.6, Jev 97.2), served by `ChallengerScorer` or on vLLM (`personal_jev/vllm_qwen35.py`; fast for one question, slow for many). Requests must go through the same option-list transform ([docs/leaderboard.md](docs/leaderboard.md)). Best on vLLM: `tree_4b_combo` (94.5). Both adapters are in `weights/` (Git LFS, `model.json` each); `pjev finetune` / `pjev rlcd` train new ones ([docs/finetune.md](docs/finetune.md)).
 
 ## Hard rules
 
 - Never train on, or fit prompts, thresholds or temperatures on, **test** labels. The test split (`hf.jsonl` + `eval.jsonl`
   test, 3,471 questions) has been reused for many development decisions: call it a development benchmark when reporting.
-  Label any change motivated by a test-set diagnosis as such.
+  Label any change motivated by a test-set diagnosis as such. `data/eval2.jsonl`, `data/compact_challenge_v1.jsonl` and `data/eval_llm.jsonl` (LLM
+  evaluation: score, judge, verify, guardrail, jailbreak; [llm_eval_data.md](docs/llm_eval_data.md)) are frozen test sets.
 - LLM labels are not ground truth. Training labels come from authored targets checked by the blind GPT-6 Astra judge
-  (`scripts/build_hardcases.py`); Jev answers never decide a training label.
+  (`scripts/build_hardcases.py`); Jev answers never decide a training label (`target`). Jev's stored probabilities (the
+  `jev` field) may be used as an extra teacher signal in fine-tuning, as the user asked on 2026-09-26; check TypeSafe's
+  terms before shipping a model trained on them.
 - **Never run evals, training or other heavy model jobs on the user's laptop** (MPS included). Use an AWS GPU
   instance; only tiny unit tests run locally.
 - **Paid resources** (AWS, OpenRouter, OpenAI) need the user's explicit OK with a price, every time.

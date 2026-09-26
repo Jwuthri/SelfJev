@@ -8,6 +8,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
+| **Retrain from scratch** (user OK ≈ $21 incl. the batch): Qwen3.5-4B, new LoRA r64, lr 2e-4, 1 epoch on 80,093 non-test questions, texts up to 16K tokens (`--max-length 16384 --batch-tokens 16384 --grad-accum 2`; the 8K default dropped 2,548, mostly round-3 long texts; restarted at 12:40) of `data/all.jsonl.gz` (incl. `llm_multilabel_v1` and `numdate_neg_v1`), target 0.5 × label + 0.5 × Jev; eval2, dev benchmark and eval_llm, + eval_llm for `qwen35_4b_tree` and B (`scripts/jev_soft_box.sh scratch`). Other sessions: please don't launch a second retrain | fork (RLCD session) | AWS us-east-2 g6e.2xlarge `i-07c6e6d8cb3d6316b` "selfjev-jev-scratch" (own SG + key pair) | 11:59 PDT 2026-09-26 | ≈ 22:40 PDT (1,803 steps × 17.6 s; the 16K texts add ~28% tokens); power-off cap moved to 00:21 PDT, terminate on shutdown |
 | T5Gemma matched round-2b: correcting decoder-only targeting bug; full encoder+decoder retraining, then same-L40S controls; H100 unavailable | Codex tree latency/compact | original master; Ohio L40S `i-087b024b35cff657b` ($3.00424/h) | 2026-09-24 UTC | cap 2026-09-24 14:38:54 UTC; collect/terminate earlier |
 | **owner unknown**: "selfjev-challengers-20260924" | not this session, fork or fork 2 (a Codex session?). Owner: add yourself here | AWS `i-03916322f7dd879be` g6e.4xlarge, `i-0683c5909b7440e8f` g5.4xlarge | 20:27–20:51 | ? |
 
@@ -15,6 +16,11 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | item | cost | who |
 |---|---|---|
+| AWS: Jev soft targets C (RLCD + confident-mistake cost) g6e.2xlarge `i-0a89de33e08abb323` us-east-2, 15:08–22:14 UTC 2026-09-26 (7.1 h), terminated; SG and key pair deleted | ≈ $15.90 | fork |
+| `numdate_neg_v1` batch: Luna $0.28 (OpenAI API) + Astra batch judge $2.78 + Jev $0.02 | $3.08 | fork |
+| AWS: Jev soft targets A (RLCD) g6e.2xlarge `i-0e27aba020500d7fa` us-east-2, 08:49–16:03 UTC 2026-09-26 (7.2 h), terminated; SG and key pair deleted | ≈ $16.20 | fork |
+| AWS: Jev soft targets B (fine-tune) g6e.2xlarge `i-0d55a59b8f27aee18` us-east-2, 08:47–14:48 UTC 2026-09-26 (6.0 h), terminated; SG and key pair deleted | ≈ $13.50 | fork |
+| AWS: H100 latency sweep, p5.4xlarge **spot** `i-046f7d9cd8bde18bd` us-east-2b at $2.544/h, 08:15–08:43 UTC 2026-09-26 (28 min), terminated; SG and key pair deleted; + Jev calls $0.02 | ≈ $1.20 | fork 2 |
 | AWS: Qwen3.5 box `i-0c4633f37c41491d5` g5.xlarge us-east-1, 18:33–23:16 UTC (4.7 h), terminated; SG and key pair deleted (two earlier g6e launch attempts found no capacity, $0) | ≈ $4.75 | SelfJev state of play |
 | AWS: RLCD test box `i-05354315b38ac654d` g6e.2xlarge (L40S) us-east-2, 03:56–06:42 UTC 09-26 (2.8 h), terminated; SG and key pair deleted | ≈ $6.20 | fork |
 | AWS: `tree_4b_combo` box g5.xlarge us-east-1, 09-24 11:59–23:38, terminated; SG and key pair deleted | ≈ $11.70 | fork |
@@ -28,6 +34,10 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 | AWS: 10 learning-curve runs on 8 g5.xlarge | ≈ $23 | fork 2 |
 | AWS: tree LoRA-capacity ablation, 2 g5.xlarge, 21:05–21:46 and 21:05–21:59 | ≈ $1.60 | fork 2 |
 | AWS: combined levers (r2b data + r=64 / + MLP), 2 g5.xlarge, 00:17–02:38 and 00:17–03:10 | ≈ $5.26 | fork 2 |
+| `llm_multilabel_v1` batch: writing $26.60 + Astra judge $42.36 (both sessions) | $68.96 (approved ≈ $60, cap $70) | Synthetic data generation strategy |
+| Test-failure audit: Opus 5.5 relabel of 968 failed test questions | $4.92 |
+| Jev predictions for `llm_multilabel_v1` | $0.30 | Synthetic data generation strategy |
+| Jev predictions for every question of data/all.jsonl.gz (33,707 new texts) | $1.95 | Synthetic data generation strategy |
 | LLM-evaluation data: training writing $37.09 + Astra batch judge $37.95; `eval_llm` test writing $15.55 + Astra $3.39 + Sonnet 5 $2.37 + Jev $0.03 | $96.38 (approved ≈ $100) | Synthetic data generation strategy |
 | Round-2 hard-case generation (OpenRouter) + blind Astra judge (OpenAI batch) + Jev second opinion | $22.86 + $36.24 + $0.27 | Synthetic data generation strategy |
 | Latency sweep: Jev calls $0.04 + AWS g5.xlarge `selfjev-latency` 20:16–21:09 (52 min, terminated) ≈ $0.87 | ≈ $0.91 | fork |
@@ -44,6 +54,266 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-26 15:15 PDT: C: RLCD with a confident-mistake cost: 8 confident mistakes on eval2 (Jev 7), but only by being less sure overall; at equal coverage no better than B (fork)
+
+- What: `pjev rlcd --reward log=1,brier=1,spherical=1,confident_miss=5` from B's result (`runs/qwen35_4b_tree_sft_jevall/adapter_last`),
+  the same 69,528 questions, Jev targets (0.5), lr 2e-5, KL 0.2, 1,230 steps, one L40S. `confident_miss`: −1 for every decision
+  ≥ 0.9 sure that the target says is wrong, not differentiable, so only the sampled-report policy gradient can optimize it.
+- Results (final checkpoint; best-by-validation was step 0, B itself):
+
+  | eval2 (1,991 q) | accuracy (paired vs start) | Brier | ECE | wrong decisions | ≥ 0.9 sure | mean confidence when wrong |
+  |---|---|---|---|---|---|---|
+  | `qwen35_4b_tree` (start) | 95.58 | 0.0480 | 0.0051 | 99 | 30 | 0.755 |
+  | B: fine-tune on Jev targets | 95.73 (19 / 16, p = 0.74) | **0.0438** | 0.0245 | 94 | 14 | 0.708 |
+  | **C: B + RLCD with a 5× confident-mistake cost** | 95.68 (24 / 22, p = 0.88; vs B 9 / 10, p = 1) | 0.0518 | 0.0431 | 96 | **8** | 0.690 |
+  | Jev | 97.24 | 0.0335 | 0.0406 | 57 | 7 | 0.670 |
+  
+  | dev benchmark (3,471 q) | accuracy | Brier | ECE | wrong decisions | ≥ 0.9 sure | mean confidence when wrong |
+  |---|---|---|---|---|---|---|
+  | `qwen35_4b_tree` (start) | 84.44 | 0.1787 | 0.0056 | 582 | 83 | 0.686 |
+  | B | 84.41 | 0.1820 | 0.0127 | 603 | 75 | 0.693 |
+  | **C** | 84.41 (vs B 17 / 17) | 0.1835 | 0.0298 | 597 | **48** | 0.672 |
+  | Jev | 82.71 | 0.2105 | 0.0444 | 708 | 253 | 0.791 |
+
+- Reading:
+  - The cost does what a fine-tune cannot: confident mistakes 14 → 8 on eval2 (Jev 7) and 75 → 48 on the dev benchmark (Jev
+    253), mean confidence when wrong 0.690 (Jev 0.670), ECE 0.043 (Jev 0.041), at the same accuracy (vs B 9 / 10 and 17 / 17).
+  - The price is sharpness: Brier 0.0438 → 0.0518 on eval2 (worse than the start's 0.0480), because the model also backs off
+    on answers it gets right. B has the best probabilities; C has Jev's caution.
+  - The first RLCD result that differs from fine-tuning, and only because its reward is a decision cost, not a proper score.
+  - **Correction (same day, equal-coverage check):** At equal coverage (acting on the same share of decisions), C is no better than B: its 8 confident mistakes at ≥ 0.9 come from being ≥ 0.9 sure on only 77% of decisions (B 88.8%, Jev 87.7%). A higher threshold on B gives the same trade for free. B ranks better than the original at every coverage; Jev ranks far better (8 mistakes at 92% coverage, B 20).
+
+    | mistakes among the k most confident decisions (eval2, 3,491) | 70% | 77% | 85% | 88% | 92% |
+    |---|---|---|---|---|---|
+    | `qwen35_4b_tree` | 3 | 8 | 14 | 16 | 29 |
+    | B | 4 | **5** | **9** | 13 | **20** |
+    | C | 4 | 8 | 10 | 12 | 24 |
+    | Jev | 3 | 3 | 4 | 7 | 8 |
+
+- Files: `reports/qwen35_4b_tree_cost_jevall__last/`, logs and train_meta in `reports/rlcd_jev_2026-09-26/`, adapter
+  `runs/qwen35_4b_tree_cost_jevall/adapter_last`.
+- Cost: ≈ $15.90 (L40S, 7.1 h). Box terminated; SG and key pair deleted.
+- Next: the from-scratch retrain (In flight) can get the same C stage afterwards; a smaller weight (`confident_miss=2`) may keep more
+  of B's Brier.
+
+### 2026-09-26 12:05 PDT: `numdate_neg_v1` built: 549 verified double-negation, number and date questions ($3.08) (fork)
+
+- Why: the eval2 failure audit (`reports/audit_2026-09-26/AUDIT.md`): our real errors vs Jev's on double negation 7 vs 1,
+  temporal 28 vs 21, numeric 26 vs 18. **Motivated by a test-set diagnosis**: the writer saw only the abstract trap names.
+- What: `gen_hardcases.py --batch numdate_neg_v1 --round3 --traps double_negation,numeric_reasoning,temporal_reasoning`
+  (new `--traps`: only those focus traps, balanced, one per question on every tier), GPT-6 Luna through the OpenAI API:
+  264 texts, 643 questions, 8 to 8K tokens, tiers balanced. Blind Astra batch judge: author = judge 93.0% (double negation
+  97.9, numeric 91.0, temporal 90.8). Strict build + test-overlap guard: **549 kept** (train 508, validation 41; binary 273,
+  multiclass 169, multilabel 107). Moderation: 0 of 264 texts flagged. Jev column added: Jev right on 92.9%.
+- `data/all.jsonl.gz` now 89,592 questions, all with `jev`.
+- Cost: Luna $0.28 + Astra $2.78 + Jev ≈ $0.02 = $3.08.
+- Next: the from-scratch retrain on every non-test question (80,093 incl. `llm_multilabel_v1` and this batch), In flight.
+
+### 2026-09-26 11:19 PDT: test-failure audit complete; eval2 labels are sound, our real gaps vs Jev are distractors and multi-positive; Jev on the multilabel batch ($2.72)
+
+- Owner: Synthetic data generation strategy. The OpenRouter limit was raised by the user.
+- Jev step of `llm_multilabel_v1`: $0.30, 0 errors; all 89,043 rows of `data/all.jsonl.gz` now have `jev`. Jev gets 86.1% of
+  the batch's multilabel questions exactly right (eval2 multilabel EM: 94.2): the batch is hard for Jev too.
+- Audit part 2 (`scripts/audit_failures.py`, Opus 5.5 blind, $2.42; total audit $4.92): all 968 failed test questions
+  relabelled. `reports/audit_2026-09-26/AUDIT.md`.
+  - **eval2: 114 of 119 failures are real model errors**; 5 proposed label errors: `eg-0024-q1` clear (Opus 0.9, = ours), four
+    debatable Kimi-written binary questions phrased "Which is true about …?" (Opus 0.5-0.6). eval2 stays frozen; errata list
+    in `errata_candidates.jsonl`.
+  - Our real eval2 errors (86): by trap distractor 33, multi_positive 28, temporal 28, numeric 26, paraphrase 17, exception 13,
+    role_reversal 11; by type multilabel 37, binary 30, multiclass 19; very hard 43, hard 35, simple 8. Jev's real errors (50):
+    temporal 21, numeric 18, distractor 13, multi_positive 13. **Where we lose most to Jev: distractors (33 vs 13), multi-positive
+    multilabel (28 vs 13), long texts (8 vs 2), double negation (7 vs 1), role reversal (11 vs 5).** Temporal and numeric
+    reasoning are weak for both.
+  - eval_llm (Jev only; ours not scored yet): 68 of 71 Jev failures are real; worst traps multi_positive 21, numeric 20,
+    flawed_step 14, benign_lookalike 12, judge_injection 10.
+  - Dev benchmark: 317 of 778 failures (41%) look like label problems (both models wrong: 224 of 362); real errors sit in
+    subjective public sets (emotion, tweet sentiment, SST-2, BoolQ): not a data-generation target.
+- This is a test-set diagnosis: any data built from it is labelled as such, the generator only sees abstract pattern
+  descriptions, and eval_llm (not mined for our errors) is the clean check.
+- Next (proposed, needs OKs): retrain with `llm_multilabel_v1` first (it already targets near-miss distractors and
+  multi-positive), then a small temporal/numeric batch if those errors remain.
+
+### 2026-09-26 09:14 PDT: `llm_multilabel_v1` built: 7,570 verified LLM-oriented multilabel questions ($68.96, cap $70)
+
+- Owner: Synthetic data generation strategy (a fork of it also worked on this batch by mistake, then handed it back; its
+  parts are counted here). Why: multilabel is the largest gap (eval2 multilabel EM 90.1 vs Jev 94.2); our best model's
+  wrong multilabel answers on eval2 mostly add a near-miss candidate (26 of 38).
+- What: `gen_hardcases.py --usecases train --multilabel --batch llm_multilabel_v1` (every question multilabel, 4-8
+  candidates, ≥ 2 near-miss negatives and ≥ 1 implicit positive per question, 0 / 1 / 4+ positives spread, LLM question menus
+  per use case). Writers: Luna 2,460 questions (1,065 through the OpenAI API directly, fork's `--openai`), Gemini 3.8 Flash
+  1,726 sync + 4,652 through Google's Batch API (`scripts/gen_gemini_batch.py`, first live use, 3 jobs), Grok 4.7 448
+  (stopped on the user's call). Blind Astra batch judge on 9,286 questions: 89.7% agree (Gemini batch 92.0, Gemini sync 91.9,
+  Grok 91.1, Luna 83.5).
+- Kept (strict build, overlap guards): **7,570 questions** (train 6,803 / validation 767), `data/batches/llm_multilabel_v1.jsonl`,
+  now in `data/all.jsonl.gz`. Use cases 1,436-1,591 each; positives 0: 1,057, 1: 1,160, 2: 1,815, 3: 1,596, 4: 1,490,
+  5+: 452; 5.0 candidates on average. Multilabel training questions in the combined file: 15,776 → 22,579.
+- Safety: moderation screen (free) flagged 254 of 4,364 texts; all read; 11 removed from the raw files and the raw outputs
+  (self-harm method details, an assistant reply encouraging suicide, a graphic torture scene). Kept: harmful requests,
+  injections, crisis messages without method details, insults, fantasy violence.
+- Incidents: the OpenRouter key hit its monthly limit (403) and the account ran out of credits (402) mid-run; Gemini moved
+  to Google's Batch API (half price, ≈ $2.3 per 1K questions vs ≈ $7 through OpenRouter) and Luna to the OpenAI API. The
+  first Grok writer died when the fork stopped it; `gen_gemini_batch.py` collect crashed on a bare string (fixed by the fork);
+  Gemini-batch rows are tagged `synthetic:google-batch/`.
+- Cost: writing $26.60 (Gemini sync $12.01, Grok $5.21, Luna $1.14, Gemini batch $8.24) + Astra judge $42.36 = $68.96.
+  Pending: Jev predictions for the batch (≈ $0.30), blocked by the OpenRouter limit.
+- Next: retrain with it (AWS, needs a price OK) and compare multilabel EM on eval2 and eval_llm.
+
+### 2026-09-26 09:10 PDT: Jev's probabilities as soft targets on all data: the fine-tune halves confident mistakes on eval2; RLCD adds nothing over it (fork)
+
+- What (user request: RLCD with soft targets, "we kinda distill Jev", on all the data): from `weights/qwen35_4b_tree`,
+  one epoch over 69,528 non-test questions of `data/all.jsonl.gz` (every train and validation row of hardcases,
+  hardcases_r3, hardcases_llm, hf and synthetic, minus the model's 1,200-question validation sample and 2,446 questions
+  over 8K; `scripts/jev_soft_targets.py`). Target: 0.5 × verified label + 0.5 × Jev's probabilities (`--soft-weight
+  0.5`: the label stays the argmax, so Jev never decides a label). A = `pjev rlcd` (log + Brier + spherical, 8 samples,
+  sd 0.3, KL 0.2), B = `pjev finetune` (soft cross-entropy), both lr 2e-5, 1,230 steps, one L40S each
+  (`scripts/jev_soft_box.sh`). No H100 capacity in us-east-2, us-east-1 or us-west-2.
+- Jev on these questions: probability of the verified answer ≥ 0.9 on 77.3%, 0.5–0.9 on 14.8%, < 0.5 on 7.8%.
+- Results, final checkpoints. Best-by-validation picked step 0 in both runs (hard-label validation loss and Brier
+  penalize hedging); both boxes re-scored it and got the start's 95.58 / 84.44 exactly
+  (kept outside the ledger: `runs/rlcd_jev_start_recheck/`).
+
+  | eval2 (1,991 q) | accuracy (paired vs start) | Brier | ECE | wrong decisions | ≥ 0.9 sure | mean confidence when wrong |
+  |---|---|---|---|---|---|---|
+  | `qwen35_4b_tree` (start) | 95.58 | 0.0480 | 0.0051 | 99 | 30 | 0.755 |
+  | A: RLCD on Jev targets | 95.43 (15 / 18, p = 0.73) | 0.0446 | 0.0119 | 100 | 22 | 0.724 |
+  | **B: fine-tune on Jev targets** | **95.73** (19 / 16, p = 0.74) | **0.0438** | 0.0245 | 94 | **14** | 0.708 |
+  | Jev | 97.24 | 0.0335 | 0.0406 | 57 | 7 | 0.670 |
+
+  | dev benchmark (3,471 q) | accuracy (paired vs start) | Brier | ECE | wrong decisions | ≥ 0.9 sure | mean confidence when wrong |
+  |---|---|---|---|---|---|---|
+  | `qwen35_4b_tree` (start) | 84.44 | 0.1787 | 0.0056 | 582 | 83 | 0.686 |
+  | A: RLCD on Jev targets | 84.50 (76 / 74, p = 0.93) | 0.1816 | 0.0113 | 593 | 88 | 0.701 |
+  | B: fine-tune on Jev targets | 84.41 (87 / 88, p = 1) | 0.1820 | 0.0127 | 603 | 75 | 0.693 |
+  | Jev | 82.71 | 0.2105 | 0.0444 | 708 | 253 | 0.791 |
+
+- Reading:
+  - Soft targets deliver the hedging hard labels could not: confident mistakes on eval2 30 → 14 (Jev 7), mean
+    confidence when wrong 0.755 → 0.708, Brier −9%, at the same accuracy (eval2 +0.15, p = 0.74: multiclass 96.8 →
+    97.5, binary 96.9 → 96.8, multilabel EM 90.1 → 90.3). The dev benchmark is flat (84.41 vs 84.44; 83 → 75 confident
+    mistakes, Brier slightly worse).
+  - ECE rises (0.005 → 0.025) by design: the model keeps some doubt on answers it gets right, as Jev does (0.041).
+  - RLCD on the same targets moved less (KL anchor, noisier gradient) and beats the fine-tune on nothing but ECE: A vs
+    B 4 / 10 on eval2 (p = 0.18), 25 / 22 on the dev benchmark (p = 0.77). Expected: its three rewards peak at the same
+    target as the fine-tune's cross-entropy.
+- Files: reports `reports/qwen35_4b_tree_{rlcd,sft}_jevall__last/`; logs, box logs, train_meta
+  `reports/rlcd_jev_2026-09-26/`; adapters (not in `weights/`) `runs/qwen35_4b_tree_{rlcd,sft}_jevall/adapter_last`.
+- Cost: A ≈ $16.20 (7.2 h), B ≈ $13.50 (6.0 h), Jev $0 (already in `all.jsonl.gz`). Boxes terminated; SGs and key
+  pairs deleted, including those of the failed H100 attempts.
+- Verdict: Jev's soft targets are the useful part; RLCD's sampling adds nothing when the reward is a proper score of
+  the same target. Running (user request): C = RLCD from B's result with a 5× cost per confident mistake
+  (`--reward log=1,brier=1,spherical=1,confident_miss=5`), the one reward a fine-tune cannot express.
+
+### 2026-09-26 08:59 PDT: test-failure audit, part 1: on the public dev-benchmark rows, 43% of failures look like label problems ($2.50)
+
+- Owner: Synthetic data generation strategy (user request). `scripts/audit_failures.py`: every test question that
+  `qwen35_4b_tree` or Jev gets wrong (968 questions in 926 texts: eval2 119, dev benchmark 778, eval_llm 71 Jev-only), blind
+  relabel by Claude Opus 5.5 (effort medium, never sees the label or any model answer), then sorted.
+- **Partial:** 602 texts relabelled, all public-set rows of the dev benchmark; the OpenRouter key then hit its monthly limit
+  (403) and the account ran out of credits (402), so eval2, eval_llm, the authored eval rows and 155 public rows are pending.
+- Result (`reports/audit_2026-09-26/AUDIT.md`), 602 dev-benchmark failures: label right / probably wrong / ambiguous =
+  ours only 82 / 21 / 7, Jev only 124 / 59 / 29, **both wrong 71 / 180 / 29**. Of 260 proposed label errors, 84 are clear
+  (Opus confidence ≥ 0.8; mostly tweet sentiment 27, GoEmotions 21, AG News 11, emotion 10) and 176 debatable. Spot checks:
+  genuinely subjective public labels ("i do feel stressed": sadness vs fear; an Iraq stock exchange story: world vs business).
+- Verdict so far: when both models miss a public-set question, the label is usually the problem. Real errors of ours cluster
+  in tweet sentiment (42), emotion (32), GoEmotions multilabel (23), TREC (18), CLINC (13): subjective public sets, not a
+  data-generation target. The target-task sets (eval2, eval_llm) are the ones still to audit.
+- Errata candidates for human review: `reports/audit_2026-09-26/errata_candidates.jsonl`; frozen files unchanged.
+
+### 2026-09-26 01:50 PDT: the speed gap was hardware: on one H100 the 4B tree beats Jev's server time (fork 2 session)
+
+- User-approved open idea D (spot first, then on-demand, then g7e). The spot p5.4xlarge (1× H100 80 GB) was fulfilled
+  at the first try in us-east-2b at $2.544/h (spot placement score 9/10 that morning; every 2026-09-24 launch had failed).
+  Box `i-046f7d9cd8bde18bd`, DLAMI Ubuntu 22.04 (driver 595.91.07), vLLM 0.30.0, torch 2.13+cu130. Setup to servers up:
+  9 min. Terminated 08:43 UTC; SG and key pair deleted; nothing of this session runs in AWS.
+- What ran: `tree_4b_combo` merged (`vllm_tree merge`), served on vLLM in bf16 (:8002) and with `--quantization fp8`
+  (:8003, new flag on `vllm_tree serve` and `scripts/eval_vllm.py`), both resident (0.42 of the GPU each); the same
+  latency sweep as before from the Mac through an SSH tunnel (`scripts/latency_sweep.py sweep`, 10 rounds, Jev in
+  random order with ours; `reports/latency/requests_h100.jsonl`); then eval2 through vLLM in both precisions and the
+  batched throughput benchmark. RTT: OpenRouter 11 ms, box 61 ms.
+- Latency, p50 ms, wall at the client / server inside the box (Jev: inside OpenRouter):
+
+  | text tokens | questions | Jev | A10G (09-24) | L40S (09-25) | H100 bf16 | H100 FP8 |
+  |---|---|---|---|---|---|---|
+  | 8 | 1 | 130 / 110 | 125 / 55 | 158 / 36 | 140 / 22 | 139 / 22 |
+  | 512 | 1 | 135 / 115 | 204 / 136 | 177 / 55 | 149 / 30 | 146 / 29 |
+  | 2,048 | 1 | 132 / 110 | 429 / 361 | 244 / 121 | 164 / 47 | 163 / 46 |
+  | 4,096 | 1 | 142 / 122 | 770 / 698 | 356 / 228 | 200 / 82 | 195 / 75 |
+  | 8 | 16 | 140 / 117 | 471 / 401 | 199 / 135 | 179 / 58 | 175 / 56 |
+  | 512 | 16 | 145 / 123 | 566 / 496 | 279 / 163 | 166 / 76 | 190 / 71 |
+  | 2,048 | 16 | 153 / 134 | 882 / 808 | 342 / 268 | 186 / 120 | 231 / 114 |
+  | 4,096 | 16 | 156 / 134 | 1,336 / 1,263 | 505 / 424 | 250 / 189 | 245 / 179 |
+
+  - Inside the machine the H100 is 2–5× faster than Jev's server time in every cell but 4,096 tokens × 16 questions
+    (189 vs 134 ms). End to end we trail by 10–100 ms: the 61 ms hop to Ohio against 11 ms to OpenRouter's edge.
+  - FP8 changes nothing: the 4B is overhead-bound on an H100 at these sizes. Fit, one question, server-side: ours
+    ≈ 20 ms + ≈ 15 ms per 1,000 text tokens (≈ 68K tokens/s); Jev 132–137 ms + 2.2–2.6 ms per 1,000 (≈ 400K tokens/s).
+    Jev's per-token cost is still ≈ 6× lower, so a smaller model or more GPUs per request; below 4K tokens the fixed
+    costs decide.
+- Accuracy of the serving paths on eval2 (`reports/tree_4b_combo/eval2_vllm_h100{,_fp8}`; transformers reference 94.48):
+  vLLM bf16 **94.42** (5 of 1,991 decisions differ, 3 / 2), vLLM FP8 **94.48** (25 differ, 9 / 9; multilabel EM 86.6 vs
+  85.9). FP8 costs no accuracy. All 1,991 questions in 18 s (bf16) and 16 s (FP8); the A10G took 144 s.
+- Throughput, GPU fully busy (`reports/latency/throughput_h100.json`, cost at $2.63/h in the table; actual spot $2.54):
+  294 requests/s at 8 tokens × 1 question ($0.0025 per 1,000 vs Jev $0.016), 105 req/s at 512 × 1 ($0.007 vs $0.038),
+  5.9 req/s at 4,096 × 16 ($0.124 vs $0.265). Cheaper than Jev in every cell, 2.1–6.5×, on spot. At the on-demand
+  price ($6.88/h) multiply ours by 2.6: still below Jev everywhere except within 10% at 4,096 × 16.
+- Verdict: **the speed gap was hardware, not architecture.** No speed-driven architecture work is needed; speed is a
+  deployment question (H100-class GPU, placement near the client). The open work is accuracy (memo proposals A–C, E).
+- Process notes: (1) `pkill -f "<pattern>"` inside an `ssh host '<command>'` kills the remote shell itself when the
+  pattern appears in the command string, and vLLM's EngineCore child keeps the GPU memory after its parent dies: free
+  the GPU by `nvidia-smi --query-compute-apps=pid` PIDs instead. (2) vLLM 0.30 aborts at interpreter exit after the
+  throughput run ("terminate called without an active exception") once results are written; harmless.
+- Cost ≈ $1.20 (spot 28 min $1.18 + Jev $0.02). Docs updated: findings 19–21, speed.md (new H100 section), ledger
+  conclusion 11, open idea D done, landscape, next, the memo.
+
+### 2026-09-26 01:34 PDT: Jev's prediction on all 81,473 questions; one dataset that grows by batches ($1.95)
+
+- Owner: Synthetic data generation strategy. User: store Jev's probabilities once per row (no recompute, usable for
+  fine-tuning); always use one dataset and grow it instead of creating a new one each time.
+- Jev: `scripts/jev_predictions.py --call` answered the 33,707 texts not in any cache, $1.95, 0 errors; with the 16,543
+  cached questions every row of `data/all.jsonl.gz` now has `jev` (P(yes) or per-candidate probabilities, answer,
+  confidence, correct, version `typesafe/jev-1.13-20260917`). Stored in `data/jev/predictions.jsonl` + `data/jev/cache.jsonl`.
+- Jev vs our labels (from the stored rows; test sets for reporting only): hf 75.2, synthetic 99.0, round 2 95.7, round 3
+  96.4, hardcases_llm 94.9, eval 96.7, eval2 97.2, eval_llm 92.5, compact challenge 100.0. Checks: dev benchmark 82.7 and
+  eval2 97.2 equal the reports. **Caveat for distillation:** on the public sets Jev disagrees with the human labels on
+  a quarter of the questions, so a Jev teacher term would pull against the gold labels there.
+- Growth: `gen_hardcases.py --batch <name>` writes `data/batches/<name>/raw`; `scripts/grow_batch.sh <name>
+  judge|build|finish` judges blind, builds strict with overlap guards and a moderation screen, adds Jev predictions and
+  rebuilds; `build_all.py` discovers `data/batches/*.jsonl` by itself. BoolQ curve rows moved out of the combined file
+  (BoolQ is a held-out dev-benchmark family). AGENTS.md, README, docs/data.md, data/README.md and memory updated.
+
+### 2026-09-26 01:23 PDT: Jev's prediction stored per question (`jev` field in data/all.jsonl.gz), 16.5K from cache ($0)
+
+- Owner: Synthetic data generation strategy; the user wants Jev's probabilities stored once per row, to stop recomputing
+  them and to use them for fine-tuning. `scripts/jev_predictions.py` writes `data/jev/predictions.jsonl` (id, P(yes) or
+  per-candidate probabilities, answer, confidence, correct, Jev version, request hash); `build_all.py` joins it as `jev`.
+- Free pass: 16,543 questions recovered from the caches of earlier Jev runs (dev-benchmark test, round-2 judge, eval2,
+  eval_llm). Check: Jev on the dev benchmark 82.7% and eval2 97.2% from the stored rows, identical to the reports.
+- Missing: 67,930 questions in 36,707 texts (hf train/val/cal, synthetic, round 3, hardcases_llm, BoolQ curve, eval
+  val/cal, compact challenge, 6 changed eval_llm rows), estimated ≈ $2.12. Awaiting the user's price OK.
+
+### 2026-09-26 01:18 PDT: one catalog and one file for all our data ($0)
+
+- Owner: Synthetic data generation strategy; the user found the data scattered. `scripts/build_all.py` writes
+  `data/all.jsonl.gz` (every original question once, 84,473 from 10 datasets, each row tagged `dataset`, own `split`
+  kept; 85 MB, gitignored, rebuildable) and the generated catalog [data/README.md](../data/README.md): what each
+  dataset is, used as (training / dev benchmark / frozen test), questions, texts, splits, types, sha256, and the
+  derived files left out on purpose (hardcases_nb, ova, ptr, curve subsets, distill, teacher, fixtures).
+- `personal_jev.data` reads `.gz` and accepts the `dataset` field, so `load(["data/all.jsonl.gz"])` works.
+- Linked from README, AGENTS.md and docs/data.md. Rerun the script after adding a dataset (edit its DATASETS list).
+
+### 2026-09-26 01:10 PDT: LLM-evaluation data made safe: strict labels, moderation review, PII fix. Now 9,443 training / 946 test ($0)
+
+- Owner: Synthetic data generation strategy; the user asked for these data to be safe. Supersedes the counts of the
+  entry below. Details: [llm_eval_data.md](llm_eval_data.md#safety-passes-2026-09-26-the-user-asked-for-safe-data).
+- Labels: `--strict` in `build_hardcases.py` and `build_eval2.py` drops a whole text when any of its questions was
+  flagged by a judge (training −897 sibling questions, test −160).
+- Content: all 4,732 sources through OpenAI moderation (free, `scripts/moderate_texts.py`); the 169 flagged texts were
+  read. 11 more texts removed (13 in all): working attack code, weapon and hazmat smuggling tips, a step-by-step fraud
+  plan, self-harm encouragement, self-harm method details. Raw files edited and tracked generation caches scrubbed.
+- PII: 7 SSN-shaped numbers in issuable ranges rewritten to the never-issued group `00`; no public figures.
+- Result: `data/hardcases_llm.jsonl` **9,443** questions / 3,654 texts (sha256 `b694f5a0…`), `data/eval_llm.jsonl`
+  **946** questions / 317 texts (sha256 `6cfc3e16…`). Jev on eval_llm **92.5%** (verify 86.7, multilabel EM 81.3).
 
 ### 2026-09-25 23:45 PDT: first RLCD test: no gain in accuracy or calibration (fork session)
 

@@ -32,7 +32,9 @@ say so. Numbers come from the files named in each row; the ensemble and confiden
    about half of peak, is ≈ 0.6B dense parameters per H100 or ≈ 1.4B per B200, twice that in FP8, more with tensor
    parallelism. So a model of at most a few billion parameters (or an MoE with that many active), not a trick that
    skips tokens. The 113–136 ms floor at 8 tokens is a network hop plus a batching queue, not compute, and the p95
-   says the same: their model is a small part of their latency.
+   says the same: their model is a small part of their latency. **Confirmed on 2026-09-26:** the same 4B tree on one
+   H100 is faster than Jev inside the machine at every request size (server-side 22–82 ms vs 110–122 ms, one question);
+   Jev's per-token cost stays ≈ 6× lower, so it is smaller or spread over more GPUs, but the flat curve is hardware.
 4. **Trained on frontier-model judgments, not on public human labels.** On the dev benchmark Jev scores 82.7 like
    every 4B of ours, and its multilabel exact match there is 40.1 against our 57.6: it never learned GoEmotions- or
    TweetEval-style conventions. Its reference answers are frontier averages, and eval2 keeps only questions where two
@@ -119,10 +121,22 @@ From [eval2/ensembles.md](eval2/ensembles.md), nothing fitted:
 ### D. Measure the speed gap on the right hardware before redesigning for speed
 
 The A10G is compute-bound at 6.5–10K tokens/s. An H100 in FP8 is 15–20× that, so a 4B tree at 4K tokens × 16
-questions should land near 100 ms server-side (an estimate to verify, not a result). AWS had no H100 in three
-regions; RunPod lists H100 SXM at $3.49/h and H200 at $4.59/h (secure cloud, low stock, read 2026-09-25). One hour
-of the existing sweep (`scripts/latency_sweep.py`, vLLM bf16 and FP8) ≈ $5 tells whether a smaller model is
-needed at all for latency, or only better hardware. It should run before any speed-driven architecture work.
+questions should land near 100 ms server-side (an estimate to verify, not a result). **AWS only** (the user's
+rule, 2026-09-26: no RunPod). On 2026-09-24 every p5.4xlarge (1× H100 80 GB) launch failed for capacity. On
+2026-09-26 the free signals are better: the account's P-instance quota is 768 vCPUs (us-east-1/us-west-2) and 384
+(us-east-2); the spot placement score for p5.4xlarge is 9/10 in us-east-2 (1/10 elsewhere), and 9/10 for
+g7e.4xlarge (1× RTX PRO 6000 Blackwell, 96 GB, $4.00/h on demand) in us-east-1; spot p5.4xlarge trades at ≈ $2.63/h,
+on demand ≈ $6.88/h. Only a launch confirms capacity; a failed launch costs nothing. Plan: spot or on-demand
+p5.4xlarge in us-east-2 with no AZ pinned, then g7e.4xlarge in us-east-1; the existing sweep
+(`scripts/latency_sweep.py`) with `tree_4b_combo` merged on vLLM, bf16 then `--quantization fp8`, plus an eval2 check
+of the FP8 path; ≈ 1.5–2 h ≈ $5 spot / ≈ $12 on demand. If no launch succeeds, D stops. It should run before any
+speed-driven architecture work.
+
+**Result (2026-09-26, p5.4xlarge spot in us-east-2, ≈ $2.54/h):** the speed gap was hardware. Server-side the H100
+answers in 22–82 ms for one question and 58–189 ms for 16 (Jev 110–134 ms); end to end we trail by 10–100 ms, which
+is the 61 ms network hop against OpenRouter's 11 ms. FP8 adds nothing. Table and details:
+[docs/speed.md](../docs/speed.md#the-same-model-on-an-h100-2026-09-26). No speed-driven architecture work is needed;
+proposals A–C and E are about accuracy.
 
 ### E. Bidirectional state, causal branches (prefix-LM), a pilot
 
@@ -142,5 +156,5 @@ FlexAttention do). One LoRA run ≈ $5 on the round-2b mix, after A.
 
 1. C, threshold on validation, decide whether to ship a cascade: $0.
 2. A + B, one run: code (about a day) + ≈ $12.
-3. D: ≈ $5.
+3. ~~D~~ done 2026-09-26 (≈ $1.20): the speed gap was hardware; see the result under D.
 4. E: ≈ $5, after A.

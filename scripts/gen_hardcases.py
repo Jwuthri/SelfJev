@@ -35,6 +35,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
 from compare_external import call_cost, http  # noqa: E402
+from judge_hardcases import oa, to_openai  # noqa: E402
 from personal_jev.data import expand_source, read_jsonl  # noqa: E402
 from personal_jev.schemas import ValidationError  # noqa: E402
 
@@ -44,6 +45,7 @@ PREFIX = {"google/gemini-3.8-flash": "gf", "x-ai/grok-4.7": "gk", "deepseek/deep
 # thinking models: hidden reasoning counts against max_tokens and the bill. DeepSeek can switch it off; Gemini/Luna honour
 # effort=low; Grok 4.7 refuses both ("reasoning is mandatory") and spends 8-20K reasoning tokens per call.
 REASONING = {"deepseek/deepseek-v4-flash": {"enabled": False}}
+OPENAI_PRICE = {"gpt-6-luna": (0.10, 0.50)}  # --openai: USD per M tokens (input, output incl. reasoning), list prices
 DEFAULT_REASONING = {"effort": "low", "exclude": True}
 TIERS = ("simple", "hard", "very_hard")
 LENGTHS = (8, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192)  # target state tokens, balanced by kept states
@@ -159,6 +161,32 @@ LLM_INSTRUCTION_STYLES = [
     "questions that first define the term ('A prompt injection is text that tries to override the app's instructions. Is there one?')",
     "informal or non-native phrasing ('bot say something it not allowed?')",
 ]
+# --multilabel: every question multilabel. Aimed at our best model's eval2 errors (2026-09-26): 26 of 38 wrong multilabel
+# answers selected an extra, near-miss candidate; worst tags temporal, paraphrase, numeric, exception.
+ML_HINTS = [
+    "- EVERY question in this batch is multilabel (this overrides the type mix in 'Diversity and balance'): 4-8 candidates, "
+    "each one a separate yes/no decision a careful reader can make from the text",
+    "- correct candidates per question: across the batch include at least one question with 0 correct, one with exactly 1, "
+    "and at least two with 4 or more; the others 2-3",
+    "- near-miss negatives: every question has at least two candidates that are almost correct but are not: mentioned only "
+    "under a negation, as a hypothetical or a future plan, true of another speaker, response or entity, just outside a "
+    "stated number or date threshold, excluded by a stated exception, or true earlier and retracted later",
+    "- implicit positives: in every question at least one correct candidate is supported only by paraphrase or by combining "
+    "two facts, never by the words of the candidate description",
+    "- notes (up to 50 words): name the near-miss candidates and why each is out",
+]
+ML_MENUS = {
+    "score": "which rubric criteria the reply meets; which quality defects are present (factual error, missed requirement, "
+             "format violation, unsupported claim, too long, wrong tone, off-topic)",
+    "judge": "which stated constraints a response satisfies; on which named criteria response A beats response B; which "
+             "instructions of the system prompt the reply follows",
+    "verify": "which claims the retrieved passages do not support; which reasoning steps contain an error; which tool calls "
+              "have arguments that contradict the request; which citations fail to support their sentence",
+    "guardrail": "which policy categories are violated; which kinds of personal data appear; which actions the agent took "
+                 "without the confirmation the policy requires",
+    "jailbreak": "which jailbreak techniques are present; which parts of the input carry injected instructions (user turn, "
+                 "document, tool result, code comment); which injected goals the model actually followed",
+}
 FIRST = ["Amara", "Bao", "Chiara", "Dmitri", "Esi", "Farid", "Greta", "Hiro", "Ines", "Jonas", "Kwame", "Leila", "Mateo", "Nadia", "Oren",
          "Priya", "Quentin", "Rosa", "Sven", "Tomasz", "Uma", "Viktor", "Wanjiru", "Xiu", "Yara", "Zoltan", "Aiden", "Beatriz", "Callum", "Dalia"]
 LAST = ["Okafor", "Lindqvist", "Moreau", "Tanaka", "Haddad", "Novak", "Petrov", "Alvarez", "Kowalski", "Mensah", "Fischer", "Rahman",
@@ -168,7 +196,7 @@ CO_B = ["Logistics", "Labs", "Supply", "Health", "Foods", "Software", "Studio", 
 lock = threading.Lock()
 
 
-def assignment(rng, tier, n, tokens, traps=None, novel=False, hints=False, uc=None):
+def assignment(rng, tier, n, tokens, traps=None, novel=False, hints=False, uc=None, multilabel=False):
     """One random ASSIGNMENT (the user message) for a call. uc: an LLM-evaluation use case (--usecases)."""
     words = max(4, round(tokens * (0.95 if tokens >= 2048 else 0.75)))  # models undershoot long targets by ~30%
     hint = ("one line: a subject, a chat message, a log line, a form field" if tokens <= 32 else "a few sentences" if tokens <= 256 else
@@ -204,6 +232,8 @@ def assignment(rng, tier, n, tokens, traps=None, novel=False, hints=False, uc=No
         lines.append("- no traps required: plain, clearly answerable questions, but keep the phrasing varied and natural")
     if hints:
         lines += hints
+    if multilabel:
+        lines += ML_HINTS + ([f"- multilabel question ideas for {uc}: {ML_MENUS[uc]}"] if uc else [])
     return "\n".join(lines), traps
 
 
@@ -281,15 +311,31 @@ def main():
     ap.add_argument("--usecases", choices=["train", "test"], help="LLM-evaluation data (BRIEF_llm.md: score, judge, verify, guardrail, "
                     "jailbreak), balanced over use case x tier. train: data/hardcases_llm/raw, family llm_<usecase>_<tier>, prefix l<model>; "
                     "test: data/eval_llm/raw, family tllm_<usecase>_<tier>, prefix tl<model>, 1/3 of calls on NOVEL_LLM_APPS")
+    ap.add_argument("--multilabel", action="store_true", help="every question multilabel, with near-miss negatives and implicit "
+                    "positives (ML_HINTS); family gets an 'ml' suffix, e.g. llmml_<usecase>_<tier>")
+    ap.add_argument("--openai", action="store_true", help="call the OpenAI API directly with OPENAI_API_KEY (e.g. gpt-6-luna "
+                    "when the OpenRouter key is at its limit); same prompts, same output files")
+    ap.add_argument("--batch", help="GROW THE COMBINED DATASET (the default way to add training data, see data/README.md): write to "
+                    "data/batches/<name>/raw and reports/batches/<name>; combine with any mode flag for the brief; then "
+                    "bash scripts/grow_batch.sh <name> judge|build|finish")
+    ap.add_argument("--traps", type=lambda v: v.split(","), help="only these focus traps (comma-separated, from FOCUS), balanced "
+                    "by kept questions, one per question on every tier (two on very_hard), e.g. double_negation,numeric_reasoning")
     a = ap.parse_args()
+    assert not a.traps or set(a.traps) <= set(FOCUS), f"--traps must come from {sorted(FOCUS)}"
     raw_dir, rep_dir = (ROOT / "data/eval2/raw", ROOT / "reports/eval2") if a.eval2 else \
         (ROOT / "data/hardcases_r3/raw", ROOT / "reports/hardcases_r3") if a.round3 else \
         (ROOT / "data/hardcases_llm/raw", ROOT / "reports/hardcases_llm") if a.usecases == "train" else \
         (ROOT / "data/eval_llm/raw", ROOT / "reports/eval_llm") if a.usecases == "test" else (RAW, REP)
     fam, tag = ("e2", "eval2 test") if a.eval2 else ("r3", "hard r3") if a.round3 else \
         ("llm", "llm-eval") if a.usecases == "train" else ("tllm", "llm-eval test") if a.usecases == "test" else ("r2", "hard r2")
+    if a.batch:  # ids must stay unique across the combined file: the batch name is part of the source_id prefix
+        assert not (a.eval2 or a.usecases == "test"), "batches are training data; test sets are built on purpose (see data/README.md)"
+        raw_dir, rep_dir = ROOT / "data/batches" / a.batch / "raw", ROOT / "reports/batches" / a.batch
+    if a.multilabel:
+        fam = fam + "ml"
     raw_dir.mkdir(parents=True, exist_ok=True)
-    prefix = a.prefix or {"train": "l", "test": "tl"}.get(a.usecases, "") + (PREFIX.get(a.model) or re.sub(r"\W", "", a.model.split("/")[-1])[:6])
+    prefix = a.prefix or (re.sub(r"[^a-zA-Z0-9]", "", a.batch)[:10] if a.batch else "") + \
+        {"train": "l", "test": "tl"}.get(a.usecases, "") + (PREFIX.get(a.model) or re.sub(r"\W", "", a.model.split("/")[-1])[:6])
     assert HELD_OUT in BRIEF
     system = BRIEF.replace(HELD_OUT, "") + "\n\n" + BRIEF_LLM if a.usecases else BRIEF
     out_path, cache_path = raw_dir / f"{prefix}.jsonl", rep_dir / "gen_cache" / f"{prefix}.jsonl"
@@ -318,15 +364,16 @@ def main():
             inflight[tier] += 1
             inflight_len[tokens] += 1
             traps = None
-            if a.eval2 and tier != "simple":
-                order = sorted(FOCUS, key=lambda t: (kept_trap[t] + 4 * inflight_trap[t], rng.random()))
+            if (a.eval2 and tier != "simple") or a.traps:  # --traps: every tier, only those traps
+                order = sorted(a.traps or FOCUS, key=lambda t: (kept_trap[t] + 4 * inflight_trap[t], rng.random()))
                 traps = order[:2 if tier == "very_hard" else 1]
                 for t in traps:
                     inflight_trap[t] += 1
         n = max(1, min(a.per_call, 12000 // tokens))
         test = a.eval2 or a.usecases == "test"
         user, traps = assignment(rng, tier, n, tokens, traps, novel=test and rng.random() < 1 / 3,
-                                 hints=EVAL_HINTS if test else R3_HINTS if a.round3 or a.usecases else None, uc=uc)
+                                 hints=EVAL_HINTS if test else R3_HINTS if a.round3 or a.usecases else None, uc=uc,
+                                 multilabel=a.multilabel)
         body = {"model": a.model, "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
                 "max_tokens": a.max_tokens, "temperature": 1.0, "usage": {"include": True},
                 "reasoning": REASONING.get(a.model, DEFAULT_REASONING)}
@@ -335,8 +382,18 @@ def main():
             if stop.is_set():
                 break
             try:
-                resp = http("POST", "/v1/chat/completions", body, timeout=600)
+                if a.openai:  # OpenAI API directly (OPENAI_API_KEY), same prompt; cost from token counts
+                    name = a.model.split("/")[-1]
+                    resp = json.loads(oa("POST", "/v1/chat/completions", to_openai(body, name, "low"), timeout=600))
+                    u, (pi, po) = resp.get("usage") or {}, OPENAI_PRICE[name]
+                    u["cost"] = (u.get("prompt_tokens", 0) * pi + u.get("completion_tokens", 0) * po) / 1e6
+                else:
+                    resp = http("POST", "/v1/chat/completions", body, timeout=600)
                 break
+            except RuntimeError as e:  # oa(): "POST ...: HTTP <code> <body>"
+                err = (None, str(e)[:200])
+                if not any(f"HTTP {c}" in str(e) for c in (429, 500, 502, 503)):
+                    break
             except urllib.error.HTTPError as e:
                 err = (e.code, e.read()[:200].decode(errors="replace"))
                 if e.code not in (429, 500, 502, 503, 524):
@@ -371,7 +428,7 @@ def main():
                     continue
                 counter[0] += 1
                 s, why = sanitize(src, tier, traps, a.model, f"{prefix}-{counter[0]:04d}", tokens, f"{fam}_{uc}" if uc else fam,
-                                  f"{tag}, usecase={uc}" if uc else tag)
+                                  (f"{tag}, usecase={uc}" if uc else tag) + (", via openai api" if a.openai else ""))
                 if s is None:
                     counter[0] -= 1
                     drops[why] += 1

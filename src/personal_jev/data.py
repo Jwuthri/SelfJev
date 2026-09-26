@@ -1,4 +1,5 @@
 """JSONL examples: one (state, question, target) per line. See README "Data format"."""
+import gzip
 import hashlib
 import json
 import sys
@@ -9,7 +10,7 @@ from .schemas import ValidationError, parse_question
 
 SPLITS = ("train", "validation", "calibration", "test", "dev")
 REQUIRED = {"id", "source_id", "family", "provenance", "state", "question", "target"}
-OPTIONAL = {"split", "hard_cases", "paraphrase_group", "notes"}
+OPTIONAL = {"split", "hard_cases", "paraphrase_group", "notes", "dataset", "jev"}  # dataset, jev: data/all.jsonl.gz
 
 
 def validate_example(ex: dict):
@@ -67,7 +68,7 @@ def expand_source(src: dict) -> list[dict]:
 
 
 def read_jsonl(path) -> list[dict]:
-    with open(path) as f:
+    with (gzip.open(path, "rt", encoding="utf-8") if str(path).endswith(".gz") else open(path)) as f:
         return [json.loads(line) for line in f if line.strip()]
 
 
