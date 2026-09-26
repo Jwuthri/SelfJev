@@ -671,6 +671,12 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
     list) and nothing at 1 question. The A10G is still the limit.
 - Cost: g5.xlarge 11:58–15:02 ≈ $3.10 (terminated; SG and key pair deleted) and Jev $0.02.
 
+### 2026-09-24 12:40 PDT: docs site glossary and hover definitions (cloud session; $0)
+
+- New `docs/glossary.md` (test sets, data rounds, trap tags, models, run-name decoder, metrics, services) in the top nav.
+- Hover tooltips for shorthand on every page: `docs/.includes/abbreviations.md`, auto-appended by `pymdownx.snippets`.
+  Add a line there when a new term appears on the site.
+
 ### 2026-09-24 11:50 PDT: docs site and cleanup (cloud session, branch `claude/modest-shannon-epq8g4`; $0, nothing run)
 
 - **What:** every finding of the project, formatted as a docs site built with Zensical from `docs/` (`zensical.toml`,
