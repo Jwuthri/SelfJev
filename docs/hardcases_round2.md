@@ -18,7 +18,7 @@ Written 2026-09-24. Everything below is measured; paths point at the evidence. T
 - The public-set-heavy test split (3,300 of 3,471 questions) cannot see trap improvements; per-trap n is 6–107.
   A larger frozen target-task test set is the prerequisite for the next decisions ([experiments.md](experiments.md), open ideas).
 
-## Generation ([scripts/gen_hardcases.py](../scripts/gen_hardcases.py), prompt [data/hardcases/BRIEF.md](../data/hardcases/BRIEF.md))
+## Generation ([scripts/data/gen_hardcases.py](../scripts/data/gen_hardcases.py), prompt [data/hardcases/BRIEF.md](../data/hardcases/BRIEF.md))
 
 One OpenRouter call = one random ASSIGNMENT drawn by the script: difficulty tier (simple / hard / very_hard, balanced
 1/3 each by kept questions), 1–2 focus traps weighted by the gap to Jev, domain (20), three genres (of 20), tone (8),
@@ -39,7 +39,7 @@ Diversity check on the OpenRouter part: 45/30/25% binary/multiclass/multilabel p
 label), multilabel positives 0/1/2/3+ = 114/253/479/228. Tags: distractor 978, role reversal 561, sarcasm 548,
 negation 540, numeric 532, injection 478, temporal 419.
 
-## Judging ([scripts/judge_hardcases.py](../scripts/judge_hardcases.py))
+## Judging ([scripts/data/judge_hardcases.py](../scripts/data/judge_hardcases.py))
 
 GPT-6 Astra, reasoning low, blind (state + instruction + candidates only), same prompt and JSON schema as the test
 comparison, through **OpenAI's Batch API** (OpenRouter's batch endpoint answers 401 "Batch requests require a concrete
@@ -90,9 +90,9 @@ Newly wrong CLINC questions: 34, all predicted `none`, mean max probability 0.61
 ## Rerunning
 
 ```bash
-zsh -ic 'uv run python scripts/gen_hardcases.py --model openai/gpt-6-luna --budget 2 --max-questions 3000'  # resumes counters
-zsh -ic 'uv run python scripts/judge_hardcases.py --jev'          # judges every raw source not yet submitted; never run two at once
-uv run python scripts/build_hardcases.py                         # other session's build: keeps author = judge, leakage guard
+zsh -ic 'uv run python scripts/data/gen_hardcases.py --model openai/gpt-6-luna --budget 2 --max-questions 3000'  # resumes counters
+zsh -ic 'uv run python scripts/data/judge_hardcases.py --jev'     # judges every raw source not yet submitted; never run two at once
+uv run python scripts/data/build_hardcases.py                    # other session's build: keeps author = judge, leakage guard
 ```
 
 Raw responses and per-call logs (`reports/hardcases/gen_cache/`, `gen_log.jsonl`) were removed in the 2026-09-27 cleanup

@@ -1,14 +1,14 @@
 """Audit the test questions our best model or Jev gets wrong: blind relabel by Claude Opus 5.5, then sort each failure
 into "label right, model wrong", "label probably wrong" or "ambiguous", and look for patterns in the real errors.
 
-  zsh -ic 'uv run python scripts/audit_failures.py relabel --limit 40'   # PAID (user OK): pilot, then without --limit
-  uv run python scripts/audit_failures.py report                         # free: reports/audit_2026-09-26/AUDIT.md
+  zsh -ic 'uv run python scripts/eval/audit_failures.py relabel --limit 40'   # PAID (user OK): pilot, then without --limit
+  uv run python scripts/eval/audit_failures.py report                         # free: reports/audit_2026-09-26/AUDIT.md
 
 - Failures: eval2 and the dev benchmark (hf + eval test) where `qwen35_4b_tree` or Jev is wrong; eval_llm where Jev is wrong
   (our models are not scored on it yet). Ours from reports/qwen35_4b_tree/{eval2,test}/report.json, Jev from the `jev`
   field of data/all.jsonl.gz.
 - Opus sees the text, the question and the candidates only (never the target nor any model answer): the protocol and
-  policy of our blind judges (judge_hardcases.run_sync, compare_external.llm_request), reasoning effort medium, one call
+  policy of our blind judges (selfjev.data.providers: run_sync, llm_request), reasoning effort medium, one call
   per text with its failed questions. Cached, so reruns never pay twice.
 - Opus 5.5 wrote a third of eval2 and eval_llm: on those rows it may side with its own label. Label errors are only
   proposed (errata list for a human), never written into the frozen test sets.
@@ -17,12 +17,12 @@ into "label right, model wrong", "label probably wrong" or "ambiguous", and look
 import argparse
 import gzip
 import json
-import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
+from selfjev.data.providers import run_sync
+
+ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / "reports/audit_2026-09-26"
 MODEL = "anthropic/claude-opus-5.5"
 OURS = {"eval2": "reports/qwen35_4b_tree/eval2/report.json", "dev": "reports/qwen35_4b_tree/test/report.json"}
@@ -57,8 +57,6 @@ def failures():
 
 
 def relabel(a):
-    from judge_hardcases import run_sync
-
     fails = failures()
     groups = defaultdict(list)
     for r in fails:

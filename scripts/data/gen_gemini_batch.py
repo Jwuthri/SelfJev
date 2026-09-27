@@ -1,10 +1,10 @@
 """Write a data batch with Gemini through Google's Batch API (50% of the interactive price, results within 24 h).
 
-  zsh -ic 'uv run python scripts/gen_gemini_batch.py submit --batch <name> --calls 400 [--usecases train] [--multilabel] [--round3]'
-  zsh -ic 'uv run python scripts/gen_gemini_batch.py collect --batch <name>'      # poll, download, write \
+  zsh -ic 'uv run python scripts/data/gen_gemini_batch.py submit --batch <name> --calls 400 [--usecases train] [--multilabel] [--round3]'
+  zsh -ic 'uv run python scripts/data/gen_gemini_batch.py collect --batch <name>'      # poll, download, write \
 data/batches/<name>/raw/<prefix>.jsonl
 
-Then the usual steps: bash scripts/grow_batch.sh <name> judge|build|finish (data/README.md "Grow it"). PAID: the user
+Then the usual steps: bash scripts/data/grow_batch.sh <name> judge|build|finish (data/README.md "Grow it"). PAID: the user
 OKs a price first (≈ $0.02 per call at batch prices for gemini-3.8-flash; see the estimate printed by submit).
 
 - Same prompts as gen_hardcases.py: system prompt = its BRIEF (+ BRIEF_llm.md for --usecases), user = one ASSIGNMENT per call.
@@ -20,19 +20,17 @@ import hashlib
 import json
 import os
 import random
-import sys
 import time
 import urllib.error
 import urllib.request
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
-import gen_hardcases as g
+import gen_hardcases as g  # the sibling generator (same folder): its prompts, assignment and sanitizer
 
 from selfjev.data import read_jsonl
 
+ROOT = Path(__file__).resolve().parents[2]
 API = "https://generativelanguage.googleapis.com"
 PRICE = {"gemini-3.8-flash": (0.375, 1.875)}  # USD per M tokens at batch prices (50% of 0.75 / 3.75); thinking = output
 EST_CALL = 0.02  # USD per call at batch prices (sync calls averaged ≈ $0.04 on llm/multilabel batches)

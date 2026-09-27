@@ -1,12 +1,12 @@
 """Results ledger: every test-split report under reports/ (+ Jev) in one table, sorted by eval2 then by the dev
-benchmark, written into docs/experiments.md between the ledger markers. Run after every eval:  uv run python scripts/ledger.py
+benchmark, written into docs/experiments.md between the ledger markers. Run after every eval:  uv run python scripts/eval/ledger.py
 """
 
 import json
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 DOC = ROOT / "docs/experiments.md"
 START, END = "<!-- ledger:start -->", "<!-- ledger:end -->"
 

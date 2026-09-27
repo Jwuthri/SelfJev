@@ -1,7 +1,7 @@
 """Accuracy and calibration of eval reports on eval2 and the dev benchmark (test): Brier, 10-bin ECE over every decision,
 wrong decisions, how many were >= 0.9 sure, mean confidence when wrong, and a paired exact McNemar against the first run.
 
-  uv run python scripts/calibration_table.py qwen35_4b_tree qwen35_4b_tree_rlcd_fresh_ qwen35_4b_tree_sft_fresh_ jev
+  uv run python scripts/eval/calibration_table.py qwen35_4b_tree qwen35_4b_tree_rlcd_fresh_ qwen35_4b_tree_sft_fresh_ jev
 
 A name is a report directory under reports/ (with eval2/report.json and test/report.json), or "jev" (reports/external/).
 """
@@ -10,8 +10,7 @@ import json
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
-from eval2_summary import mcnemar
+from selfjev.evaluation.stats import mcnemar
 
 
 def path(run, split):

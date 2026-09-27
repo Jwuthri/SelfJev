@@ -1,7 +1,7 @@
 """Round-2 hard-case TRAINING data: data/hardcases/raw/*.jsonl -> data/hardcases.jsonl.
 
-  uv run python scripts/build_hardcases.py --blind   # write target-free files for the blind verifiers
-  uv run python scripts/build_hardcases.py           # build, keeping only questions the blind verifier agrees with
+  uv run python scripts/data/build_hardcases.py --blind   # write target-free files for the blind verifiers
+  uv run python scripts/data/build_hardcases.py           # build, keeping only questions the blind verifier agrees with
 
 - Splits by source_id hash: train 0.9 / validation 0.1. There is no test split: the test set stays hf.jsonl +
   eval.jsonl test, untouched.
@@ -18,10 +18,9 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
 from selfjev.data import expand_source, read_jsonl, split_for, write_jsonl
 
+ROOT = Path(__file__).resolve().parents[2]
 RAW, REVIEW = ROOT / "data/hardcases/raw", ROOT / "data/hardcases/review"
 GROUPS = {"v1": ["hnum", "htmp"], "v2": ["hrol", "hinj"], "v3": ["hlng", "hmul"], "v4": ["hpol", "hpar"]}
 
@@ -132,7 +131,7 @@ def main():
         "# Hard-case data review (round 2)",
         "",
         f"Authors: 8 Claude Sonnet sub-agents ([BRIEF_sonnet_agents.md]({brief('BRIEF_sonnet_agents.md')}), prefixes h*) and OpenRouter "
-        f"models via scripts/gen_hardcases.py ([BRIEF.md]({brief('BRIEF.md')}), prefixes gf/gk/df/lu; see each row's provenance). "
+        f"models via scripts/data/gen_hardcases.py ([BRIEF.md]({brief('BRIEF.md')}), prefixes gf/gk/df/lu; see each row's provenance). "
         f"Blind judge: {judges or 'none'}. A question is kept only if the judge's answer equals the authored label. "
         "LLM-verified, not human-reviewed.",
         "",

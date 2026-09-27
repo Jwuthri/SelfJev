@@ -1,6 +1,7 @@
 """Content-safety screen of generated sources with OpenAI's moderation endpoint (free).
 
-  zsh -ic 'uv run python scripts/moderate_texts.py data/hardcases_llm/raw data/eval_llm/raw --out reports/hardcases_llm/moderation.jsonl'
+  zsh -ic 'uv run python scripts/data/moderate_texts.py data/hardcases_llm/raw data/eval_llm/raw \
+    --out reports/hardcases_llm/moderation.jsonl'
 
 Each source = state + every instruction and candidate description, split into <= 8,000-character pieces; a source's
 score per category is its max over pieces. Writes one row per source {source_id, file, flagged, scores}; resumable
@@ -10,15 +11,13 @@ prompt to read the text, not a verdict: see docs/llm_eval_data.md for what was r
 
 import argparse
 import json
-import sys
 import time
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
-from judge_hardcases import oa
-
 from selfjev.data import read_jsonl
+from selfjev.data.providers import oa
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def text_of(src):

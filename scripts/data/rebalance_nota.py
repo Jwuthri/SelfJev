@@ -7,17 +7,16 @@ until the rate is --rate (default 0.10). Validation and all other questions are 
 Caveat: this fix was motivated by a test-set diagnosis, so the retrained model's CLINC score is no longer a clean
 held-out number.
 
-usage: uv run python scripts/rebalance_nota.py [--rate 0.10] -> data/hardcases_nb.jsonl
+usage: uv run python scripts/data/rebalance_nota.py [--rate 0.10] -> data/hardcases_nb.jsonl
 """
 
 import argparse
 import random
-import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
 from selfjev.data import read_jsonl, write_jsonl
+
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def none_ids(ex):

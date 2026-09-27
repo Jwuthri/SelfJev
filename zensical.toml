@@ -45,7 +45,7 @@ nav = [
   ] },
 ]
 
-# Links to repo files outside docs/ are valid: scripts/docs_links.py points them at GitHub after this check runs.
+# Links to repo files outside docs/ are valid: scripts/docs/docs_links.py points them at GitHub after this check runs.
 validation.invalid_links = false
 
 [project.theme]
@@ -118,4 +118,4 @@ pymdownx.superfences.custom_fences = [
 ]
 pymdownx.tabbed.alternate_style = true
 pymdownx.tasklist.custom_checkbox = true
-"scripts.docs_links" = {}
+"scripts.docs.docs_links" = {}

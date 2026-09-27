@@ -1,6 +1,6 @@
 """data/eval2.jsonl: the frozen TEST-ONLY target-task set, from data/eval2/raw/*.jsonl and two blind judges.
 
-  uv run python scripts/build_eval2.py
+  uv run python scripts/data/build_eval2.py
 
 - Keeps a question only if the authored target equals BOTH judges' answers (data/eval2/review/answers_astra.jsonl and
   answers_<second>.jsonl). Jev answers (jev_answers.jsonl) are reported, never used to keep or drop.
@@ -19,10 +19,9 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
 from selfjev.data import expand_source, read_jsonl, sha256_file, write_jsonl
 
+ROOT = Path(__file__).resolve().parents[2]
 RAW, REVIEW, OUT = ROOT / "data/eval2/raw", ROOT / "data/eval2/review", ROOT / "data/eval2.jsonl"
 TRAIN_FILES = ["data/hf.jsonl", "data/synthetic.jsonl", "data/eval.jsonl", "data/hardcases.jsonl"]
 

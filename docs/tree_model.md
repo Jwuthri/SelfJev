@@ -137,7 +137,7 @@ The same decisions-API requests were sent from a Mac in California to both servi
 
 The table gives p50 over 10 timed rounds, text 8 → 4,096 tokens, choice questions with 3 options. Full tables, p95,
 server-side times and cost: [reports/latency/summary.md](../reports/latency/summary.md); script
-`scripts/latency_sweep.py` (at the archive tag), chart `scripts/latency_chart.py`.
+`scripts/latency_sweep.py` (at the archive tag), chart `scripts/eval/latency_chart.py`.
 
 ![latency vs text length](../reports/latency/latency.png)
 

@@ -6,15 +6,13 @@ Options are listed in a fixed random order per question (seeded by id), so list 
 Binary questions are unchanged. Apply the same transform at inference time (transform(), `--options-in-question`).
 Rebuilds the untracked training copies byte for byte (docs/reproduce.md, "Older recipes").
 
-usage: uv run python scripts/options_in_question.py data/hf.jsonl ...   -> data/ova/<name>.jsonl
+usage: uv run python scripts/data/options_in_question.py data/hf.jsonl ...   -> data/ova/<name>.jsonl
 """
 
 import json
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
 from selfjev.core.options import with_options
 
 

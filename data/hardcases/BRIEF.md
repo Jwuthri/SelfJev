@@ -1,11 +1,11 @@
 # Hard-case training-data brief (round 2)
 
 Sent verbatim as the system prompt to every generator model through OpenRouter by
-[scripts/gen_hardcases.py](../../scripts/gen_hardcases.py); the user message is a per-call ASSIGNMENT (tier, traps,
+[scripts/data/gen_hardcases.py](../../scripts/data/gen_hardcases.py); the user message is a per-call ASSIGNMENT (tier, traps,
 domain, genres, tone, instruction and candidate styles, names) that the script draws at random so the set varies in
 how questions are asked, not only in what they ask. Generators never see the evaluation set, the test failures or
 any report. Every question is later re-labelled blind by a separate judge model
-([scripts/judge_hardcases.py](../../scripts/judge_hardcases.py)); disagreements are dropped. Labels are LLM-intended
+([scripts/data/judge_hardcases.py](../../scripts/data/judge_hardcases.py)); disagreements are dropped. Labels are LLM-intended
 and LLM-verified, not human-reviewed. Each row's `provenance` names the model that wrote it.
 
 ---

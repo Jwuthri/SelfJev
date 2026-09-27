@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Runs ON the GPU box, from ~/SelfJev: `bash scripts/jev_soft_box.sh rlcd|sft|cost|scratch`, on runs/jev_all
-# (scripts/jev_soft_targets.py: every non-test training question of data/all.jsonl.gz,
+# Runs ON the GPU box, from ~/SelfJev: `bash scripts/train/jev_soft_box.sh rlcd|sft|cost|scratch`, on runs/jev_all
+# (scripts/train/jev_soft_targets.py: every non-test training question of data/all.jsonl.gz,
 # target 0.5 x label + 0.5 x Jev, options listed in the question). rlcd / sft: RLCD or a plain fine-tune from
 # weights/qwen35_4b_tree, lr 2e-5 (RLCD KL 0.2); cost: RLCD with a 5x cost per confident mistake from sft's result;
 # scratch: a new LoRA r64 on the base model, lr 2e-4 (qwen35_4b_tree's recipe), plus eval_llm for the baselines
 # qwen35_4b_tree and sft. Then eval2, dev benchmark and eval_llm for the best and the last adapter.
-# Reports: reports/qwen35_4b_tree_<mode>_jevall_[_last]/. Launch: nohup bash scripts/jev_soft_box.sh rlcd > jev.log 2>&1 < /dev/null &
+# Reports: reports/qwen35_4b_tree_<mode>_jevall_[_last]/. Launch: nohup bash scripts/train/jev_soft_box.sh rlcd > jev.log 2>&1 < /dev/null &
 set -uo pipefail
 MODE=$1; RUN=qwen35_4b_tree_${MODE}_jevall
 cd ~/SelfJev && mkdir -p runs reports

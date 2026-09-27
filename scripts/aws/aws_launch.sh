@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# usage: scripts/aws_launch.sh NAME HOURS "REGION:TYPE ..." -> launches in the first REGION:TYPE with capacity (default VPC).
-#   e.g. scripts/aws_launch.sh selfjev-jev-soft 5 "us-east-2:g6e.2xlarge us-east-1:g6e.2xlarge us-west-2:g6e.2xlarge"
+# usage: scripts/aws/aws_launch.sh NAME HOURS "REGION:TYPE ..." -> launches in the first REGION:TYPE with capacity (default VPC).
+#   e.g. scripts/aws/aws_launch.sh selfjev-jev-soft 5 "us-east-2:g6e.2xlarge us-east-1:g6e.2xlarge us-west-2:g6e.2xlarge"
 # AGENTS.md conventions: tags Name/Project=personal-jev, SSH-only security group from this machine's IP, own key pair
 # (~/.ssh/NAME-REGION.pem), `shutdown -h +HOURS*60` in user data with terminate-on-shutdown as the cost cap.
 # State: runs/aws/NAME.instance ("id type region") and runs/aws/NAME-REGION.sg. When done, clean up:

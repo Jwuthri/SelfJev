@@ -62,34 +62,34 @@ uv run pytest tests/training                  # RLCD learns calibrated probabili
 
 ## Data
 
-New training data is a batch (`scripts/grow_batch.sh`, procedure in [data/README.md](../data/README.md)); the sources are
+New training data is a batch (`scripts/data/grow_batch.sh`, procedure in [data/README.md](../data/README.md)); the sources are
 rebuilt with:
 
 ```bash
-uv run python scripts/build_hf.py                                          # data/hf.jsonl from pinned HF revisions
-uv run python scripts/build_data.py                                        # eval.jsonl + synthetic.jsonl, hash splits, overlap check
-zsh -ic 'uv run python scripts/gen_hardcases.py --model openai/gpt-6-luna --budget 2 --max-questions 3000'  # resumes
-zsh -ic 'uv run python scripts/judge_hardcases.py --jev'                   # blind judge; never run two at once
-uv run python scripts/build_hardcases.py                                   # keep author = judge, leakage guard
-uv run python scripts/build_all.py                                         # data/all.jsonl.gz + the catalog
+uv run python scripts/data/build_hf.py                                     # data/hf.jsonl from pinned HF revisions
+uv run python scripts/data/build_data.py                                   # eval.jsonl + synthetic.jsonl, hash splits, overlap check
+zsh -ic 'uv run python scripts/data/gen_hardcases.py --model openai/gpt-6-luna --budget 2 --max-questions 3000'  # resumes
+zsh -ic 'uv run python scripts/data/judge_hardcases.py --jev'              # blind judge; never run two at once
+uv run python scripts/data/build_hardcases.py                              # keep author = judge, leakage guard
+uv run python scripts/data/build_all.py                                    # data/all.jsonl.gz + the catalog
 ```
 
 ## Train and evaluate (on a GPU box, never on the laptop)
 
 ```bash
 # a tagged box with an SSH-only security group and a shutdown cap (clean-up commands in the script's header)
-scripts/aws_launch.sh selfjev-mine 10 "us-east-2:g6e.2xlarge us-east-1:g6e.2xlarge us-west-2:g6e.2xlarge"
+scripts/aws/aws_launch.sh selfjev-mine 10 "us-east-2:g6e.2xlarge us-east-1:g6e.2xlarge us-west-2:g6e.2xlarge"
 # the default model, selfjev-4b: every non-test question of data/all.jsonl.gz, 0.5 × label + 0.5 × Jev
-uv run python scripts/jev_soft_targets.py     # local and free: runs/jev_all/{train,val}.jsonl.gz
-bash scripts/jev_soft_box.sh scratch          # on the box (repo + runs/jev_all synced): selfjev finetune, new LoRA r64, lr 2e-4,
-                                              # texts up to 16K, then eval2, the dev benchmark and eval_llm (≈ 9 h, one L40S)
+uv run python scripts/train/jev_soft_targets.py  # local and free: runs/jev_all/{train,val}.jsonl.gz
+bash scripts/train/jev_soft_box.sh scratch       # on the box (repo + runs/jev_all synced): selfjev finetune, new LoRA r64, lr 2e-4,
+                                                 # texts up to 16K, then eval2, the dev benchmark and eval_llm (≈ 9 h, one L40S)
 # score any Qwen3.5 adapter: eval2, the dev benchmark (hf + eval test rows), eval_llm
 uv run selfjev eval --adapter runs/mine/adapter --data data/ova/eval2.jsonl --out reports/mine/eval2
 uv run selfjev eval --adapter runs/mine/adapter --data data/ova/hf.jsonl data/ova/eval.jsonl --split test --out reports/mine/test
 uv run selfjev eval --adapter runs/mine/adapter --data data/ova/eval_llm.jsonl --out reports/mine/eval_llm
-uv run python scripts/eval2_summary.py        # regenerate reports/eval2/summary.md
-uv run python scripts/ledger.py               # regenerate the ledger table in docs/experiments.md
-uv run python scripts/calibration_table.py qwen35_4b_tree_scratch_jevall_ qwen35_4b_tree jev   # Brier, ECE, confident mistakes, McNemar
+uv run python scripts/eval/eval2_summary.py      # regenerate reports/eval2/summary.md
+uv run python scripts/eval/ledger.py             # regenerate the ledger table in docs/experiments.md
+uv run python scripts/eval/calibration_table.py qwen35_4b_tree_scratch_jevall_ qwen35_4b_tree jev   # Brier, ECE, confident mistakes, McNemar
 ```
 
 ### Older recipes
@@ -99,17 +99,17 @@ reranker pipeline, the custom, jina and T5Gemma models and their training script
 [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27). Their round-2b and `data/ova/` training copies rebuild byte for byte with:
 
 ```bash
-uv run python scripts/rebalance_nota.py && uv run python scripts/options_in_question.py data/synthetic.jsonl data/hardcases.jsonl data/hardcases_nb.jsonl data/hardcases_r3.jsonl
+uv run python scripts/data/rebalance_nota.py && uv run python scripts/data/options_in_question.py data/synthetic.jsonl data/hardcases.jsonl data/hardcases_nb.jsonl data/hardcases_r3.jsonl
 ```
 
 Jev and GPT-6 Astra on the same questions (responses cached under `reports/external/cache/`, so reruns cost nothing;
 stops at `--budget` USD):
 
 ```bash
-zsh -ic 'uv run python scripts/compare_external.py --per-hf-family 300 --tag full --only jev --budget 5'
-zsh -ic 'uv run python scripts/compare_external.py --data data/eval2.jsonl --ours tree_4b/eval2 --only jev --tag eval2'
-zsh -ic 'uv run python scripts/audit_failures.py relabel --limit 40'   # PAID (user OK): blind relabel of failed test questions
-uv run python scripts/audit_failures.py report                         # free: reports/audit_2026-09-26/AUDIT.md
+zsh -ic 'uv run python scripts/eval/compare_external.py --per-hf-family 300 --tag full --only jev --budget 5'
+zsh -ic 'uv run python scripts/eval/compare_external.py --data data/eval2.jsonl --ours tree_4b/eval2 --only jev --tag eval2'
+zsh -ic 'uv run python scripts/eval/audit_failures.py relabel --limit 40'   # PAID (user OK): blind relabel of failed test questions
+uv run python scripts/eval/audit_failures.py report                         # free: reports/audit_2026-09-26/AUDIT.md
 ```
 
 `selfjev calibrate` fits temperatures only on a report whose every prediction is from the `calibration` split and
@@ -126,7 +126,7 @@ uv run --no-project --with zensical==0.0.65 python -m zensical serve      # http
 uv run --no-project --with zensical==0.0.65 python -m zensical build      # static site in site/
 ```
 
-Use `python -m zensical` from the repo root: `scripts/docs_links.py`, which points links to repo files outside
+Use `python -m zensical` from the repo root: `scripts/docs/docs_links.py`, which points links to repo files outside
 `docs/` at GitHub, must be importable. The leaderboard embeds the generated tables (`reports/eval2/summary.md` and the
 ledger section of `docs/experiments.md`), so re-running `eval2_summary.py` and `ledger.py` updates the site.
 
@@ -139,7 +139,8 @@ src/selfjev/  schemas.py (validation)  formatting.py (templates, prompts)  model
                    qwen35_tree.py (the tree for Qwen3.5: training, TreeServer)   vllm_qwen35.py (Qwen3.5 on vLLM)
                    challengers.py (the Qwen3.5 prompt and forked cache)   finetune.py (selfjev finetune / selfjev rlcd)
                    options.py (every option in the question)
-scripts/           data builders and batches, the selfjev-4b recipe, aws_launch.sh, compare_external.py, summaries
+scripts/           data/ (builders, generators, judges, batches), eval/ (summaries, Jev comparison, calibration),
+                   train/ (the selfjev-4b recipe), aws/ (aws_launch.sh), docs/ (the site's link extension)
 data/              hf / eval / synthetic / hardcases* / batches / eval2 / eval_llm (+ briefs and reviews); data/README.md
 configs/           training configs of the ledger runs (configs/curve/ for the ablations)
 weights/           the best adapters (Git LFS) with model.json: base model, revision, recipe, scores, serve commands

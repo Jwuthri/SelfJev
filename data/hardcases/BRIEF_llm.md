@@ -1,6 +1,6 @@
 # LLM-evaluation data brief (round "llm": score, judge, verify, guardrail, jailbreak)
 
-Appended to [BRIEF.md](BRIEF.md) as the system prompt when [scripts/gen_hardcases.py](../../scripts/gen_hardcases.py)
+Appended to [BRIEF.md](BRIEF.md) as the system prompt when [scripts/data/gen_hardcases.py](../../scripts/data/gen_hardcases.py)
 runs with `--usecases`. It targets Jev's own pitch: "Score, judge, verify, guardrail, and detect jailbreaks of LLM
 prompts, reasoning traces, and/or outputs". In this mode the held-out rule of BRIEF.md ("never write a state that is an
 AI assistant's reply being graded") is removed on purpose, so the dev benchmark's `eval_agent_output` family (26

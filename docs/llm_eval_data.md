@@ -26,7 +26,7 @@ Composition of the training file (from the file itself):
 
 ## How
 
-- `scripts/gen_hardcases.py --usecases train|test`. System prompt = BRIEF.md without its held-out rule for graded AI
+- `scripts/data/gen_hardcases.py --usecases train|test`. System prompt = BRIEF.md without its held-out rule for graded AI
   replies + [BRIEF_llm.md](../data/hardcases/BRIEF_llm.md): the five use cases with question menus, the artifacts
   (prompts, system prompts, replies, reasoning traces, agent trajectories, retrieved documents, response pairs),
   labeling additions (grader-directed text never changes a label; who said what matters; a refusal followed by the
@@ -35,7 +35,7 @@ Composition of the training file (from the file itself):
   sycophancy, length_bias, format_near_miss, tool_misuse, speaker_confusion, subtle_violation). Each call draws the use
   case × tier cell with the fewest kept questions, the length step with the fewest kept texts, an artifact, one of 23
   LLM applications (8 more, unseen in training, for a third of the test calls), 12 formats, and a judge-style
-  instruction style. Runbook: `scripts/run_llm_data.sh train|test`.
+  instruction style. Runbook: `scripts/data/run_llm_data.sh train|test`.
 - 0 texts dropped by the 8-gram overlap guard (training vs eval.jsonl, eval2.jsonl, eval_llm.jsonl; test vs every
   training and test file).
 
@@ -46,7 +46,7 @@ Composition of the training file (from the file itself):
    897 siblings dropped. Test: 107 flagged (+ 6 unanswered) + 160 siblings dropped. No kept question has a judge
    disagreeing (checked against the answer files).
 2. **Content.** Every text, instruction and candidate description (4,732 sources) went through OpenAI's moderation
-   endpoint (`omni-moderation-latest`, free; `scripts/moderate_texts.py`, scores in `reports/hardcases_llm/moderation.jsonl`).
+   endpoint (`omni-moderation-latest`, free; `scripts/data/moderate_texts.py`, scores in `reports/hardcases_llm/moderation.jsonl`).
    169 texts were flagged or scored ≥ 0.3; their worst passages were located and all 169 were read.
    Removal rule: content harmful on its own, whatever the question: actionable weapon, hazmat-smuggling or attack
    instructions and working attack code; self-harm encouragement; self-harm or suicide method details (pill counts,

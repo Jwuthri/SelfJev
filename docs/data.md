@@ -6,9 +6,9 @@ All data is one JSONL line per (text, question, target), with `id`, `source_id`,
 `uv run python -m selfjev.data check FILE`.
 
 **`data/all.jsonl.gz` is the dataset**: every original question in one file, tagged by `dataset`, with Jev's prediction
-in `jev` (`uv run python scripts/build_all.py`). Catalog, usage snippet and the growth procedure:
+in `jev` (`uv run python scripts/data/build_all.py`). Catalog, usage snippet and the growth procedure:
 [data/README.md](../data/README.md). Always start from it, and add new training data as a **batch**
-(`gen_hardcases.py --batch <name>`, then `scripts/grow_batch.sh`), never as a new stand-alone file. The files below are
+(`gen_hardcases.py --batch <name>`, then `scripts/data/grow_batch.sh`), never as a new stand-alone file. The files below are
 its sources.
 
 ## Labeling policy (all sources)
@@ -26,11 +26,11 @@ its sources.
 
 | file | what | size | provenance |
 |---|---|---|---|
-| `data/hf.jsonl` | public human-labeled datasets in our schema | 16,800 questions: train 12,000; validation, calibration 750 each; test 1,500 in-distribution + 1,800 held-out | 11 pinned HF revisions, licenses per row ([scripts/build_hf.py](../scripts/build_hf.py)); label descriptions written by Claude Sonnet |
+| `data/hf.jsonl` | public human-labeled datasets in our schema | 16,800 questions: train 12,000; validation, calibration 750 each; test 1,500 in-distribution + 1,800 held-out | 11 pinned HF revisions, licenses per row ([scripts/data/build_hf.py](../scripts/data/build_hf.py)); label descriptions written by Claude Sonnet |
 | `data/eval.jsonl` | authored evaluation set over 7 families, hard cases tagged | 155 texts / 398 questions: validation 118, calibration 109, test 171 | 7 Claude Opus agents from [data/eval/BRIEF.md](../data/eval/BRIEF.md); a blind Opus relabelling agreed 398/398; not human-reviewed |
 | `data/synthetic.jsonl` | hard, long, trap-heavy training data, 6 families | 923 texts / 2,405 questions | 12 Claude Sonnet agents from [data/synthetic/BRIEF.md](../data/synthetic/BRIEF.md); an Opus review dropped 43 questions |
 | `data/hardcases.jsonl` | **round 2**: verified hard-case training data | 10,142 kept of 10,627 (train 0.9 / validation 0.1) | 4 OpenRouter models + 8 Claude Sonnet agents, blind GPT-6 Astra judge ([round-2 write-up](hardcases_round2.md)) |
-| `data/hardcases_nb.jsonl` | round 2b: round 2 with `none`-correct capped at 10% (not tracked: rebuild it, [reproduce](reproduce.md#older-recipes)) | 9,982 questions | [scripts/rebalance_nota.py](../scripts/rebalance_nota.py) (seeded) |
+| `data/hardcases_nb.jsonl` | round 2b: round 2 with `none`-correct capped at 10% (not tracked: rebuild it, [reproduce](reproduce.md#older-recipes)) | 9,982 questions | [scripts/data/rebalance_nota.py](../scripts/data/rebalance_nota.py) (seeded) |
 | `data/hardcases_r3.jsonl` | **round 3**: verified hard-case training data | 38,628 questions (train 34,868 / validation 3,760) | GPT-6 Luna, Gemini 3.8 Flash, Grok 4.7; blind Astra judge |
 | `data/eval2.jsonl` | **eval2**: frozen target-task test set | 1,991 questions / 647 texts, all `test` | Claude Opus 5.5, Kimi K3, GLM 5.3; two blind judges |
 | `data/hardcases_llm.jsonl` | **LLM-evaluation** training data: score, judge, verify, guardrail, jailbreak ([llm_eval_data.md](llm_eval_data.md)) | 9,443 questions (train 8,497 / validation 946) | GPT-6 Luna, Gemini 3.8 Flash, Grok 4.7, DeepSeek V4 Flash; blind Astra judge; strict build + moderation review |
@@ -65,14 +65,14 @@ its sources.
 
 The pipeline behind rounds 2 and 3 and eval2:
 
-1. **Write** ([scripts/gen_hardcases.py](../scripts/gen_hardcases.py), system prompt
+1. **Write** ([scripts/data/gen_hardcases.py](../scripts/data/gen_hardcases.py), system prompt
    [data/hardcases/BRIEF.md](../data/hardcases/BRIEF.md)). Each call draws a random assignment: difficulty tier
    (simple / hard / very hard, balanced), 1–2 focus traps weighted by the gap to Jev, domain, three genres, tone,
    instruction style and length, candidate-description style, invented names, and a text length from a ladder of 8,
    32, 64 … 8K tokens.
-2. **Judge blind** ([scripts/judge_hardcases.py](../scripts/judge_hardcases.py)): GPT-6 Astra sees only the text,
+2. **Judge blind** ([scripts/data/judge_hardcases.py](../scripts/data/judge_hardcases.py)): GPT-6 Astra sees only the text,
    instruction and candidates, through OpenAI's Batch API. eval2 adds Gemini 3.1 Pro as a second judge.
-3. **Keep only agreement** ([scripts/build_hardcases.py](../scripts/build_hardcases.py)): a question survives only
+3. **Keep only agreement** ([scripts/data/build_hardcases.py](../scripts/data/build_hardcases.py)): a question survives only
    when every judge gives the author's answer. Disagreements are mostly author errors or genuinely ambiguous.
 4. **Check the mix** after the build: the `none`-correct rate, positives per multilabel question, types, tiers.
 

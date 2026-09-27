@@ -6,22 +6,21 @@ families never seen in training. Label ids are the dataset's label names; the mo
 data/hf/label_descriptions.json (train randomly uses the humanised name instead, 50/50, so the model does
 not learn one wording per id). Public datasets may overlap with the base model's own training data.
 
-usage: uv run python scripts/build_hf.py [--train-per-dataset 2400]
+usage: uv run python scripts/data/build_hf.py [--train-per-dataset 2400]
 """
 
 import argparse
 import functools
 import json
 import random
-import sys
 from pathlib import Path
 
 import pyarrow.parquet as pq
 from huggingface_hub import hf_hub_download
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
 from selfjev.data import validate_example, write_jsonl
+
+ROOT = Path(__file__).resolve().parents[2]
 
 LABELS = json.loads((ROOT / "data/hf/labels.json").read_text())
 DESC_PATH = ROOT / "data/hf/label_descriptions.json"

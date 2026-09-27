@@ -136,7 +136,7 @@ evidence file.
     - All 34 newly wrong CLINC answers picked `none`; `none` predictions rose from 61 to 95, with 45 gold.
     - Ignoring `none`, both models rank the right intent first on 254 of 255 in-scope questions. The model did not
       forget intents; it became too willing to reject.
-    - Capping `none`-correct at 10% (round 2b, `scripts/rebalance_nota.py`) brought CLINC back to 92.0%.
+    - Capping `none`-correct at 10% (round 2b, `scripts/data/rebalance_nota.py`) brought CLINC back to 92.0%.
 
     This fix came from a test diagnosis, so it is labeled as such. Evidence:
     [tree review](../reports/tree_review_2026-09-23/review.md).
@@ -198,7 +198,7 @@ evidence file.
 
 !!! tip "13. Showing every option in the question helps"
     Listing all candidates in the question text, so each leaf judges one option while seeing the alternatives
-    (`tree_4b_ova`, `scripts/options_in_question.py`):
+    (`tree_4b_ova`, `scripts/data/options_in_question.py`):
 
     - Dev benchmark 82.6 vs 81.2 (130 / 82, p = 0.001), multilabel exact match 57.8 vs 51.7.
     - eval2 91.6 vs 90.6 (66 / 46, p = 0.07).

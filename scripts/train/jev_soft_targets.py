@@ -1,11 +1,11 @@
 """Training data with Jev's probabilities as soft targets, from data/all.jsonl.gz (user request 2026-09-26: train on all
 of it, distilling Jev's hedging).
 
-  uv run python scripts/jev_soft_targets.py   # free, local: writes runs/jev_all/{train,val}.jsonl.gz
+  uv run python scripts/train/jev_soft_targets.py   # free, local: writes runs/jev_all/{train,val}.jsonl.gz
 
 - Train: every non-test row of the training datasets (train + validation splits), minus the validation sample. Out:
-  test rows, the frozen / benchmark datasets (eval, eval2, eval_llm, compact_challenge_v1: scripts/build_all.py
-  TEST_DATASETS) and the calibration splits (kept for temperature fitting). No family cap, no `none` rebalance.
+  test rows, the frozen / benchmark datasets (eval, eval2, eval_llm, compact_challenge_v1:
+  selfjev.data.catalog.TEST_DATASETS) and the calibration splits (kept for temperature fitting). No family cap, no `none` rebalance.
 - Val: qwen35_4b_tree's 1,200-question validation sample (same ids), so validation numbers compare with every run since.
 - Each training row gains "soft" from its `jev` field: P(yes) (binary) or {candidate id: p} (multiclass: Jev's
   distribution; multilabel: P(yes) per option). The target stays the verified one; `selfjev finetune / rlcd --soft-weight`
@@ -15,12 +15,10 @@ of it, distilling Jev's hedging).
 
 import gzip
 import json
-import sys
 from collections import Counter
 from pathlib import Path
 
-sys.path[:0] = ["src", "scripts"]
-from build_all import TEST_DATASETS
+from selfjev.data.catalog import TEST_DATASETS
 
 OUT = Path("runs/jev_all")
 

@@ -1,10 +1,10 @@
 """Blind re-labelling of data/hardcases/raw/*.jsonl by GPT-6 Astra through the OpenAI Batch API (half price, 24 h window).
 
-  zsh -ic 'uv run python scripts/judge_hardcases.py --prefixes gf gk df lu'        # submit new sources, wait, write answers
-  zsh -ic 'uv run python scripts/judge_hardcases.py --prefixes gf gk df lu --jev'  # + Jev as a cheap second opinion
+  zsh -ic 'uv run python scripts/data/judge_hardcases.py --prefixes gf gk df lu'        # submit new sources, wait, write answers
+  zsh -ic 'uv run python scripts/data/judge_hardcases.py --prefixes gf gk df lu --jev'  # + Jev as a cheap second opinion
 
 - The judge sees state + instruction + candidates only (never the target, notes or tags): the same prompt, JSON
-  schema and reasoning effort (low) as the GPT-6 Astra test run (compare_external.llm_request).
+  schema and reasoning effort (low) as the GPT-6 Astra test run (selfjev.data.providers.llm_request).
 - Each source is submitted once: <review>/batches.json remembers every batch and its source ids, the downloaded output
   files are kept in <review>/batch_results/<id>.jsonl, and answers_astra.jsonl is rebuilt from all of them on every run.
 - Needs OPENAI_API_KEY (the judge) and OPENROUTER_API_KEY (Jev): run through `zsh -ic`, never print either.
@@ -17,37 +17,19 @@ import argparse
 import concurrent.futures as cf
 import hashlib
 import json
-import os
-import sys
-import threading
 import time
 import urllib.error
-import urllib.request
 import uuid
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
-from compare_external import call_cost, http, jev_request, llm_request
-
 from selfjev.data import expand_source, read_jsonl, write_jsonl
+from selfjev.data.providers import call_cost, decide, http, jev_request, llm_request, oa, run_sync, to_openai
 
+ROOT = Path(__file__).resolve().parents[2]
 RAW = ROOT / "data/hardcases/raw"
-lock_sync = threading.Lock()
 TERMINAL = {"completed", "failed", "expired", "cancelled"}
-OPENAI = "https://api.openai.com"
 PRICE = {"gpt-6-astra": (5.0, 25.0)}  # batch USD per M tokens (input, output incl. reasoning) = 50% of list
-
-
-def oa(method, path, body=None, raw=None, ctype="application/json", timeout=600):
-    data = raw if raw is not None else (None if body is None else json.dumps(body).encode())
-    headers = {"Authorization": f"Bearer {os.environ['OPENAI_API_KEY']}"} | ({"Content-Type": ctype} if data is not None else {})
-    try:
-        with urllib.request.urlopen(urllib.request.Request(OPENAI + path, data, method=method, headers=headers), timeout=timeout) as r:
-            return r.read()
-    except urllib.error.HTTPError as e:
-        raise RuntimeError(f"{method} {path}: HTTP {e.code} {e.read()[:400].decode(errors='replace')}") from None
 
 
 def upload_jsonl(lines):
@@ -58,12 +40,6 @@ def upload_jsonl(lines):
     ).encode()
     payload += "\n".join(lines).encode() + f"\r\n--{b}--\r\n".encode()
     return json.loads(oa("POST", "/v1/files", raw=payload, ctype=f"multipart/form-data; boundary={b}"))["id"]
-
-
-def to_openai(body, model, effort):
-    """OpenRouter chat body (compare_external.llm_request) -> OpenAI chat body."""
-    b = {k: v for k, v in body.items() if k not in ("model", "usage", "reasoning", "max_tokens")}
-    return b | {"model": model, "reasoning_effort": effort, "max_completion_tokens": body.get("max_tokens", 6000)}
 
 
 def sources(prefixes, limit=None, raw=RAW):
@@ -77,20 +53,6 @@ def sources(prefixes, limit=None, raw=RAW):
                 raise ValueError(f"duplicate source_id {sid} in {f}")
             out[sid] = (src, expand_source(src))
     return dict(list(out.items())[:limit]) if limit else out
-
-
-def decide(ex, ans):
-    """Judge probabilities -> (answer, confidence) in the authored target's type."""
-    q = ex["question"]
-    if q["type"] == "binary":
-        p = float(ans["p_yes"])
-        return p >= 0.5, max(p, 1 - p)
-    ids = [c["id"] for c in q["candidates"]]
-    ps = {c: max(float(ans.get(c, 0.0)), 0.0) for c in ids}
-    if q["type"] == "multiclass":
-        best = max(ids, key=lambda c: (ps[c], -ids.index(c)))
-        return best, ps[best] / (sum(ps.values()) or 1.0)
-    return [c for c in ids if ps[c] >= 0.5], min(max(p, 1 - p) for p in ps.values())
 
 
 def submit(model, effort, groups, registry, chunk, reg_path=None):
@@ -201,51 +163,6 @@ def collect(groups, results_dir, out, model):
     write_jsonl(out, rows)
     print(f"{out}: {len(rows)} answers, batch cost ${cost:.2f}, errors {dict(errs)}", flush=True)
     return {row["id"]: row for row in rows}, cost
-
-
-def run_sync(groups, review, model, effort="low", workers=6):
-    """Second judge through OpenRouter chat completions (no batch): answers_<slug>.jsonl, cached, blind like the batch judge."""
-    slug = model.split("/")[-1]
-    cache_path = review / f"sync_cache_{slug}.jsonl"
-    cache = {}
-    if cache_path.exists():
-        with open(cache_path) as f:
-            cache = {c["key"]: c["response"] for c in map(json.loads, f)}
-    rows, cost, errs = {}, [0.0], Counter()
-
-    def one(sid):
-        src, exs = groups[sid]
-        body, keys = llm_request(model, src["state"], exs, effort)
-        key = hashlib.sha256(json.dumps(body, sort_keys=True).encode()).hexdigest()[:16]
-        if key not in cache:
-            for attempt in range(3):
-                try:
-                    resp = http("POST", "/v1/chat/completions", body, timeout=600)
-                    break
-                except Exception as e:  # rate limit, network
-                    resp, err = None, repr(e)[:120]
-                    time.sleep(5 * (attempt + 1))
-            if resp is None:
-                errs[err] += 1
-                return
-            cost[0] += call_cost(resp)
-            cache[key] = resp
-            with lock_sync, open(cache_path, "a") as f:
-                f.write(json.dumps({"key": key, "sid": sid, "response": resp}) + "\n")
-        try:
-            answers = json.loads(cache[key]["choices"][0]["message"]["content"])
-            for (eid, ks), ex in zip(keys, exs):
-                a, conf = decide(ex, answers[ks[0]])
-                rows[eid] = {"id": eid, "answer": a, "confidence": round(conf, 4), "note": f"{model} effort={effort} sync"}
-        except Exception as e:
-            errs[f"parse: {type(e).__name__}"] += 1
-
-    with cf.ThreadPoolExecutor(workers) as pool:
-        list(pool.map(one, list(groups)))
-    out = review / f"answers_{slug}.jsonl"
-    write_jsonl(out, list(rows.values()))
-    print(f"{out}: {len(rows)} answers, ${cost[0]:.2f}, errors {dict(errs)}", flush=True)
-    return rows
 
 
 def run_jev(groups, review, model="~typesafe/jev-latest", workers=6):

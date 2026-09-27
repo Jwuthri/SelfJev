@@ -1,11 +1,11 @@
 """Jev's prediction for every question of our datasets -> data/jev/predictions.jsonl (tracked), joined into
-data/all.jsonl.gz as the `jev` field by scripts/build_all.py.
+data/all.jsonl.gz as the `jev` field by scripts/data/build_all.py.
 
-  uv run python scripts/jev_predictions.py                                  # free: reuse cached Jev responses, estimate the rest
-  zsh -ic 'uv run python scripts/jev_predictions.py --call --budget 3'     # PAID (user OK first): call Jev for what is missing
-  uv run python scripts/build_all.py                                        # then rebuild all.jsonl.gz with the jev field
+  uv run python scripts/data/jev_predictions.py                                  # free: reuse cached Jev responses, estimate the rest
+  zsh -ic 'uv run python scripts/data/jev_predictions.py --call --budget 3'     # PAID (user OK first): call Jev for what is missing
+  uv run python scripts/data/build_all.py                                        # then rebuild all.jsonl.gz with the jev field
 
-- One request per text with all its questions, the mapping of every Jev comparison (compare_external.jev_request):
+- One request per text with all its questions, the mapping of every Jev comparison (selfjev.data.providers.jev_request):
   binary -> noul = P(yes); multiclass -> choice probabilities; multilabel -> one noul per candidate.
 - Free reuse: the caches of earlier runs (dev benchmark, round-2 judge, eval2, eval_llm) are keyed by the exact request,
   so each text is tried with its kept questions and with its full raw question list (how the judge runs grouped them).
@@ -20,19 +20,16 @@ import argparse
 import concurrent.futures as cf
 import hashlib
 import json
-import sys
 import threading
 import time
 from collections import Counter, defaultdict
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
-from build_all import datasets, request_sha
-from compare_external import call_cost, http, jev_request
-
 from selfjev.data import expand_source, load, read_jsonl
+from selfjev.data.catalog import datasets, request_sha
+from selfjev.data.providers import call_cost, http, jev_request
 
+ROOT = Path(__file__).resolve().parents[2]
 MODEL = "~typesafe/jev-latest"
 OUT = ROOT / "data/jev"
 CACHES = [
@@ -98,7 +95,7 @@ def main():
     print(f"{len(cache)} cached Jev responses, {len(raw)} raw sources", flush=True)
 
     preds, pending, hit_cost, hit_chars = {}, [], 0.0, 0
-    for name, path, *_ in datasets():
+    for name, path, *_ in datasets(ROOT):
         groups = defaultdict(list)
         for ex in load([ROOT / path]):
             groups[ex["source_id"]].append(ex)
@@ -167,7 +164,7 @@ def main():
                     print(f"  {i + 1}/{len(pending)} texts, spent ${spent[0]:.2f}, errors {len(errors)}", flush=True)
         print(f"called Jev: spent ${spent[0]:.2f}, errors {len(errors)} {errors[:3]}", flush=True)
 
-    order = {n: i for i, (n, *_) in enumerate(datasets())}
+    order = {n: i for i, (n, *_) in enumerate(datasets(ROOT))}
     rows = sorted(preds.values(), key=lambda r: (order.get(r["dataset"], 99), r["id"]))
     with open(OUT / "predictions.jsonl", "w") as f:
         for r in rows:

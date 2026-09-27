@@ -11,13 +11,12 @@ Synthetic questions with action "drop" in data/synthetic/review/flags.json are r
 
 import json
 import re
-import sys
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "src"))
 from selfjev.data import expand_source, read_jsonl, split_for, validate_example, write_jsonl
+
+ROOT = Path(__file__).resolve().parents[2]
 
 EVAL_SPLITS = {"validation": 0.3, "calibration": 0.2, "test": 0.5}
 SYN_SPLITS = {"train": 0.85, "validation": 0.05, "calibration": 0.05, "test": 0.05}

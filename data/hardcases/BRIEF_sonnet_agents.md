@@ -1,6 +1,6 @@
 # Hard-case brief used by the 8 Claude Sonnet sub-agents (round 2, prefixes hnum/htmp/hrol/hinj/hlng/hmul/hpol/hpar)
 
-Preserved copy: data/hardcases/BRIEF.md was later rewritten for the OpenRouter generator (scripts/gen_hardcases.py).
+Preserved copy: data/hardcases/BRIEF.md was later rewritten for the OpenRouter generator (scripts/data/gen_hardcases.py).
 The Sonnet agents were launched with the text below (plus a one-paragraph assignment each, recorded in the session).
 
 ---

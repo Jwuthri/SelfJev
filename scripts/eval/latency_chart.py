@@ -1,6 +1,6 @@
 """Latency vs text length, Jev vs ours (p50 at the client), from reports/latency/requests*.jsonl.
 
-usage: uv run --with matplotlib python scripts/latency_chart.py   -> reports/latency/latency.png
+usage: uv run --with matplotlib python scripts/eval/latency_chart.py   -> reports/latency/latency.png
 """
 
 import json
@@ -12,7 +12,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-OUT = Path(__file__).resolve().parents[1] / "reports/latency"
+OUT = Path(__file__).resolve().parents[2] / "reports/latency"
 rows = []
 for path in sorted(OUT.glob("requests*.jsonl")):
     with open(path) as f:

@@ -1,7 +1,7 @@
 """Round-2 hard-case TRAINING data through OpenRouter -> data/hardcases/raw/<prefix>.jsonl (one file per model).
 
-  zsh -ic 'uv run python scripts/gen_hardcases.py --model google/gemini-3.8-flash --budget 10'
-  zsh -ic 'uv run python scripts/gen_hardcases.py --model x-ai/grok-4.7 --budget 10 --max-questions 5000'
+  zsh -ic 'uv run python scripts/data/gen_hardcases.py --model google/gemini-3.8-flash --budget 10'
+  zsh -ic 'uv run python scripts/data/gen_hardcases.py --model x-ai/grok-4.7 --budget 10 --max-questions 5000'
 
 - System prompt = data/hardcases/BRIEF.md (after its '---'). Each call also gets a random ASSIGNMENT: difficulty
   tier, focus traps, domain, genres, tone, instruction style, candidate-description style, invented names. The
@@ -17,7 +17,7 @@
 - --usecases train|test: LLM-evaluation data (score, judge, verify, guardrail, jailbreak of prompts, reasoning traces and
   outputs): system prompt = BRIEF.md without its held-out rule + data/hardcases/BRIEF_llm.md; the ASSIGNMENT adds the use
   case, the artifact, the LLM application and format; balanced by kept questions over use case x tier. Runbook:
-  scripts/run_llm_data.sh.
+  scripts/data/run_llm_data.sh.
 """
 
 import argparse
@@ -26,21 +26,17 @@ import hashlib
 import json
 import random
 import re
-import sys
 import threading
 import time
 import urllib.error
 from collections import Counter
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
-from compare_external import call_cost, http
-from judge_hardcases import oa, to_openai
-
 from selfjev.core.schemas import ValidationError
 from selfjev.data import expand_source, read_jsonl
+from selfjev.data.providers import call_cost, http, oa, to_openai
 
+ROOT = Path(__file__).resolve().parents[2]
 RAW, REP = ROOT / "data/hardcases/raw", ROOT / "reports/hardcases"
 BRIEF = (ROOT / "data/hardcases/BRIEF.md").read_text().split("\n---\n", 1)[1].strip()
 PREFIX = {"google/gemini-3.8-flash": "gf", "x-ai/grok-4.7": "gk", "deepseek/deepseek-v4-flash": "df", "openai/gpt-6-luna": "lu"}
@@ -647,7 +643,7 @@ def main():
         "--batch",
         help="GROW THE COMBINED DATASET (the default way to add training data, see data/README.md): write to "
         "data/batches/<name>/raw and reports/batches/<name>; combine with any mode flag for the brief; then "
-        "bash scripts/grow_batch.sh <name> judge|build|finish",
+        "bash scripts/data/grow_batch.sh <name> judge|build|finish",
     )
     ap.add_argument(
         "--traps",
