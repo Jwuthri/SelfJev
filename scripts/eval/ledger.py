@@ -15,6 +15,11 @@ def pct(x):
     return "—" if x is None else f"{100 * x:.1f}"
 
 
+KEPT = {  # adapters kept in weights/, by the run path their reports name
+    json.loads(m.read_text()).get("source_run"): str(m.parent.relative_to(ROOT)) for m in ROOT.glob("weights/*/model.json")
+}
+
+
 def rows():
     paths = sorted(ROOT.glob("reports/**/test/report.json")) + [
         q for q in sorted(ROOT.glob("reports/external/full/*/report.json")) if not q.parent.name.startswith("ours-")
@@ -28,9 +33,11 @@ def rows():
         auth = [q["correct"] for q in r["predictions"] if q["family"].startswith("eval_")]
         adapter = meta.get("adapter") or ""
         tm = None
-        if adapter and adapter != "None":
-            cand = ROOT / re.sub(r"/(adapter|checkpoint)$", "", adapter) / "train_meta.json"
-            tm = json.loads(cand.read_text()) if cand.exists() else None
+        if adapter and adapter != "None":  # the run's log: runs/<run>/ while it exists, then reports/train_meta/ (a/b -> a__b)
+            run_dir = re.sub(r"/(adapter|adapter_last|checkpoint)$", "", adapter)
+            saved = ROOT / "reports/train_meta" / (run_dir.removeprefix("runs/").replace("/", "__") + ".json")
+            cand = next((c for c in (ROOT / run_dir / "train_meta.json", saved) if c.exists()), None)
+            tm = json.loads(cand.read_text()) if cand else None
         train_n = (tm.get("data", {}).get("train_questions", tm.get("train_questions"))) if tm else None
         trained = "—" if train_n is None else f"{train_n:,} q / {tm.get('steps', '?')} steps"
         base = meta.get("model", "?").replace("Qwen/", "")
@@ -56,7 +63,7 @@ def rows():
             pct(m["multilabel"]["exact_match"]),
             pct(sum(auth) / len(auth)),
             f"[report](../{p.with_suffix('.md').relative_to(ROOT)})",
-            adapter if tm else "—",
+            KEPT.get(adapter, "—"),
         )
 
 

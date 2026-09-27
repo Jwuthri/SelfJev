@@ -22,7 +22,7 @@ eval2 = [r for r in rows if r["dataset"] == "eval2"]                    # frozen
 teacher = [r["jev"] for r in train if "jev" in r]                     # Jev's probabilities, never the label
 ```
 
-Recipes on top (not baked into the file): the best models cap `none`-correct round-2 questions at 10% (`scripts/data/rebalance_nota.py`), list every option in the question (`scripts/data/options_in_question.py`, also at serving time) and cap public families at 1,600 questions ([docs/data.md](../docs/data.md#the-training-mixes)).
+The selfjev-4b recipe on top (not baked into the file): every non-test question, Jev's probabilities as half-weight soft targets (`scripts/train/jev_soft_targets.py`), and every option listed in the question (`selfjev.core.options`, applied by `selfjev finetune` and at serving time; `scripts/data/options_in_question.py` builds the eval copies in `data/ova/`).
 
 ## Grow it: add a batch, never a new stand-alone dataset
 
@@ -55,10 +55,8 @@ New frozen test sets are the exception: built on purpose with other writers and 
 
 | path | what |
 |---|---|
-| `data/hardcases_nb.jsonl` | round 2 with `none`-correct capped at 10% (round 2b; a subset of hardcases). Not tracked: `scripts/data/rebalance_nota.py` rebuilds it byte for byte (docs/reproduce.md, Older recipes) |
-| `data/ova/*.jsonl` | every option listed in the question (the transform the best models train and serve with); eval2, eval_llm, hf and eval are tracked, the training copies are rebuilt by `scripts/data/options_in_question.py` |
-| `data/val_sample_1200.txt` | the 1,200 validation ids of qwen35_4b_tree / selfjev-4b (`scripts/train/jev_soft_targets.py`) |
-| `data/dev.jsonl` | 14-text fixtures for unit tests |
+| `data/ova/*.jsonl` | the test sets with every option listed in the question (the transform selfjev-4b trains and serves with), for `selfjev eval`; built by `scripts/data/options_in_question.py` |
+| `data/val_sample_1200.txt` | the 1,200 validation ids of every selfjev-4b run (`scripts/train/jev_soft_targets.py`) |
 | `data/*/raw/, data/*/review/` | per-writer source files, judge answers, agreement reports (inputs of the builds above) |
 
 ## sha256 of the source files

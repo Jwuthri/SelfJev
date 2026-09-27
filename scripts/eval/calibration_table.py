@@ -1,7 +1,7 @@
 """Accuracy and calibration of eval reports on eval2 and the dev benchmark (test): Brier, 10-bin ECE over every decision,
 wrong decisions, how many were >= 0.9 sure, mean confidence when wrong, and a paired exact McNemar against the first run.
 
-  uv run python scripts/eval/calibration_table.py qwen35_4b_tree qwen35_4b_tree_rlcd_fresh_ qwen35_4b_tree_sft_fresh_ jev
+  uv run python scripts/eval/calibration_table.py qwen35_4b_tree_scratch_jevall_ jev     # selfjev-4b vs Jev
 
 A name is a report directory under reports/ (with eval2/report.json and test/report.json), or "jev" (reports/external/).
 """

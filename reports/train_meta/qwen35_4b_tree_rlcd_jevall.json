@@ -1,0 +1,198 @@
+{
+ "mode": "rlcd",
+ "base": "Qwen/Qwen3.5-4B",
+ "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+ "prompt": "challenger-state-first-v1",
+ "init": "weights/qwen35_4b_tree",
+ "options_in_question": true,
+ "data": {
+  "runs/jev_all/train.jsonl.gz": "ac4ac3b5e4c1f5add04c7094485440c13d37cdfa467b74af8dc9f5b93a6b0086",
+  "runs/jev_all/val.jsonl.gz": "bf25af519b9f26fb1d19fa3757b69ca989b17688c072932860119ebb2d54604b"
+ },
+ "train_questions": 69528,
+ "val_questions": 1170,
+ "dropped_over_max_length": {
+  "train": {
+   "r2_very_hard": 138,
+   "r2_hard": 75,
+   "r2_simple": 59,
+   "r3_simple": 397,
+   "r3_hard": 610,
+   "r3_very_hard": 913,
+   "llm_verify_very_hard": 39,
+   "llm_guardrail_hard": 11,
+   "llm_judge_very_hard": 19,
+   "llm_guardrail_simple": 28,
+   "llm_guardrail_very_hard": 11,
+   "llm_judge_simple": 11,
+   "llm_score_hard": 25,
+   "llm_verify_hard": 21,
+   "llm_score_very_hard": 10,
+   "llm_jailbreak_very_hard": 9,
+   "llm_verify_simple": 12,
+   "llm_jailbreak_hard": 22,
+   "llm_judge_hard": 14,
+   "llm_score_simple": 18,
+   "llm_jailbreak_simple": 4
+  },
+  "val": {
+   "r2_very_hard": 2,
+   "r2_hard": 3,
+   "r3_hard": 7,
+   "r3_simple": 10,
+   "r3_very_hard": 8
+  }
+ },
+ "max_length": 8192,
+ "epochs": 1,
+ "lr": 2e-05,
+ "lora_r": 64,
+ "batch_tokens": 8192,
+ "grad_accum": 4,
+ "steps": 1230,
+ "seed": 13,
+ "select_by": "validation brier",
+ "soft_targets": 69528,
+ "soft_weight": 0.5,
+ "log": [
+  {
+   "step": 0,
+   "validation": {
+    "loss": 0.12776098447489395,
+    "accuracy": 0.9290598290598291,
+    "brier": 0.07250128291970494,
+    "ece": 0.0035439979544074703,
+    "n": 1170,
+    "confidently_wrong": 15
+   },
+   "wall_s": 157.16980204600077
+  },
+  {
+   "step": 150,
+   "validation": {
+    "loss": 0.1424587102648776,
+    "accuracy": 0.9282051282051282,
+    "brier": 0.07645146995735788,
+    "ece": 0.011494910717010498,
+    "n": 1170,
+    "confidently_wrong": 13
+   },
+   "wall_s": 2728.9716000000008
+  },
+  {
+   "step": 300,
+   "validation": {
+    "loss": 0.14414198559543132,
+    "accuracy": 0.9230769230769231,
+    "brier": 0.07737931213199768,
+    "ece": 0.013881894452966375,
+    "n": 1170,
+    "confidently_wrong": 13
+   },
+   "wall_s": 5085.554720668001
+  },
+  {
+   "step": 450,
+   "validation": {
+    "loss": 0.14347813752533084,
+    "accuracy": 0.9213675213675213,
+    "brier": 0.07720654863668895,
+    "ece": 0.016344788806329814,
+    "n": 1170,
+    "confidently_wrong": 12
+   },
+   "wall_s": 7373.904859747
+  },
+  {
+   "step": 600,
+   "validation": {
+    "loss": 0.1411599871072671,
+    "accuracy": 0.9307692307692308,
+    "brier": 0.07527127856267558,
+    "ece": 0.012835133318706667,
+    "n": 1170,
+    "confidently_wrong": 14
+   },
+   "wall_s": 9620.908514224
+  },
+  {
+   "step": 750,
+   "validation": {
+    "loss": 0.14046363126380262,
+    "accuracy": 0.9273504273504274,
+    "brier": 0.07399421207559641,
+    "ece": 0.018536741613484117,
+    "n": 1170,
+    "confidently_wrong": 13
+   },
+   "wall_s": 11927.209146206998
+  },
+  {
+   "step": 900,
+   "validation": {
+    "loss": 0.1373291630545033,
+    "accuracy": 0.9316239316239316,
+    "brier": 0.07278211521519648,
+    "ece": 0.013411245471853718,
+    "n": 1170,
+    "confidently_wrong": 12
+   },
+   "wall_s": 14205.695335186
+  },
+  {
+   "step": 1050,
+   "validation": {
+    "loss": 0.13717383288145263,
+    "accuracy": 0.9324786324786325,
+    "brier": 0.07287436869449336,
+    "ece": 0.015391228639250465,
+    "n": 1170,
+    "confidently_wrong": 13
+   },
+   "wall_s": 16472.867984005
+  },
+  {
+   "step": 1200,
+   "validation": {
+    "loss": 0.13694980804527257,
+    "accuracy": 0.9316239316239316,
+    "brier": 0.07290012280643417,
+    "ece": 0.012975914172417254,
+    "n": 1170,
+    "confidently_wrong": 12
+   },
+   "wall_s": 18746.212883802
+  },
+  {
+   "step": 1230,
+   "validation": {
+    "loss": 0.13693198943959958,
+    "accuracy": 0.9324786324786325,
+    "brier": 0.07294089514106197,
+    "ece": 0.014584681727617479,
+    "n": 1170,
+    "confidently_wrong": 12
+   },
+   "wall_s": 19308.516386905998
+  }
+ ],
+ "rlcd": {
+  "reward": {
+   "log": 1.0,
+   "brier": 1.0,
+   "spherical": 1.0
+  },
+  "samples": 8,
+  "sigma": 0.3,
+  "beta": 0.2
+ },
+ "best": {
+  "step": 0,
+  "loss": 0.12776098447489395,
+  "accuracy": 0.9290598290598291,
+  "brier": 0.07250128291970494,
+  "ece": 0.0035439979544074703,
+  "n": 1170,
+  "confidently_wrong": 15
+ }
+}

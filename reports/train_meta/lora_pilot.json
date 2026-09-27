@@ -1,0 +1,309 @@
+{
+ "config": {
+  "train_files": [
+   "data/hf.jsonl",
+   "data/synthetic.jsonl"
+  ],
+  "val_files": [
+   "data/hf.jsonl",
+   "data/synthetic.jsonl",
+   "data/eval.jsonl"
+  ],
+  "out_dir": "runs/lora_pilot",
+  "seed": 13,
+  "prompt": "task-v1",
+  "device": null,
+  "dtype": "bfloat16",
+  "max_length": 2048,
+  "max_batch_tokens": 8192,
+  "grad_accum": 4,
+  "epochs": 1,
+  "max_steps": null,
+  "lr": 0.0002,
+  "warmup_ratio": 0.05,
+  "weight_decay": 0.0,
+  "max_grad_norm": 1.0,
+  "gradient_checkpointing": true,
+  "eval_every": 50,
+  "max_val_questions": 1200,
+  "max_train_questions": null,
+  "max_train_per_family": 1600,
+  "lora": {
+   "r": 16,
+   "alpha": 32,
+   "dropout": 0.05,
+   "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+   ]
+  }
+ },
+ "base": {
+  "model": "Qwen/Qwen3-Reranker-0.6B",
+  "revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473"
+ },
+ "prompt": {
+  "name": "task-v1",
+  "sha": "f7b8d8022dfb"
+ },
+ "lora": {
+  "r": 16,
+  "alpha": 32,
+  "dropout": 0.05,
+  "target_modules": [
+   "q_proj",
+   "k_proj",
+   "v_proj",
+   "o_proj"
+  ],
+  "trainable_params": 4587520,
+  "total_params": 600364032,
+  "linear_modules_available": [
+   "down_proj",
+   "gate_proj",
+   "k_proj",
+   "lm_head",
+   "o_proj",
+   "q_proj",
+   "up_proj",
+   "v_proj"
+  ]
+ },
+ "data": {
+  "train_files": [
+   {
+    "path": "data/hf.jsonl",
+    "sha256": "fe29b29286d5a372271e925825e8b9794f3f64be9a9fc04cad458b4b94ada510"
+   },
+   {
+    "path": "data/synthetic.jsonl",
+    "sha256": "9886dc9ee297a9e638be2f306b107910846d87bc92343bd5e6d0771d0f5c103d"
+   }
+  ],
+  "val_files": [
+   {
+    "path": "data/hf.jsonl",
+    "sha256": "fe29b29286d5a372271e925825e8b9794f3f64be9a9fc04cad458b4b94ada510"
+   },
+   {
+    "path": "data/synthetic.jsonl",
+    "sha256": "9886dc9ee297a9e638be2f306b107910846d87bc92343bd5e6d0771d0f5c103d"
+   },
+   {
+    "path": "data/eval.jsonl",
+    "sha256": "be888eb38dcca063823924430e03985ddf2186b874e792d5734936ba93ba6910"
+   }
+  ],
+  "train_questions": 10112,
+  "val_questions": 983,
+  "train_by_family": {
+   "hf_emotions_multilabel": 1600,
+   "hf_intent_banking77": 1600,
+   "hf_nli": 1600,
+   "hf_sentiment_tweets": 1600,
+   "hf_topic_agnews": 1600,
+   "syn_adversarial": 305,
+   "syn_evidence": 331,
+   "syn_multilabel": 291,
+   "syn_policy": 228,
+   "syn_routing": 473,
+   "syn_urgency_sentiment": 484
+  },
+  "train_by_type": {
+   "multilabel": 2214,
+   "multiclass": 5466,
+   "binary": 2432
+  },
+  "dropped_overlength": {
+   "train": {},
+   "val": {}
+  }
+ },
+ "best": {
+  "step": 150,
+  "loss": 0.43515654182628116,
+  "question_accuracy": 0.7416073245167853,
+  "accuracy_by_type_at_T1_t0.5": {
+   "binary": 0.8548387096774194,
+   "multiclass": 0.8178368121442126,
+   "multilabel": 0.41346153846153844
+  }
+ },
+ "steps": 183,
+ "log": [
+  {
+   "step": 0,
+   "val": {
+    "loss": 1.1288061597946337,
+    "question_accuracy": 0.525940996948118,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.5161290322580645,
+     "multiclass": 0.7077798861480076,
+     "multilabel": 0.07692307692307693
+    }
+   }
+  },
+  {
+   "step": 10,
+   "train_loss": 0.854065319779329,
+   "grad_norm": 1.9963055849075317,
+   "questions_seen": 540
+  },
+  {
+   "step": 20,
+   "train_loss": 0.6139557847753168,
+   "grad_norm": 3.703629493713379,
+   "questions_seen": 1080
+  },
+  {
+   "step": 30,
+   "train_loss": 0.5277190931141377,
+   "grad_norm": 3.1532504558563232,
+   "questions_seen": 1574
+  },
+  {
+   "step": 40,
+   "train_loss": 0.4429898066446185,
+   "grad_norm": 1.8749186992645264,
+   "questions_seen": 2180
+  },
+  {
+   "step": 50,
+   "train_loss": 0.4562064628757071,
+   "grad_norm": 3.657766342163086,
+   "questions_seen": 2716
+  },
+  {
+   "step": 50,
+   "val": {
+    "loss": 0.48609000717271744,
+    "question_accuracy": 0.6775178026449644,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.8064516129032258,
+     "multiclass": 0.8083491461100569,
+     "multilabel": 0.19230769230769232
+    }
+   }
+  },
+  {
+   "step": 60,
+   "train_loss": 0.40517696454189717,
+   "grad_norm": 2.487395763397217,
+   "questions_seen": 3252
+  },
+  {
+   "step": 70,
+   "train_loss": 0.40693381247110666,
+   "grad_norm": 2.530165433883667,
+   "questions_seen": 3870
+  },
+  {
+   "step": 80,
+   "train_loss": 0.4715524942148477,
+   "grad_norm": 2.5674116611480713,
+   "questions_seen": 4514
+  },
+  {
+   "step": 90,
+   "train_loss": 0.387026047334075,
+   "grad_norm": 2.221251964569092,
+   "questions_seen": 5042
+  },
+  {
+   "step": 100,
+   "train_loss": 0.35367742818780246,
+   "grad_norm": 2.5356266498565674,
+   "questions_seen": 5604
+  },
+  {
+   "step": 100,
+   "val": {
+    "loss": 0.47656321404302837,
+    "question_accuracy": 0.7070193285859614,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.8306451612903226,
+     "multiclass": 0.7893738140417458,
+     "multilabel": 0.35096153846153844
+    }
+   }
+  },
+  {
+   "step": 110,
+   "train_loss": 0.4291407200973481,
+   "grad_norm": 2.147718667984009,
+   "questions_seen": 6179
+  },
+  {
+   "step": 120,
+   "train_loss": 0.3749434661120176,
+   "grad_norm": 1.4964280128479004,
+   "questions_seen": 6752
+  },
+  {
+   "step": 130,
+   "train_loss": 0.3917734457179904,
+   "grad_norm": 1.9276890754699707,
+   "questions_seen": 7289
+  },
+  {
+   "step": 140,
+   "train_loss": 0.4043619465082884,
+   "grad_norm": 1.7783774137496948,
+   "questions_seen": 7837
+  },
+  {
+   "step": 150,
+   "train_loss": 0.39515164541080594,
+   "grad_norm": 4.543392658233643,
+   "questions_seen": 8333
+  },
+  {
+   "step": 150,
+   "val": {
+    "loss": 0.43515654182628116,
+    "question_accuracy": 0.7416073245167853,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.8548387096774194,
+     "multiclass": 0.8178368121442126,
+     "multilabel": 0.41346153846153844
+    }
+   }
+  },
+  {
+   "step": 160,
+   "train_loss": 0.37004586271941664,
+   "grad_norm": 2.2654013633728027,
+   "questions_seen": 8872
+  },
+  {
+   "step": 170,
+   "train_loss": 0.3984450589865446,
+   "grad_norm": 1.9722050428390503,
+   "questions_seen": 9432
+  },
+  {
+   "step": 180,
+   "train_loss": 0.3479927283711731,
+   "grad_norm": 2.821948289871216,
+   "questions_seen": 9942
+  }
+ ],
+ "reload_check": {
+  "questions": 64,
+  "max_abs_score_diff": 0.125
+ },
+ "hardware": {
+  "device": "mps",
+  "chip": "Apple M5 Pro",
+  "platform": "macOS-26.5.2-arm64-arm-64bit"
+ },
+ "versions": {
+  "torch": "2.14.0",
+  "transformers": "5.17.0",
+  "peft": "0.21.0"
+ },
+ "wall_s": 3794.2752762909513,
+ "adapter_sha256": "d739304ed42fd79d59837090033dcff6c6aafb6eb94a3071a8c67ce54bcfc1b6"
+}

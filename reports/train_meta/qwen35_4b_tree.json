@@ -1,0 +1,200 @@
+{
+ "model": {
+  "rotary_buffer_precision": "native",
+  "adapter_sha256": null,
+  "model": "Qwen/Qwen3.5-4B",
+  "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+  "adapter": null,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "architecture": "shared document / forked native cache branches",
+  "prompt": "challenger-state-first-v1",
+  "prompt_sha": "6c9d8459ac44",
+  "truncation": "none",
+  "max_length": 32768,
+  "branch_batch": 16,
+  "cache_storage": "forked batch rows; prefix compute shared, storage materialized"
+ },
+ "config": {
+  "train_files": [
+   "data/ova/hf.jsonl",
+   "data/ova/synthetic.jsonl",
+   "data/ova/hardcases_nb.jsonl",
+   "data/ova/hardcases_r3.jsonl"
+  ],
+  "val_files": [
+   "data/ova/hf.jsonl",
+   "data/ova/synthetic.jsonl",
+   "data/ova/eval.jsonl",
+   "data/ova/hardcases.jsonl",
+   "data/ova/hardcases_r3.jsonl"
+  ],
+  "out_dir": "runs/lora",
+  "seed": 13,
+  "model_id": "Qwen/Qwen3-Reranker-0.6B",
+  "revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473",
+  "prompt": "task-v1",
+  "device": null,
+  "dtype": "float32",
+  "max_length": 2048,
+  "max_batch_tokens": 8192,
+  "grad_accum": 4,
+  "epochs": 1,
+  "max_steps": null,
+  "lr": 0.0002,
+  "warmup_ratio": 0.03,
+  "weight_decay": 0.0,
+  "max_grad_norm": 1.0,
+  "gradient_checkpointing": true,
+  "eval_every": 100,
+  "max_val_questions": 1200,
+  "max_train_questions": null,
+  "max_train_per_family": 1600,
+  "cap_exempt_families": [
+   "r2_simple",
+   "r2_hard",
+   "r2_very_hard",
+   "r3_simple",
+   "r3_hard",
+   "r3_very_hard"
+  ],
+  "lora": {
+   "r": 16,
+   "alpha": 32,
+   "dropout": 0.05,
+   "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+   ]
+  }
+ },
+ "recipe": "tree_4b_instruct_r2x64 data and LoRA rank; shared-prefix tree training (qwen35_tree)",
+ "tree": true,
+ "data_dir": "data/ova",
+ "round3": true,
+ "train_max_len": 8192,
+ "seed": 13,
+ "epochs": 1,
+ "lr": 0.0002,
+ "weight_decay": 0.01,
+ "batch_tokens": 8192,
+ "grad_accum": 4,
+ "lora": {
+  "r": 64,
+  "alpha": 128,
+  "targets": [
+   "in_proj_a",
+   "in_proj_b",
+   "in_proj_qkv",
+   "in_proj_z",
+   "k_proj",
+   "o_proj",
+   "out_proj",
+   "q_proj",
+   "v_proj"
+  ]
+ },
+ "trainable": 57507840,
+ "train_questions": 51774,
+ "val_questions": 1170,
+ "train_pair_tokens": 24381102,
+ "dropped_train": 2013,
+ "dropped_val": 30,
+ "train_ids_sha": "d1f525b95bfb4d62a920b45ccf42c99ac251b4abaec0da22dba9f6f61423959d",
+ "data": {
+  "data/ova/hf.jsonl": "1adbb2799b80dd345b54c7b7f4e1958d72db7801f3fd68a92d6bcac36a74fe84",
+  "data/ova/hardcases_nb.jsonl": "9fb551f725947def9e52180808ea5172dd190a555038d3572ce059784c48bda6",
+  "data/ova/hardcases.jsonl": "fceaddc7fe1836df41f23243a9aca5c0a928503d8e130213a848bdedfe67a5c2",
+  "data/ova/eval.jsonl": "cb87e7de1ab5427f9af44bacfab59fdce51ced432e59104fe2cbe319182d9cdd",
+  "data/ova/synthetic.jsonl": "d62db8d7ac8ece41ca967030e33df5d52b6cebbe4a450807ae71596b88b38c7d",
+  "data/ova/hardcases_r3.jsonl": "3ea816bc558ddf8920184467941b73b215c5717905daf6818f47948a3cd4e109"
+ },
+ "versions": {
+  "torch": "2.14.0+cu130",
+  "gpu": "NVIDIA L40S"
+ },
+ "log": [
+  {
+   "step": 0,
+   "validation": {
+    "loss": 0.48464435191922406,
+    "accuracy": 0.7811965811965812,
+    "n": 1170
+   },
+   "wall_s": 186.08926095800007
+  },
+  {
+   "step": 150,
+   "validation": {
+    "loss": 0.21833205693546398,
+    "accuracy": 0.8923076923076924,
+    "n": 1170
+   },
+   "wall_s": 2725.202391916
+  },
+  {
+   "step": 300,
+   "validation": {
+    "loss": 0.16938124974675411,
+    "accuracy": 0.9068376068376068,
+    "n": 1170
+   },
+   "wall_s": 5020.115609552
+  },
+  {
+   "step": 450,
+   "validation": {
+    "loss": 0.19657767511512442,
+    "accuracy": 0.8914529914529915,
+    "n": 1170
+   },
+   "wall_s": 7319.8699815830005
+  },
+  {
+   "step": 600,
+   "validation": {
+    "loss": 0.14302300519629352,
+    "accuracy": 0.9188034188034188,
+    "n": 1170
+   },
+   "wall_s": 9600.096071924001
+  },
+  {
+   "step": 750,
+   "validation": {
+    "loss": 0.1382965295694127,
+    "accuracy": 0.9299145299145299,
+    "n": 1170
+   },
+   "wall_s": 11860.199803837
+  },
+  {
+   "step": 900,
+   "validation": {
+    "loss": 0.12803876249652926,
+    "accuracy": 0.9290598290598291,
+    "n": 1170
+   },
+   "wall_s": 14144.048842442
+  },
+  {
+   "step": 941,
+   "validation": {
+    "loss": 0.12770902491878322,
+    "accuracy": 0.9273504273504274,
+    "n": 1170
+   },
+   "wall_s": 14869.583559413999
+  }
+ ],
+ "best": {
+  "step": 941,
+  "loss": 0.12770902491878322,
+  "accuracy": 0.9273504273504274,
+  "n": 1170
+ },
+ "steps": 941,
+ "wall_s": 14872.4517493
+}

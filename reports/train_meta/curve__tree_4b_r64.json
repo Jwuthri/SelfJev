@@ -1,0 +1,256 @@
+{
+ "config": {
+  "train_files": [
+   "data/hf.jsonl",
+   "data/synthetic.jsonl"
+  ],
+  "val_files": [
+   "data/hf.jsonl",
+   "data/synthetic.jsonl",
+   "data/eval.jsonl"
+  ],
+  "out_dir": "runs/curve/tree_4b_r64",
+  "seed": 13,
+  "model_id": "Qwen/Qwen3-Reranker-4B",
+  "revision": "22e683669bc0f0bd69640a1354a6d0aebcfeede5",
+  "prompt": "task-v1",
+  "device": null,
+  "dtype": "bfloat16",
+  "max_length": 2048,
+  "max_batch_tokens": 16384,
+  "grad_accum": 2,
+  "epochs": 1,
+  "max_steps": null,
+  "lr": 0.0002,
+  "warmup_ratio": 0.05,
+  "weight_decay": 0.0,
+  "max_grad_norm": 1.0,
+  "gradient_checkpointing": true,
+  "eval_every": 50,
+  "max_val_questions": 1200,
+  "max_train_questions": null,
+  "max_train_per_family": 1600,
+  "cap_exempt_families": [],
+  "lora": {
+   "r": 64,
+   "alpha": 128,
+   "dropout": 0.05,
+   "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+   ]
+  }
+ },
+ "base": {
+  "model": "Qwen/Qwen3-Reranker-4B",
+  "revision": "22e683669bc0f0bd69640a1354a6d0aebcfeede5"
+ },
+ "format": {
+  "name": "tree-v1",
+  "prefix": "<|im_start|>system\nJudge whether the Document meets the requirements based on the Query and the Instruct provided. Note that the answer can only be \"yes\" or \"no\".<|im_end|>\n<|im_start|>user\n",
+  "state": [
+   "<Document>: ",
+   "\n"
+  ],
+  "question": [
+   "<Instruct>: Judge whether the proposed answer to the question is correct, using only the Document as evidence.\n<Query>: Question: ",
+   "\nProposed answer:"
+  ],
+  "leaf": " ",
+  "suffix": "<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "binary_answer": "Yes",
+  "readout": [
+   "yes",
+   "no"
+  ],
+  "user_text": "split_special_tokens=True",
+  "sha": "bc025ae9f6bc"
+ },
+ "lora": {
+  "r": 64,
+  "alpha": 128,
+  "dropout": 0.05,
+  "target_modules": [
+   "q_proj",
+   "k_proj",
+   "v_proj",
+   "o_proj"
+  ],
+  "trainable_params": 47185920,
+  "total_params": 4068970496,
+  "linear_modules_available": [
+   "down_proj",
+   "gate_proj",
+   "k_proj",
+   "lm_head",
+   "o_proj",
+   "q_proj",
+   "up_proj",
+   "v_proj"
+  ]
+ },
+ "data": {
+  "train_files": [
+   {
+    "path": "data/hf.jsonl",
+    "sha256": "fe29b29286d5a372271e925825e8b9794f3f64be9a9fc04cad458b4b94ada510"
+   },
+   {
+    "path": "data/synthetic.jsonl",
+    "sha256": "31b78b470a830766aaa0561426752bcc0a9ebf04d028d61e67c56c78bac4b566"
+   }
+  ],
+  "val_files": [
+   {
+    "path": "data/hf.jsonl",
+    "sha256": "fe29b29286d5a372271e925825e8b9794f3f64be9a9fc04cad458b4b94ada510"
+   },
+   {
+    "path": "data/synthetic.jsonl",
+    "sha256": "31b78b470a830766aaa0561426752bcc0a9ebf04d028d61e67c56c78bac4b566"
+   },
+   {
+    "path": "data/eval.jsonl",
+    "sha256": "be888eb38dcca063823924430e03985ddf2186b874e792d5734936ba93ba6910"
+   }
+  ],
+  "train_questions": 10080,
+  "train_states": 8556,
+  "val_questions": 978,
+  "train_by_family": {
+   "hf_emotions_multilabel": 1600,
+   "hf_intent_banking77": 1600,
+   "hf_nli": 1600,
+   "hf_sentiment_tweets": 1600,
+   "hf_topic_agnews": 1600,
+   "syn_adversarial": 304,
+   "syn_evidence": 328,
+   "syn_multilabel": 286,
+   "syn_policy": 223,
+   "syn_routing": 468,
+   "syn_urgency_sentiment": 471
+  },
+  "dropped_overlength": {
+   "train": {},
+   "val": {}
+  }
+ },
+ "best": {
+  "step": 84,
+  "loss": 0.3094614727121677,
+  "question_accuracy": 0.8179959100204499,
+  "accuracy_by_type_at_T1_t0.5": {
+   "binary": 0.9311740890688259,
+   "multiclass": 0.8633776091081594,
+   "multilabel": 0.5637254901960784
+  }
+ },
+ "steps": 84,
+ "log": [
+  {
+   "step": 0,
+   "stage": "init (zero-initialized LoRA = the unmodified backbone in tree format)",
+   "val": {
+    "loss": 0.49208003319114263,
+    "question_accuracy": 0.7065439672801636,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.8340080971659919,
+     "multiclass": 0.7855787476280834,
+     "multilabel": 0.3480392156862745
+    }
+   }
+  },
+  {
+   "step": 10,
+   "train_loss": 0.321801374014467,
+   "grad_norm": 2.0838513374328613,
+   "questions_seen": 1191
+  },
+  {
+   "step": 20,
+   "train_loss": 0.29373234694066924,
+   "grad_norm": 1.1052898168563843,
+   "questions_seen": 2255
+  },
+  {
+   "step": 30,
+   "train_loss": 0.2623531608376652,
+   "grad_norm": 0.8207381367683411,
+   "questions_seen": 3496
+  },
+  {
+   "step": 40,
+   "train_loss": 0.24667252843501047,
+   "grad_norm": 0.9267621636390686,
+   "questions_seen": 4643
+  },
+  {
+   "step": 50,
+   "train_loss": 0.20683451413642615,
+   "grad_norm": 0.6555973887443542,
+   "questions_seen": 5838
+  },
+  {
+   "step": 50,
+   "stage": "train",
+   "val": {
+    "loss": 0.34117834797178553,
+    "question_accuracy": 0.8067484662576687,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.9271255060728745,
+     "multiclass": 0.8481973434535104,
+     "multilabel": 0.553921568627451
+    }
+   }
+  },
+  {
+   "step": 60,
+   "train_loss": 0.23675875812768937,
+   "grad_norm": 0.6432255506515503,
+   "questions_seen": 7139
+  },
+  {
+   "step": 70,
+   "train_loss": 0.26707572853192685,
+   "grad_norm": 0.7175182104110718,
+   "questions_seen": 8397
+  },
+  {
+   "step": 80,
+   "train_loss": 0.2516047298908234,
+   "grad_norm": 0.6812774538993835,
+   "questions_seen": 9669
+  },
+  {
+   "step": 84,
+   "stage": "train",
+   "val": {
+    "loss": 0.3094614727121677,
+    "question_accuracy": 0.8179959100204499,
+    "accuracy_by_type_at_T1_t0.5": {
+     "binary": 0.9311740890688259,
+     "multiclass": 0.8633776091081594,
+     "multilabel": 0.5637254901960784
+    }
+   }
+  }
+ ],
+ "reload_check": {
+  "questions": 64,
+  "max_abs_score_diff": 0.0
+ },
+ "hardware": {
+  "device": "cuda",
+  "chip": "x86_64",
+  "platform": "Linux-6.8.0-1063-aws-x86_64-with-glibc2.35"
+ },
+ "wall_s": 1806.967808975,
+ "versions": {
+  "torch": "2.14.0+cu130",
+  "transformers": "5.17.0",
+  "peft": "0.21.0"
+ },
+ "adapter_sha256": "eeff59b0a52d880b8d00caf3aa14b63d657bbf29d223473e109d6080da544a93"
+}

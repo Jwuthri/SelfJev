@@ -6,7 +6,7 @@ of it, distilling Jev's hedging).
 - Train: every non-test row of the training datasets (train + validation splits), minus the validation sample. Out:
   test rows, the frozen / benchmark datasets (eval, eval2, eval_llm, compact_challenge_v1:
   selfjev.data.catalog.TEST_DATASETS) and the calibration splits (kept for temperature fitting). No family cap, no `none` rebalance.
-- Val: qwen35_4b_tree's 1,200-question validation sample (same ids), so validation numbers compare with every run since.
+- Val: the same 1,200 validation questions as every Qwen3.5 run, so validation numbers compare across runs.
 - Each training row gains "soft" from its `jev` field: P(yes) (binary) or {candidate id: p} (multiclass: Jev's
   distribution; multilabel: P(yes) per option). The target stays the verified one; `selfjev finetune / rlcd --soft-weight`
   (default 0.5) mixes the two, so Jev never decides a label. Questions stay as in all.jsonl.gz: selfjev adds the option
@@ -24,8 +24,8 @@ OUT = Path("runs/jev_all")
 
 
 def val_ids():
-    """The 1,200-question validation sample of every Qwen3.5 run since qwen35_4b_tree (run_qwen35.py's selection, seed 13),
-    frozen in data/val_sample_1200.txt so the recipe no longer depends on the data/ova training copies."""
+    """The 1,200-question validation sample of every Qwen3.5 run (drawn with seed 13 by run_qwen35.py, at tag
+    archive/pre-cleanup-2026-09-27), frozen in data/val_sample_1200.txt."""
     return set(Path("data/val_sample_1200.txt").read_text().split())
 
 

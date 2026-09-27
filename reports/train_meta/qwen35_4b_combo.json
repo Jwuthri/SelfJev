@@ -1,0 +1,289 @@
+{
+ "model": {
+  "rotary_buffer_precision": "native",
+  "adapter_sha256": null,
+  "model": "Qwen/Qwen3.5-4B",
+  "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+  "adapter": null,
+  "device": "cuda",
+  "dtype": "bfloat16",
+  "architecture": "shared document / forked native cache branches",
+  "prompt": "challenger-state-first-v1",
+  "prompt_sha": "6c9d8459ac44",
+  "truncation": "none",
+  "max_length": 32768,
+  "branch_batch": 16,
+  "cache_storage": "forked batch rows; prefix compute shared, storage materialized"
+ },
+ "config": {
+  "train_files": [
+   "data/ova/hf.jsonl",
+   "data/ova/synthetic.jsonl",
+   "data/ova/hardcases_nb.jsonl",
+   "data/ova/hardcases_r3.jsonl"
+  ],
+  "val_files": [
+   "data/ova/hf.jsonl",
+   "data/ova/synthetic.jsonl",
+   "data/ova/eval.jsonl",
+   "data/ova/hardcases.jsonl",
+   "data/ova/hardcases_r3.jsonl"
+  ],
+  "out_dir": "runs/lora",
+  "seed": 13,
+  "model_id": "Qwen/Qwen3-Reranker-0.6B",
+  "revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473",
+  "prompt": "task-v1",
+  "device": null,
+  "dtype": "float32",
+  "max_length": 2048,
+  "max_batch_tokens": 8192,
+  "grad_accum": 4,
+  "epochs": 1,
+  "max_steps": null,
+  "lr": 0.0002,
+  "warmup_ratio": 0.03,
+  "weight_decay": 0.0,
+  "max_grad_norm": 1.0,
+  "gradient_checkpointing": true,
+  "eval_every": 100,
+  "max_val_questions": 1200,
+  "max_train_questions": null,
+  "max_train_per_family": 1600,
+  "cap_exempt_families": [
+   "r2_simple",
+   "r2_hard",
+   "r2_very_hard",
+   "r3_simple",
+   "r3_hard",
+   "r3_very_hard"
+  ],
+  "lora": {
+   "r": 16,
+   "alpha": 32,
+   "dropout": 0.05,
+   "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj"
+   ]
+  }
+ },
+ "recipe": "tree_4b_instruct_r2x64 data and LoRA rank; full-sequence training",
+ "data_dir": "data/ova",
+ "round3": true,
+ "train_max_len": 2048,
+ "seed": 13,
+ "epochs": 1,
+ "lr": 0.0002,
+ "weight_decay": 0.01,
+ "batch_tokens": 8192,
+ "grad_accum": 4,
+ "lora": {
+  "r": 64,
+  "alpha": 128,
+  "targets": [
+   "in_proj_a",
+   "in_proj_b",
+   "in_proj_qkv",
+   "in_proj_z",
+   "k_proj",
+   "o_proj",
+   "out_proj",
+   "q_proj",
+   "v_proj"
+  ]
+ },
+ "trainable": 57507840,
+ "train_questions": 43827,
+ "val_questions": 992,
+ "train_pair_tokens": 54862831,
+ "dropped_train": 9960,
+ "dropped_val": 208,
+ "train_ids_sha": "d277d1f8e2885126d81246a007fd98227d7596ed6626664df9b8f9f2bcc0aa6b",
+ "data": {
+  "data/ova/hardcases.jsonl": "fceaddc7fe1836df41f23243a9aca5c0a928503d8e130213a848bdedfe67a5c2",
+  "data/ova/synthetic.jsonl": "d62db8d7ac8ece41ca967030e33df5d52b6cebbe4a450807ae71596b88b38c7d",
+  "data/ova/hardcases_nb.jsonl": "9fb551f725947def9e52180808ea5172dd190a555038d3572ce059784c48bda6",
+  "data/ova/hardcases_r3.jsonl": "3ea816bc558ddf8920184467941b73b215c5717905daf6818f47948a3cd4e109",
+  "data/ova/eval.jsonl": "cb87e7de1ab5427f9af44bacfab59fdce51ced432e59104fe2cbe319182d9cdd",
+  "data/ova/hf.jsonl": "1adbb2799b80dd345b54c7b7f4e1958d72db7801f3fd68a92d6bcac36a74fe84"
+ },
+ "versions": {
+  "torch": "2.14.0+cu130",
+  "gpu": "NVIDIA L40S"
+ },
+ "log": [
+  {
+   "step": 0,
+   "validation": {
+    "loss": 0.5060183172387526,
+    "accuracy": 0.7752016129032258,
+    "n": 992
+   },
+   "wall_s": 148.596654703
+  },
+  {
+   "step": 150,
+   "validation": {
+    "loss": 0.4092953658401555,
+    "accuracy": 0.8286290322580645,
+    "n": 992
+   },
+   "wall_s": 1717.975328825
+  },
+  {
+   "step": 300,
+   "validation": {
+    "loss": 0.2371102378374449,
+    "accuracy": 0.8689516129032258,
+    "n": 992
+   },
+   "wall_s": 3099.3290878390003
+  },
+  {
+   "step": 450,
+   "validation": {
+    "loss": 0.34357114814404516,
+    "accuracy": 0.8649193548387096,
+    "n": 992
+   },
+   "wall_s": 4510.658144537
+  },
+  {
+   "step": 600,
+   "validation": {
+    "loss": 0.273328211278736,
+    "accuracy": 0.8618951612903226,
+    "n": 992
+   },
+   "wall_s": 5925.5583745700005
+  },
+  {
+   "step": 750,
+   "validation": {
+    "loss": 0.22458202818166323,
+    "accuracy": 0.8780241935483871,
+    "n": 992
+   },
+   "wall_s": 7355.948459941
+  },
+  {
+   "step": 900,
+   "validation": {
+    "loss": 0.25146390198134894,
+    "accuracy": 0.8931451612903226,
+    "n": 992
+   },
+   "wall_s": 8758.326124171
+  },
+  {
+   "step": 1050,
+   "validation": {
+    "loss": 0.21084655649284176,
+    "accuracy": 0.8810483870967742,
+    "n": 992
+   },
+   "wall_s": 10165.242973091
+  },
+  {
+   "step": 1200,
+   "validation": {
+    "loss": 0.19175744271586412,
+    "accuracy": 0.905241935483871,
+    "n": 992
+   },
+   "wall_s": 11583.650569607
+  },
+  {
+   "step": 1350,
+   "validation": {
+    "loss": 0.24618218413579557,
+    "accuracy": 0.8901209677419355,
+    "n": 992
+   },
+   "wall_s": 12989.592062089
+  },
+  {
+   "step": 1500,
+   "validation": {
+    "loss": 0.20516317243650323,
+    "accuracy": 0.905241935483871,
+    "n": 992
+   },
+   "wall_s": 14390.683162909
+  },
+  {
+   "step": 1650,
+   "validation": {
+    "loss": 0.18487283378000588,
+    "accuracy": 0.9102822580645161,
+    "n": 992
+   },
+   "wall_s": 15819.526564555
+  },
+  {
+   "step": 1800,
+   "validation": {
+    "loss": 0.18312159074198664,
+    "accuracy": 0.9022177419354839,
+    "n": 992
+   },
+   "wall_s": 17238.497135154998
+  },
+  {
+   "step": 1950,
+   "validation": {
+    "loss": 0.17416857857371465,
+    "accuracy": 0.8991935483870968,
+    "n": 992
+   },
+   "wall_s": 18654.642161752
+  },
+  {
+   "step": 2100,
+   "validation": {
+    "loss": 0.19235643284746845,
+    "accuracy": 0.9002016129032258,
+    "n": 992
+   },
+   "wall_s": 20058.386746214997
+  },
+  {
+   "step": 2250,
+   "validation": {
+    "loss": 0.1648015232648532,
+    "accuracy": 0.905241935483871,
+    "n": 992
+   },
+   "wall_s": 21488.136875865
+  },
+  {
+   "step": 2400,
+   "validation": {
+    "loss": 0.1755256306533333,
+    "accuracy": 0.90625,
+    "n": 992
+   },
+   "wall_s": 22952.273641653
+  },
+  {
+   "step": 2474,
+   "validation": {
+    "loss": 0.173825429008711,
+    "accuracy": 0.907258064516129,
+    "n": 992
+   },
+   "wall_s": 23700.718464239
+  }
+ ],
+ "best": {
+  "step": 2250,
+  "loss": 0.1648015232648532,
+  "accuracy": 0.905241935483871,
+  "n": 992
+ },
+ "steps": 2474,
+ "wall_s": 23701.893404724997
+}

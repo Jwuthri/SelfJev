@@ -3,10 +3,10 @@ so each leaf still judges one candidate but now sees all the alternatives (one v
 code, format and readout are unchanged, and every row keeps its id, split and target.
 
 Options are listed in a fixed random order per question (seeded by id), so list position carries no signal.
-Binary questions are unchanged. Apply the same transform at inference time (transform(), `--options-in-question`).
-Rebuilds the untracked training copies byte for byte (docs/reproduce.md, "Older recipes").
+Binary questions are unchanged. `selfjev finetune` and `selfjev serve` apply the same transform themselves; this script
+builds the evaluation copies that `selfjev eval` reads (data/ova/eval2, eval_llm, hf, eval).
 
-usage: uv run python scripts/data/options_in_question.py data/hf.jsonl ...   -> data/ova/<name>.jsonl
+usage: uv run python scripts/data/options_in_question.py data/eval2.jsonl ...   -> data/ova/<name>.jsonl
 """
 
 import json

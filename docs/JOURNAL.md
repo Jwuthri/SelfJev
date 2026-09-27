@@ -8,6 +8,8 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
+| **Retrain `selfjev-4b` with batch 2** (`selfjev_4b_v2`: the same recipe on 83,738 questions, i.e. + `mpos_distr_num_v1`; GPU preflight against selfjev-4b's eval2 report, then train, then eval2 / dev benchmark / eval_llm; user OK ≈ $21) | fork | `i-0700e0bcadbf72ad6` g6e.2xlarge us-east-2 ($2.242/h, 12 h cap) | 01:35 PDT 2026-09-27 | ≈ 11:30 PDT |
+| **Remove the code of every model but selfjev-4b, full docs audit** (user request). Other sessions: don't edit `src/`, `scripts/`, `tests/` or `docs/` until this row is gone | fork | this checkout | 01:40 PDT 2026-09-27 | ≈ 04:00 PDT |
 
 ## Spend so far (real cost, BYOK upstream included)
 

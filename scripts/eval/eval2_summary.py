@@ -1,6 +1,6 @@
 """eval2 scoreboard (frozen target-task test set, data/eval2.jsonl): every reports/**/eval2/report.json and
 reports/external/eval2/*/report.json -> reports/eval2/summary.md, sliced by type, tier, author, text length and trap,
-with paired exact McNemar tests (selfjev.evaluation.stats) vs round 1 (tree_4b) and vs Jev.
+with paired exact McNemar tests (selfjev.evaluation.stats) vs the default model (weights/selfjev_4b) and vs Jev.
 
 usage: uv run python scripts/eval/eval2_summary.py      (re-run after scoring any model on eval2; never train or tune on eval2)
 """
@@ -12,7 +12,8 @@ from pathlib import Path
 from selfjev.evaluation.stats import mcnemar
 
 ROOT = Path(__file__).resolve().parents[2]
-REF, JEV = "tree_4b", "jev"
+REF = Path(json.loads((ROOT / "weights/selfjev_4b/model.json").read_text())["reports"]).name  # selfjev-4b
+JEV = "jev"
 LENGTHS = [(64, "≤64"), (256, "65–256"), (1024, "257–1K"), (4096, "1K–4K"), (10**9, ">4K")]
 
 
@@ -67,7 +68,7 @@ def main():
     lines += [
         "### paired exact McNemar (questions only the row / only the other gets right)",
         "",
-        "| run | vs tree_4b | vs Jev |",
+        f"| run | vs selfjev-4b (`{REF}`) | vs Jev |",
         "|---|---|---|",
     ]
     ok = {k: {i: bool(preds[k][i]["correct"]) for i in ids} for k in order}
