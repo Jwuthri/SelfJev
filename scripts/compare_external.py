@@ -29,7 +29,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 from selfjev.data import load, sha256_file, write_jsonl
-from selfjev.evaluate import breakdowns, compare, evaluate_predictions, markdown
+from selfjev.evaluation.evaluate import breakdowns, compare, evaluate_predictions, markdown
 
 API = "https://openrouter.ai/api"
 OUT = ROOT / "reports/external"

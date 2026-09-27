@@ -17,7 +17,7 @@ uv sync --quiet && uv pip install --quiet --python .venv/bin/python flash-linear
 PY=.venv/bin/python
 $PY -c "import fla" || { log "FAILED: flash-linear-attention missing"; exit 1; }
 $PY -c "from huggingface_hub import snapshot_download; snapshot_download('Qwen/Qwen3.5-4B', revision='851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a')" > /dev/null && log "model downloaded"
-INIT="--init weights/qwen35_4b_tree"; LR=2e-5; SETS=eval2,test,eval_llm; EXTRA=""
+INIT="--init weights/qwen35_4b_tree"; LR=2e-5; EXTRA=""
 case $MODE in
   rlcd) CMD="rlcd --beta 0.2" ;;
   sft) CMD=finetune ;;
@@ -32,13 +32,16 @@ for ad in adapter adapter_last; do
   [[ $ad == adapter ]] && $PY -c "import json, sys; sys.exit(json.load(open('runs/$RUN/train_meta.json'))['best']['step'] != 0)" \
     && { log "best checkpoint is step 0 (the start): skipped"; continue; }
   [[ $ad == adapter_last ]] && cmp -s runs/$RUN/adapter/adapter_model.safetensors runs/$RUN/adapter_last/adapter_model.safetensors && continue
-  log "eval $ad"; $PY scripts/run_qwen35.py qwen35_4b --stage eval --tag _tree_${MODE}_jevall_${ad#adapter} --adapter runs/$RUN/$ad \
-    --data-dir data/ova --sets $SETS 2>&1 | grep -E "EVAL|Error|error"
+  R=reports/qwen35_4b_tree_${MODE}_jevall_${ad#adapter}; log "eval $ad"
+  selfjev_eval() { $PY -m selfjev.cli eval --adapter runs/$RUN/$ad --out $R/$1 "${@:2}" > /dev/null && log "EVAL $R $1 done"; }
+  selfjev_eval eval2 --data data/ova/eval2.jsonl
+  selfjev_eval test --data data/ova/hf.jsonl data/ova/eval.jsonl --split test
+  selfjev_eval eval_llm --data data/ova/eval_llm.jsonl
 done
 if [[ $MODE == scratch ]]; then  # eval_llm was never scored for these: the best model and the Jev-target fine-tune
   for b in "_tree weights/qwen35_4b_tree" "_tree_sft_jevall__last runs/qwen35_4b_tree_sft_jevall/adapter_last"; do
     set -- $b; log "eval_llm baseline $2"
-    $PY scripts/run_qwen35.py qwen35_4b --stage eval --tag $1 --adapter $2 --data-dir data/ova --sets eval_llm 2>&1 | grep -E "EVAL|Error|error"
+    $PY -m selfjev.cli eval --adapter $2 --data data/ova/eval_llm.jsonl --out reports/qwen35_4b$1/eval_llm > /dev/null && log "EVAL $2 eval_llm done"
   done
 fi
 log "ALL DONE"

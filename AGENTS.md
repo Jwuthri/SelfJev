@@ -25,7 +25,7 @@ Several AI sessions work on this repo at the same time. To avoid redoing work or
    in `jev`); catalog and usage in [data/README.md](data/README.md). Always load training mixes, evals and analyses from
    it (`uv run python scripts/build_all.py` builds it). **Grow it with batches, never with a new stand-alone dataset:**
    `gen_hardcases.py --batch <name>`, then `scripts/grow_batch.sh <name> judge|build|finish` (data/README.md "Grow it").
-5. The system itself: [README.md](README.md). Default model: **`selfjev-4b`** (`weights/selfjev_4b`: Qwen3.5-4B, LoRA r64 trained from scratch with the shared-prefix tree `selfjev/qwen35_tree.py` by `selfjev finetune` on all 80K non-test questions of `data/all.jsonl.gz`, texts up to 16K, target 0.5 × label + 0.5 × Jev, all options listed in the question; eval2 95.8, eval_llm 93.1, dev benchmark 83.8; Jev 97.2 / 92.5 / 82.7). The previous default `qwen35_4b_tree` (95.6 / 82.1 / 84.4) stays in `weights/`. Both are served by `ChallengerScorer` or on vLLM (`selfjev/vllm_qwen35.py`; fast for one question, slow for many). Requests must go through the same option-list transform ([docs/leaderboard.md](docs/leaderboard.md)). Best on vLLM: `tree_4b_combo` (94.5). All three adapters are in `weights/` (Git LFS, `model.json` each); `selfjev finetune` / `selfjev rlcd` train new ones ([docs/finetune.md](docs/finetune.md)).
+5. The system itself: [README.md](README.md). Default model: **`selfjev-4b`** (`weights/selfjev_4b`: Qwen3.5-4B, LoRA r64 trained from scratch with the shared-prefix tree `selfjev/engine/tree.py` by `selfjev finetune` on all 80K non-test questions of `data/all.jsonl.gz`, texts up to 16K, target 0.5 × label + 0.5 × Jev, all options listed in the question; eval2 95.8, eval_llm 93.1, dev benchmark 83.8; Jev 97.2 / 92.5 / 82.7). The previous default `qwen35_4b_tree` (95.6 / 82.1 / 84.4) stays in `weights/`. Both are served by `ChallengerScorer` or on vLLM (`selfjev/vllm_qwen35.py`; fast for one question, slow for many). Requests must go through the same option-list transform ([docs/leaderboard.md](docs/leaderboard.md)). Best on vLLM: `tree_4b_combo` (94.5). All three adapters are in `weights/` (Git LFS, `model.json` each); `selfjev finetune` / `selfjev rlcd` train new ones ([docs/finetune.md](docs/finetune.md)).
 
 ## Hard rules
 
@@ -54,7 +54,8 @@ Several AI sessions work on this repo at the same time. To avoid redoing work or
 ## Commands
 
 ```bash
-uv sync && uv run pytest -q          # tests (tests/test_model.py downloads the 0.6B model)
+uv sync --group dev && uv run pytest -q   # CPU tests, ~20 s
+uv run pre-commit install             # ruff check + format on every commit (CI runs the same)
 uv run python scripts/ledger.py      # refresh the results table in docs/experiments.md
 uv run --no-project --with zensical==0.0.65 python -m zensical serve   # preview the docs site (deployed from master)
 uv run selfjev --help                   # classify / eval / calibrate / compare / bench / serve / train / train-tree ...

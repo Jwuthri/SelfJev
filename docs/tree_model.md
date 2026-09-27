@@ -137,7 +137,7 @@ The same decisions-API requests were sent from a Mac in California to both servi
 
 The table gives p50 over 10 timed rounds, text 8 → 4,096 tokens, choice questions with 3 options. Full tables, p95,
 server-side times and cost: [reports/latency/summary.md](../reports/latency/summary.md); script
-`scripts/latency_sweep.py`, chart `scripts/latency_chart.py`.
+`scripts/latency_sweep.py` (at the archive tag), chart `scripts/latency_chart.py`.
 
 ![latency vs text length](../reports/latency/latency.png)
 
@@ -193,13 +193,13 @@ full-attention layer. A tree mask cannot hide one branch from its siblings insid
   through those copied states. Right padding inside a level leaves the state untouched (q = k = v = 0, beta = 0,
   g = 0).
 
-Every leaf equals its standalone sequence (root + question + leaf). `tests/test_qwen35_tree.py` checks scores and every
+Every leaf equals its standalone sequence (root + question + leaf). `tests/engine/test_tree.py` checks scores and every
 gradient against full sequences on a tiny random model in fp32. On the real model, fp32 scores agree within 0.004 and
 LoRA gradients at cosine 0.99997; in bf16 the tree is as close to full sequences as full sequences are to themselves
-re-batched (`reports/qwen35_4b_tree/checks/`). Token ids are `ChallengerScorer.entry`'s, so inference forks the native
+re-batched (`reports/qwen35_4b_tree/checks/`). Token ids are `Qwen35Scorer.entry`'s, so inference forks the native
 cache and needs no tree code.
 
-Training with it (`scripts/run_qwen35.py --tree`) encodes each text once per state instead of once per candidate:
+Training with it (`selfjev finetune`) encodes each text once per state instead of once per candidate:
 texts up to 8K tokens fit, 51.8K questions in 4.1 h on one L40S, where full-sequence training had to drop 18.5% of the
 data at 2K tokens and took 6.6 h. `qwen35_4b_tree` scores 95.6 on eval2 against 94.5 without the tree
 ([JOURNAL 2026-09-25](JOURNAL.md)).

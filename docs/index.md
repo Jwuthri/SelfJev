@@ -25,7 +25,7 @@ trained with our shared-prefix tree on all 80K non-test questions (public datase
 judge confirmed, texts up to 16K tokens), with half-weight Jev probabilities as soft targets and every option listed in
 the question. It scores 95.8% on eval2 (Jev 97.2%) and 93.1% on eval_llm (Jev 92.5%), with 11 confident mistakes on
 eval2 where its predecessor `qwen35_4b_tree` (95.6%) made 30. The fastest one to serve
-is its Qwen3 sibling `tree_4b_combo` (94.5%), which on vLLM is cheaper per request than Jev on a busy GPU.
+was its Qwen3 sibling `tree_4b_combo` (94.5%, archived), which on vLLM was cheaper per request than Jev on a busy GPU.
 
 ## The story in eleven steps
 

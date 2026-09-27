@@ -32,16 +32,11 @@ The default model needs a CUDA GPU: serve it as below. Request format and API:
 ## Serve the best model (CUDA GPU)
 
 ```bash
-# Qwen3.5-4B + weights/selfjev_4b (eval2 95.8, the default; weights/qwen35_4b_tree: 95.6): the shared-prefix tree, forward only
-uv run python -m selfjev.qwen35_tree serve --adapter weights/selfjev_4b --options-in-question   # :8767
-# or through vLLM (separate venv): exact, fast for one question, slow for many (speed.md)
-uv run python -m selfjev.vllm_qwen35 merge --adapter weights/selfjev_4b --out runs/selfjev_4b/merged
-~/vllm-env/bin/python -m selfjev.vllm_qwen35 serve --model-dir runs/selfjev_4b/merged --options-in-question
-# Qwen3 tree on vLLM (weights/tree_4b_combo, eval2 94.5): the fastest and cheapest to serve
-uv run python -m selfjev.vllm_tree merge --adapter weights/tree_4b_combo --out runs/tree_4b_combo/merged \
-  --model-id Qwen/Qwen3-4B-Instruct-2507 --revision cdbee75f17c01a7cc42f958dc650907174af0554
-~/vllm-env/bin/python -m selfjev.vllm_tree serve --model-dir runs/tree_4b_combo/merged \
-  --model-id Qwen/Qwen3-4B-Instruct-2507 --options-in-question
+# selfjev-4b (weights/selfjev_4b, eval2 95.8): the shared-prefix tree, exact, any number of questions
+uv run selfjev serve --host 0.0.0.0 --port 8000
+# or through vLLM (separate venv with vllm): exact, fast for one question, slow for many (speed.md)
+uv run selfjev merge --adapter weights/selfjev_4b --out runs/selfjev_4b/merged
+~/vllm-env/bin/python -m selfjev.cli serve --engine vllm --model-dir runs/selfjev_4b/merged
 ```
 
 All three answer `POST /classify` and the Decisions-API-shaped `POST /api/alpha/decisions`. The vLLM venv:
@@ -60,10 +55,9 @@ Data format, outputs and what RLCD optimizes: [fine-tune and RLCD](finetune.md).
 ## Tests
 
 ```bash
-uv run pytest -q                          # tests/test_model.py and the real-model tree tests download the 0.6B model
-uv run pytest tests/test_tree.py          # tree: exactness vs standalone runs, branch isolation, gradients
-uv run pytest tests/test_qwen35_tree.py   # Qwen3.5 tree: scores and gradients vs full sequences, the tree server
-uv run pytest tests/test_finetune.py      # RLCD learns calibrated probabilities; finetune + rlcd end to end (tiny model)
+uv run pytest -q                              # everything, CPU, ~20 s (tiny random models; nothing is downloaded)
+uv run pytest tests/engine                    # the Qwen3.5 tree: scores and gradients equal full sequences, the tree server
+uv run pytest tests/training                  # RLCD learns calibrated probabilities; finetune + rlcd end to end
 ```
 
 ## Data
@@ -89,9 +83,10 @@ scripts/aws_launch.sh selfjev-mine 10 "us-east-2:g6e.2xlarge us-east-1:g6e.2xlar
 uv run python scripts/jev_soft_targets.py     # local and free: runs/jev_all/{train,val}.jsonl.gz
 bash scripts/jev_soft_box.sh scratch          # on the box (repo + runs/jev_all synced): selfjev finetune, new LoRA r64, lr 2e-4,
                                               # texts up to 16K, then eval2, the dev benchmark and eval_llm (≈ 9 h, one L40S)
-# score any Qwen3.5 adapter (reports/qwen35_4b<tag>/)
-uv run python scripts/run_qwen35.py qwen35_4b --stage eval --tag _mine --adapter runs/mine/adapter \
-  --data-dir data/ova --sets eval2,test,eval_llm
+# score any Qwen3.5 adapter: eval2, the dev benchmark (hf + eval test rows), eval_llm
+uv run selfjev eval --adapter runs/mine/adapter --data data/ova/eval2.jsonl --out reports/mine/eval2
+uv run selfjev eval --adapter runs/mine/adapter --data data/ova/hf.jsonl data/ova/eval.jsonl --split test --out reports/mine/test
+uv run selfjev eval --adapter runs/mine/adapter --data data/ova/eval_llm.jsonl --out reports/mine/eval_llm
 uv run python scripts/eval2_summary.py        # regenerate reports/eval2/summary.md
 uv run python scripts/ledger.py               # regenerate the ledger table in docs/experiments.md
 uv run python scripts/calibration_table.py qwen35_4b_tree_scratch_jevall_ qwen35_4b_tree jev   # Brier, ECE, confident mistakes, McNemar
@@ -99,26 +94,13 @@ uv run python scripts/calibration_table.py qwen35_4b_tree_scratch_jevall_ qwen35
 
 ### Older recipes
 
-`weights/qwen35_4b_tree` (`scripts/run_qwen35.py --stage train --tree`), `weights/tree_4b_combo`
-(`scripts/run_tree_combined.sh`) and the configs that read `data/hardcases_nb.jsonl` (`configs/tree_4b_instruct_r3.json`,
-`configs/curve/tree_4b_r2b_r64*.json`) need the round-2b file and the `data/ova/` training copies, which are no longer
-tracked. Rebuild them first (byte-identical to the removed files: sha256 checked against their LFS oids on 2026-09-27):
+`weights/qwen35_4b_tree` (the previous default), the Qwen3 tree models (`tree_4b_combo` and earlier), the stock
+reranker pipeline, the custom, jina and T5Gemma models and their training scripts and configs are at the tag
+[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27). Their round-2b and `data/ova/` training copies rebuild byte for byte with:
 
 ```bash
 uv run python scripts/rebalance_nota.py && uv run python scripts/options_in_question.py data/synthetic.jsonl data/hardcases.jsonl data/hardcases_nb.jsonl data/hardcases_r3.jsonl
 ```
-
-```bash
-uv run python scripts/run_qwen35.py qwen35_4b --stage check-tree --data-dir data/ova --r3 --tree   # tree vs full, GPU
-uv run python scripts/run_qwen35.py qwen35_4b --stage train --tag _tree --data-dir data/ova --r3 --tree \
-  --train-max-len 8192 --batch-tokens 8192 --grad-accum 4                                        # qwen35_4b_tree, 4.1 h L40S
-bash scripts/run_tree_combined.sh                                                                # tree_4b_combo
-```
-
-The scripts of finished experiments (the Qwen3 tree and stock pipelines `run_tree_gpu.sh`, `run_tree_r2.sh`,
-`run_tree_instruct_r3.sh`, `run_curve.sh`, `run_eval2.sh`, `run_model.sh`, `setup_gpu_box.sh`, prompt selection, the
-custom, jina and T5Gemma models) are at tag
-[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27).
 
 Jev and GPT-6 Astra on the same questions (responses cached under `reports/external/cache/`, so reruns cost nothing;
 stops at `--budget` USD):

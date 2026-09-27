@@ -8,9 +8,9 @@ commands to serve it. Every other trained adapter stays in `runs/`, which is not
 |---|---|---|---|---|---|
 | **[selfjev_4b](selfjev_4b/model.json)** (`selfjev-4b`, the default) | Qwen/Qwen3.5-4B @ 851bf6e | **95.8** | 83.8 | **93.1** | the best accuracy (eval2, LLM evaluation), fewer confident mistakes |
 | [qwen35_4b_tree](qwen35_4b_tree/model.json) (the previous default) | Qwen/Qwen3.5-4B @ 851bf6e | 95.6 | **84.4** | 82.1 | the public-dataset dev benchmark |
-| [tree_4b_combo](tree_4b_combo/model.json) | Qwen/Qwen3-4B-Instruct-2507 @ cdbee75 | 94.5 | 82.7 | — | the fastest and cheapest serving (vLLM) |
 
-All three were trained with every option listed in the question: serve them with `--options-in-question`.
+Both were trained with every option listed in the question; `selfjev serve` adds the list by default. The Qwen3 tree
+models (`tree_4b_combo`, eval2 94.5) and their code are at the tag `archive/pre-cleanup-2026-09-27`.
 
 To keep a new run: copy its adapter folder here and write a `model.json` like the ones above (the Git LFS rule picks up
 the `.safetensors` file):

@@ -38,8 +38,8 @@ sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
 from compare_external import call_cost, http
 from judge_hardcases import oa, to_openai
 
+from selfjev.core.schemas import ValidationError
 from selfjev.data import expand_source, read_jsonl
-from selfjev.schemas import ValidationError
 
 RAW, REP = ROOT / "data/hardcases/raw", ROOT / "reports/hardcases"
 BRIEF = (ROOT / "data/hardcases/BRIEF.md").read_text().split("\n---\n", 1)[1].strip()
