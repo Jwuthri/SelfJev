@@ -8,7 +8,6 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| **Repo cleanup + rename `personal_jev` → `selfjev`** (user request): the audit's plan (dead-end models, one-off scripts, caches, stale docs), then the package rename, tooling and CI; tag `archive/pre-cleanup-2026-09-27` keeps the old state. **Other sessions: don't edit `src/`, `scripts/`, `tests/` or `docs/` until this row is gone** | fork (RLCD session) | this checkout | 00:15 PDT 2026-09-27 | ≈ 02:30 PDT (docs left) |
 
 ## Spend so far (real cost, BYOK upstream included)
 
@@ -54,6 +53,29 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-27 01:40 PDT: repo cleanup and the product: `selfjev` package, SDK, server with Jev's API, fine-tuning over HTTP, deployment (fork, user request)
+
+- **Cleanup** (`ead0a73`): the dead-end models (custom cross-attention, jina, T5Gemma, compact tree, option pointers,
+  teacher distillation), one-off scripts and caches are gone (562 files changed, 170,519 lines deleted). Everything is at
+  tag `archive/pre-cleanup-2026-09-27`, where the package is still `personal_jev` and the CLI `pjev`.
+- **Package** (`0bb21c7`, `020cbc3`, `cce9061`): `personal_jev` → `selfjev` 0.2.0 (CLI `selfjev`), split into core /
+  engine / training / evaluation / server / data / deploy with tests mirroring it; ruff lint + format, pre-commit, CI.
+- **SDK and server** (`ac4f97e`): `SelfJev` / `AsyncSelfJev` (httpx + pydantic only, retries, typed errors) and a
+  FastAPI server with Jev's request and answers at `/v1/systemone`, `/api/alpha/decisions` and `/v1/decisions` (plus
+  `multi`), cross-request batching, Bearer keys, `/health`, Prometheus `/metrics`. Contract: [api.md](api.md).
+- **Deploy** (`b5abc75`): `selfjev deploy aws up|down|status|list|machines` (NVIDIA DLAMI, systemd, API key, cost cap;
+  default g6.xlarge $0.805/h) and a Dockerfile. [deploy.md](deploy.md).
+- **Fine-tuning over HTTP** (`c431591`): `/v1/files` and `/v1/fine_tuning/jobs` in OpenAI's shape, supervised or RLCD.
+  Training files are Jev-shaped requests with answers; jobs run `selfjev finetune|rlcd` one at a time; a finished job's
+  adapter is served next to `selfjev-4b` under its own model name. `selfjev serve --fine-tuning`.
+- **Scripts** (`b9bcc24`, `1064ccd`): into `scripts/{data,eval,train,aws,docs}`, shared code into
+  `selfjev.data.providers` and `selfjev.data.catalog`.
+- **Checks:** 83 CPU tests, ruff clean, the docs site builds, the SDK wheel installs without torch. **Not run on a GPU
+  yet:** the server, the AWS deploy and fine-tuning jobs over HTTP (a g6.xlarge trial ≈ 1 h ≈ $0.80 needs the user's OK).
+- **Heads-up for other sessions:** `selfjev.data.providers` now asks for `max_tokens` 8192 (was 6000; another session's
+  edit, kept). Request bodies changed, so reruns of `compare_external.py` miss their cache and pay again.
+- **Cost:** $0.
 
 ### 2026-09-27 01:20 PDT: `mpos_distr_num_v1` built: 3,645 verified several-correct, distractor and number questions ($19.81) (fork)
 

@@ -94,7 +94,7 @@ that decides between models.
 |---|---|---|---|---|---|---|---|
 | **Jev** (API) | undisclosed | undisclosed | **97.2** | 97.8 | 98.1 | 94.2 | 82.7 |
 | **selfjev-4b** (`qwen35_4b_tree_scratch_jevall_`) | Qwen3.5-4B | tree, trained from scratch on all 79.9K non-test questions of `data/all.jsonl.gz` (texts ≤ 16K, incl. `llm_multilabel_v1`, `numdate_neg_v1`), target 0.5 × label + 0.5 × Jev, r64, all options in the question; eval_llm 93.1 (Jev 92.5) | **95.8** | 96.8 | **97.0** | **91.4** | 83.8 |
-| **qwen35_4b_tree** | Qwen3.5-4B | shared-prefix tree in training (`qwen35_tree.py`, texts ≤ 8K: 51.8K q), text shared at inference, r64, round-2b + round-3 data, all options in the question | **95.6** | **96.9** | 96.8 | **90.1** | **84.4** |
+| **qwen35_4b_tree** | Qwen3.5-4B | shared-prefix tree in training (`engine/tree.py`, texts ≤ 8K: 51.8K q), text shared at inference, r64, round-2b + round-3 data, all options in the question | **95.6** | **96.9** | 96.8 | **90.1** | **84.4** |
 | **qwen35_4b_combo** | Qwen3.5-4B | each option trained as a full sequence (no tree in training, texts ≤ 2K: 43.8K q), text shared at inference, r64, round-2b + round-3 data, all options in the question | 94.5 | 96.2 | 95.8 | 88.2 | 84.3 |
 | **tree_4b_combo** | Qwen3-4B-Instruct-2507 | tree, r64, round-2b + round-3 data (51.8K q), hard cases not capped, all options in the question | **94.5** | 96.0 | 97.5 | 85.9 | 82.7 |
 | **tree_4b_instruct_r3** | Qwen3-4B-Instruct-2507 | tree, r64, round-2b + round-3 data (51.9K q), hard cases not capped | **93.3** | 95.1 | 96.1 | 84.3 | 82.8 |

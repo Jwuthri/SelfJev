@@ -35,6 +35,8 @@ nav = [
     { "Spend" = "costs.md" },
   ] },
   { "Use it" = [
+    { "API" = "api.md" },
+    { "Deploy" = "deploy.md" },
     { "How it works" = "how_it_works.md" },
     { "Fine-tune and RLCD" = "finetune.md" },
     { "Reproduce" = "reproduce.md" },

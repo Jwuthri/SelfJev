@@ -51,7 +51,7 @@ pretrained decoder against that shared memory. It had already been tried in an e
 - **Verdict:** a dead end (closed 2026-09-27). 14–18 points behind the tree on eval2. Faster than the tree at 2K × 16 × 3 on the same GPU, but
   not by the 2× the promotion gate asked for, and not with acceptable quality.
 - Protocol, audits and raw results: [reports/t5_round2b_2026-09-24/](../reports/t5_round2b_2026-09-24/README.md).
-  Code (removed 2026-09-27): [src/selfjev/t5_shared.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/selfjev/t5_shared.py) at tag
+  Code (removed 2026-09-27): [src/personal_jev/t5_shared.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/t5_shared.py) at tag
   `archive/pre-cleanup-2026-09-27`.
 
 ## Qwen3.5-2B: linear attention with a forked cache

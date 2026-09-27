@@ -52,6 +52,18 @@ learning is involved) gave no gain on hard labels
 
 <div class="grid cards" markdown>
 
+-   :material-api: **[API and SDK](api.md)**
+
+    ---
+
+    Jev's decisions API on `selfjev-4b`, the Python client, and fine-tuning jobs over HTTP.
+
+-   :material-cloud-upload-outline: **[Deploy](deploy.md)**
+
+    ---
+
+    Self-host on your GPU, in Docker, or with one command on AWS.
+
 -   :material-lightbulb-on-outline: **[Key findings](findings.md)**
 
     ---
@@ -98,7 +110,7 @@ learning is involved) gave no gain on hard labels
 
     ---
 
-    What to do next to close the last 1.6 points; speed is a deployment question since the H100 sweep (2026-09-26).
+    What to do next to close the last 1.4 points; speed is a deployment question since the H100 sweep (2026-09-26).
 
 -   :material-notebook-outline: **[Lab notebook](experiments.md)**
 

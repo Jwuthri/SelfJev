@@ -130,7 +130,7 @@ Each has a formatted box with its evidence in [findings.md](findings.md).
      benchmark 83.8 (−0.7, from Jev's targets on the public emotion set); confident mistakes on eval2 30 → 11 (Jev 7).
      JOURNAL 2026-09-26 21:25.
    Previous: **`qwen35_4b_tree`** (2026-09-25, fork): Qwen3.5-4B + LoRA r64 trained with the shared-prefix tree
-   (`selfjev/qwen35_tree.py`: DeltaNet layers level by level from copied states, attention through the tree mask),
+   (`selfjev/engine/tree.py`: DeltaNet layers level by level from copied states, attention through the tree mask),
    every option listed in the question, round-2b + round-3 data uncapped, texts ≤ 8K.
    - eval2 **95.6** (vs `qwen35_4b_combo` 94.5, 52 / 31, p = 0.028; vs `tree_4b_combo` 94.5, 63 / 41, p = 0.039; Jev 97.2,
      31 / 64); multilabel EM 90.1; dev benchmark 84.4 (Jev 82.7, p = 0.004).
@@ -235,7 +235,7 @@ Revived by eval2 (dead on the dev benchmark only): the Instruct base (+3.0), LoR
 ## Known issues and gotchas
 
 - `benchmark.py` runs the stock scorer with prompt `task-v1` while quality reports use `answer-v1`
-  (`src/selfjev/benchmark.py` takes no prompt): latency ratios are valid, exact same-format claims are not.
+  (`src/selfjev/evaluation/benchmark.py` takes no prompt): latency ratios are valid, exact same-format claims are not.
 - **Fixed 2026-09-24:** `TreeModel.cached` builds only the branch mask instead of the full T×T document mask; GPU score
   parity in `reports/latency_optimization_2026-09-24/parity_a10g.json`. The latency gain alone was small.
 - **eval2 ids:** join on the expanded row ids (`<source_id>-q<i>`). The first export renumbered ids after drops;
@@ -334,7 +334,7 @@ Revived by eval2 (dead on the dev benchmark only): the Instruct base (+3.0), LoR
 | what | where |
 |---|---|
 | formatted findings, leaderboard, models, data, speed | the docs site: `docs/*.md`, built with Zensical (see [README](../README.md)) |
-| tree scorer: design, results, speed, reproduce | [tree_model.md](tree_model.md), `src/selfjev/tree.py`, `train_tree.py`, `vllm_tree.py`, `configs/tree_4b*.json`, `scripts/run_tree_combined.sh` (the `tree_4b_combo` recipe) |
+| tree scorer: design, results, speed, reproduce | [tree_model.md](tree_model.md), the Qwen3.5 tree `src/selfjev/engine/tree.py`; the Qwen3 tree at tag `archive/pre-cleanup-2026-09-27` (`src/personal_jev/tree.py`, `train_tree.py`, `vllm_tree.py`, `configs/tree_4b*.json`, `scripts/run_tree_combined.sh`: the `tree_4b_combo` recipe) |
 | custom cross-attention model | [custom_model.md](custom_model.md), `reports/custom_diagnostics/`; code, configs and calibration files at tag `archive/pre-cleanup-2026-09-27` |
 | jina and T5Gemma challengers | [jina_model.md](jina_model.md), [challengers.md](challengers.md), `reports/t5_round2b_2026-09-24/`; code at tag `archive/pre-cleanup-2026-09-27` |
 | learning curves (data volume, epochs, per-task, base model, capacity) | [reports/curve/summary.md](../reports/curve/summary.md), `configs/curve/`; the pipeline scripts (`run_curve.sh`, `summarize_curve.py`) at tag `archive/pre-cleanup-2026-09-27` |

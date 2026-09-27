@@ -113,7 +113,7 @@ request, model resident, network excluded ([conclusions](../reports/latency_opti
 
 ## Qwen3.5 on vLLM (2026-09-25, L40S)
 
-`qwen35_4b_tree` merged into Qwen3.5-4B and served by vLLM 0.30 (`selfjev/vllm_qwen35.py`), next to the Qwen3 tree
+`qwen35_4b_tree` merged into Qwen3.5-4B and served by vLLM 0.30 (`selfjev/engine/vllm.py`), next to the Qwen3 tree
 (`tree_4b_combo`) on the same GPU, with Jev in the same sweep from California. Accuracy through vLLM is unchanged: eval2
 95.58% (transformers 95.58%), and 94.53% for the Qwen3 tree (94.48%). Server-side p50 (ms; Jev: time inside
 OpenRouter):
@@ -141,7 +141,7 @@ the last block boundary plus its question:
 
 `mamba_block_size` does not change this in vLLM 0.30; caching the state in bf16 halves the block to 272 tokens, with
 mixed effects (256 tokens 407 ms, 1K 744 ms, 4K 689 ms). The fix is to serve Qwen3.5 with its own tree, as in
-training: `selfjev.qwen35_tree.TreeServer` computes the text once, each question once and each candidate's own
+training: `selfjev.engine.tree.TreeServer` computes the text once, each question once and each candidate's own
 tokens, the same work as the Qwen3 tree. It matches standalone sequences exactly in a CPU test; GPU timings are still to
 do. Sources: [JOURNAL 2026-09-25 18:05](JOURNAL.md), `reports/latency/requests_qwen35.jsonl`,
 `reports/qwen35_4b_tree/vllm/probe.log`.

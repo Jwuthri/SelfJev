@@ -3,31 +3,32 @@
 ## Install
 
 ```bash
-uv sync                  # Python 3.12, torch, transformers, peft, pytest (pinned in uv.lock)
+uv sync                  # Python 3.12, torch, transformers, peft, fastapi, pytest (pinned in uv.lock)
 uv sync --group data     # + datasets/pyarrow, only needed to rebuild data/hf.jsonl
+uv sync --extra gpu      # Linux CUDA boxes: fast Gated DeltaNet kernels (flash-linear-attention)
 ```
 
-Base checkpoints are pinned to a revision and download on first use (0.6B ≈ 1.2 GB, Qwen3.5-4B ≈ 9 GB). The best
-adapters are in [weights/](../weights/README.md) (Git LFS, with a `model.json` each); every other trained adapter lives
-in `runs/`, which is not in git.
+The base model (Qwen3.5-4B, ≈ 9 GB) is pinned to a revision and downloads on first use. The adapters are in
+[weights/](../weights/README.md) (Git LFS, with a `model.json` each); every other trained adapter lives in `runs/`,
+which is not in git.
 
 ## Use
 
-```bash
-uv run selfjev classify examples/request.json                                   # untrained 0.6B reranker, runs anywhere
-uv run selfjev --help        # classify / eval / calibrate / compare / bench / serve / train / train-tree / finetune / rlcd
-```
+The default model needs a CUDA GPU. Serve it and call it with the SDK ([API](api.md), [deploy](deploy.md)), or from
+Python directly:
 
 ```python
-from selfjev.model import Scorer
-from selfjev.classify import classify
+from selfjev.core.answers import classify
+from selfjev.engine.tree import TreeServer
 
-scorer = Scorer()                         # fp32 on mps/cuda/cpu; Scorer(adapter=...) for a stock LoRA adapter
-result = classify(scorer, request_dict)   # {"questions": [...], "meta": {...}}
+scorer = TreeServer("weights/selfjev_4b")  # loads Qwen3.5-4B + the LoRA (merged) on the GPU
+result = classify(scorer, request_dict)  # internal schema (examples/request.json): {"questions": [...], "meta": {...}}
 ```
 
-The default model needs a CUDA GPU: serve it as below. Request format and API:
-[how it works](how_it_works.md#request-and-response).
+```bash
+uv run selfjev classify examples/request.json   # the same from the command line
+uv run selfjev --help                           # serve / classify / eval / calibrate / compare / bench / finetune / rlcd / merge / deploy
+```
 
 ## Serve the best model (CUDA GPU)
 
@@ -39,9 +40,9 @@ uv run selfjev merge --adapter weights/selfjev_4b --out runs/selfjev_4b/merged
 ~/vllm-env/bin/python -m selfjev.cli serve --engine vllm --model-dir runs/selfjev_4b/merged
 ```
 
-All three answer `POST /classify` and the Decisions-API-shaped `POST /api/alpha/decisions`. The vLLM venv:
-`uv venv ~/vllm-env --python 3.12 && uv pip install --python ~/vllm-env/bin/python vllm` (0.30.0 measured), run with
-`PYTHONPATH=src`.
+Both answer Jev's `POST /v1/systemone` (also at `/api/alpha/decisions`, [API](api.md)) and the internal
+`POST /classify`. The vLLM venv: `uv venv ~/vllm-env --python 3.12 && uv pip install --python ~/vllm-env/bin/python
+vllm` (0.30.0 measured), run with `PYTHONPATH=src`.
 
 ## Fine-tune on your data, then RLCD (CUDA GPU)
 
@@ -133,18 +134,16 @@ ledger section of `docs/experiments.md`), so re-running `eval2_summary.py` and `
 ## Layout
 
 ```
-src/selfjev/  schemas.py (validation)  formatting.py (templates, prompts)  model.py (stock Scorer)
-                   classify.py (typed outputs)  data.py  evaluate.py  calibration.py  benchmark.py  server.py  cli.py
-                   tree.py + train_tree.py + vllm_tree.py (shared-prefix tree, Qwen3)
-                   qwen35_tree.py (the tree for Qwen3.5: training, TreeServer)   vllm_qwen35.py (Qwen3.5 on vLLM)
-                   challengers.py (the Qwen3.5 prompt and forked cache)   finetune.py (selfjev finetune / selfjev rlcd)
-                   options.py (every option in the question)
+src/selfjev/       client.py + types.py (the SDK)   server/ (the HTTP API, fine-tuning jobs)   engine/ (qwen35: model,
+                   prompt, cache; tree: shared-prefix tree, TreeServer; vllm)   core/ (request schema, option lists,
+                   typed answers)   training/ (finetune, RLCD, losses, tree batching)   evaluation/ (eval, calibration,
+                   benchmark, stats)   data/ (loading, validation, catalog, paid API clients)   deploy/ (AWS)   cli.py
 scripts/           data/ (builders, generators, judges, batches), eval/ (summaries, Jev comparison, calibration),
                    train/ (the selfjev-4b recipe), aws/ (aws_launch.sh), docs/ (the site's link extension)
 data/              hf / eval / synthetic / hardcases* / batches / eval2 / eval_llm (+ briefs and reviews); data/README.md
-configs/           training configs of the ledger runs (configs/curve/ for the ablations)
-weights/           the best adapters (Git LFS) with model.json: base model, revision, recipe, scores, serve commands
+deploy/            Dockerfile, docker-compose.yml
+weights/           selfjev_4b and qwen35_4b_tree (Git LFS) with model.json: base model, revision, recipe, scores
 reports/           every eval report, benchmark, review and summary
-docs/              this site: findings, write-ups, ledger (experiments.md) and journal
-tests/             logic, server, tree, Qwen3.5 tree, fine-tune, challengers, real-model tests
+docs/              this site: API, deploy, findings, write-ups, ledger (experiments.md) and journal
+tests/             mirrors src/selfjev: core, data, engine, training, evaluation, server, client, deploy (CPU only)
 ```
