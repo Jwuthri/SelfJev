@@ -1,6 +1,6 @@
 """Fine-tune the best recipe (Qwen3.5-4B + shared-prefix tree + LoRA) on your own data, then RLCD on top.
 
-  pjev finetune --data train.jsonl --out runs/mine [--val val.jsonl] [--init weights/qwen35_4b_tree]
+  pjev finetune --data train.jsonl --out runs/mine [--val val.jsonl] [--init weights/selfjev_4b]
   pjev rlcd     --data train.jsonl --out runs/mine_rlcd --init runs/mine/adapter [--reward log=1,brier=1,spherical=1]
 
 Data: JSONL, one question per line in the eval format: {"state": "...", "question": {"type": "binary" | "multiclass" |
@@ -9,7 +9,7 @@ Data: JSONL, one question per line in the eval format: {"state": "...", "questio
 --no-options-in-question; serve the result the same way (--options-in-question). Needs one CUDA GPU (AGENTS.md: never
 the laptop). Writes <out>/adapter (best validation), <out>/adapter_last and <out>/train_meta.json.
 
-finetune: cross-entropy on the targets (the log score), the recipe of weights/qwen35_4b_tree.
+finetune: cross-entropy on the targets (the log score), the recipe of weights/qwen35_4b_tree and weights/selfjev_4b.
 rlcd: what Jev calls RLCD ("Reinforcement Learning for Calibrated Decisions"). Here it is supervised training on
 proper scoring rules, not RL: no environment, and the grade of every answer is known from the label. A question's
 probabilities are the model's report; the reward is

@@ -18,10 +18,16 @@ evidence file.
 
 ## The headline
 
-!!! success "1. Best model: 95.6% on eval2, 1.6 points behind Jev"
-    **Qwen3.5-4B + LoRA r=64, trained with the shared-prefix tree, every option listed in the question, round-2b +
-    round-3 verified data** (`qwen35_4b_tree`, 51.8K training questions, texts up to 8K tokens) scores **95.6%** on
-    eval2 and **84.4%** on the dev benchmark.
+!!! success "1. Best model: `selfjev-4b`, 95.8% on eval2 and 93.1% on eval_llm (Jev 97.2% and 92.5%)"
+    **`selfjev-4b`** (2026-09-26): the same Qwen3.5-4B + LoRA r64 tree recipe, trained from scratch on all 79.9K
+    non-test questions of `data/all.jsonl.gz` (texts up to 16K tokens, the LLM-evaluation data and two new verified
+    batches) with half-weight Jev probabilities as soft targets. eval2 **95.8%** (vs its predecessor 33 / 29, p = 0.70),
+    eval_llm **93.1%** (predecessor 82.1%; Jev 92.5%, 33 / 27, p = 0.52), dev benchmark 83.8% (−0.7, from Jev's targets
+    on the public emotion set), confident mistakes on eval2 30 → 11 (Jev 7). Long-text errors 8 → 3.
+
+    Its predecessor, **Qwen3.5-4B + LoRA r=64, trained with the shared-prefix tree, every option listed in the question,
+    round-2b + round-3 verified data** (`qwen35_4b_tree`, 51.8K training questions, texts up to 8K tokens), scores
+    **95.6%** on eval2 and **84.4%** on the dev benchmark.
 
     - Jev scores 97.2% on eval2 (31 / 64, p = 0.0009) and 82.7% on the dev benchmark (238 / 178, p = 0.004: ours is
       higher).

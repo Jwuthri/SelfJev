@@ -13,16 +13,18 @@ New to the shorthand (eval2, round 2b, r64, stock pairs…)? Hover any dotted-un
 [glossary](glossary.md).
 
 <div class="stat-grid" markdown>
-<div class="stat"><strong>95.6%</strong><span>our best model on eval2, the target-task test set</span></div>
-<div class="stat"><strong>97.2%</strong><span>Jev on eval2: we are 1.6 points behind</span></div>
-<div class="stat"><strong>84.4%</strong><span>on the 3,471-question dev benchmark, above Jev's 82.7%</span></div>
+<div class="stat"><strong>95.8%</strong><span>our best model on eval2, the target-task test set</span></div>
+<div class="stat"><strong>97.2%</strong><span>Jev on eval2: we are 1.4 points behind</span></div>
+<div class="stat"><strong>93.1%</strong><span>on eval_llm, the LLM-evaluation test set, level with Jev's 92.5%</span></div>
 <div class="stat"><strong>37×</strong><span>speed-up from reading the text once (shared-prefix tree)</span></div>
 <div class="stat"><strong>~$619</strong><span>logged spend: data, judges, GPUs, Jev calls</span></div>
 </div>
 
-**The best model** is Qwen3.5-4B with a rank-64 LoRA adapter (`qwen35_4b_tree`, in [weights/](../weights/README.md)),
-trained with our shared-prefix tree on public datasets plus about 44K LLM-written hard cases that a blind judge
-confirmed, with every option listed in the question. It scores 95.6% on eval2 (Jev 97.2%). The fastest one to serve
+**The best model**, `selfjev-4b` ([weights/selfjev_4b](../weights/README.md)), is Qwen3.5-4B with a rank-64 LoRA adapter
+trained with our shared-prefix tree on all 80K non-test questions (public datasets plus LLM-written cases that a blind
+judge confirmed, texts up to 16K tokens), with half-weight Jev probabilities as soft targets and every option listed in
+the question. It scores 95.8% on eval2 (Jev 97.2%) and 93.1% on eval_llm (Jev 92.5%), with 11 confident mistakes on
+eval2 where its predecessor `qwen35_4b_tree` (95.6%) made 30. The fastest one to serve
 is its Qwen3 sibling `tree_4b_combo` (94.5%), which on vLLM is cheaper per request than Jev on a busy GPU.
 
 ## The story in eleven steps

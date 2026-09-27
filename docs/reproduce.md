@@ -34,10 +34,10 @@ Request format and API: [how it works](how_it_works.md#request-and-response).
 ## Serve the best model (CUDA GPU)
 
 ```bash
-# Qwen3.5-4B + weights/qwen35_4b_tree (eval2 95.6): the shared-prefix tree, forward only
-uv run python -m personal_jev.qwen35_tree serve --adapter weights/qwen35_4b_tree --options-in-question   # :8767
+# Qwen3.5-4B + weights/selfjev_4b (eval2 95.8, the default; weights/qwen35_4b_tree: 95.6): the shared-prefix tree, forward only
+uv run python -m personal_jev.qwen35_tree serve --adapter weights/selfjev_4b --options-in-question   # :8767
 # or through vLLM (separate venv): exact, fast for one question, slow for many (speed.md)
-uv run python -m personal_jev.vllm_qwen35 merge --adapter weights/qwen35_4b_tree --out runs/qwen35_4b_tree/merged
+uv run python -m personal_jev.vllm_qwen35 merge --adapter weights/selfjev_4b --out runs/selfjev_4b/merged
 ~/vllm-env/bin/python -m personal_jev.vllm_qwen35 serve --model-dir runs/qwen35_4b_tree/merged --options-in-question
 # Qwen3 tree on vLLM (weights/tree_4b_combo, eval2 94.5): the fastest and cheapest to serve
 uv run python -m personal_jev.vllm_tree merge --adapter weights/tree_4b_combo --out runs/tree_4b_combo/merged \
@@ -53,7 +53,7 @@ All three answer `POST /classify` and the Decisions-API-shaped `POST /api/alpha/
 ## Fine-tune on your data, then RLCD (CUDA GPU)
 
 ```bash
-uv run pjev finetune --data my_train.jsonl --out runs/mine --init weights/qwen35_4b_tree
+uv run pjev finetune --data my_train.jsonl --out runs/mine --init weights/selfjev_4b
 uv run pjev rlcd --data my_train.jsonl --out runs/mine_rlcd --init runs/mine/adapter
 ```
 

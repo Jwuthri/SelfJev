@@ -105,7 +105,7 @@ def main(argv=None):
         p.add_argument("--data", required=True, help="training JSONL (state, question, target per line)")
         p.add_argument("--val", help="validation JSONL (default: 5%% of --data, at most 1,000 questions)")
         p.add_argument("--out", required=True, help="run directory: adapter/, adapter_last/, train_meta.json")
-        p.add_argument("--init", required=rlcd, help="adapter to start from, e.g. weights/qwen35_4b_tree" + (" or a finetune run" if rlcd else ""))
+        p.add_argument("--init", required=rlcd, help="adapter to start from, e.g. weights/selfjev_4b" + (" or a finetune run" if rlcd else ""))
         p.add_argument("--base", default="qwen35_4b", choices=["qwen35_4b", "qwen35"], help="Qwen3.5-4B, or Qwen3.5-2B for quick runs")
         p.add_argument("--no-options-in-question", action="store_true", help="do not list every option in the question text")
         p.add_argument("--epochs", type=int, default=1)

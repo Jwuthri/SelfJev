@@ -8,7 +8,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| **Retrain from scratch** (user OK ≈ $21 incl. the batch): Qwen3.5-4B, new LoRA r64, lr 2e-4, 1 epoch on 80,093 non-test questions, texts up to 16K tokens (`--max-length 16384 --batch-tokens 16384 --grad-accum 2`; the 8K default dropped 2,548, mostly round-3 long texts; restarted at 12:40) of `data/all.jsonl.gz` (incl. `llm_multilabel_v1` and `numdate_neg_v1`), target 0.5 × label + 0.5 × Jev; eval2, dev benchmark and eval_llm, + eval_llm for `qwen35_4b_tree` and B (`scripts/jev_soft_box.sh scratch`). Other sessions: please don't launch a second retrain | fork (RLCD session) | AWS us-east-2 g6e.2xlarge `i-07c6e6d8cb3d6316b` "selfjev-jev-scratch" (own SG + key pair) | 11:59 PDT 2026-09-26 | ≈ 22:40 PDT (1,803 steps × 17.6 s; the 16K texts add ~28% tokens); power-off cap moved to 00:21 PDT, terminate on shutdown |
+| Batch `mpos_distr_num_v1` (≈ 4K questions: several correct answers, distractors, numbers; Luna writer, blind Astra judge, Jev column; test-diagnosis-motivated: the eval2 audit; user OK ≈ $15–25) | fork (RLCD session) | laptop (API only) | 21:50 PDT 2026-09-26 | ≈ 23:30 PDT |
 | T5Gemma matched round-2b: correcting decoder-only targeting bug; full encoder+decoder retraining, then same-L40S controls; H100 unavailable | Codex tree latency/compact | original master; Ohio L40S `i-087b024b35cff657b` ($3.00424/h) | 2026-09-24 UTC | cap 2026-09-24 14:38:54 UTC; collect/terminate earlier |
 | **owner unknown**: "selfjev-challengers-20260924" | not this session, fork or fork 2 (a Codex session?). Owner: add yourself here | AWS `i-03916322f7dd879be` g6e.4xlarge, `i-0683c5909b7440e8f` g5.4xlarge | 20:27–20:51 | ? |
 
@@ -16,6 +16,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | item | cost | who |
 |---|---|---|
+| AWS: retrain from scratch g6e.2xlarge `i-07c6e6d8cb3d6316b` us-east-2, 18:59 UTC 2026-09-26 – 04:17 UTC 09-27 (9.3 h), shut down from inside (terminate on shutdown); SG and key pair to delete after SSO login | ≈ $20.80 | fork |
 | AWS: Jev soft targets C (RLCD + confident-mistake cost) g6e.2xlarge `i-0a89de33e08abb323` us-east-2, 15:08–22:14 UTC 2026-09-26 (7.1 h), terminated; SG and key pair deleted | ≈ $15.90 | fork |
 | `numdate_neg_v1` batch: Luna $0.28 (OpenAI API) + Astra batch judge $2.78 + Jev $0.02 | $3.08 | fork |
 | AWS: Jev soft targets A (RLCD) g6e.2xlarge `i-0e27aba020500d7fa` us-east-2, 08:49–16:03 UTC 2026-09-26 (7.2 h), terminated; SG and key pair deleted | ≈ $16.20 | fork |
@@ -54,6 +55,62 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-26 21:40 PDT: `selfjev-4b` is the default model (fork, user request)
+
+- The from-scratch retrain's best checkpoint (`runs/qwen35_4b_tree_scratch_jevall/adapter`, JOURNAL 21:25) is now
+  `weights/selfjev_4b` (name `selfjev-4b`, `model.json`, adapter sha256 dfbf2834…, Git LFS): eval2 95.8, eval_llm 93.1, dev
+  benchmark 83.8. README, AGENTS, docs (index, findings box 1, leaderboard, reproduce), `weights/README.md` and the code examples
+  point to it; `qwen35_4b_tree` stays in `weights/` as the previous default (best on the dev benchmark, 84.4).
+- AWS: the retrain box's SG and key pair deleted after the SSO login; no `selfjev-jev-*` resource left in us-east-1/2, us-west-2.
+
+### 2026-09-26 21:25 PDT: retrain from scratch on everything with Jev targets: eval_llm 82.1 → 93.1 (Jev 92.5), eval2 95.78, dev benchmark −0.7 from Jev's targets on emotions (fork)
+
+- What: Qwen3.5-4B, new LoRA r64, lr 2e-4, 1 epoch (1,803 steps), `pjev finetune` on 79,943 non-test questions of
+  `data/all.jsonl.gz` (every train and validation row of hardcases, hardcases_r3, hardcases_llm, hf, synthetic,
+  `llm_multilabel_v1`, `numdate_neg_v1`, minus the 1,200-question validation sample), texts up to 16K tokens
+  (`--max-length 16384 --batch-tokens 16384 --grad-accum 2`: the 8K default dropped 2,548 questions, mostly round-3 long
+  texts; only 150 dropped now), target 0.5 × label + 0.5 × Jev. One L40S, `scripts/jev_soft_box.sh scratch`. Validation:
+  78.2 → 93.66 (best, step 1,800; `qwen35_4b_tree` 92.9 on the same code).
+- Results (best checkpoint; the last, 3 steps later, scores 95.63 / 83.84 / 93.13):
+
+  | | eval2 (1,991 q) | dev benchmark (3,471 q) | eval_llm (946 q) | eval_llm multilabel EM |
+  |---|---|---|---|---|
+  | `qwen35_4b_tree` (original best) | 95.58 | **84.44** | 82.14 | 68.1 |
+  | B: + Jev targets (gentle update) | 95.73 | 84.41 | 90.06 | 78.0 |
+  | **retrain from scratch** | **95.78** (33 / 29 vs original, p = 0.70) | 83.75 (103 / 127, p = 0.13) | **93.13** (vs Jev 33 / 27, p = 0.52) | **86.8** |
+  | Jev | 97.24 | 82.71 | 92.49 | 81.3 |
+
+  | eval2 wrong questions, by trap | original | retrain | Jev |
+  |---|---|---|---|
+  | long texts | 8 | **3** | 2 |
+  | double negation | 7 | **4** | 1 |
+  | temporal | 29 | **24** | 22 |
+  | distractor | 34 | **29** | 14 |
+  | paraphrase | 17 | 15 | 10 |
+  | multi-positive | 28 | 29 | 13 |
+  | numeric | 26 | 28 | 18 |
+  | role reversal | 11 | 11 | 6 |
+
+  eval2 calibration: Brier 0.0466 (original 0.0480), ECE 0.026, confident mistakes 11 (original 30, Jev 7), mean confidence
+  when wrong 0.676 (Jev 0.670). Wrong questions 84 (original 88, Jev 55): multilabel 38 → 33, binary 31 → 33, multiclass 19 → 18.
+- Reading:
+  - **eval_llm, the clean check** (not mined for our errors): +11.0 over the original and level with Jev (93.13 vs 92.49,
+    p = 0.52), multilabel EM 86.8 vs Jev 81.3. This is the LLM-evaluation data (`hardcases_llm`, `llm_multilabel_v1`), which the
+    original never saw; B (same data, gentle update) got 90.06.
+  - eval2: best of our models, not significant (+0.2). The 16K texts fixed long-text errors (8 → 3); double negation, temporal and
+    distractors improved; multi-positive and numeric did not.
+  - Dev benchmark −0.7 (p = 0.13) is almost all `hf_emotions_multilabel` (−27 questions): Jev is weak on that subjective public set
+    (68 real errors in the audit), and half-weight Jev targets pulled the model toward it. Next time: `--soft-weight 0` on hf rows.
+- Files: reports `reports/qwen35_4b_tree_scratch_jevall_[_last]/` (eval2, test, eval_llm), baselines on eval_llm
+  `reports/qwen35_4b_tree/eval_llm`, `reports/qwen35_4b_tree_sft_jevall__last/eval_llm`; logs and train_meta
+  `reports/rlcd_jev_2026-09-26/`; adapters `runs/qwen35_4b_tree_scratch_jevall/adapter` (best) and `adapter_last` (not in `weights/`).
+- Cost: ≈ $20.80 (L40S, 18:59–04:17 UTC, 9.3 h incl. a 25-minute 8K start that was restarted at 16K). The AWS SSO token expired
+  before `terminate-instances`: the box was shut down from inside (terminate on shutdown); its SG and key pair still need deleting.
+- Repo note: after the 16:48 LFS commit (efe3a5c) and merge, 97 data files in this checkout were LFS pointers (e.g.
+  `data/eval2.jsonl`, `data/ova/*.jsonl`), which broke `eval2_summary.py`; `git lfs checkout` restored them from the local store.
+- Verdict: a better model on the LLM-evaluation use cases and eval2, a worse one on emotions. Candidate new best, pending the
+  user's call; the fix for the dev benchmark is Jev targets only where Jev is reliable.
 
 ### 2026-09-26 15:15 PDT: C: RLCD with a confident-mistake cost: 8 confident mistakes on eval2 (Jev 7), but only by being less sure overall; at equal coverage no better than B (fork)
 

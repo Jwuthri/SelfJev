@@ -30,6 +30,7 @@ the jina box ≈ $1.60, the latency/compact and T5Gemma L40S boxes) were not rec
 | First RLCD test: RLCD and a fine-tune control on fresh questions (L40S, 2.8 h) | ≈ $6.20 |
 | Jev soft targets on all data: RLCD (L40S, 7.2 h) + fine-tune (L40S, 6.0 h) | ≈ $29.70 |
 | Jev soft targets, C: RLCD with a confident-mistake cost from B (L40S, 7.1 h) | ≈ $15.90 |
+| Retrain from scratch on everything with Jev targets, texts to 16K (L40S, 9.3 h) | ≈ $20.80 |
 | 10 learning-curve runs, 8 g5.xlarge | ≈ $23.00 |
 | All-options, 27B teacher and distillation boxes | ≈ $12.00 |
 | Round-2 box: tree r2, stopped stock r2, tree r2b (g6e.4xlarge) | ≈ $6.70 |
