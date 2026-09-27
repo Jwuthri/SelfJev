@@ -124,19 +124,19 @@ kept every hard case, 18,681 vs 16,375 questions).
 Each has a formatted box with its evidence in [findings.md](findings.md).
 
 1. **Default model: `selfjev-4b`** (2026-09-26, fork; `weights/selfjev_4b`): the `qwen35_4b_tree` recipe (Qwen3.5-4B + LoRA
-   r64, shared-prefix tree, every option listed in the question) trained from scratch by `pjev finetune` on all 79.9K
+   r64, shared-prefix tree, every option listed in the question) trained from scratch by `selfjev finetune` on all 79.9K
    non-test questions of `data/all.jsonl.gz` (texts up to 16K), target 0.5 × label + 0.5 × Jev's probabilities.
    - eval2 **95.8** (vs `qwen35_4b_tree` 33 / 29, p = 0.70), eval_llm **93.1** (`qwen35_4b_tree` 82.1, Jev 92.5), dev
      benchmark 83.8 (−0.7, from Jev's targets on the public emotion set); confident mistakes on eval2 30 → 11 (Jev 7).
      JOURNAL 2026-09-26 21:25.
    Previous: **`qwen35_4b_tree`** (2026-09-25, fork): Qwen3.5-4B + LoRA r64 trained with the shared-prefix tree
-   (`personal_jev/qwen35_tree.py`: DeltaNet layers level by level from copied states, attention through the tree mask),
+   (`selfjev/qwen35_tree.py`: DeltaNet layers level by level from copied states, attention through the tree mask),
    every option listed in the question, round-2b + round-3 data uncapped, texts ≤ 8K.
    - eval2 **95.6** (vs `qwen35_4b_combo` 94.5, 52 / 31, p = 0.028; vs `tree_4b_combo` 94.5, 63 / 41, p = 0.039; Jev 97.2,
      31 / 64); multilabel EM 90.1; dev benchmark 84.4 (Jev 82.7, p = 0.004).
    - Same data and base as `qwen35_4b_combo`: the tree's +1.1 comes from training on long texts (3.7% dropped instead
      of 18.5%), in 38% less training time.
-   - Served by `ChallengerScorer` (transformers, forked native cache) or on vLLM (`personal_jev/vllm_qwen35.py`, eval2
+   - Served by `ChallengerScorer` (transformers, forked native cache) or on vLLM (`selfjev/vllm_qwen35.py`, eval2
      95.58 there too): vLLM is faster for one question (87 ms at 512 tokens, L40S), the fork path for many (16 questions:
      341 vs 454 ms at 512 tokens, 508 vs 908 at 2K). JOURNAL 2026-09-25 18:05.
    Previous: **`tree_4b_combo`** (2026-09-24, fork): Qwen3-4B-Instruct-2507, tree, LoRA r64, every option listed in
@@ -235,7 +235,7 @@ Revived by eval2 (dead on the dev benchmark only): the Instruct base (+3.0), LoR
 ## Known issues and gotchas
 
 - `benchmark.py` runs the stock scorer with prompt `task-v1` while quality reports use `answer-v1`
-  (`src/personal_jev/benchmark.py` takes no prompt): latency ratios are valid, exact same-format claims are not.
+  (`src/selfjev/benchmark.py` takes no prompt): latency ratios are valid, exact same-format claims are not.
 - **Fixed 2026-09-24:** `TreeModel.cached` builds only the branch mask instead of the full T×T document mask; GPU score
   parity in `reports/latency_optimization_2026-09-24/parity_a10g.json`. The latency gain alone was small.
 - **eval2 ids:** join on the expanded row ids (`<source_id>-q<i>`). The first export renumbered ids after drops;
@@ -274,7 +274,7 @@ Revived by eval2 (dead on the dev benchmark only): the Instruct base (+3.0), LoR
 | Calibration objective (Brier term / soft targets) in the same run, reporting graded share, confidently-wrong count and ECE ([memo](../reports/jev_hypothesis_2026-09-25.md) B) | Jev's errors are hedged (7 of 55 with margin ≥ 0.4, ours 26 of 110); a proper-scoring loss is RLCD without the RL | none beyond the run above | proposed (fork 2), awaiting OK |
 | Cascade / ensemble in serving: combo answers unless its margin < tau, else the 50/50 average with the 27B; tau chosen on validation ([eval2/ensembles.md](../reports/eval2/ensembles.md)) | +0.3–0.9 on eval2 with nothing trained, on top of `qwen35_4b_tree` 95.6: average with `tree_4b_combo` 95.9, with the 27B 96.3, with both 96.5; cascade to the 27B average at 7% deferral 96.1 | $0 to decide; 27B compute on ≈ 10% of questions | unclaimed |
 | Prefix-LM tree: full attention over the state, causal branches ([memo](../reports/jev_hypothesis_2026-09-25.md) E) | late exceptions and dates cannot reshape early state tokens under a causal mask | ≈ $5, after the parallel readout; no vLLM mask for it | unclaimed |
-| **RLCD from the best model**: `pjev rlcd --init weights/qwen35_4b_tree` on the training data, compared on eval2 for accuracy, Brier, ECE and confidently-wrong decisions | Jev's errors are hedged; ours were confidently wrong 4× as often per error; RLCD rewards calibrated probabilities (tests show it learns base rates) | ≈ 4 h L40S ≈ $10 | **done, no gain** (fork, 2026-09-25): on fresh questions accuracy 95.63 vs 95.58 (p = 1), ECE 0.0096 vs 0.0051, confident mistakes 34 vs 30; a same-data fine-tune control is neutral; on seen questions it overfits. Next: a reward that carries more than the label. JOURNAL 23:45 |
+| **RLCD from the best model**: `selfjev rlcd --init weights/qwen35_4b_tree` on the training data, compared on eval2 for accuracy, Brier, ECE and confidently-wrong decisions | Jev's errors are hedged; ours were confidently wrong 4× as often per error; RLCD rewards calibrated probabilities (tests show it learns base rates) | ≈ 4 h L40S ≈ $10 | **done, no gain** (fork, 2026-09-25): on fresh questions accuracy 95.63 vs 95.58 (p = 1), ECE 0.0096 vs 0.0051, confident mistakes 34 vs 30; a same-data fine-tune control is neutral; on seen questions it overfits. Next: a reward that carries more than the label. JOURNAL 23:45 |
 | **RLCD with Jev soft targets on all data** vs a plain fine-tune on the same targets (A / B), both from `qwen35_4b_tree`, 71,974 non-test questions of `data/all.jsonl.gz`, target 0.5 × label + 0.5 × Jev | hard labels cannot say "be less sure"; Jev hedges on 15% and disagrees on 8% of these questions | ≈ $36 (two L40S, ≈ 8 h) | **done** (fork, 2026-09-26, JOURNAL 09:10): B (fine-tune) eval2 95.73 vs 95.58 (p = 0.74), confident mistakes 30 → 14, Brier 0.0480 → 0.0438; A (RLCD) 95.43, 22, 0.0446; A vs B p = 0.18. Dev benchmark flat. |
 | **C: RLCD with a confident-mistake cost** (`confident_miss=5`) from B's result, same data | the one reward a fine-tune cannot express; Jev's edge is hedged mistakes | ≈ $19 (L40S, ≈ 8 h) | **done** (fork, 2026-09-26, JOURNAL 15:15): eval2 95.68 (vs B p = 1), confident mistakes 14 → 8 (Jev 7), dev benchmark 75 → 48 (Jev 253), ECE 0.043 (Jev 0.041); Brier worse (0.0518 vs B 0.0438). |
 | **Retrain from scratch with Jev soft targets on everything** (80,093 non-test questions incl. `llm_multilabel_v1` and `numdate_neg_v1`, new LoRA r64, lr 2e-4, target 0.5 × label + 0.5 × Jev) | B's Jev targets halved confident mistakes but, as a gentle update, barely moved multilabel (+0.2); the new batches target the audit's gaps (distractors, multi-positive, double negation, numbers, dates) | ≈ $18 (L40S, ≈ 7.7 h) | **done** (fork, 2026-09-26, JOURNAL 21:25): eval2 95.78 (p = 0.70 vs `qwen35_4b_tree`), eval_llm 93.13 vs 82.14 (Jev 92.49), dev benchmark 83.75 vs 84.44 (p = 0.13, all on hf_emotions_multilabel: Jev's targets). Candidate new best. Next: soft-weight 0 on hf rows. |
@@ -333,7 +333,7 @@ Revived by eval2 (dead on the dev benchmark only): the Instruct base (+3.0), LoR
 | what | where |
 |---|---|
 | formatted findings, leaderboard, models, data, speed | the docs site: `docs/*.md`, built with Zensical (see [README](../README.md)) |
-| tree scorer: design, results, speed, reproduce | [tree_model.md](tree_model.md), `src/personal_jev/tree.py`, `train_tree.py`, `vllm_tree.py`, `configs/tree_4b*.json`, `scripts/run_tree_combined.sh` (the `tree_4b_combo` recipe) |
+| tree scorer: design, results, speed, reproduce | [tree_model.md](tree_model.md), `src/selfjev/tree.py`, `train_tree.py`, `vllm_tree.py`, `configs/tree_4b*.json`, `scripts/run_tree_combined.sh` (the `tree_4b_combo` recipe) |
 | custom cross-attention model | [custom_model.md](custom_model.md), `reports/custom_diagnostics/`; code, configs and calibration files at tag `archive/pre-cleanup-2026-09-27` |
 | jina and T5Gemma challengers | [jina_model.md](jina_model.md), [challengers.md](challengers.md), `reports/t5_round2b_2026-09-24/`; code at tag `archive/pre-cleanup-2026-09-27` |
 | learning curves (data volume, epochs, per-task, base model, capacity) | [reports/curve/summary.md](../reports/curve/summary.md), `configs/curve/`; the pipeline scripts (`run_curve.sh`, `summarize_curve.py`) at tag `archive/pre-cleanup-2026-09-27` |

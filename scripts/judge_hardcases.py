@@ -29,7 +29,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
 from compare_external import call_cost, http, jev_request, llm_request  # noqa: E402
-from personal_jev.data import expand_source, read_jsonl, write_jsonl  # noqa: E402
+from selfjev.data import expand_source, read_jsonl, write_jsonl  # noqa: E402
 
 RAW = ROOT / "data/hardcases/raw"
 lock_sync = threading.Lock()
@@ -49,7 +49,7 @@ def oa(method, path, body=None, raw=None, ctype="application/json", timeout=600)
 
 
 def upload_jsonl(lines):
-    b = "----pjev" + uuid.uuid4().hex
+    b = "----selfjev" + uuid.uuid4().hex
     payload = (f"--{b}\r\nContent-Disposition: form-data; name=\"purpose\"\r\n\r\nbatch\r\n--{b}\r\n"
                f"Content-Disposition: form-data; name=\"file\"; filename=\"batch.jsonl\"\r\nContent-Type: application/jsonl\r\n\r\n").encode()
     payload += "\n".join(lines).encode() + f"\r\n--{b}--\r\n".encode()

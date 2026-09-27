@@ -8,8 +8,8 @@ of it, distilling Jev's hedging).
   TEST_DATASETS) and the calibration splits (kept for temperature fitting). No family cap, no `none` rebalance.
 - Val: qwen35_4b_tree's 1,200-question validation sample (same ids), so validation numbers compare with every run since.
 - Each training row gains "soft" from its `jev` field: P(yes) (binary) or {candidate id: p} (multiclass: Jev's
-  distribution; multilabel: P(yes) per option). The target stays the verified one; `pjev finetune / rlcd --soft-weight`
-  (default 0.5) mixes the two, so Jev never decides a label. Questions stay as in all.jsonl.gz: pjev adds the option
+  distribution; multilabel: P(yes) per option). The target stays the verified one; `selfjev finetune / rlcd --soft-weight`
+  (default 0.5) mixes the two, so Jev never decides a label. Questions stay as in all.jsonl.gz: selfjev adds the option
   list (options_in_question, seeded by id, as data/ova was built).
 """
 import gzip

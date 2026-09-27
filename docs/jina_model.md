@@ -1,8 +1,8 @@
 # jina-reranker-v3.5 backend: a 0.6B listwise scorer trained the tree-r2b way
 
 Written 2026-09-24. A dead end: the code was removed on 2026-09-27 and is at tag
-[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27): [src/personal_jev/jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/jina.py) (scorer),
-[train_jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/train_jina.py) (trainer), [tests/test_jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/tests/test_jina.py); config
+[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27): [src/selfjev/jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/selfjev/jina.py) (scorer),
+[train_jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/selfjev/train_jina.py) (trainer), [tests/test_jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/tests/test_jina.py); config
 [configs/jina_r2b.json](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/configs/jina_r2b.json); GPU pipeline [scripts/run_jina_gpu.sh](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/scripts/run_jina_gpu.sh) via
 [scripts/aws_jina.sh](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/scripts/aws_jina.sh). Weights `runs/jina_r2b/adapter`
 (LoRA + projector + `jina_head.json`), reports `reports/jina_zeroshot/`, `reports/jina_r2b/`.
@@ -79,9 +79,9 @@ logit = scale · cos(proj(query), proj(passage)) + bias
 From a checkout of tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27):
 
 ```bash
-uv run pjev classify examples/request.json --jina --dtype bfloat16 --adapter runs/jina_r2b/adapter
-uv run pjev eval --jina --dtype bfloat16 --max-length 16384 --adapter runs/jina_r2b/adapter --data data/eval2.jsonl --out reports/jina_r2b/eval2
-uv run pjev train-jina configs/jina_r2b.json          # ~70 min on an A10G; ~6× slower on the M5 Pro
+uv run selfjev classify examples/request.json --jina --dtype bfloat16 --adapter runs/jina_r2b/adapter
+uv run selfjev eval --jina --dtype bfloat16 --max-length 16384 --adapter runs/jina_r2b/adapter --data data/eval2.jsonl --out reports/jina_r2b/eval2
+uv run selfjev train-jina configs/jina_r2b.json          # ~70 min on an A10G; ~6× slower on the M5 Pro
 bash scripts/aws_jina.sh launch && bash scripts/aws_jina.sh run   # then: log | pull | terminate
 uv run python -m pytest -q tests/test_jina.py         # padding invariance + length accounting on the real model
 ```

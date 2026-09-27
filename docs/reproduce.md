@@ -14,13 +14,13 @@ in `runs/`, which is not in git.
 ## Use
 
 ```bash
-uv run pjev classify examples/request.json                                   # untrained 0.6B reranker, runs anywhere
-uv run pjev --help        # classify / eval / calibrate / compare / bench / serve / train / train-tree / finetune / rlcd
+uv run selfjev classify examples/request.json                                   # untrained 0.6B reranker, runs anywhere
+uv run selfjev --help        # classify / eval / calibrate / compare / bench / serve / train / train-tree / finetune / rlcd
 ```
 
 ```python
-from personal_jev.model import Scorer
-from personal_jev.classify import classify
+from selfjev.model import Scorer
+from selfjev.classify import classify
 
 scorer = Scorer()                         # fp32 on mps/cuda/cpu; Scorer(adapter=...) for a stock LoRA adapter
 result = classify(scorer, request_dict)   # {"questions": [...], "meta": {...}}
@@ -33,14 +33,14 @@ The default model needs a CUDA GPU: serve it as below. Request format and API:
 
 ```bash
 # Qwen3.5-4B + weights/selfjev_4b (eval2 95.8, the default; weights/qwen35_4b_tree: 95.6): the shared-prefix tree, forward only
-uv run python -m personal_jev.qwen35_tree serve --adapter weights/selfjev_4b --options-in-question   # :8767
+uv run python -m selfjev.qwen35_tree serve --adapter weights/selfjev_4b --options-in-question   # :8767
 # or through vLLM (separate venv): exact, fast for one question, slow for many (speed.md)
-uv run python -m personal_jev.vllm_qwen35 merge --adapter weights/selfjev_4b --out runs/selfjev_4b/merged
-~/vllm-env/bin/python -m personal_jev.vllm_qwen35 serve --model-dir runs/selfjev_4b/merged --options-in-question
+uv run python -m selfjev.vllm_qwen35 merge --adapter weights/selfjev_4b --out runs/selfjev_4b/merged
+~/vllm-env/bin/python -m selfjev.vllm_qwen35 serve --model-dir runs/selfjev_4b/merged --options-in-question
 # Qwen3 tree on vLLM (weights/tree_4b_combo, eval2 94.5): the fastest and cheapest to serve
-uv run python -m personal_jev.vllm_tree merge --adapter weights/tree_4b_combo --out runs/tree_4b_combo/merged \
+uv run python -m selfjev.vllm_tree merge --adapter weights/tree_4b_combo --out runs/tree_4b_combo/merged \
   --model-id Qwen/Qwen3-4B-Instruct-2507 --revision cdbee75f17c01a7cc42f958dc650907174af0554
-~/vllm-env/bin/python -m personal_jev.vllm_tree serve --model-dir runs/tree_4b_combo/merged \
+~/vllm-env/bin/python -m selfjev.vllm_tree serve --model-dir runs/tree_4b_combo/merged \
   --model-id Qwen/Qwen3-4B-Instruct-2507 --options-in-question
 ```
 
@@ -51,8 +51,8 @@ All three answer `POST /classify` and the Decisions-API-shaped `POST /api/alpha/
 ## Fine-tune on your data, then RLCD (CUDA GPU)
 
 ```bash
-uv run pjev finetune --data my_train.jsonl --out runs/mine --init weights/selfjev_4b
-uv run pjev rlcd --data my_train.jsonl --out runs/mine_rlcd --init runs/mine/adapter
+uv run selfjev finetune --data my_train.jsonl --out runs/mine --init weights/selfjev_4b
+uv run selfjev rlcd --data my_train.jsonl --out runs/mine_rlcd --init runs/mine/adapter
 ```
 
 Data format, outputs and what RLCD optimizes: [fine-tune and RLCD](finetune.md).
@@ -87,7 +87,7 @@ uv run python scripts/build_all.py                                         # dat
 scripts/aws_launch.sh selfjev-mine 10 "us-east-2:g6e.2xlarge us-east-1:g6e.2xlarge us-west-2:g6e.2xlarge"
 # the default model, selfjev-4b: every non-test question of data/all.jsonl.gz, 0.5 × label + 0.5 × Jev
 uv run python scripts/jev_soft_targets.py     # local and free: runs/jev_all/{train,val}.jsonl.gz
-bash scripts/jev_soft_box.sh scratch          # on the box (repo + runs/jev_all synced): pjev finetune, new LoRA r64, lr 2e-4,
+bash scripts/jev_soft_box.sh scratch          # on the box (repo + runs/jev_all synced): selfjev finetune, new LoRA r64, lr 2e-4,
                                               # texts up to 16K, then eval2, the dev benchmark and eval_llm (≈ 9 h, one L40S)
 # score any Qwen3.5 adapter (reports/qwen35_4b<tag>/)
 uv run python scripts/run_qwen35.py qwen35_4b --stage eval --tag _mine --adapter runs/mine/adapter \
@@ -130,7 +130,7 @@ zsh -ic 'uv run python scripts/audit_failures.py relabel --limit 40'   # PAID (u
 uv run python scripts/audit_failures.py report                         # free: reports/audit_2026-09-26/AUDIT.md
 ```
 
-`pjev calibrate` fits temperatures only on a report whose every prediction is from the `calibration` split and
+`selfjev calibrate` fits temperatures only on a report whose every prediction is from the `calibration` split and
 selects thresholds only on `validation`; anything else raises `LeakageError`. A calibration file is bound to the model
 revision, adapter sha256 and prompt sha that produced it.
 
@@ -151,11 +151,11 @@ ledger section of `docs/experiments.md`), so re-running `eval2_summary.py` and `
 ## Layout
 
 ```
-src/personal_jev/  schemas.py (validation)  formatting.py (templates, prompts)  model.py (stock Scorer)
+src/selfjev/  schemas.py (validation)  formatting.py (templates, prompts)  model.py (stock Scorer)
                    classify.py (typed outputs)  data.py  evaluate.py  calibration.py  benchmark.py  server.py  cli.py
                    tree.py + train_tree.py + vllm_tree.py (shared-prefix tree, Qwen3)
                    qwen35_tree.py (the tree for Qwen3.5: training, TreeServer)   vllm_qwen35.py (Qwen3.5 on vLLM)
-                   challengers.py (the Qwen3.5 prompt and forked cache)   finetune.py (pjev finetune / pjev rlcd)
+                   challengers.py (the Qwen3.5 prompt and forked cache)   finetune.py (selfjev finetune / selfjev rlcd)
                    options.py (every option in the question)
 scripts/           data builders and batches, the selfjev-4b recipe, aws_launch.sh, compare_external.py, summaries
 data/              hf / eval / synthetic / hardcases* / batches / eval2 / eval_llm (+ briefs and reviews); data/README.md

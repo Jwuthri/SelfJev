@@ -26,7 +26,7 @@ case $MODE in
   *) log "unknown mode $MODE"; exit 1 ;;
 esac
 log "train $RUN"
-$PY -m personal_jev.cli $CMD --data runs/jev_all/train.jsonl.gz --val runs/jev_all/val.jsonl.gz $INIT \
+$PY -m selfjev.cli $CMD --data runs/jev_all/train.jsonl.gz --val runs/jev_all/val.jsonl.gz $INIT \
   --lr $LR --soft-weight 0.5 $EXTRA --out runs/$RUN > runs/$RUN.log 2>&1 || { log "TRAIN FAILED"; tail -30 runs/$RUN.log; exit 1; }
 for ad in adapter adapter_last; do
   [[ $ad == adapter ]] && $PY -c "import json, sys; sys.exit(json.load(open('runs/$RUN/train_meta.json'))['best']['step'] != 0)" \

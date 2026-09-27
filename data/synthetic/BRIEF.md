@@ -80,7 +80,7 @@ nota, zero_positive, multi_positive, paraphrase, numeric_reasoning, temporal_rea
 - Write batches of ~25 sources per file: `data/synthetic/raw/<PREFIX>_<NN>.jsonl` (NN = 01, 02, ...) using
   the Write tool.
 - After each file run
-  `cd /Users/julien/Documents/Repos/SelfJev && .venv/bin/python -m personal_jev.data check data/synthetic/raw/<file>`
+  `cd /Users/julien/Documents/Repos/SelfJev && .venv/bin/python -m selfjev.data check data/synthetic/raw/<file>`
   and fix every error before continuing.
 - `source_id` = `<PREFIX>-<4-digit counter>`, unique across your files.
 - Before finishing, re-read a sample of your items and fix wrong or ambiguous labels.

@@ -26,5 +26,5 @@ multi_turn, nota. Long states 600-1500 words with evidence mostly in the middle;
 natural; ~45% binary / 30% multiclass / 25% multilabel; no graded-AI-reply examples (held-out family).
 
 Process: batches of ~20 sources per file data/hardcases/raw/<PREFIX>_<NN>.jsonl, checked with
-`python -m personal_jev.data check`; re-check every numeric and date label; never read data/eval*, reports/ or
+`python -m selfjev.data check`; re-check every numeric and date label; never read data/eval*, reports/ or
 other agents' files.

@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
 from judge_hardcases import oa  # noqa: E402
-from personal_jev.data import read_jsonl  # noqa: E402
+from selfjev.data import read_jsonl  # noqa: E402
 
 
 def text_of(src):

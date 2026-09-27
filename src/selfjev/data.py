@@ -93,7 +93,7 @@ def write_jsonl(path, rows):
             f.write(json.dumps(r, ensure_ascii=False) + "\n")
 
 
-def split_for(key: str, weights: dict[str, float], salt: str = "pjev") -> str:
+def split_for(key: str, weights: dict[str, float], salt: str = "selfjev") -> str:
     """Deterministic split from a group key (source/paraphrase group), so a group never straddles splits."""
     u = int(hashlib.sha256(f"{salt}:{key}".encode()).hexdigest()[:12], 16) / 16**12
     total, acc = sum(weights.values()), 0.0
@@ -126,7 +126,7 @@ def _check(paths):
     return bad
 
 
-if __name__ == "__main__":  # python -m personal_jev.data check FILE...
+if __name__ == "__main__":  # python -m selfjev.data check FILE...
     if sys.argv[1:2] != ["check"] or len(sys.argv) < 3:
-        sys.exit("usage: python -m personal_jev.data check FILE.jsonl...")
+        sys.exit("usage: python -m selfjev.data check FILE.jsonl...")
     sys.exit(1 if _check(sys.argv[2:]) else 0)

@@ -1,7 +1,7 @@
 """Latency and cost: the same decisions requests to Jev (OpenRouter) and to our tree scorer, text of 8..4096 tokens.
 
   sweep       (this machine) one request at a time, alternating endpoints in random order so both see the same
-              network. Jev: POST openrouter.ai/api/alpha/decisions. Ours: `pjev serve --tree` on a GPU box, reached
+              network. Jev: POST openrouter.ai/api/alpha/decisions. Ours: `selfjev serve --tree` on a GPU box, reached
               through an SSH tunnel, same body (our server accepts the decisions shape). Records the client wall
               time, plus each side's server time: ours = meta.total_ms (parse + tokenize + GPU), Jev = OpenRouter's
               Server-Timing cfWorker (OpenRouter + its call to Jev). Network round trip = TCP connect time.
@@ -31,7 +31,7 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from personal_jev.benchmark import FILLER  # noqa: E402
+from selfjev.benchmark import FILLER  # noqa: E402
 
 OUT = ROOT / "reports/latency"
 JEV = "~typesafe/jev-latest"
@@ -91,7 +91,7 @@ def rtt_ms(host, port, n=7):
 def sweep(a):
     from transformers import AutoTokenizer
 
-    from personal_jev.model import MODEL_ID, MODEL_REVISION
+    from selfjev.model import MODEL_ID, MODEL_REVISION
     tok = AutoTokenizer.from_pretrained(MODEL_ID, revision=MODEL_REVISION)  # same tokenizer as the 4B
     eps = {"jev": Endpoint("https://openrouter.ai/api/alpha/decisions", {
         "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}", "Content-Type": "application/json", "X-OpenRouter-Title": "personal-jev latency"})}
@@ -134,17 +134,17 @@ def throughput(a):
     """Batched requests/s per text length on this GPU (the number that sets cost per request)."""
     import torch
 
-    from personal_jev.classify import classify_many
-    from personal_jev.server import compat_to_request
-    from personal_jev.tree import RERANKER_4B, TreeScorer
+    from selfjev.classify import classify_many
+    from selfjev.server import compat_to_request
+    from selfjev.tree import RERANKER_4B, TreeScorer
     if a.qwen35_tree:
-        from personal_jev.qwen35_tree import TreeServer
+        from selfjev.qwen35_tree import TreeServer
         sc = TreeServer(a.qwen35_tree)
     elif a.qwen35:
-        from personal_jev.vllm_qwen35 import VllmQwen35Scorer
+        from selfjev.vllm_qwen35 import VllmQwen35Scorer
         sc = VllmQwen35Scorer(a.qwen35)
     elif a.vllm:
-        from personal_jev.vllm_tree import VllmTreeScorer
+        from selfjev.vllm_tree import VllmTreeScorer
         sc = VllmTreeScorer(a.vllm, model_id=a.model_id)
     else:
         sc = TreeScorer(*RERANKER_4B, adapter=a.adapter, dtype="bfloat16", max_batch_tokens=a.max_batch_tokens, merge=a.merge)
@@ -153,7 +153,7 @@ def throughput(a):
         for n_q in SHAPES:
             reqs = [compat_to_request(body(sc.tokenizer, n_tokens, n_q, rng.randrange(10 ** 6)))[0] for _ in range(a.batch)]
             if a.options_in_question:  # as the server does for adapters trained on data/ova/
-                from personal_jev.options import with_options
+                from selfjev.options import with_options
                 reqs = [r | {"questions": [with_options(q, str(q["id"])) for q in r["questions"]]} for r in reqs]
             classify_many(sc, reqs[:8])  # warm-up
             torch.cuda.synchronize()

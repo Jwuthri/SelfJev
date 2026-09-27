@@ -5,7 +5,7 @@
 - data/all.jsonl.gz: every ORIGINAL question once (one JSON line per question, the usual schema) with one extra field,
   `dataset`. Derived views (option-list transforms, subsets, teacher labels, fixtures) are left out and listed in the
   catalog instead. Rows keep their own `split`: filter on it, and never train on `test` rows.
-  Load: personal_jev.data.load(["data/all.jsonl.gz"]) or gzip + json. Rebuildable, so it is not tracked in git.
+  Load: selfjev.data.load(["data/all.jsonl.gz"]) or gzip + json. Rebuildable, so it is not tracked in git.
 - `jev` field: Jev's prediction for the row (P(yes) or per-candidate probabilities, answer, confidence, correct, Jev
   version) from data/jev/predictions.jsonl (scripts/jev_predictions.py), only when the text and question are unchanged.
 - data/README.md: the catalog (generated; edit DATASETS / DERIVED below, not the file).
@@ -19,7 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from personal_jev.data import load, sha256_file  # noqa: E402
+from selfjev.data import load, sha256_file  # noqa: E402
 
 # name, file, what it is, role, write-up
 DATASETS = [
@@ -109,7 +109,7 @@ def main():
         "[docs/data.md](../docs/data.md).", "",
         f"**All original questions in one file: `data/all.jsonl.gz`**: {total:,} questions from {len(stats)} datasets, "
         "each row tagged with `dataset`. Built locally by the command above (not tracked in git). Load it with "
-        "`personal_jev.data.load([\"data/all.jsonl.gz\"])`, then filter on `dataset` and `split`.", "",
+        "`selfjev.data.load([\"data/all.jsonl.gz\"])`, then filter on `dataset` and `split`.", "",
         "**Jev's prediction** is stored on each row it exists for, as `jev`: `p_yes` (binary) or `probs` per candidate, `answer`, "
         "`confidence`, `correct` (vs `target`), `model` (Jev version). Source: `data/jev/predictions.jsonl` "
         "(`scripts/jev_predictions.py`). Jev's outputs never replace `target`.", "",
@@ -118,7 +118,7 @@ def main():
         "## Always use this file", "",
         "Every training mix, evaluation and analysis starts from `data/all.jsonl.gz` (run the build command if it is missing):", "",
         "```python",
-        "from personal_jev.data import load",
+        "from selfjev.data import load",
         "rows = load([\"data/all.jsonl.gz\"])",
         "TEST = {\"eval\", \"eval2\", \"eval_llm\", \"compact_challenge_v1\"}          # scripts/build_all.py TEST_DATASETS",
         "train = [r for r in rows if r[\"dataset\"] not in TEST and r[\"split\"] == \"train\"]",

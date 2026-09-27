@@ -4,7 +4,7 @@
 
 Jev (TypeSafe, `typesafe/jev`, served through OpenRouter) turns a model into a typed decision engine: send a text (the
 *state*) and questions of type `noul` (yes/no), `choice` or `score`, get typed answers with probabilities, with no text
-generation. SelfJev copies the **interface**, not the model: our native schema is our own, and `pjev serve` also
+generation. SelfJev copies the **interface**, not the model: our native schema is our own, and `selfjev serve` also
 exposes a route with the same request/response shape ([how it works](how_it_works.md)).
 
 **What TypeSafe discloses** (public web, read 2026-09-23):

@@ -1,4 +1,4 @@
-"""pjev: classify | eval | calibrate | compare | bench | serve | train | train-tree | finetune | rlcd"""
+"""selfjev: classify | eval | calibrate | compare | bench | serve | train | train-tree | finetune | rlcd"""
 import argparse
 import json
 import sys
@@ -27,15 +27,15 @@ def _calibration(a, scorer):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog="pjev", description="Instruction-conditioned binary / multiclass / multilabel decisions "
+    ap = argparse.ArgumentParser(prog="selfjev", description="Instruction-conditioned binary / multiclass / multilabel decisions "
                                  "with open Qwen models: the stock Qwen3-Reranker backend (default) or the shared-prefix tree "
-                                 "(--tree). The default model, selfjev-4b, is trained by `pjev finetune` and served by "
-                                 "`python -m personal_jev.qwen35_tree serve`")
+                                 "(--tree). The default model, selfjev-4b, is trained by `selfjev finetune` and served by "
+                                 "`python -m selfjev.qwen35_tree serve`")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     def model_args(p):
         p.add_argument("--tree", action="store_true", help="shared-prefix tree scorer (tree.py) on --model/--revision; "
-                                                                "--adapter from `pjev train-tree`")
+                                                                "--adapter from `selfjev train-tree`")
         p.add_argument("--model", default=MODEL_ID, help="stock backend: Qwen3-Reranker checkpoint (0.6B / 4B / 8B)")
         p.add_argument("--revision", default=MODEL_REVISION, help="stock backend: pinned HF commit for --model")
         p.add_argument("--merge", action="store_true", help="--tree: merge the LoRA adapter into the weights (inference speed)")
@@ -44,7 +44,7 @@ def main(argv=None):
         p.add_argument("--dtype", default="float32", choices=["float32", "bfloat16", "float16"])
         p.add_argument("--max-length", type=int, default=8192, help="max tokens per pair incl. template; longer input is an error")
         p.add_argument("--max-batch-tokens", type=int, default=16384, help="padded tokens per forward pass")
-        p.add_argument("--calibration", help="calibration JSON from `pjev calibrate` (must match model/adapter/prompt)")
+        p.add_argument("--calibration", help="calibration JSON from `selfjev calibrate` (must match model/adapter/prompt)")
         p.add_argument("--prompt", default=DEFAULT_PROMPT, choices=sorted(PROMPTS), help="question-to-pair mapping (see formatting.py)")
 
     p = sub.add_parser("classify", help="classify one request JSON (file path or - for stdin)")
@@ -57,8 +57,8 @@ def main(argv=None):
     p.add_argument("--limit", type=int)
     model_args(p)
     p = sub.add_parser("calibrate", help="fit temperatures on a calibration-split report; thresholds on a validation-split report")
-    p.add_argument("--fit", required=True, help="report.json from `pjev eval --split calibration`")
-    p.add_argument("--thresholds", help="report.json from `pjev eval --split validation`")
+    p.add_argument("--fit", required=True, help="report.json from `selfjev eval --split calibration`")
+    p.add_argument("--thresholds", help="report.json from `selfjev eval --split validation`")
     p.add_argument("--out", required=True)
     p = sub.add_parser("compare", help="side-by-side markdown of two or more eval reports")
     p.add_argument("reports", nargs="+")
@@ -82,7 +82,7 @@ def main(argv=None):
     p = sub.add_parser("train-tree", help="shared-prefix tree scorer: LoRA on any Qwen3-architecture causal LM")
     p.add_argument("config")
     p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
-    def finetune_args(p, rlcd=False):  # personal_jev.finetune: the Qwen3.5 tree recipe on your JSONL data, one CUDA GPU
+    def finetune_args(p, rlcd=False):  # selfjev.finetune: the Qwen3.5 tree recipe on your JSONL data, one CUDA GPU
         p.add_argument("--data", required=True, help="training JSONL (state, question, target per line)")
         p.add_argument("--val", help="validation JSONL (default: 5%% of --data, at most 1,000 questions)")
         p.add_argument("--out", required=True, help="run directory: adapter/, adapter_last/, train_meta.json")

@@ -8,7 +8,7 @@ in one forward pass with no text generation. It combines what we measured separa
 - the custom model's shared text encoding (fast, but text and question met only in 2 small layers at the end,
   and yes/no questions stayed at chance; see [custom_model.md](custom_model.md)).
 
-Code: [src/personal_jev/tree.py](../src/personal_jev/tree.py), [train_tree.py](../src/personal_jev/train_tree.py),
+Code: [src/selfjev/tree.py](../src/selfjev/tree.py), [train_tree.py](../src/selfjev/train_tree.py),
 tests in [tests/test_tree.py](../tests/test_tree.py).
 
 > **Update 2026-09-24.** This page describes the first tree runs (round-1 data, dev benchmark). Every later best model
@@ -154,7 +154,7 @@ server-side times and cost: [reports/latency/summary.md](../reports/latency/summ
   transformers.
 - **Cost.** Fully busy at $1.006/h, the A10G with vLLM costs $0.005–0.27 per 1,000 requests; Jev costs $0.016–0.27 at
   $0.042 per million input tokens. We are cheaper only while the GPU is busy.
-- **vLLM backend** ([src/personal_jev/vllm_tree.py](../src/personal_jev/vllm_tree.py)):
+- **vLLM backend** ([src/selfjev/vllm_tree.py](../src/selfjev/vllm_tree.py)):
   - every leaf is one prompt, and the prefix cache shares the text between leaves;
   - the LoRA is merged into the weights;
   - on the example request it makes the same decisions as the transformers path, scores within 0.06 logit;
@@ -185,7 +185,7 @@ thresholds.
 
 Qwen3.5-4B is three Gated DeltaNet layers (a gated linear recurrence with a width-4 causal convolution) for every
 full-attention layer. A tree mask cannot hide one branch from its siblings inside a recurrence, so
-[`personal_jev/qwen35_tree.py`](../src/personal_jev/qwen35_tree.py) runs the same packed tree two ways:
+[`selfjev/qwen35_tree.py`](../src/selfjev/qwen35_tree.py) runs the same packed tree two ways:
 
 - **Full-attention layers** read the packed row through `tree_mask`, exactly as above.
 - **DeltaNet layers** run level by level: every root; then every question segment, starting from its root's final
@@ -218,7 +218,7 @@ data at 2K tokens and took 6.6 h. `qwen35_4b_tree` scores 95.6 on eval2 against 
 
 ```bash
 uv run pytest tests/test_tree.py                              # 10 tests; 2 load the real 0.6B reranker
-uv run pjev classify examples/request.json --tree --model Qwen/Qwen3-Reranker-4B \
+uv run selfjev classify examples/request.json --tree --model Qwen/Qwen3-Reranker-4B \
   --revision 22e683669bc0f0bd69640a1354a6d0aebcfeede5 --adapter runs/tree_4b/adapter --dtype bfloat16
 ```
 

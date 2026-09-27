@@ -70,7 +70,7 @@ the decisive evidence at varied positions and plausible distractors.
 
 - Write one or two files: `data/eval/raw/<PREFIX>_<NN>.jsonl` with the Write tool.
 - After each file run
-  `cd /Users/julien/Documents/Repos/SelfJev && .venv/bin/python -m personal_jev.data check data/eval/raw/<file>`
+  `cd /Users/julien/Documents/Repos/SelfJev && .venv/bin/python -m selfjev.data check data/eval/raw/<file>`
   and fix all errors.
 - `source_id` = `<PREFIX>-<3-digit counter>`.
 - Then re-read every item as a skeptical reviewer: is the label unambiguous and correct under the policy

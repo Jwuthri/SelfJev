@@ -6,8 +6,8 @@ document between them. Readout: one generated token restricted to {yes, no} with
 logprob(yes) - logprob(no) = z_yes - z_no, the value ChallengerScorer.readout computes. Needs the merged checkpoint
 (`merge`, project venv) and a venv with vllm.
 
-  python -m personal_jev.vllm_qwen35 merge --adapter runs/qwen35_4b_tree/adapter --out runs/qwen35_4b_tree/merged
-  python -m personal_jev.vllm_qwen35 serve --model-dir runs/qwen35_4b_tree/merged --port 8766 --options-in-question
+  python -m selfjev.vllm_qwen35 merge --adapter runs/qwen35_4b_tree/adapter --out runs/qwen35_4b_tree/merged
+  python -m selfjev.vllm_qwen35 serve --model-dir runs/qwen35_4b_tree/merged --port 8766 --options-in-question
 """
 import argparse
 import json

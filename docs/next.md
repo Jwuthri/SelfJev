@@ -47,7 +47,7 @@ only for one question up to ~1K tokens; the Qwen3.5 model is slow with many ques
 - Round 3 (38.6K verified questions) and options in the question: 94.5 each way, and they stack.
 - Qwen3.5-4B with a forked cache (94.5), then trained with its own tree (**95.6**).
 - The vLLM path scored on eval2: the same accuracy as transformers for both best models.
-- `pjev finetune` and `pjev rlcd`, and the best weights in the repo ([weights/](../weights/README.md)).
+- `selfjev finetune` and `selfjev rlcd`, and the best weights in the repo ([weights/](../weights/README.md)).
 - Jev's probabilities as soft targets, and RLCD with a confident-mistake cost: confident mistakes on eval2 30 → 14 and 8,
   accuracy flat. Retrained from scratch on everything with them: **`selfjev-4b`**, the default (eval2 95.8, eval_llm 93.1).
 - Distilling the 27B teacher further was dropped (weight 0.5 gave nothing); its code is at tag

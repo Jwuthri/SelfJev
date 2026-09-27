@@ -1,6 +1,6 @@
 """Every option listed in the question text ("all options"): each leaf still judges one candidate but now sees all the
-alternatives. Adapters trained with it (data/ova/, `pjev finetune`) need the same transform on every request
-(`pjev serve --options-in-question`). Options are listed in a fixed random order seeded by the given key.
+alternatives. Adapters trained with it (data/ova/, `selfjev finetune`) need the same transform on every request
+(`selfjev serve --options-in-question`). Options are listed in a fixed random order seeded by the given key.
 
 The "option pointers" variant (numbered options, "option k" leaves) was a dead end; it is at tag
 archive/pre-cleanup-2026-09-27."""

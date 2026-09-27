@@ -36,8 +36,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
 from compare_external import call_cost, http  # noqa: E402
 from judge_hardcases import oa, to_openai  # noqa: E402
-from personal_jev.data import expand_source, read_jsonl  # noqa: E402
-from personal_jev.schemas import ValidationError  # noqa: E402
+from selfjev.data import expand_source, read_jsonl  # noqa: E402
+from selfjev.schemas import ValidationError  # noqa: E402
 
 RAW, REP = ROOT / "data/hardcases/raw", ROOT / "reports/hardcases"
 BRIEF = (ROOT / "data/hardcases/BRIEF.md").read_text().split("\n---\n", 1)[1].strip()

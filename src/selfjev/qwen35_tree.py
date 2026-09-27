@@ -192,7 +192,7 @@ class TreeServer:
                      "tokenize_ms": 1e3 * (t1 - t0), "model_ms": 1e3 * (t2 - t1)}
 
 
-if __name__ == "__main__":  # python -m personal_jev.qwen35_tree serve --adapter runs/qwen35_4b_tree/adapter --options-in-question
+if __name__ == "__main__":  # python -m selfjev.qwen35_tree serve --adapter runs/qwen35_4b_tree/adapter --options-in-question
     import argparse
 
     from .server import serve

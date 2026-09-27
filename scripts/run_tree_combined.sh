@@ -8,7 +8,7 @@
 # The data/ova training copies are not tracked: rebuild them first (docs/reproduce.md, "Older recipes").
 set -euo pipefail
 cd "$(dirname "$0")/.."
-PJEV=".venv/bin/pjev"
+PJEV=".venv/bin/selfjev"
 TAG=${TAG:-tree_4b_combo}
 I4B=(--model Qwen/Qwen3-4B-Instruct-2507 --revision cdbee75f17c01a7cc42f958dc650907174af0554 --dtype bfloat16)
 log() { echo "[$(date +%H:%M:%S)] $TAG: $*"; }

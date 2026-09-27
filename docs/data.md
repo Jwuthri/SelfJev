@@ -3,7 +3,7 @@
 All data is one JSONL line per (text, question, target), with `id`, `source_id`, `family`, `split`, `provenance`,
 `state`, `question` (`type`, `instruction`, `candidates`), `target`, `hard_cases` and optional `paraphrase_group` and
 `notes`. Authored files use a compact form (one text, several questions) that `data.load` expands. Check any file with
-`uv run python -m personal_jev.data check FILE`.
+`uv run python -m selfjev.data check FILE`.
 
 **`data/all.jsonl.gz` is the dataset**: every original question in one file, tagged by `dataset`, with Jev's prediction
 in `jev` (`uv run python scripts/build_all.py`). Catalog, usage snippet and the growth procedure:

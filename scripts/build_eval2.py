@@ -21,7 +21,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from personal_jev.data import expand_source, read_jsonl, sha256_file, write_jsonl  # noqa: E402
+from selfjev.data import expand_source, read_jsonl, sha256_file, write_jsonl  # noqa: E402
 
 RAW, REVIEW, OUT = ROOT / "data/eval2/raw", ROOT / "data/eval2/review", ROOT / "data/eval2.jsonl"
 TRAIN_FILES = ["data/hf.jsonl", "data/synthetic.jsonl", "data/eval.jsonl", "data/hardcases.jsonl"]

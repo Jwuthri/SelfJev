@@ -29,7 +29,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
 from build_all import datasets, request_sha  # noqa: E402
 from compare_external import call_cost, http, jev_request  # noqa: E402
-from personal_jev.data import expand_source, load, read_jsonl  # noqa: E402
+from selfjev.data import expand_source, load, read_jsonl  # noqa: E402
 
 MODEL = "~typesafe/jev-latest"
 OUT = ROOT / "data/jev"

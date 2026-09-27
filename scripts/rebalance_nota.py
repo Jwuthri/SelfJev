@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from personal_jev.data import read_jsonl, write_jsonl  # noqa: E402
+from selfjev.data import read_jsonl, write_jsonl  # noqa: E402
 
 
 def none_ids(ex):

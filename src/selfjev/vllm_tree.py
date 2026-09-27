@@ -6,8 +6,8 @@ counts, including first-use requests. Logical tree counts do not prove reuse. Re
 lm_head[yes] - lm_head[no], i.e. s = z_yes - z_no, then classify.decide as for every backend.
 Needs the LoRA merged into a checkpoint (`merge`), and a separate venv with vllm (its own torch pin).
 
-  python -m personal_jev.vllm_tree merge --adapter runs/tree_4b/adapter --out runs/tree_4b/merged   # project venv
-  python -m personal_jev.vllm_tree serve --model-dir runs/tree_4b/merged --port 8002                 # vllm venv
+  python -m selfjev.vllm_tree merge --adapter runs/tree_4b/adapter --out runs/tree_4b/merged   # project venv
+  python -m selfjev.vllm_tree serve --model-dir runs/tree_4b/merged --port 8002                 # vllm venv
 """
 import argparse
 import json

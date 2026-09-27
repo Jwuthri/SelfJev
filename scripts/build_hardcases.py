@@ -20,7 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from personal_jev.data import expand_source, read_jsonl, split_for, write_jsonl  # noqa: E402
+from selfjev.data import expand_source, read_jsonl, split_for, write_jsonl  # noqa: E402
 
 RAW, REVIEW = ROOT / "data/hardcases/raw", ROOT / "data/hardcases/review"
 GROUPS = {"v1": ["hnum", "htmp"], "v2": ["hrol", "hinj"], "v3": ["hlng", "hmul"], "v4": ["hpol", "hpar"]}

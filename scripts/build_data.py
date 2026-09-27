@@ -16,7 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from personal_jev.data import expand_source, read_jsonl, split_for, validate_example, write_jsonl  # noqa: E402
+from selfjev.data import expand_source, read_jsonl, split_for, validate_example, write_jsonl  # noqa: E402
 
 EVAL_SPLITS = {"validation": 0.3, "calibration": 0.2, "test": 0.5}
 SYN_SPLITS = {"train": 0.85, "validation": 0.05, "calibration": 0.05, "test": 0.05}

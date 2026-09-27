@@ -28,7 +28,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
 import gen_hardcases as g  # noqa: E402
-from personal_jev.data import read_jsonl  # noqa: E402
+from selfjev.data import read_jsonl  # noqa: E402
 
 API = "https://generativelanguage.googleapis.com"
 PRICE = {"gemini-3.8-flash": (0.375, 1.875)}  # USD per M tokens at batch prices (50% of 0.75 / 3.75); thinking = output

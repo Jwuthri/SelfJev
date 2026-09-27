@@ -3,7 +3,7 @@
 This is the "encode the text once, then cross-attention + small heads" architecture from the v1 spec, built on the
 same `Qwen/Qwen3-Reranker-0.6B` backbone as the stock backend. It is implemented, trained, tested and benchmarked.
 It is a dead end: its code, tests, configs and calibration files were removed on 2026-09-27 and are at tag
-[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27) (`src/personal_jev/custom.py`, `train_custom.py`).
+[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27) (`src/selfjev/custom.py`, `train_custom.py`).
 
 **Bottom line.**
 - **As specified, it scores 39.0% question accuracy** on the 3,471-question test split. For comparison, the
@@ -244,8 +244,8 @@ scripts/run_experiments.sh custom                  # spec version, frozen backbo
 scripts/run_experiments.sh custom_distill          # mixed-label data + frozen and joint-LoRA runs
 scripts/run_experiments.sh custom_sim              # similarity variant, frozen and joint LoRA, then compare
 scripts/run_experiments.sh custom_bench            # CUDA speed comparison
-uv run pjev classify examples/request.json --checkpoint runs/custom_sim_lora/checkpoint
-uv run pjev train-custom configs/custom_lora.json  # Stage B on top of custom_frozen (spec schedule)
+uv run selfjev classify examples/request.json --checkpoint runs/custom_sim_lora/checkpoint
+uv run selfjev train-custom configs/custom_lora.json  # Stage B on top of custom_frozen (spec schedule)
 ```
 
 The diagnostic scripts and their logs are in `reports/custom_diagnostics/`:

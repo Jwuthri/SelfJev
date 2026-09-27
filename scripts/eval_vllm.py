@@ -1,4 +1,4 @@
-"""Score a merged tree checkpoint through vLLM (the serving path) -> report.json / report.md like `pjev eval`, to check
+"""Score a merged tree checkpoint through vLLM (the serving path) -> report.json / report.md like `selfjev eval`, to check
 that serving keeps the accuracy measured with transformers. Data files are used as given (data/ova/ for adapters
 trained with every option in the question).
 
@@ -13,16 +13,16 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
-from personal_jev.data import load, sha256_file  # noqa: E402
-from personal_jev.evaluate import breakdowns, evaluate_predictions, markdown, predict  # noqa: E402
-from personal_jev.vllm_qwen35 import VllmQwen35Scorer  # noqa: E402
-from personal_jev.vllm_tree import VllmTreeScorer  # noqa: E402
+from selfjev.data import load, sha256_file  # noqa: E402
+from selfjev.evaluate import breakdowns, evaluate_predictions, markdown, predict  # noqa: E402
+from selfjev.vllm_qwen35 import VllmQwen35Scorer  # noqa: E402
+from selfjev.vllm_tree import VllmTreeScorer  # noqa: E402
 
 if __name__ == "__main__":  # vLLM may spawn its engine process, which re-imports this module
     ap = argparse.ArgumentParser()
     ap.add_argument("--model-dir", required=True)
     ap.add_argument("--model-id", help="the tree checkpoint's base model (not needed with --qwen35)")
-    ap.add_argument("--qwen35", action="store_true", help="a merged Qwen3.5 shared-document model (personal_jev.vllm_qwen35)")
+    ap.add_argument("--qwen35", action="store_true", help="a merged Qwen3.5 shared-document model (selfjev.vllm_qwen35)")
     ap.add_argument("--data", nargs="+", required=True)
     ap.add_argument("--split", nargs="+", default=["test"])
     ap.add_argument("--out", required=True)

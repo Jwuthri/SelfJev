@@ -14,7 +14,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from personal_jev.options import with_options  # noqa: E402
+from selfjev.options import with_options  # noqa: E402
 
 
 def transform(row):

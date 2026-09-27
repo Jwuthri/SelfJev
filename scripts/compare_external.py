@@ -27,8 +27,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from personal_jev.data import load, sha256_file, write_jsonl  # noqa: E402
-from personal_jev.evaluate import breakdowns, compare, evaluate_predictions, markdown  # noqa: E402
+from selfjev.data import load, sha256_file, write_jsonl  # noqa: E402
+from selfjev.evaluate import breakdowns, compare, evaluate_predictions, markdown  # noqa: E402
 
 API = "https://openrouter.ai/api"
 OUT = ROOT / "reports/external"

@@ -20,15 +20,15 @@ from pathlib import Path
 
 import torch
 
-from personal_jev import benchmark, evaluate, qwen35_tree
-from personal_jev.challengers import ChallengerScorer
-from personal_jev.classify import classify
-from personal_jev.data import sha256_file
-from personal_jev.model import InputTooLong
-from personal_jev.schemas import parse_question
-from personal_jev.train import DEFAULTS, grouped_loss, question_correct, select_data, shuffle_candidates
-from personal_jev.train_tree import group_by_state, trees_for
-from personal_jev.train_tree import micro_batches as tree_batches
+from selfjev import benchmark, evaluate, qwen35_tree
+from selfjev.challengers import ChallengerScorer
+from selfjev.classify import classify
+from selfjev.data import sha256_file
+from selfjev.model import InputTooLong
+from selfjev.schemas import parse_question
+from selfjev.train import DEFAULTS, grouped_loss, question_correct, select_data, shuffle_candidates
+from selfjev.train_tree import group_by_state, trees_for
+from selfjev.train_tree import micro_batches as tree_batches
 
 R2 = ["r2_simple", "r2_hard", "r2_very_hard"]
 R3 = ["r3_simple", "r3_hard", "r3_very_hard"]
@@ -103,7 +103,7 @@ def train(sc, args, out):
                           max_train_per_family=1600, cap_exempt_families=R2 + (R3 if args.r3 else []), max_val_questions=1200,
                           max_train_questions=args.train_limit)
     train_ex, val_ex = select_data(cfg, rng)
-    if args.tree:  # shared-prefix tree (personal_jev.qwen35_tree): the text once per state, so long texts fit
+    if args.tree:  # shared-prefix tree (selfjev.qwen35_tree): the text once per state, so long texts fit
         tr, roots, dropped = qwen35_tree.encode_items(sc, train_ex, args.train_max_len)
         va, vroots, vd = qwen35_tree.encode_items(sc, val_ex, args.train_max_len)
         dropped, vd = [f for f, n in dropped.items() for _ in range(n)], [f for f, n in vd.items() for _ in range(n)]
@@ -264,7 +264,7 @@ if __name__ == "__main__":
     ap.add_argument("--data-dir", default="data", help="data/ova: options listed in the question (same files, transformed)")
     ap.add_argument("--r3", action="store_true", help="add data/<dir>/hardcases_r3.jsonl, r3_* families uncapped")
     ap.add_argument("--dtype", default="bfloat16", help="float32 for an exactness check-tree")
-    ap.add_argument("--tree", action="store_true", help="train with the shared-prefix tree (personal_jev.qwen35_tree; "
+    ap.add_argument("--tree", action="store_true", help="train with the shared-prefix tree (selfjev.qwen35_tree; "
                     "--train-max-len then bounds root + question + longest leaf); with eval / bench: score with it")
     args = ap.parse_args()
     run = args.name + args.tag
@@ -275,7 +275,7 @@ if __name__ == "__main__":
         sc = ChallengerScorer(args.name, adapter=args.adapter, dtype=args.dtype)
     if args.stage == "check":  # forked-cache inference vs full sequences, on the example request and a 1K-token one
         reqs = [json.load(open("examples/request.json")), benchmark.make_request(sc.tokenizer, 1024, 2, 3, "multiclass")]
-        from personal_jev.schemas import parse_request
+        from selfjev.schemas import parse_request
         for raw in reqs:
             r = parse_request(raw); es = [sc.entry(r.state, q) for q in r.questions]
             with torch.no_grad():

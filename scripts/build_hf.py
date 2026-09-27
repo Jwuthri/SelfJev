@@ -20,7 +20,7 @@ from huggingface_hub import hf_hub_download
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from personal_jev.data import validate_example, write_jsonl  # noqa: E402
+from selfjev.data import validate_example, write_jsonl  # noqa: E402
 
 LABELS = json.loads((ROOT / "data/hf/labels.json").read_text())
 DESC_PATH = ROOT / "data/hf/label_descriptions.json"

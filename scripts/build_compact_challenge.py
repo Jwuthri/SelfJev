@@ -7,7 +7,7 @@ import json
 import random
 from pathlib import Path
 
-from personal_jev.data import expand_source, load, sha256_file, write_jsonl
+from selfjev.data import expand_source, load, sha256_file, write_jsonl
 
 rng=random.Random(902413)
 rows=[]
