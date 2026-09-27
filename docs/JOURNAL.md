@@ -8,12 +8,12 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| **Retrain `selfjev-4b` with batch 2** (`selfjev_4b_v2`: the same recipe on 83,738 questions, i.e. + `mpos_distr_num_v1`; GPU preflight against selfjev-4b's eval2 report, then train, then eval2 / dev benchmark / eval_llm; user OK ≈ $21). **Decision rule, set before results:** the best-by-validation checkpoint (never picked on test) replaces `selfjev-4b` if eval2 ≥ 95.8 and eval_llm ≥ 92.6 (−0.5); batch 2 was test-diagnosis-motivated, so an eval2 gain is labeled as such | fork | `i-0700e0bcadbf72ad6` g6e.2xlarge us-east-2 ($2.242/h, 12 h cap) | 01:35 PDT 2026-09-27 | ≈ 11:30 PDT |
 
 ## Spend so far (real cost, BYOK upstream included)
 
 | item | cost | who |
 |---|---|---|
+| AWS: `selfjev_4b_v2` retrain (selfjev-4b recipe + batch 2) g6e.2xlarge `i-0700e0bcadbf72ad6` us-east-2, 08:35–18:10 UTC 2026-09-27 (9.6 h, of which 23 min idle after the job), terminated; SG and key pair deleted | ≈ $21.46 | fork |
 | `mpos_distr_num_v1` batch: Luna $1.87 (OpenAI API) + Astra batch judge $17.80 (3.05M in / 0.10M out tokens) + Jev $0.14 | $19.81 (quoted ≈ $19) | fork |
 | AWS: retrain from scratch g6e.2xlarge `i-07c6e6d8cb3d6316b` us-east-2, 18:59 UTC 2026-09-26 – 04:17 UTC 09-27 (9.3 h), shut down from inside (terminate on shutdown); SG and key pair deleted after the SSO login | ≈ $20.80 | fork |
 | AWS: Jev soft targets C (RLCD + confident-mistake cost) g6e.2xlarge `i-0a89de33e08abb323` us-east-2, 15:08–22:14 UTC 2026-09-26 (7.1 h), terminated; SG and key pair deleted | ≈ $15.90 | fork |
@@ -54,6 +54,21 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-27 11:20 PDT: retraining `selfjev-4b` with batch 2 made it worse; not promoted (fork, user request)
+
+- **What:** the `selfjev-4b` recipe from scratch (`scripts/train/selfjev_4b.sh`: new LoRA r64, lr 2e-4, texts up to 16K,
+  0.5 × label + 0.5 × Jev) on 83,581 questions: `selfjev-4b`'s data plus batch `mpos_distr_num_v1` (several correct
+  answers, distractors, numbers; test-diagnosis-motivated). One L40S, 1,912 steps, best by validation loss = the last.
+- **Result** (`reports/selfjev_4b_v2/`, vs `selfjev-4b`): eval2 95.38 vs 95.78 (33 / 41, p = 0.42), dev benchmark 83.55 vs 83.75 (p = 0.60), eval_llm 90.49 vs 93.13 (9 / 34, p = 0.0002). Confident mistakes on eval2 12 vs 11. The eval_llm loss
+  is broad, not one family: hard and very hard verify (−9 questions), judge (−7), guardrail (−5) and very hard score
+  multilabel (−3). Validation accuracy was lower at every late checkpoint (92.3–92.7 vs 92.9–93.7, same 1,198 questions).
+- **Verdict:** fails the rule set before the results (eval2 ≥ 95.8 and eval_llm ≥ 92.6): `selfjev-4b` stays the
+  default. More targeted data did not close the multi-positive, distractor and numeric gaps; one seed, so part of the
+  difference may be run-to-run noise, but eval_llm's p = 0.0002 is not. The batch stays in `data/all.jsonl.gz`; the
+  adapter was not kept (moved to the Trash with the run folder).
+- **Cost:** ≈ $21.46 (g6e.2xlarge 9.6 h, incl. 23 min idle between the end of the job and the shutdown; polling every
+  10 min was too slow).
 
 ### 2026-09-27 02:20 PDT: only `selfjev-4b` on master, `runs/` deleted, every doc page audited (fork, user request)
 

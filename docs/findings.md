@@ -380,7 +380,8 @@ evidence file.
       tier (98.5 vs 98.5), ahead on exceptions (96.2 vs 95.3).
     - Counted in wrong questions against Jev: multi-positive 29 vs 13, distractor 29 vs 14, numeric 28 vs 18 (JOURNAL
       2026-09-26 21:25). Batch `mpos_distr_num_v1` (3,645 questions) targets these three; it was motivated by a test
-      diagnosis, and the retrain with it (`selfjev_4b_v2`, started 2026-09-27) has no results yet.
+      diagnosis. The retrain with it (`selfjev_4b_v2`, 2026-09-27) came out worse: eval2 95.4 vs 95.8 (p = 0.42), eval_llm
+      90.5 vs 93.1 (p = 0.0002), so more targeted data did not close these gaps.
     - The previous default (`qwen35_4b_tree`) also had double negation (94.4 vs 99.2), hypothetical (94.5 vs 98.4),
       temporal (85.7 vs 89.2), paraphrase (92.2 vs 95.4), long state (95.8 vs 99.0), the very hard tier (93.4 vs 96.5)
       and multilabel exact match (90.1 vs 94.2) on this list; `selfjev-4b` brought each under 3 points. Multi-turn is

@@ -13,7 +13,7 @@ largest slice gaps are multi-positive questions (91.0 vs 96.0), numeric reasonin
 
 | idea | why | cost |
 |---|---|---|
-| **Several correct answers, distractors, numbers**: batch `mpos_distr_num_v1` (3,645 verified questions) is built; the retrain with it (`selfjev_4b_v2`) is running since 2026-09-27, with its decision rule set in the JOURNAL | wrong questions on eval2 vs Jev: multi-positive 29 vs 13, distractor 29 vs 14, numeric 28 vs 18 (a test diagnosis) | $19.81 data + ≈ $21 GPU (approved) |
+| ~~Several correct answers, distractors, numbers~~: **tried, worse.** Batch `mpos_distr_num_v1` (3,645 verified questions) in the retrain `selfjev_4b_v2`: eval2 95.4 vs 95.8 (p = 0.42), eval_llm 90.5 vs 93.1 (p = 0.0002); not promoted. More data of this kind is not the lever; a different readout (below) may be | wrong questions on eval2 vs Jev: multi-positive 29 vs 13, distractor 29 vs 14, numeric 28 vs 18 (a test diagnosis) | spent: $19.81 data + ≈ $21.46 GPU |
 | **Dates and grading** with verified answers | temporal 88.2 vs 89.2 on eval2, Jev's weakest slice too; numbers are partly covered by `numdate_neg_v1` (in `selfjev-4b`) and the batch above | generation + blind judge |
 | **Parallel-readout branch** (one branch per question, a yes/no readout per option + `none`, listwise loss) | the shape Jev's disclosures imply; multilabel and `none` decided jointly ([memo](../reports/jev_hypothesis_2026-09-25.md)) | code + one retrain (≈ $21 at `selfjev-4b`'s size) |
 
