@@ -8,6 +8,7 @@ Synthetic sources whose state overlaps an eval state (word 8-gram containment >=
 Eval review overrides (data/eval/review/overrides.json: {example_id: new_target | null to drop}) are applied last.
 Synthetic questions with action "drop" in data/synthetic/review/flags.json are removed (raw files stay untouched).
 """
+
 import json
 import re
 import sys
@@ -16,7 +17,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from selfjev.data import expand_source, read_jsonl, split_for, validate_example, write_jsonl  # noqa: E402
+from selfjev.data import expand_source, read_jsonl, split_for, validate_example, write_jsonl
 
 EVAL_SPLITS = {"validation": 0.3, "calibration": 0.2, "test": 0.5}
 SYN_SPLITS = {"train": 0.85, "validation": 0.05, "calibration": 0.05, "test": 0.05}
@@ -24,7 +25,7 @@ SYN_SPLITS = {"train": 0.85, "validation": 0.05, "calibration": 0.05, "test": 0.
 
 def shingles(text, n=8):
     w = re.findall(r"\w+", text.lower())
-    return {" ".join(w[i:i + n]) for i in range(max(1, len(w) - n + 1))}
+    return {" ".join(w[i : i + n]) for i in range(max(1, len(w) - n + 1))}
 
 
 def build(raw_dir, weights, salt):
@@ -43,8 +44,11 @@ def main():
     overrides_path = ROOT / "data/eval/review/overrides.json"
     if overrides_path.exists():
         ov = json.loads(overrides_path.read_text())
-        ev = [e | {"target": ov[e["id"]]["target"], "notes": ov[e["id"]].get("note", e.get("notes", ""))} if e["id"] in ov else e
-              for e in ev if not (e["id"] in ov and ov[e["id"]].get("drop"))]
+        ev = [
+            e | {"target": ov[e["id"]]["target"], "notes": ov[e["id"]].get("note", e.get("notes", ""))} if e["id"] in ov else e
+            for e in ev
+            if not (e["id"] in ov and ov[e["id"]].get("drop"))
+        ]
         for e in ev:
             validate_example(e)
         print(f"applied {len(ov)} review overrides")
@@ -65,12 +69,19 @@ def main():
         syn = [e for e in syn if e["id"] not in drop_ids]
         print(f"dropped {n - len(syn)} synthetic questions flagged in review")
     write_jsonl(ROOT / "data/synthetic.jsonl", syn)
-    print("synthetic:", dict(Counter(e["split"] for e in syn)), dict(Counter(e["question"]["type"] for e in syn)),
-          f"dropped {len(dropped)} states overlapping eval")
+    print(
+        "synthetic:",
+        dict(Counter(e["split"] for e in syn)),
+        dict(Counter(e["question"]["type"] for e in syn)),
+        f"dropped {len(dropped)} states overlapping eval",
+    )
 
     hf = read_jsonl(ROOT / "data/hf.jsonl") if (ROOT / "data/hf.jsonl").exists() else []
-    hits = sum(1 for s in {e["state"] for e in hf if e["split"] == "train"} if (sh := shingles(s)) and
-               any(len(sh & e) / min(len(sh), len(e)) >= 0.3 for e in eval_sh if e))
+    hits = sum(
+        1
+        for s in {e["state"] for e in hf if e["split"] == "train"}
+        if (sh := shingles(s)) and any(len(sh & e) / min(len(sh), len(e)) >= 0.3 for e in eval_sh if e)
+    )
     print(f"hf train states overlapping eval: {hits}")
 
 

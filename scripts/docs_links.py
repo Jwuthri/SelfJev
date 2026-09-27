@@ -4,6 +4,7 @@ The docs pages link to reports, scripts and data with relative paths (`../report
 when read on GitHub. The site only contains docs/, so those links are rewritten to the repository on GitHub.
 Enabled in zensical.toml; run the site with `python -m zensical` from the repo root so this module is importable.
 """
+
 import re
 
 from markdown import Extension

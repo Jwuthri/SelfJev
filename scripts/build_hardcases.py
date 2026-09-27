@@ -10,8 +10,8 @@
   answers_astra.jsonl, GPT-6 Astra). A question is kept only if the judge's answer equals the authored target.
   Other answer files (e.g. a Jev second opinion) are never read. Without answers the build refuses (--unverified).
 """
+
 import argparse
-import json
 import os
 import re
 import sys
@@ -20,7 +20,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from selfjev.data import expand_source, read_jsonl, split_for, write_jsonl  # noqa: E402
+from selfjev.data import expand_source, read_jsonl, split_for, write_jsonl
 
 RAW, REVIEW = ROOT / "data/hardcases/raw", ROOT / "data/hardcases/review"
 GROUPS = {"v1": ["hnum", "htmp"], "v2": ["hrol", "hinj"], "v3": ["hlng", "hmul"], "v4": ["hpol", "hpar"]}
@@ -28,7 +28,7 @@ GROUPS = {"v1": ["hnum", "htmp"], "v2": ["hrol", "hinj"], "v3": ["hlng", "hmul"]
 
 def shingles(text, n=8):
     w = re.findall(r"\w+", text.lower())
-    return {" ".join(w[i:i + n]) for i in range(max(1, len(w) - n + 1))}
+    return {" ".join(w[i : i + n]) for i in range(max(1, len(w) - n + 1))}
 
 
 def sources():
@@ -45,11 +45,23 @@ def sources():
 def write_blind(srcs):
     REVIEW.mkdir(parents=True, exist_ok=True)
     for g, prefixes in GROUPS.items():
-        rows = [{"source_id": s["source_id"], "state": s["state"],
-                 "questions": [{"id": e["id"], "type": e["question"]["type"], "instruction": e["question"]["instruction"],
-                                **({"candidates": e["question"]["candidates"]} if "candidates" in e["question"] else {})}
-                               for e in expand_source(s)]}
-                for s in srcs if s["source_id"].split("-")[0] in prefixes]
+        rows = [
+            {
+                "source_id": s["source_id"],
+                "state": s["state"],
+                "questions": [
+                    {
+                        "id": e["id"],
+                        "type": e["question"]["type"],
+                        "instruction": e["question"]["instruction"],
+                        **({"candidates": e["question"]["candidates"]} if "candidates" in e["question"] else {}),
+                    }
+                    for e in expand_source(s)
+                ],
+            }
+            for s in srcs
+            if s["source_id"].split("-")[0] in prefixes
+        ]
         write_jsonl(REVIEW / f"blind_{g}.jsonl", rows)
         print(f"blind_{g}.jsonl: {len(rows)} states, {sum(len(r['questions']) for r in rows)} questions")
 
@@ -59,14 +71,22 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--blind", action="store_true")
     ap.add_argument("--unverified", action="store_true", help="build without blind answers (not recommended)")
-    ap.add_argument("--answers", nargs="+", default=["answers_astra.jsonl"],
-                    help="judge files in data/hardcases/review/ that decide what is kept (default: GPT-6 Astra only; "
-                         "second opinions such as Jev are reported elsewhere and never decide)")
+    ap.add_argument(
+        "--answers",
+        nargs="+",
+        default=["answers_astra.jsonl"],
+        help="judge files in data/hardcases/review/ that decide what is kept (default: GPT-6 Astra only; "
+        "second opinions such as Jev are reported elsewhere and never decide)",
+    )
     ap.add_argument("--raw", default=str(RAW), help="source files (round 3: data/hardcases_r3/raw)")
     ap.add_argument("--review", default=str(REVIEW), help="judge answers and REVIEW.md (round 3: data/hardcases_r3/review)")
     ap.add_argument("--out", default=str(ROOT / "data/hardcases.jsonl"))
-    ap.add_argument("--guard", nargs="+", default=["data/eval.jsonl"], help="test files whose states must not overlap "
-                    "(8-gram containment >= 0.3); round 3 adds data/eval2.jsonl")
+    ap.add_argument(
+        "--guard",
+        nargs="+",
+        default=["data/eval.jsonl"],
+        help="test files whose states must not overlap (8-gram containment >= 0.3); round 3 adds data/eval2.jsonl",
+    )
     ap.add_argument("--strict", action="store_true", help="drop a whole text when any of its questions is flagged by the judge")
     a = ap.parse_args()
     RAW, REVIEW = Path(a.raw), Path(a.review)
@@ -107,20 +127,33 @@ def main():
         kept.extend(ks)
     write_jsonl(Path(a.out), kept)
     total = Counter()
-    brief = lambda name: Path(os.path.relpath(ROOT / "data/hardcases" / name, REVIEW.resolve())).as_posix()  # noqa: E731
-    lines = ["# Hard-case data review (round 2)", "",
-             f"Authors: 8 Claude Sonnet sub-agents ([BRIEF_sonnet_agents.md]({brief('BRIEF_sonnet_agents.md')}), prefixes h*) and OpenRouter "
-             f"models via scripts/gen_hardcases.py ([BRIEF.md]({brief('BRIEF.md')}), prefixes gf/gk/df/lu; see each row's provenance). "
-             f"Blind judge: {judges or 'none'}. A question is kept only if the judge's answer equals the authored label. "
-             "LLM-verified, not human-reviewed.", "",
-             f"States dropped for overlap with {', '.join(a.guard)}: {leak}", "",
-             "| family | kept | disagreed (dropped) | unanswered (dropped) | agreement % |", "|---|---|---|---|---|"]
+    brief = lambda name: Path(os.path.relpath(ROOT / "data/hardcases" / name, REVIEW.resolve())).as_posix()
+    lines = [
+        "# Hard-case data review (round 2)",
+        "",
+        f"Authors: 8 Claude Sonnet sub-agents ([BRIEF_sonnet_agents.md]({brief('BRIEF_sonnet_agents.md')}), prefixes h*) and OpenRouter "
+        f"models via scripts/gen_hardcases.py ([BRIEF.md]({brief('BRIEF.md')}), prefixes gf/gk/df/lu; see each row's provenance). "
+        f"Blind judge: {judges or 'none'}. A question is kept only if the judge's answer equals the authored label. "
+        "LLM-verified, not human-reviewed.",
+        "",
+        f"States dropped for overlap with {', '.join(a.guard)}: {leak}",
+        "",
+        "| family | kept | disagreed (dropped) | unanswered (dropped) | agreement % |",
+        "|---|---|---|---|---|",
+    ]
     for fam, c in sorted(stats.items()):
         total.update(c)
         judged = c["kept"] + c["disagreed"] + c["strict"]
-        lines.append(f"| {fam} | {c['kept']} | {c['disagreed']} | {c['unanswered']} | {100 * (c['kept'] + c['strict']) / judged:.1f} |" if judged else f"| {fam} | 0 | 0 | {c['unanswered']} | — |")
+        lines.append(
+            f"| {fam} | {c['kept']} | {c['disagreed']} | {c['unanswered']} | {100 * (c['kept'] + c['strict']) / judged:.1f} |"
+            if judged
+            else f"| {fam} | 0 | 0 | {c['unanswered']} | — |"
+        )
     judged = total["kept"] + total["disagreed"] + total["strict"]
-    lines.append(f"| **total** | {total['kept']} | {total['disagreed']} | {total['unanswered']} | {100 * (total['kept'] + total['strict']) / max(judged, 1):.1f} |")
+    lines.append(
+        f"| **total** | {total['kept']} | {total['disagreed']} | {total['unanswered']} | "
+        f"{100 * (total['kept'] + total['strict']) / max(judged, 1):.1f} |"
+    )
     if a.strict:
         lines += ["", f"--strict: {total['strict']} more questions dropped because another question of their text was flagged."]
     REVIEW.mkdir(parents=True, exist_ok=True)

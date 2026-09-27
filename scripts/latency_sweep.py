@@ -17,6 +17,7 @@ usage:
   ~/vllm-env/bin/python scripts/latency_sweep.py throughput --vllm runs/tree_4b/merged       # on the box, vLLM venv
   uv run python scripts/latency_sweep.py report
 """
+
 import argparse
 import http.client
 import json
@@ -31,11 +32,11 @@ from urllib.parse import urlparse
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from selfjev.benchmark import FILLER  # noqa: E402
+from selfjev.benchmark import FILLER
 
 OUT = ROOT / "reports/latency"
 JEV = "~typesafe/jev-latest"
-LENGTHS = [2 ** k for k in range(3, 13)]  # 8 .. 4096 text tokens
+LENGTHS = [2**k for k in range(3, 13)]  # 8 .. 4096 text tokens
 SHAPES = (1, 16)  # choice questions per request, 3 options each
 
 
@@ -43,9 +44,14 @@ def body(tok, n_tokens, n_q, nonce):
     text = f"Ticket {nonce:06d}. " + FILLER * (n_tokens // 60 + 2)
     state = tok.decode(tok(text, add_special_tokens=False)["input_ids"][:n_tokens])
     crit = {f"team_{j + 1}": f"handles category {j + 1} problems such as outages, billing errors or integration failures" for j in range(3)}
-    return {"model": JEV, "state": state, "questions": {
-        f"q{i}": {"type": "choice", "instructions": f"Which team should handle issue number {i + 1} in this message?", "criteria": crit}
-        for i in range(n_q)}}
+    return {
+        "model": JEV,
+        "state": state,
+        "questions": {
+            f"q{i}": {"type": "choice", "instructions": f"Which team should handle issue number {i + 1} in this message?", "criteria": crit}
+            for i in range(n_q)
+        },
+    }
 
 
 class Endpoint:
@@ -92,21 +98,38 @@ def sweep(a):
     from transformers import AutoTokenizer
 
     from selfjev.model import MODEL_ID, MODEL_REVISION
+
     tok = AutoTokenizer.from_pretrained(MODEL_ID, revision=MODEL_REVISION)  # same tokenizer as the 4B
-    eps = {"jev": Endpoint("https://openrouter.ai/api/alpha/decisions", {
-        "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}", "Content-Type": "application/json", "X-OpenRouter-Title": "personal-jev latency"})}
-    eps |= {name: Endpoint(url.rstrip("/") + "/api/alpha/decisions", {"Content-Type": "application/json"})
-            for name, url in (o.split("=", 1) for o in a.ours)}
+    eps = {
+        "jev": Endpoint(
+            "https://openrouter.ai/api/alpha/decisions",
+            {
+                "Authorization": f"Bearer {os.environ['OPENROUTER_API_KEY']}",
+                "Content-Type": "application/json",
+                "X-OpenRouter-Title": "personal-jev latency",
+            },
+        )
+    }
+    eps |= {
+        name: Endpoint(url.rstrip("/") + "/api/alpha/decisions", {"Content-Type": "application/json"})
+        for name, url in (o.split("=", 1) for o in a.ours)
+    }
     OUT.mkdir(parents=True, exist_ok=True)
-    meta = {"created": time.strftime("%Y-%m-%dT%H:%M:%S%z"), "reps": a.reps, "warmup": 1, "lengths": LENGTHS, "shapes": SHAPES,
-            "rtt_ms": {"openrouter.ai:443": rtt_ms("openrouter.ai", 443)} | ({f"{a.box}:22": rtt_ms(a.box, 22)} if a.box else {})}
+    meta = {
+        "created": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        "reps": a.reps,
+        "warmup": 1,
+        "lengths": LENGTHS,
+        "shapes": SHAPES,
+        "rtt_ms": {"openrouter.ai:443": rtt_ms("openrouter.ai", 443)} | ({f"{a.box}:22": rtt_ms(a.box, 22)} if a.box else {}),
+    }
     print(json.dumps(meta), flush=True)
     rng, spent, n = random.Random(a.seed), 0.0, 0
     with open(OUT / f"{a.name}.jsonl", "w") as f:
         for rep in range(a.reps + 1):  # rep 0 = warm-up, not reported
             for n_tokens in LENGTHS:
                 for n_q in SHAPES:
-                    b = body(tok, n_tokens, n_q, rng.randrange(10 ** 6))
+                    b = body(tok, n_tokens, n_q, rng.randrange(10**6))
                     for name in rng.sample(list(eps), len(eps)):
                         status, raw, ms, timing = eps[name].post(b)
                         resp = json.loads(raw)
@@ -116,8 +139,12 @@ def sweep(a):
                         elif name == "jev":
                             u = resp.get("usage") or {}
                             spent += float(u.get("cost") or 0)
-                            row |= {"server_ms": next((float(t.split("dur=")[1]) for t in timing.split(",") if t.startswith("cfWorker")), None),
-                                    "input_tokens": u.get("input_tokens"), "cost": u.get("cost"), "model": resp.get("model")}
+                            row |= {
+                                "server_ms": next((float(t.split("dur=")[1]) for t in timing.split(",") if t.startswith("cfWorker")), None),
+                                "input_tokens": u.get("input_tokens"),
+                                "cost": u.get("cost"),
+                                "model": resp.get("model"),
+                            }
                         else:
                             m = resp["meta"]
                             row |= {"server_ms": m["total_ms"], "model_ms": m["model_ms"], "input_tokens": m["input_tokens"]}
@@ -137,23 +164,28 @@ def throughput(a):
     from selfjev.classify import classify_many
     from selfjev.server import compat_to_request
     from selfjev.tree import RERANKER_4B, TreeScorer
+
     if a.qwen35_tree:
         from selfjev.qwen35_tree import TreeServer
+
         sc = TreeServer(a.qwen35_tree)
     elif a.qwen35:
         from selfjev.vllm_qwen35 import VllmQwen35Scorer
+
         sc = VllmQwen35Scorer(a.qwen35)
     elif a.vllm:
         from selfjev.vllm_tree import VllmTreeScorer
+
         sc = VllmTreeScorer(a.vllm, model_id=a.model_id)
     else:
         sc = TreeScorer(*RERANKER_4B, adapter=a.adapter, dtype="bfloat16", max_batch_tokens=a.max_batch_tokens, merge=a.merge)
     rng, rows = random.Random(a.seed), []
     for n_tokens in LENGTHS:
         for n_q in SHAPES:
-            reqs = [compat_to_request(body(sc.tokenizer, n_tokens, n_q, rng.randrange(10 ** 6)))[0] for _ in range(a.batch)]
+            reqs = [compat_to_request(body(sc.tokenizer, n_tokens, n_q, rng.randrange(10**6)))[0] for _ in range(a.batch)]
             if a.options_in_question:  # as the server does for adapters trained on data/ova/
                 from selfjev.options import with_options
+
                 reqs = [r | {"questions": [with_options(q, str(q["id"])) for q in r["questions"]]} for r in reqs]
             classify_many(sc, reqs[:8])  # warm-up
             torch.cuda.synchronize()
@@ -161,19 +193,40 @@ def throughput(a):
             _, stats = classify_many(sc, reqs)
             torch.cuda.synchronize()
             s = time.perf_counter() - t
-            rows.append({"text_tokens": n_tokens, "questions": n_q, "requests": a.batch, "seconds": s, "requests_per_s": a.batch / s,
-                         "input_tokens": stats["input_tokens"], "padded_tokens": stats["padded_tokens"]})
+            rows.append(
+                {
+                    "text_tokens": n_tokens,
+                    "questions": n_q,
+                    "requests": a.batch,
+                    "seconds": s,
+                    "requests_per_s": a.batch / s,
+                    "input_tokens": stats["input_tokens"],
+                    "padded_tokens": stats["padded_tokens"],
+                }
+            )
             print(json.dumps(rows[-1]), flush=True)
-    out = {"meta": sc.meta | {"gpu": torch.cuda.get_device_name(), "gpu_price_per_h": a.gpu_price, "max_batch_tokens": a.max_batch_tokens,
-                             "options_in_question": a.options_in_question, "torch": torch.__version__,
-                             "created": time.strftime("%Y-%m-%dT%H:%M:%S%z")}, "rows": rows}
+    out = {
+        "meta": sc.meta
+        | {
+            "gpu": torch.cuda.get_device_name(),
+            "gpu_price_per_h": a.gpu_price,
+            "max_batch_tokens": a.max_batch_tokens,
+            "options_in_question": a.options_in_question,
+            "torch": torch.__version__,
+            "created": time.strftime("%Y-%m-%dT%H:%M:%S%z"),
+        },
+        "rows": rows,
+    }
     OUT.mkdir(parents=True, exist_ok=True)
     name = a.name or f"throughput{'_vllm' if a.vllm else '_merged' if a.merge else ''}"
     (OUT / f"{name}.json").write_text(json.dumps(out, indent=1))
 
 
 def report(a):
-    rows = [r for f in sorted(OUT.glob("requests*.jsonl")) for r in map(json.loads, open(f)) if r["rep"] > 0]  # Jev rows of all runs pool
+    rows = []  # Jev rows of all runs pool
+    for path in sorted(OUT.glob("requests*.jsonl")):
+        with open(path) as f:
+            rows += [r for r in map(json.loads, f) if r["rep"] > 0]
     metas = [json.loads(f.read_text()) for f in sorted(OUT.glob("requests*_meta.json"))]
     meta = metas[0] | {"jev_spend_usd": sum(m["jev_spend_usd"] for m in metas), "reps": sum(m["reps"] for m in metas)}
     names = sorted({r["endpoint"] for r in rows}, key=lambda n: (n != "jev", n))
@@ -181,23 +234,41 @@ def report(a):
     ok = [r for r in rows if r["status"] == 200]
 
     def cell(n_tokens, n_q, name, key, q=0.5):
-        xs = sorted(r[key] for r in ok if (r["text_tokens"], r["questions"], r["endpoint"]) == (n_tokens, n_q, name) and r.get(key) is not None)
+        xs = sorted(
+            r[key] for r in ok if (r["text_tokens"], r["questions"], r["endpoint"]) == (n_tokens, n_q, name) and r.get(key) is not None
+        )
         return xs[min(len(xs) - 1, round(q * (len(xs) - 1)))] if xs else None
 
-    fmt = lambda x: "—" if x is None else f"{x:,.0f}"  # noqa: E731
-    lines = ["# Latency sweep: Jev vs our tree scorer", "",
-             f"- {meta['created']}; {len(metas)} sweep run(s) of 10 timed rounds each (after 1 warm-up round), one request at a time, "
-             f"endpoints in random order; Jev is in every run, so it has {meta['reps']} samples per cell, each of ours 10.",
-             f"- network round trip (TCP connect, median): " + ", ".join(f"{k} {v:.0f} ms" for k, v in meta["rtt_ms"].items()),
-             f"- Jev spend for the whole sweep: ${meta['jev_spend_usd']:.4f}; failed requests: {len(bad)}", ""]
+    fmt = lambda x: "—" if x is None else f"{x:,.0f}"
+    lines = [
+        "# Latency sweep: Jev vs our tree scorer",
+        "",
+        f"- {meta['created']}; {len(metas)} sweep run(s) of 10 timed rounds each (after 1 warm-up round), one request at a time, "
+        f"endpoints in random order; Jev is in every run, so it has {meta['reps']} samples per cell, each of ours 10.",
+        "- network round trip (TCP connect, median): " + ", ".join(f"{k} {v:.0f} ms" for k, v in meta["rtt_ms"].items()),
+        f"- Jev spend for the whole sweep: ${meta['jev_spend_usd']:.4f}; failed requests: {len(bad)}",
+        "",
+    ]
     for n_q in SHAPES:
-        lines += [f"## {n_q} question{'s' if n_q > 1 else ''} × 3 options", "",
-                  "Wall = at the client (this machine), p50 / p95 ms. Server = ours: parse + tokenize + GPU; Jev: time inside OpenRouter incl. Jev.", "",
-                  "| text tokens | " + " | ".join(f"{n} wall p50 | {n} wall p95 | {n} server p50" for n in names) + " |",
-                  "|---|" + "---|---|---|" * len(names)]
+        lines += [
+            f"## {n_q} question{'s' if n_q > 1 else ''} × 3 options",
+            "",
+            "Wall = at the client (this machine), p50 / p95 ms. Server = ours: parse + tokenize + GPU; "
+            "Jev: time inside OpenRouter incl. Jev.",
+            "",
+            "| text tokens | " + " | ".join(f"{n} wall p50 | {n} wall p95 | {n} server p50" for n in names) + " |",
+            "|---|" + "---|---|---|" * len(names),
+        ]
         for n_tokens in LENGTHS:
-            lines.append(f"| {n_tokens:,} | " + " | ".join(f"{fmt(cell(n_tokens, n_q, n, 'wall_ms'))} | {fmt(cell(n_tokens, n_q, n, 'wall_ms', 0.95))} | "
-                                                        f"{fmt(cell(n_tokens, n_q, n, 'server_ms'))}" for n in names) + " |")
+            lines.append(
+                f"| {n_tokens:,} | "
+                + " | ".join(
+                    f"{fmt(cell(n_tokens, n_q, n, 'wall_ms'))} | {fmt(cell(n_tokens, n_q, n, 'wall_ms', 0.95))} | "
+                    f"{fmt(cell(n_tokens, n_q, n, 'server_ms'))}"
+                    for n in names
+                )
+                + " |"
+            )
         lines.append("")
     jev_tok = [(r["input_tokens"], r["cost"]) for r in ok if r["endpoint"] == "jev" and r.get("cost")]
     if jev_tok:
@@ -205,13 +276,23 @@ def report(a):
         lines += [f"Jev price: ${per_m:.4f} per million input tokens (reported cost / reported input tokens).", ""]
     for f in sorted(OUT.glob("throughput*.json")):
         t = json.loads(f.read_text())
-        lines += [f"## Batched throughput, ours ({f.stem}): {t['meta']['gpu']}, {t['meta']['architecture']}{', merged LoRA' if t['meta'].get('merged') else ''}", "",
-                  f"Cost per 1,000 requests at ${t['meta'].get('gpu_price_per_h', a.gpu_price)}/h, GPU fully busy; Jev = its reported cost for the same requests (median).", "",
-                  "| text tokens | questions | requests/s | ours $ / 1K requests | Jev $ / 1K requests |", "|---|---|---|---|---|"]
+        lines += [
+            f"## Batched throughput, ours ({f.stem}): {t['meta']['gpu']}, "
+            f"{t['meta']['architecture']}{', merged LoRA' if t['meta'].get('merged') else ''}",
+            "",
+            f"Cost per 1,000 requests at ${t['meta'].get('gpu_price_per_h', a.gpu_price)}/h, GPU fully busy; "
+            "Jev = its reported cost for the same requests (median).",
+            "",
+            "| text tokens | questions | requests/s | ours $ / 1K requests | Jev $ / 1K requests |",
+            "|---|---|---|---|---|",
+        ]
         for r in t["rows"]:
             jev = cell(r["text_tokens"], r["questions"], "jev", "cost")
-            lines.append(f"| {r['text_tokens']:,} | {r['questions']} | {r['requests_per_s']:.1f} | {1e3 * t['meta'].get('gpu_price_per_h', a.gpu_price) / 3600 / r['requests_per_s']:.4f} | "
-                         f"{'—' if jev is None else f'{1e3 * jev:.4f}'} |")
+            lines.append(
+                f"| {r['text_tokens']:,} | {r['questions']} | {r['requests_per_s']:.1f} | "
+                f"{1e3 * t['meta'].get('gpu_price_per_h', a.gpu_price) / 3600 / r['requests_per_s']:.4f} | "
+                f"{'—' if jev is None else f'{1e3 * jev:.4f}'} |"
+            )
         lines.append("")
     (OUT / "summary.md").write_text("\n".join(lines))
     print("\n".join(lines))

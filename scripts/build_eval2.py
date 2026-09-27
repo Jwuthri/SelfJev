@@ -11,7 +11,7 @@
   (agreement, composition, Jev accuracy, sha256 of the frozen file) and data/eval2/review/SPOTCHECK.md (50 random
   questions for a human check).
 """
-import hashlib
+
 import json
 import random
 import re
@@ -21,7 +21,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from selfjev.data import expand_source, read_jsonl, sha256_file, write_jsonl  # noqa: E402
+from selfjev.data import expand_source, read_jsonl, sha256_file, write_jsonl
 
 RAW, REVIEW, OUT = ROOT / "data/eval2/raw", ROOT / "data/eval2/review", ROOT / "data/eval2.jsonl"
 TRAIN_FILES = ["data/hf.jsonl", "data/synthetic.jsonl", "data/eval.jsonl", "data/hardcases.jsonl"]
@@ -29,7 +29,7 @@ TRAIN_FILES = ["data/hf.jsonl", "data/synthetic.jsonl", "data/eval.jsonl", "data
 
 def shingles(text, n=8):
     w = re.findall(r"\w+", text.lower())
-    return {" ".join(w[i:i + n]) for i in range(max(1, len(w) - n + 1))}
+    return {" ".join(w[i : i + n]) for i in range(max(1, len(w) - n + 1))}
 
 
 def norm(t):
@@ -41,14 +41,15 @@ def pct(a, b):
 
 
 def table(title, rows, cols):
-    lines = [f"### {title}", "", "| " + " | ".join([title] + cols) + " |", "|" + "---|" * (len(cols) + 1)]
+    lines = [f"### {title}", "", "| " + " | ".join([title, *cols]) + " |", "|" + "---|" * (len(cols) + 1)]
     lines += [f"| {k} | " + " | ".join(str(v) for v in vals) + " |" for k, vals in rows]
-    return lines + [""]
+    return [*lines, ""]
 
 
 def main():
     global RAW, REVIEW, OUT, TRAIN_FILES
     import argparse
+
     ap = argparse.ArgumentParser()
     ap.add_argument("--raw", default=str(RAW))
     ap.add_argument("--review", default=str(REVIEW))
@@ -90,7 +91,7 @@ def main():
             leaked.append(src["source_id"])
             continue
         exs, keep_q = expand_source(src), []
-        for i, ex in enumerate(exs):
+        for _i, ex in enumerate(exs):
             answers = [j.get(ex["id"]) for j in judges.values()]
             key = ex["family"]
             if any(a is None for a in answers):
@@ -129,6 +130,7 @@ def main():
     def bucket(e):
         m = re.search(r"len=(\d+)", e["provenance"])
         return int(m.group(1)) if m else 0
+
     def comp(keyf):
         c = defaultdict(Counter)
         for e in kept:
@@ -138,24 +140,45 @@ def main():
                     c[k]["jev_n"] += 1
                     c[k]["jev_ok"] += norm(jev[e["id"]]["answer"]) == norm(e["target"])
         return [(k, [v["n"], pct(v["jev_ok"], v["jev_n"])]) for k, v in sorted(c.items(), key=lambda kv: str(kv[0]))]
+
     author = lambda e: e["provenance"].split(" (")[0].replace("synthetic:openrouter/", "")
-    lines = [f"# {set_name}: frozen test set", "",
-             f"`{OUT.relative_to(ROOT)}` sha256 `{digest}` — {len(kept)} questions / {len(kept_srcs)} states, every row split=test. "
-             "**Frozen: never train, select prompts, fit thresholds or temperatures on it.** Authors: "
-             + ", ".join(sorted({author(e) for e in kept})) + f". Judges (blind, both must agree with the author): {', '.join(judges)}. "
-             "Jev is reported, never used to keep or drop. LLM-verified; human spot-check list in review/SPOTCHECK.md. "
-             "Rows are expanded (one question per line) so ids are the raw `<source_id>-q<i>` and join `review/answers_*.jsonl`" +
-             ("; a first export on 2026-09-24 used source-format lines whose ids were renumbered after drops (sha `f18549eb…`): "
-             "`review/id_map_sourceformat_to_real.json` maps those ids to the real ones, and the 95.2% Jev figure computed on "
-             "that misalignment was wrong." if set_name == "eval2" else "."), "",
-             f"States dropped for 8-gram overlap ≥ 0.3 with training/eval files: {len(leaked)} {leaked[:10]}", "",
-             "## Agreement (before the keep rule)", "", "| family | judged | " + " | ".join(f"author = {j} %" for j in judges) + " | kept (unanimous) | dropped | unanswered |",
-             "|---|---|" + "---|" * len(judges) + "---|---|---|"]
+    lines = [
+        f"# {set_name}: frozen test set",
+        "",
+        f"`{OUT.relative_to(ROOT)}` sha256 `{digest}` — {len(kept)} questions / {len(kept_srcs)} states, every row split=test. "
+        "**Frozen: never train, select prompts, fit thresholds or temperatures on it.** Authors: "
+        + ", ".join(sorted({author(e) for e in kept}))
+        + f". Judges (blind, both must agree with the author): {', '.join(judges)}. "
+        "Jev is reported, never used to keep or drop. LLM-verified; human spot-check list in review/SPOTCHECK.md. "
+        "Rows are expanded (one question per line) so ids are the raw `<source_id>-q<i>` and join `review/answers_*.jsonl`"
+        + (
+            "; a first export on 2026-09-24 used source-format lines whose ids were renumbered after drops (sha `f18549eb…`): "
+            "`review/id_map_sourceformat_to_real.json` maps those ids to the real ones, and the 95.2% Jev figure computed on "
+            "that misalignment was wrong."
+            if set_name == "eval2"
+            else "."
+        ),
+        "",
+        f"States dropped for 8-gram overlap ≥ 0.3 with training/eval files: {len(leaked)} {leaked[:10]}",
+        "",
+        "## Agreement (before the keep rule)",
+        "",
+        "| family | judged | " + " | ".join(f"author = {j} %" for j in judges) + " | kept (unanimous) | dropped | unanswered |",
+        "|---|---|" + "---|" * len(judges) + "---|---|---|",
+    ]
     tot = Counter()
     for fam, c in sorted(stats.items()):
         tot.update(c)
-        lines.append(f"| {fam} | {c['judged']} | " + " | ".join(pct(c[f'agree_{j}'], c['judged']) for j in judges) + f" | {c['kept']} | {c['dropped']} | {c['unanswered']} |")
-    lines.append(f"| **all** | {tot['judged']} | " + " | ".join(pct(tot[f'agree_{j}'], tot['judged']) for j in judges) + f" | {tot['kept']} | {tot['dropped']} | {tot['unanswered']} |")
+        lines.append(
+            f"| {fam} | {c['judged']} | "
+            + " | ".join(pct(c[f"agree_{j}"], c["judged"]) for j in judges)
+            + f" | {c['kept']} | {c['dropped']} | {c['unanswered']} |"
+        )
+    lines.append(
+        f"| **all** | {tot['judged']} | "
+        + " | ".join(pct(tot[f"agree_{j}"], tot["judged"]) for j in judges)
+        + f" | {tot['kept']} | {tot['dropped']} | {tot['unanswered']} |"
+    )
     if a.strict:
         lines += ["", f"--strict: {tot['strict']} more questions dropped because another question of their text was dropped."]
     lines += ["", "## Composition of the kept set, with Jev accuracy on it", ""]
@@ -165,22 +188,54 @@ def main():
     lines += table("length bucket (tokens)", comp(lambda e: [bucket(e)]), ["n", "Jev acc %"])
     lines += table("hard case (all tags)", comp(lambda e: e["hard_cases"] or ["(none)"]), ["n", "Jev acc %"])
     ml = Counter(len(e["target"]) for e in kept if e["question"]["type"] == "multilabel")
-    none_q = [e for e in kept if e["question"]["type"] == "multiclass" and any(c["id"] == "none" or c["description"].lower().startswith("none") for c in e["question"]["candidates"])]
-    none_ok = sum(e["target"] == "none" or any(c["id"] == e["target"] and c["description"].lower().startswith("none") for c in e["question"]["candidates"]) for e in none_q)
-    lines += [f"Multilabel positives: {dict(sorted(ml.items()))}. Multiclass questions offering a none candidate: {len(none_q)}, none correct in {none_ok} ({pct(none_ok, len(none_q))}%).", ""]
+    none_q = [
+        e
+        for e in kept
+        if e["question"]["type"] == "multiclass"
+        and any(c["id"] == "none" or c["description"].lower().startswith("none") for c in e["question"]["candidates"])
+    ]
+    none_ok = sum(
+        e["target"] == "none"
+        or any(c["id"] == e["target"] and c["description"].lower().startswith("none") for c in e["question"]["candidates"])
+        for e in none_q
+    )
+    lines += [
+        f"Multilabel positives: {dict(sorted(ml.items()))}. Multiclass questions offering a none candidate: {len(none_q)}, "
+        f"none correct in {none_ok} ({pct(none_ok, len(none_q))}%).",
+        "",
+    ]
     report_md.write_text("\n".join(lines) + "\n")
-    print("\n".join(lines[:4 + len(stats) + 8]))
+    print("\n".join(lines[: 4 + len(stats) + 8]))
 
     rng = random.Random(2)
-    rows = [f"# {set_name} spot-check: 50 random kept questions (human review)", "",
-            "Mark each as OK / wrong / ambiguous. The model never sees notes, tags or ids.", ""]
+    rows = [
+        f"# {set_name} spot-check: 50 random kept questions (human review)",
+        "",
+        "Mark each as OK / wrong / ambiguous. The model never sees notes, tags or ids.",
+        "",
+    ]
     for src, ex, answers in rng.sample(spot, min(50, len(spot))):
         q = ex["question"]
         st = src["state"] if len(src["state"]) <= 2500 else src["state"][:2500] + " […truncated for display]"
-        rows += [f"## {ex['id']} — {ex['family']}, {author(ex)}, tags {ex['hard_cases']}", "", "```text", st, "```", "",
-                 f"**{q['type']}**: {q['instruction']}", ""]
+        rows += [
+            f"## {ex['id']} — {ex['family']}, {author(ex)}, tags {ex['hard_cases']}",
+            "",
+            "```text",
+            st,
+            "```",
+            "",
+            f"**{q['type']}**: {q['instruction']}",
+            "",
+        ]
         rows += [f"- `{c['id']}`: {c['description']}" for c in q.get("candidates", [])]
-        rows += ["", f"**Target** `{json.dumps(ex['target'])}` (judges: {', '.join(json.dumps(a) for a in answers)}). Author's note: {ex.get('notes', '')}", "", "Verdict: ☐ OK ☐ wrong ☐ ambiguous", ""]
+        rows += [
+            "",
+            f"**Target** `{json.dumps(ex['target'])}` (judges: {', '.join(json.dumps(a) for a in answers)}). "
+            f"Author's note: {ex.get('notes', '')}",
+            "",
+            "Verdict: ☐ OK ☐ wrong ☐ ambiguous",
+            "",
+        ]
     (REVIEW / "SPOTCHECK.md").write_text("\n".join(rows) + "\n")
     print(f"wrote {OUT} ({len(kept)} questions, sha256 {digest[:12]}…), {report_md}, {REVIEW / 'SPOTCHECK.md'}")
 

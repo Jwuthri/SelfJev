@@ -13,6 +13,7 @@ into "label right, model wrong", "label probably wrong" or "ambiguous", and look
 - Opus 5.5 wrote a third of eval2 and eval_llm: on those rows it may side with its own label. Label errors are only
   proposed (errata list for a human), never written into the frozen test sets.
 """
+
 import argparse
 import gzip
 import json
@@ -29,14 +30,22 @@ norm = lambda t: sorted(t) if isinstance(t, list) else t
 
 
 def failures():
-    rows = [json.loads(l) for l in gzip.open(ROOT / "data/all.jsonl.gz", "rt")]
+    with gzip.open(ROOT / "data/all.jsonl.gz", "rt") as f:
+        rows = [json.loads(line) for line in f]
     ours = {}
     for p in OURS.values():
         ours |= {r["id"]: r["selected"] for r in json.loads((ROOT / p).read_text())["predictions"]}
     out = []
     for r in rows:
-        test = "eval2" if r["dataset"] == "eval2" else "dev" if r["dataset"] in ("hf", "eval") and r["split"] == "test" else \
-            "eval_llm" if r["dataset"] == "eval_llm" else None
+        test = (
+            "eval2"
+            if r["dataset"] == "eval2"
+            else "dev"
+            if r["dataset"] in ("hf", "eval") and r["split"] == "test"
+            else "eval_llm"
+            if r["dataset"] == "eval_llm"
+            else None
+        )
         if not test:
             continue
         o, j = ours.get(r["id"]), (r.get("jev") or {}).get("answer")
@@ -49,6 +58,7 @@ def failures():
 
 def relabel(a):
     from judge_hardcases import run_sync
+
     fails = failures()
     groups = defaultdict(list)
     for r in fails:
@@ -58,38 +68,64 @@ def relabel(a):
     OUT.mkdir(parents=True, exist_ok=True)
     with open(OUT / "failures.jsonl", "w") as f:
         for r in fails:
-            f.write(json.dumps({k: r[k] for k in ("id", "test", "dataset", "family", "target", "ours", "jev_answer", "ours_wrong", "jev_wrong")}) + "\n")
+            f.write(
+                json.dumps(
+                    {k: r[k] for k in ("id", "test", "dataset", "family", "target", "ours", "jev_answer", "ours_wrong", "jev_wrong")}
+                )
+                + "\n"
+            )
     print(f"{len(fails)} failed questions in {len(groups)} texts; relabelling {len(g)} texts", flush=True)
     run_sync(g, OUT, MODEL, effort="medium", workers=8)
 
 
 def report(a):
     fails = {r["id"]: r for r in failures()}
-    opus = {r["id"]: r for r in map(json.loads, open(OUT / "answers_claude-opus-5.5.jsonl"))}
+    with open(OUT / "answers_claude-opus-5.5.jsonl") as f:
+        opus = {r["id"]: r for r in map(json.loads, f)}
     verdict = {}
     for i, r in fails.items():
         if i not in opus:
             continue
         o = norm(opus[i]["answer"])
         wrong_answers = [norm(x) for x, w in ((r["ours"], r["ours_wrong"]), (r["jev_answer"], r["jev_wrong"])) if w and x is not None]
-        verdict[i] = "label right, model wrong" if o == norm(r["target"]) else \
-            "label probably wrong (Opus = a model)" if o in wrong_answers else "ambiguous (Opus gives a third answer)"
-    lines = ["# Test-set failure audit (2026-09-26)", "",
-             f"Blind relabel by {MODEL} (effort medium) of every test question our best model (`qwen35_4b_tree`) or Jev gets wrong "
-             "(eval_llm: Jev only). Opus never saw the target or any model answer. Opus wrote a third of eval2 and eval_llm, so on those "
-             "rows it may side with its own label. Proposed label errors are for human review; the frozen files are unchanged.", ""]
+        verdict[i] = (
+            "label right, model wrong"
+            if o == norm(r["target"])
+            else "label probably wrong (Opus = a model)"
+            if o in wrong_answers
+            else "ambiguous (Opus gives a third answer)"
+        )
+    lines = [
+        "# Test-set failure audit (2026-09-26)",
+        "",
+        f"Blind relabel by {MODEL} (effort medium) of every test question our best model (`qwen35_4b_tree`) or Jev gets wrong "
+        "(eval_llm: Jev only). Opus never saw the target or any model answer. Opus wrote a third of eval2 and eval_llm, so on those "
+        "rows it may side with its own label. Proposed label errors are for human review; the frozen files are unchanged.",
+        "",
+    ]
     for test in ("eval2", "dev", "eval_llm"):
         ids = [i for i in verdict if fails[i]["test"] == test]
         if not ids:
             continue
-        lines += [f"## {test}: {len(ids)} failed questions relabelled", "", "| who is wrong | label right, model wrong | label probably wrong | ambiguous |", "|---|---|---|---|"]
-        for who, sel in (("ours only", lambda r: r["ours_wrong"] and not r["jev_wrong"]), ("Jev only", lambda r: r["jev_wrong"] and not r["ours_wrong"]),
-                         ("both", lambda r: r["ours_wrong"] and r["jev_wrong"]), ("all", lambda r: True)):
+        lines += [
+            f"## {test}: {len(ids)} failed questions relabelled",
+            "",
+            "| who is wrong | label right, model wrong | label probably wrong | ambiguous |",
+            "|---|---|---|---|",
+        ]
+        for who, sel in (
+            ("ours only", lambda r: r["ours_wrong"] and not r["jev_wrong"]),
+            ("Jev only", lambda r: r["jev_wrong"] and not r["ours_wrong"]),
+            ("both", lambda r: r["ours_wrong"] and r["jev_wrong"]),
+            ("all", lambda r: True),
+        ):
             c = Counter(verdict[i] for i in ids if sel(fails[i]))
-            lines.append(f"| {who} | {c['label right, model wrong']} | {c['label probably wrong (Opus = a model)']} | {c['ambiguous (Opus gives a third answer)']} |")
+            lines.append(
+                f"| {who} | {c['label right, model wrong']} | {c['label probably wrong (Opus = a model)']} | "
+                f"{c['ambiguous (Opus gives a third answer)']} |"
+            )
         real = [fails[i] for i in ids if verdict[i] == "label right, model wrong"]
-        for key, name in ((lambda r: r["question"]["type"], "type"), (lambda r: r["family"], "family"),
-                          (lambda r: None, "trap")):
+        for key, name in ((lambda r: r["question"]["type"], "type"), (lambda r: r["family"], "family"), (lambda r: None, "trap")):
             c = Counter()
             for r in real:
                 for k in (r.get("hard_cases") or ["(none)"]) if name == "trap" else [key(r)]:
@@ -106,9 +142,24 @@ def report(a):
     with open(OUT / "errata_candidates.jsonl", "w") as f:
         for i in errata:
             r = fails[i]
-            f.write(json.dumps({"id": i, "test": r["test"], "target": r["target"], "opus": opus[i]["answer"], "opus_confidence": opus[i]["confidence"],
-                                "ours": r["ours"], "jev": r["jev_answer"], "instruction": r["question"]["instruction"],
-                                "candidates": r["question"].get("candidates"), "state": r["state"][:3000]}, ensure_ascii=False) + "\n")
+            f.write(
+                json.dumps(
+                    {
+                        "id": i,
+                        "test": r["test"],
+                        "target": r["target"],
+                        "opus": opus[i]["answer"],
+                        "opus_confidence": opus[i]["confidence"],
+                        "ours": r["ours"],
+                        "jev": r["jev_answer"],
+                        "instruction": r["question"]["instruction"],
+                        "candidates": r["question"].get("candidates"),
+                        "state": r["state"][:3000],
+                    },
+                    ensure_ascii=False,
+                )
+                + "\n"
+            )
     with open(OUT / "verdicts.jsonl", "w") as f:
         for i, v in verdict.items():
             f.write(json.dumps({"id": i, "test": fails[i]["test"], "verdict": v, "opus": opus[i]["answer"]}) + "\n")

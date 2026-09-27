@@ -1,4 +1,4 @@
-""""All options at once" for the tree scorer, as a data transform: every candidate is listed in the question text,
+""" "All options at once" for the tree scorer, as a data transform: every candidate is listed in the question text,
 so each leaf still judges one candidate but now sees all the alternatives (one vs all, in context). The tree
 code, format and readout are unchanged, and every row keeps its id, split and target.
 
@@ -8,13 +8,14 @@ Rebuilds the untracked training copies byte for byte (docs/reproduce.md, "Older 
 
 usage: uv run python scripts/options_in_question.py data/hf.jsonl ...   -> data/ova/<name>.jsonl
 """
+
 import json
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from selfjev.options import with_options  # noqa: E402
+from selfjev.options import with_options
 
 
 def transform(row):
@@ -25,6 +26,7 @@ if __name__ == "__main__":
     out = Path("data/ova")
     out.mkdir(exist_ok=True)
     for f in sys.argv[1:]:
-        rows = [transform(json.loads(line)) for line in open(f)]
+        with open(f) as fh:
+            rows = [transform(json.loads(line)) for line in fh]
         (out / Path(f).name).write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
         print(f"{f} -> {out / Path(f).name}: {len(rows)} rows")

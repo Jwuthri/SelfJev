@@ -9,6 +9,7 @@ held-out number.
 
 usage: uv run python scripts/rebalance_nota.py [--rate 0.10] -> data/hardcases_nb.jsonl
 """
+
 import argparse
 import random
 import sys
@@ -16,12 +17,14 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
-from selfjev.data import read_jsonl, write_jsonl  # noqa: E402
+from selfjev.data import read_jsonl, write_jsonl
 
 
 def none_ids(ex):
     q = ex["question"]
-    return [c["id"] for c in q.get("candidates", []) if c["id"] == "none" or c["id"].startswith("none")] if q["type"] == "multiclass" else []
+    return (
+        [c["id"] for c in q.get("candidates", []) if c["id"] == "none" or c["id"].startswith("none")] if q["type"] == "multiclass" else []
+    )
 
 
 def main():
@@ -36,8 +39,10 @@ def main():
     drop = {e["id"] for e in random.Random(a.seed).sample(none_ans, max(0, len(none_ans) - keep_n))}
     out = [e for e in ex if e["id"] not in drop]
     write_jsonl(ROOT / "data/hardcases_nb.jsonl", out)
-    print(f"train questions offering none: {len(offer)}; answer none: {len(none_ans)} ({100 * len(none_ans) / len(offer):.0f}%) "
-          f"-> kept {keep_n} ({100 * keep_n / (len(offer) - len(drop)):.0f}%); dropped {len(drop)}; wrote {len(out)} questions")
+    print(
+        f"train questions offering none: {len(offer)}; answer none: {len(none_ans)} ({100 * len(none_ans) / len(offer):.0f}%) "
+        f"-> kept {keep_n} ({100 * keep_n / (len(offer) - len(drop)):.0f}%); dropped {len(drop)}; wrote {len(out)} questions"
+    )
 
 
 if __name__ == "__main__":

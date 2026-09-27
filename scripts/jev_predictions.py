@@ -15,6 +15,7 @@ data/all.jsonl.gz as the `jev` field by scripts/build_all.py.
   answered. `correct` compares with the authored `target`.
 - These are Jev's outputs, not labels: they never replace `target`, and test rows are for reporting only.
 """
+
 import argparse
 import concurrent.futures as cf
 import hashlib
@@ -27,14 +28,20 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
-from build_all import datasets, request_sha  # noqa: E402
-from compare_external import call_cost, http, jev_request  # noqa: E402
-from selfjev.data import expand_source, load, read_jsonl  # noqa: E402
+from build_all import datasets, request_sha
+from compare_external import call_cost, http, jev_request
+
+from selfjev.data import expand_source, load, read_jsonl
 
 MODEL = "~typesafe/jev-latest"
 OUT = ROOT / "data/jev"
-CACHES = ["reports/external/cache/typesafe_jev-latest.jsonl", "data/hardcases/review/jev_cache.jsonl", "data/eval2/review/jev_cache.jsonl",
-          "data/eval_llm/review/jev_cache.jsonl", "data/jev/cache.jsonl"]
+CACHES = [
+    "reports/external/cache/typesafe_jev-latest.jsonl",
+    "data/hardcases/review/jev_cache.jsonl",
+    "data/eval2/review/jev_cache.jsonl",
+    "data/eval_llm/review/jev_cache.jsonl",
+    "data/jev/cache.jsonl",
+]
 RAW = ["data/hardcases/raw", "data/eval2/raw", "data/eval_llm/raw"]  # sources the judge runs sent to Jev whole
 norm = lambda t: sorted(t) if isinstance(t, list) else t
 
@@ -61,8 +68,11 @@ def extract(resp, keys, exs, want, dataset):
             row |= {"probs": probs, "answer": best, "confidence": probs[best]}
         else:
             probs = {c["id"]: float(ans[k]["noul"]) for c, k in zip(q["candidates"], ks)}
-            row |= {"probs": probs, "answer": [c for c, p in probs.items() if p >= 0.5],
-                    "confidence": min(max(p, 1 - p) for p in probs.values())}
+            row |= {
+                "probs": probs,
+                "answer": [c for c, p in probs.items() if p >= 0.5],
+                "confidence": min(max(p, 1 - p) for p in probs.values()),
+            }
         row["correct"] = norm(row["answer"]) == norm(ex["target"])
         out.append(row)
     return out
@@ -114,12 +124,14 @@ def main():
     rate = hit_cost / max(hit_chars, 1)
     est = sum(len(json.dumps(jev_request(MODEL, exs[0]["state"], exs)[0])) for _, _, exs in pending) * rate
     todo = Counter(n for n, _, exs in pending for _ in exs)
-    print(f"from cache: {len(preds)} questions; missing: {sum(todo.values())} questions in {len(pending)} texts "
-          f"{dict(todo)}; estimated cost ${est:.2f} (at the cached calls' cost per character)", flush=True)
+    print(
+        f"from cache: {len(preds)} questions; missing: {sum(todo.values())} questions in {len(pending)} texts "
+        f"{dict(todo)}; estimated cost ${est:.2f} (at the cached calls' cost per character)",
+        flush=True,
+    )
 
     if a.call and pending:
         lock, spent, errors, stop = threading.Lock(), [0.0], [], threading.Event()
-        new_cache = open(OUT / "cache.jsonl", "a")
 
         def one(item):
             name, sid, exs = item
@@ -149,7 +161,7 @@ def main():
                 if spent[0] >= a.budget:
                     stop.set()
 
-        with cf.ThreadPoolExecutor(a.workers) as pool:
+        with open(OUT / "cache.jsonl", "a") as new_cache, cf.ThreadPoolExecutor(a.workers) as pool:
             for i, _ in enumerate(pool.map(one, pending)):
                 if i % 2000 == 1999:
                     print(f"  {i + 1}/{len(pending)} texts, spent ${spent[0]:.2f}, errors {len(errors)}", flush=True)

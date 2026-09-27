@@ -7,6 +7,7 @@ score per category is its max over pieces. Writes one row per source {source_id,
 (sources already in --out are skipped). Guardrail and jailbreak data name harmful goals on purpose, so a flag is a
 prompt to read the text, not a verdict: see docs/llm_eval_data.md for what was removed and why.
 """
+
 import argparse
 import json
 import sys
@@ -15,8 +16,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
-from judge_hardcases import oa  # noqa: E402
-from selfjev.data import read_jsonl  # noqa: E402
+from judge_hardcases import oa
+
+from selfjev.data import read_jsonl
 
 
 def text_of(src):
@@ -39,12 +41,12 @@ def main():
     print(f"{len(todo)} sources to screen ({len(done)} done)", flush=True)
     with open(out, "a") as fh:
         for k in range(0, len(todo), 16):
-            batch = todo[k:k + 16]
+            batch = todo[k : k + 16]
             pieces, owner = [], []
             for j, (_, s) in enumerate(batch):
                 t = text_of(s)
                 for i in range(0, len(t), 8000):
-                    pieces.append(t[i:i + 8000])
+                    pieces.append(t[i : i + 8000])
                     owner.append(j)
             for attempt in range(8):
                 try:
@@ -53,7 +55,7 @@ def main():
                 except RuntimeError as e:  # 429: back off
                     if "429" not in str(e) or attempt == 7:
                         raise
-                    time.sleep(10 * 2 ** attempt)
+                    time.sleep(10 * 2**attempt)
             agg = [{"flagged": False, "scores": {}} for _ in batch]
             for j, r in zip(owner, res):
                 agg[j]["flagged"] |= r["flagged"]

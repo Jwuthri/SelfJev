@@ -12,6 +12,7 @@ of it, distilling Jev's hedging).
   (default 0.5) mixes the two, so Jev never decides a label. Questions stay as in all.jsonl.gz: selfjev adds the option
   list (options_in_question, seeded by id, as data/ova was built).
 """
+
 import gzip
 import json
 import sys
@@ -19,7 +20,7 @@ from collections import Counter
 from pathlib import Path
 
 sys.path[:0] = ["src", "scripts"]
-from build_all import TEST_DATASETS  # noqa: E402
+from build_all import TEST_DATASETS
 
 OUT = Path("runs/jev_all")
 
@@ -41,11 +42,15 @@ def label_prob(r, s):
 
 
 def main():
-    rows = [json.loads(line) for line in gzip.open("data/all.jsonl.gz", "rt")]
+    with gzip.open("data/all.jsonl.gz", "rt") as f:
+        rows = [json.loads(line) for line in f]
     vids = val_ids()
     val = [r for r in rows if r["id"] in vids and r["split"] != "test"]
-    train = [r | {"soft": r["jev"]["p_yes"] if r["question"]["type"] == "binary" else r["jev"]["probs"]} for r in rows
-             if r["dataset"] not in TEST_DATASETS and r["split"] in ("train", "validation") and r["id"] not in vids]
+    train = [
+        r | {"soft": r["jev"]["p_yes"] if r["question"]["type"] == "binary" else r["jev"]["probs"]}
+        for r in rows
+        if r["dataset"] not in TEST_DATASETS and r["split"] in ("train", "validation") and r["id"] not in vids
+    ]
     assert len(val) == len(vids), (len(val), len(vids))
     assert not any(r["split"] == "test" or r["dataset"] in TEST_DATASETS for r in train)
     OUT.mkdir(parents=True, exist_ok=True)
@@ -56,8 +61,11 @@ def main():
     for (d, s), n in sorted(Counter((r["dataset"], r["split"]) for r in train).items()):
         print(f"  {d:16s} {s:11s} {n:6d}")
     pl = [label_prob(r, r["soft"]) for r in train]
-    print(f"Jev's probability of the verified answer: >= 0.9 on {sum(p >= 0.9 for p in pl) / len(pl):.1%} (soft target ~ label), "
-          f"0.5-0.9 on {sum(0.5 <= p < 0.9 for p in pl) / len(pl):.1%} (hedges), < 0.5 on {sum(p < 0.5 for p in pl) / len(pl):.1%} (disagrees)")
+    print(
+        f"Jev's probability of the verified answer: >= 0.9 on {sum(p >= 0.9 for p in pl) / len(pl):.1%} (soft target ~ label), "
+        f"0.5-0.9 on {sum(0.5 <= p < 0.9 for p in pl) / len(pl):.1%} (hedges), "
+        f"< 0.5 on {sum(p < 0.5 for p in pl) / len(pl):.1%} (disagrees)"
+    )
 
 
 if __name__ == "__main__":

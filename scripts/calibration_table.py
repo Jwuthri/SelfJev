@@ -5,12 +5,13 @@ wrong decisions, how many were >= 0.9 sure, mean confidence when wrong, and a pa
 
 A name is a report directory under reports/ (with eval2/report.json and test/report.json), or "jev" (reports/external/).
 """
+
 import json
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from eval2_summary import mcnemar  # noqa: E402
+from eval2_summary import mcnemar
 
 
 def path(run, split):
@@ -27,7 +28,9 @@ def decisions(p):
         k = max(range(len(probs)), key=probs.__getitem__)
         return [(probs[k], y[k] == 1.0)], sum((a - b) ** 2 for a, b in zip(probs, y))
     ys = [float(p["target"])] if t == "binary" else [float(c in p["target"]) for c in cids]
-    return [(max(q, 1 - q), (q >= 0.5) == (y == 1.0)) for q, y in zip(probs, ys)], sum(2 * (q - y) ** 2 for q, y in zip(probs, ys)) / len(ys)
+    return [(max(q, 1 - q), (q >= 0.5) == (y == 1.0)) for q, y in zip(probs, ys)], sum(2 * (q - y) ** 2 for q, y in zip(probs, ys)) / len(
+        ys
+    )
 
 
 def stats(run, split):
@@ -40,16 +43,24 @@ def stats(run, split):
     bins = [min(int(10 * c), 9) for c, _ in conf]
     ece = sum(abs(sum(c - h for (c, h), b in zip(conf, bins) if b == k)) for k in range(10)) / len(conf)
     wrong = [c for c, h in conf if not h]
-    return {i: p["correct"] for i, p in preds.items()}, dict(
-        acc=100 * sum(p["correct"] for p in preds.values()) / len(preds), brier=brier / len(preds), ece=ece, wrong=len(wrong),
-        sure=sum(c >= 0.9 for c in wrong), mean=sum(wrong) / max(1, len(wrong)))
+    return {i: p["correct"] for i, p in preds.items()}, {
+        "acc": 100 * sum(p["correct"] for p in preds.values()) / len(preds),
+        "brier": brier / len(preds),
+        "ece": ece,
+        "wrong": len(wrong),
+        "sure": sum(c >= 0.9 for c in wrong),
+        "mean": sum(wrong) / max(1, len(wrong)),
+    }
 
 
 if __name__ == "__main__":
     runs = sys.argv[1:]
     for split in ("eval2", "test"):
         base, _ = stats(runs[0], split)
-        print(f"\n{split} ({len(base)} q) | accuracy | vs {runs[0]}: only this right / only it right, p | Brier | ECE | wrong decisions | >= 0.9 sure | mean confidence when wrong")
+        print(
+            f"\n{split} ({len(base)} q) | accuracy | vs {runs[0]}: only this right / only it right, p | Brier | ECE | "
+            "wrong decisions | >= 0.9 sure | mean confidence when wrong"
+        )
         print("|---|---|---|---|---|---|---|---|")
         for run in runs:
             ok, s = stats(run, split)

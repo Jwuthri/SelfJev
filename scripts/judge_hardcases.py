@@ -12,14 +12,15 @@
 - Answer rows {"id": "<source_id>-q<i>", "answer": bool | id | [ids], "confidence": p, "note": ...} are what
   build_hardcases.py compares with the authored target. Agreement tables go to <review>/JUDGE.md.
 """
+
 import argparse
 import concurrent.futures as cf
 import hashlib
 import json
+import os
 import sys
 import threading
 import time
-import os
 import urllib.error
 import urllib.request
 import uuid
@@ -28,8 +29,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
-from compare_external import call_cost, http, jev_request, llm_request  # noqa: E402
-from selfjev.data import expand_source, read_jsonl, write_jsonl  # noqa: E402
+from compare_external import call_cost, http, jev_request, llm_request
+
+from selfjev.data import expand_source, read_jsonl, write_jsonl
 
 RAW = ROOT / "data/hardcases/raw"
 lock_sync = threading.Lock()
@@ -50,8 +52,10 @@ def oa(method, path, body=None, raw=None, ctype="application/json", timeout=600)
 
 def upload_jsonl(lines):
     b = "----selfjev" + uuid.uuid4().hex
-    payload = (f"--{b}\r\nContent-Disposition: form-data; name=\"purpose\"\r\n\r\nbatch\r\n--{b}\r\n"
-               f"Content-Disposition: form-data; name=\"file\"; filename=\"batch.jsonl\"\r\nContent-Type: application/jsonl\r\n\r\n").encode()
+    payload = (
+        f'--{b}\r\nContent-Disposition: form-data; name="purpose"\r\n\r\nbatch\r\n--{b}\r\n'
+        f'Content-Disposition: form-data; name="file"; filename="batch.jsonl"\r\nContent-Type: application/jsonl\r\n\r\n'
+    ).encode()
     payload += "\n".join(lines).encode() + f"\r\n--{b}--\r\n".encode()
     return json.loads(oa("POST", "/v1/files", raw=payload, ctype=f"multipart/form-data; boundary={b}"))["id"]
 
@@ -95,21 +99,42 @@ def submit(model, effort, groups, registry, chunk, reg_path=None):
     known = {sid for b in registry["batches"] for sid in b["source_ids"]}
     todo = [sid for sid in groups if sid not in known]
     for i in range(0, len(todo), chunk):
-        sids = todo[i:i + chunk]
+        sids = todo[i : i + chunk]
         lines = []
         for sid in sids:
             state, exs = groups[sid][0]["state"], groups[sid][1]
             body, _ = llm_request(model, state, exs, effort)
-            lines.append(json.dumps({"custom_id": sid, "method": "POST", "url": "/v1/chat/completions", "body": to_openai(body, model, effort)}))
+            lines.append(
+                json.dumps({"custom_id": sid, "method": "POST", "url": "/v1/chat/completions", "body": to_openai(body, model, effort)})
+            )
         try:
             fid = upload_jsonl(lines)
-            b = json.loads(oa("POST", "/v1/batches", {"input_file_id": fid, "endpoint": "/v1/chat/completions", "completion_window": "24h",
-                                                        "metadata": {"project": "personal-jev hardcases"}}))
+            b = json.loads(
+                oa(
+                    "POST",
+                    "/v1/batches",
+                    {
+                        "input_file_id": fid,
+                        "endpoint": "/v1/chat/completions",
+                        "completion_window": "24h",
+                        "metadata": {"project": "personal-jev hardcases"},
+                    },
+                )
+            )
         except RuntimeError as e:  # e.g. "Enqueued token limit reached": stop here, rerun later for the rest
             print(f"submission stopped after {i} sources: {str(e)[:300]}", flush=True)
             return i
-        registry["batches"].append({"id": b["id"], "input_file_id": fid, "model": model, "effort": effort, "source_ids": sids,
-                                    "submitted": time.time(), "status": b.get("status")})
+        registry["batches"].append(
+            {
+                "id": b["id"],
+                "input_file_id": fid,
+                "model": model,
+                "effort": effort,
+                "source_ids": sids,
+                "submitted": time.time(),
+                "status": b.get("status"),
+            }
+        )
         if reg_path:
             reg_path.write_text(json.dumps(registry, indent=1))
         print(f"submitted batch {b['id']}: {len(sids)} sources, status {b.get('status')}", flush=True)
@@ -123,7 +148,10 @@ def wait(registry, results_dir, poll):
             r = json.loads(oa("GET", f"/v1/batches/{b['id']}"))
             b["status"] = r.get("status")
             c = r.get("request_counts") or {}
-            print(f"  {b['id']}: {r.get('status')} {c.get('completed', '?')}/{c.get('total', '?')} done, {c.get('failed', 0)} failed", flush=True)
+            print(
+                f"  {b['id']}: {r.get('status')} {c.get('completed', '?')}/{c.get('total', '?')} done, {c.get('failed', 0)} failed",
+                flush=True,
+            )
             if r.get("status") in TERMINAL:
                 out = oa("GET", f"/v1/files/{r['output_file_id']}/content").decode() if r.get("output_file_id") else ""
                 if r.get("error_file_id"):
@@ -160,7 +188,14 @@ def collect(groups, results_dir, out, model):
                 answers = json.loads(resp["choices"][0]["message"]["content"])
                 for (eid, k), ex in zip(keys_by_sid[sid], groups[sid][1]):
                     a, conf = decide(ex, answers[k])
-                    rows.append({"id": eid, "answer": a, "confidence": round(conf, 4), "note": f"{resp.get('model', model)} effort=low batch {f.stem}"})
+                    rows.append(
+                        {
+                            "id": eid,
+                            "answer": a,
+                            "confidence": round(conf, 4),
+                            "note": f"{resp.get('model', model)} effort=low batch {f.stem}",
+                        }
+                    )
             except Exception as e:  # unparsable content
                 errs[f"parse: {type(e).__name__}"] += 1
     write_jsonl(out, rows)
@@ -172,7 +207,10 @@ def run_sync(groups, review, model, effort="low", workers=6):
     """Second judge through OpenRouter chat completions (no batch): answers_<slug>.jsonl, cached, blind like the batch judge."""
     slug = model.split("/")[-1]
     cache_path = review / f"sync_cache_{slug}.jsonl"
-    cache = {c["key"]: c["response"] for c in map(json.loads, open(cache_path))} if cache_path.exists() else {}
+    cache = {}
+    if cache_path.exists():
+        with open(cache_path) as f:
+            cache = {c["key"]: c["response"] for c in map(json.loads, f)}
     rows, cost, errs = {}, [0.0], Counter()
 
     def one(sid):
@@ -192,9 +230,8 @@ def run_sync(groups, review, model, effort="low", workers=6):
                 return
             cost[0] += call_cost(resp)
             cache[key] = resp
-            with lock_sync:
-                with open(cache_path, "a") as f:
-                    f.write(json.dumps({"key": key, "sid": sid, "response": resp}) + "\n")
+            with lock_sync, open(cache_path, "a") as f:
+                f.write(json.dumps({"key": key, "sid": sid, "response": resp}) + "\n")
         try:
             answers = json.loads(cache[key]["choices"][0]["message"]["content"])
             for (eid, ks), ex in zip(keys, exs):
@@ -213,7 +250,10 @@ def run_sync(groups, review, model, effort="low", workers=6):
 
 def run_jev(groups, review, model="~typesafe/jev-latest", workers=6):
     cache_path = review / "jev_cache.jsonl"
-    cache = {c["key"]: c["response"] for c in map(json.loads, open(cache_path))} if cache_path.exists() else {}
+    cache = {}
+    if cache_path.exists():
+        with open(cache_path) as f:
+            cache = {c["key"]: c["response"] for c in map(json.loads, f)}
     rows, cost = {}, [0.0]
 
     def one(sid):
@@ -223,7 +263,7 @@ def run_jev(groups, review, model="~typesafe/jev-latest", workers=6):
         if key not in cache:
             try:
                 resp = http("POST", "/alpha/decisions", body)
-            except (urllib.error.HTTPError, Exception) as e:
+            except (urllib.error.HTTPError, Exception):
                 return
             cost[0] += call_cost(resp)
             cache[key] = resp
@@ -242,8 +282,12 @@ def run_jev(groups, review, model="~typesafe/jev-latest", workers=6):
                 rows[eid] = {"id": eid, "answer": best, "confidence": float(pr.get(best, 0)), "note": "jev"}
             else:
                 ps = [float(ans[k]["noul"]) for k in ks]
-                rows[eid] = {"id": eid, "answer": [c["id"] for c, p in zip(q["candidates"], ps) if p >= 0.5],
-                             "confidence": min(max(p, 1 - p) for p in ps), "note": "jev"}
+                rows[eid] = {
+                    "id": eid,
+                    "answer": [c["id"] for c, p in zip(q["candidates"], ps) if p >= 0.5],
+                    "confidence": min(max(p, 1 - p) for p in ps),
+                    "note": "jev",
+                }
 
     with cf.ThreadPoolExecutor(workers) as pool:
         list(pool.map(one, list(groups)))
@@ -259,7 +303,7 @@ def norm(t):
 def report(groups, judge, jev, path):
     def agree_table(title, keyf):
         c = defaultdict(Counter)
-        for sid, (src, exs) in groups.items():
+        for _sid, (src, exs) in groups.items():
             for ex in exs:
                 k = keyf(src, ex)
                 if ex["id"] in judge:
@@ -270,23 +314,33 @@ def report(groups, judge, jev, path):
                     c[k]["jev_agree"] += norm(jev[ex["id"]]["answer"]) == norm(ex["target"])
                     if ex["id"] in judge:
                         c[k]["both"] += norm(judge[ex["id"]]["answer"]) == norm(ex["target"]) != norm(jev[ex["id"]]["answer"])
-        lines = [f"### {title}", "", "| " + title + " | judged | author = judge % | jev | author = jev % | judge right, jev wrong |", "|---|---|---|---|---|---|"]
+        lines = [
+            f"### {title}",
+            "",
+            "| " + title + " | judged | author = judge % | jev | author = jev % | judge right, jev wrong |",
+            "|---|---|---|---|---|---|",
+        ]
         for k, v in sorted(c.items(), key=lambda kv: str(kv[0])):
-            pct = lambda a, b: f"{100 * v[a] / v[b]:.1f}" if v[b] else "—"
+            pct = lambda a, b: f"{100 * v[a] / v[b]:.1f}" if v[b] else "—"  # noqa: B023 used within this iteration
             lines.append(f"| {k} | {v['judged']} | {pct('agree', 'judged')} | {v['jev']} | {pct('jev_agree', 'jev')} | {v['both']} |")
         tot = Counter()
         for v in c.values():
             tot.update(v)
         pct = lambda a, b: f"{100 * tot[a] / tot[b]:.1f}" if tot[b] else "—"
         lines.append(f"| **all** | {tot['judged']} | {pct('agree', 'judged')} | {tot['jev']} | {pct('jev_agree', 'jev')} | {tot['both']} |")
-        return lines + [""]
+        return [*lines, ""]
 
     def bucket(src):
         m = [p for p in src["provenance"].split() if p.startswith("len=")]
         return int(m[0][4:].rstrip(")")) if m else "?"
 
-    lines = ["# Blind judge review (round 2)", "", "Author = the model in `provenance`; judge = GPT-6 Astra (reasoning low) via batch; "
-             "Jev = `~typesafe/jev-latest` decisions API. A question is kept by build_hardcases.py only if author = judge.", ""]
+    lines = [
+        "# Blind judge review (round 2)",
+        "",
+        "Author = the model in `provenance`; judge = GPT-6 Astra (reasoning low) via batch; "
+        "Jev = `~typesafe/jev-latest` decisions API. A question is kept by build_hardcases.py only if author = judge.",
+        "",
+    ]
     lines += agree_table("family", lambda s, e: s["family"])
     lines += agree_table("author", lambda s, e: s["provenance"].split(" (")[0].replace("synthetic:", ""))
     lines += agree_table("type", lambda s, e: e["question"]["type"])

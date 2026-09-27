@@ -1,7 +1,8 @@
 """Write a data batch with Gemini through Google's Batch API (50% of the interactive price, results within 24 h).
 
   zsh -ic 'uv run python scripts/gen_gemini_batch.py submit --batch <name> --calls 400 [--usecases train] [--multilabel] [--round3]'
-  zsh -ic 'uv run python scripts/gen_gemini_batch.py collect --batch <name>'      # poll, download, write data/batches/<name>/raw/<prefix>.jsonl
+  zsh -ic 'uv run python scripts/gen_gemini_batch.py collect --batch <name>'      # poll, download, write \
+data/batches/<name>/raw/<prefix>.jsonl
 
 Then the usual steps: bash scripts/grow_batch.sh <name> judge|build|finish (data/README.md "Grow it"). PAID: the user
 OKs a price first (≈ $0.02 per call at batch prices for gemini-3.8-flash; see the estimate printed by submit).
@@ -13,6 +14,7 @@ OKs a price first (≈ $0.02 per call at batch prices for gemini-3.8-flash; see 
 - Key GOOGLE_GEMINI_API_KEY from ~/.zshrc (run through zsh -ic; never printed). State and raw responses:
   reports/batches/<name>/gemini_batch/.
 """
+
 import argparse
 import hashlib
 import json
@@ -27,8 +29,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "scripts")]
-import gen_hardcases as g  # noqa: E402
-from selfjev.data import read_jsonl  # noqa: E402
+import gen_hardcases as g
+
+from selfjev.data import read_jsonl
 
 API = "https://generativelanguage.googleapis.com"
 PRICE = {"gemini-3.8-flash": (0.375, 1.875)}  # USD per M tokens at batch prices (50% of 0.75 / 3.75); thinking = output
@@ -37,7 +40,11 @@ EST_CALL = 0.02  # USD per call at batch prices (sync calls averaged ≈ $0.04 o
 
 def req(method, path, body=None, raw=None, headers=None, timeout=300):
     data = raw if raw is not None else (None if body is None else json.dumps(body).encode())
-    h = {"x-goog-api-key": os.environ["GOOGLE_GEMINI_API_KEY"]} | ({"Content-Type": "application/json"} if body is not None else {}) | (headers or {})
+    h = (
+        {"x-goog-api-key": os.environ["GOOGLE_GEMINI_API_KEY"]}
+        | ({"Content-Type": "application/json"} if body is not None else {})
+        | (headers or {})
+    )
     r = urllib.request.Request(path if path.startswith("http") else API + path, data, method=method, headers=h)
     try:
         with urllib.request.urlopen(r, timeout=timeout) as resp:
@@ -77,31 +84,67 @@ def submit(a):
     for s in specs:
         rng = random.Random(f"{a.seed}:{s['i']}")
         n = max(1, min(a.per_call, 12000 // s["tokens"]))
-        user, traps = g.assignment(rng, s["tier"], n, s["tokens"], None, False, g.R3_HINTS if a.round3 or a.usecases else None,
-                                   uc=s["uc"], multilabel=a.multilabel)
+        user, traps = g.assignment(
+            rng, s["tier"], n, s["tokens"], None, False, g.R3_HINTS if a.round3 or a.usecases else None, uc=s["uc"], multilabel=a.multilabel
+        )
         s |= {"traps": traps, "user": user}
-        lines.append(json.dumps({"key": f"c{s['i']}", "request": {
-            "systemInstruction": {"parts": [{"text": system}]},
-            "contents": [{"role": "user", "parts": [{"text": user}]}],
-            "generationConfig": {"temperature": 1.0, "maxOutputTokens": a.max_tokens, "thinkingConfig": {"thinkingLevel": "low"}}}}))
+        lines.append(
+            json.dumps(
+                {
+                    "key": f"c{s['i']}",
+                    "request": {
+                        "systemInstruction": {"parts": [{"text": system}]},
+                        "contents": [{"role": "user", "parts": [{"text": user}]}],
+                        "generationConfig": {
+                            "temperature": 1.0,
+                            "maxOutputTokens": a.max_tokens,
+                            "thinkingConfig": {"thinkingLevel": "low"},
+                        },
+                    },
+                }
+            )
+        )
     payload = ("\n".join(lines) + "\n").encode()
     print(f"{len(specs)} calls, {len(payload) / 1e6:.1f} MB; estimated ≈ ${len(specs) * EST_CALL:.2f} at batch prices", flush=True)
     if a.dry_run:
         print(lines[0][:600])
         return
-    _, h = req("POST", "/upload/v1beta/files", body={"file": {"display_name": f"{a.batch}-{a.seed}"}}, headers={
-        "X-Goog-Upload-Protocol": "resumable", "X-Goog-Upload-Command": "start",
-        "X-Goog-Upload-Header-Content-Length": str(len(payload)), "X-Goog-Upload-Header-Content-Type": "application/jsonl"})
+    _, h = req(
+        "POST",
+        "/upload/v1beta/files",
+        body={"file": {"display_name": f"{a.batch}-{a.seed}"}},
+        headers={
+            "X-Goog-Upload-Protocol": "resumable",
+            "X-Goog-Upload-Command": "start",
+            "X-Goog-Upload-Header-Content-Length": str(len(payload)),
+            "X-Goog-Upload-Header-Content-Type": "application/jsonl",
+        },
+    )
     url = next(v for k, v in h.items() if k.lower() == "x-goog-upload-url")
     body, _ = req("POST", url, raw=payload, headers={"X-Goog-Upload-Offset": "0", "X-Goog-Upload-Command": "upload, finalize"})
     file_name = json.loads(body)["file"]["name"]
-    body, _ = req("POST", f"/v1beta/models/{a.model}:batchGenerateContent",
-                  body={"batch": {"display_name": f"{a.batch}-{a.seed}", "input_config": {"file_name": file_name}}})
+    body, _ = req(
+        "POST",
+        f"/v1beta/models/{a.model}:batchGenerateContent",
+        body={"batch": {"display_name": f"{a.batch}-{a.seed}", "input_config": {"file_name": file_name}}},
+    )
     job = json.loads(body)["name"]
     state = STATE(a)
     jobs = json.loads(state.read_text()) if state.exists() else []
-    jobs.append({"job": job, "file": file_name, "model": a.model, "seed": a.seed, "fam": fam, "tag": tag, "prefix": prefix,
-                 "specs": specs, "collected": False, "t": time.time()})
+    jobs.append(
+        {
+            "job": job,
+            "file": file_name,
+            "model": a.model,
+            "seed": a.seed,
+            "fam": fam,
+            "tag": tag,
+            "prefix": prefix,
+            "specs": specs,
+            "collected": False,
+            "t": time.time(),
+        }
+    )
     state.write_text(json.dumps(jobs))
     print(f"submitted {job} ({len(specs)} calls); collect with: gen_gemini_batch.py collect --batch {a.batch}", flush=True)
 
@@ -180,8 +223,11 @@ def collect(a):
                 f.write(json.dumps(src, ensure_ascii=False) + "\n")
         jb |= {"collected": True, "cost": cost, "kept_texts": len(kept), "kept_questions": sum(qs.values())}
         state.write_text(json.dumps(jobs))
-        print(f"collected {jb['job']}: {len(kept)} texts / {sum(qs.values())} questions, cost ${cost:.2f} (batch prices), "
-              f"drops {dict(drops)}; by cell {dict(qs)}", flush=True)
+        print(
+            f"collected {jb['job']}: {len(kept)} texts / {sum(qs.values())} questions, cost ${cost:.2f} (batch prices), "
+            f"drops {dict(drops)}; by cell {dict(qs)}",
+            flush=True,
+        )
 
 
 def main():
