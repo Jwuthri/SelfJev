@@ -155,8 +155,8 @@ in git).
 (`src/selfjev/engine/tree.py`) computes the text once, each question once and each candidate's own tokens, the same
 work as the Qwen3 tree. Since the 2026-09-27 cleanup it is the default engine of `selfjev serve`, `eval` and `bench`
 (vLLM stays available with `--engine vllm`). It matches standalone sequences in a CPU test
-(`tests/engine/test_tree.py`) and, on an L40S, the forked-cache engine's stored eval2 answers of `selfjev-4b`: 99.8% of
-400 decisions agree, median probability difference 0.0003 ([JOURNAL 2026-09-27 01:42](JOURNAL.md)). But **its latency has not been measured on a GPU**, on any GPU class, including the L4
+(`tests/engine/test_tree.py`) and, on GPU, the forked-cache engine's answers: the same `selfjev-4b` weights score the same on both engines: eval2 95.68 vs 95.78, dev benchmark 83.78 vs 83.75, eval_llm 93.13 vs 93.13 (99.8%, 99.8% and 100% of decisions identical)
+([JOURNAL 2026-09-27 11:55](JOURNAL.md)). But **its latency has not been measured on a GPU**, on any GPU class, including the L4
 (g6.xlarge) that `selfjev deploy aws` picks by default: there are no numbers for it yet. `selfjev bench` on a GPU box
 is the first step. For reference, the forked-cache engine it replaced took 156 and 252 ms for one question at 512 and
 2,048 tokens, and 341 and 508 ms for 16 questions (in-process p50 on the L40S, `reports/qwen35_4b_tree/bench.json`).

@@ -215,8 +215,8 @@ LoRA gradients at cosine 0.99997; in bf16 the tree is as close to full sequences
 re-batched (`reports/qwen35_4b_tree/checks/`). Token ids are `Qwen35Scorer.entry`'s
 ([`selfjev/engine/qwen35.py`](../src/selfjev/engine/qwen35.py)). The first Qwen3.5 adapters were served by forking the
 model's native cache (archived); on master `TreeServer` serves with the same tree, forward only (the text once per
-request, each question once, then each candidate; on an L40S it agrees with the old engine on 99.8% of 400 eval2
-decisions, [JOURNAL 2026-09-27 01:42](JOURNAL.md)), and vLLM serves the merged adapter with its prefix cache
+request, each question once, then each candidate; on GPU it gives the old engine's answers on all three test sets,
+[JOURNAL 2026-09-27 11:55](JOURNAL.md)), and vLLM serves the merged adapter with its prefix cache
 ([`selfjev/engine/vllm.py`](../src/selfjev/engine/vllm.py)).
 
 Training with it (`run_qwen35.py --tree` at the time, `selfjev finetune` now) encodes each text once per state instead

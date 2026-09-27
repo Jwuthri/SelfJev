@@ -13,6 +13,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | item | cost | who |
 |---|---|---|
+| AWS: engine check g5.xlarge `i-088a7878b0264f417` us-east-1, 18:22–18:53 UTC 2026-09-27 (≈ 31 min), terminated; SG and key pair deleted by the driver | ≈ $0.52 | fork |
 | AWS: `selfjev_4b_v2` retrain (selfjev-4b recipe + batch 2) g6e.2xlarge `i-0700e0bcadbf72ad6` us-east-2, 08:35–18:10 UTC 2026-09-27 (9.6 h, of which 23 min idle after the job), terminated; SG and key pair deleted | ≈ $21.46 | fork |
 | `mpos_distr_num_v1` batch: Luna $1.87 (OpenAI API) + Astra batch judge $17.80 (3.05M in / 0.10M out tokens) + Jev $0.14 | $19.81 (quoted ≈ $19) | fork |
 | AWS: retrain from scratch g6e.2xlarge `i-07c6e6d8cb3d6316b` us-east-2, 18:59 UTC 2026-09-26 – 04:17 UTC 09-27 (9.3 h), shut down from inside (terminate on shutdown); SG and key pair deleted after the SSO login | ≈ $20.80 | fork |
@@ -54,6 +55,22 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-27 11:55 PDT: the new engine gives `selfjev-4b`'s scores; v2's eval_llm drop is the model, not the engine (fork, user request)
+
+- **Why:** `selfjev_4b_v2` (JOURNAL 11:20) was scored by `TreeServer`, `selfjev-4b` by the archived forked-cache engine,
+  and the engines had only been compared on 400 eval2 questions. Its eval_llm drop could have been the engine.
+- **How:** `weights/selfjev_4b` re-scored by `selfjev eval` (TreeServer) on eval2, the dev benchmark and eval_llm on a
+  g5.xlarge (A10G), compared question by question with its stored reports (L40S, old engine). Reports:
+  `reports/selfjev_4b_treeserver/`.
+- **Result:** eval2 95.68 vs 95.78 (1 / 3 questions, p = 0.62), dev benchmark 83.78 vs 83.75 (3 / 2, p = 1), eval_llm
+  93.13 vs 93.13 (0 / 0); decisions identical on 99.8%, 99.8% and 100% of questions (probability differences: median
+  0.0003–0.0006, p99 0.012–0.022). On the same engine, v2 vs `selfjev-4b`: eval_llm 90.49 vs 93.13 (9 / 34, p = 0.00017),
+  eval2 95.38 vs 95.68 (35 / 41, p = 0.57), dev benchmark 83.55 vs 83.78 (60 / 68, p = 0.54).
+- **Verdict:** `TreeServer` (what `selfjev serve` uses) serves `selfjev-4b` faithfully. v2 really is worse on eval_llm;
+  what remains to explain it: batch 2's data, the restructured training code (v2 was its first GPU run) or run-to-run
+  noise. A second seed of v2, or `selfjev-4b`'s data trained with the new code, would separate them (≈ $21 each).
+- **Cost:** ≈ $0.52 (31 min; a self-terminating driver: launch, evals, pull, terminate, delete SG and key).
 
 ### 2026-09-27 11:20 PDT: retraining `selfjev-4b` with batch 2 made it worse; not promoted (fork, user request)
 

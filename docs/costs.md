@@ -27,6 +27,7 @@ boxes).
 | 10 learning-curve runs, 8 g5.xlarge | ≈ $23.00 |
 | `selfjev-4b`: retrain from scratch on everything with Jev targets, texts to 16K (L40S, 9.3 h) | ≈ $20.80 |
 | `selfjev_4b_v2`: the same recipe + batch `mpos_distr_num_v1`, worse, not kept (L40S, 9.6 h incl. 23 min idle) | ≈ $21.46 |
+| Engine check: `selfjev-4b` re-scored by `TreeServer` on the three test sets (A10G, 31 min) | ≈ $0.52 |
 | Jev soft targets, C: RLCD with a confident-mistake cost from B (L40S, 7.1 h) | ≈ $15.90 |
 | `qwen35_4b_combo`: Qwen3.5 + option lists + round 3, full sequences (L40S, 7.0 h) | ≈ $15.80 |
 | All-options, 27B teacher and distillation boxes | ≈ $12.00 |
