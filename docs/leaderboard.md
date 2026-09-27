@@ -8,7 +8,7 @@ hide:
 ## eval2: the target task
 
 1,991 authored questions ([how it was built](data.md#eval2-the-frozen-target-task-test-set)). This is the benchmark
-that decides between models.
+that decides between models, with [eval_llm](#eval_llm-llm-evaluation-use-cases) for the LLM-evaluation use cases.
 
 <div class="acc-chart" style="--ref: 97.2" role="img" aria-label="eval2 accuracy by model; Jev scores 97.2%">
   <div class="acc-head"><span>Jev 97.2</span></div>
@@ -93,8 +93,8 @@ that decides between models.
 | run | base | recipe | eval2 | binary | multiclass | multilabel EM | dev benchmark |
 |---|---|---|---|---|---|---|---|
 | **Jev** (API) | undisclosed | undisclosed | **97.2** | 97.8 | 98.1 | 94.2 | 82.7 |
-| **selfjev-4b** (`qwen35_4b_tree_scratch_jevall_`) | Qwen3.5-4B | tree, trained from scratch on all 79.9K non-test questions of `data/all.jsonl.gz` (texts ≤ 16K, incl. `llm_multilabel_v1`, `numdate_neg_v1`), target 0.5 × label + 0.5 × Jev, r64, all options in the question; eval_llm 93.1 (Jev 92.5) | **95.8** | 96.8 | **97.0** | **91.4** | 83.8 |
-| **qwen35_4b_tree** | Qwen3.5-4B | shared-prefix tree in training (`engine/tree.py`, texts ≤ 8K: 51.8K q), text shared at inference, r64, round-2b + round-3 data, all options in the question | **95.6** | **96.9** | 96.8 | **90.1** | **84.4** |
+| **selfjev-4b** (`qwen35_4b_tree_scratch_jevall_`), the default | Qwen3.5-4B | tree, trained from scratch on 79.9K non-test questions of `data/all.jsonl.gz` (texts ≤ 16K, incl. the LLM-evaluation data, `llm_multilabel_v1`, `numdate_neg_v1`), target 0.5 × label + 0.5 × Jev, r64, all options in the question; eval_llm 93.1 (Jev 92.5) | **95.8** | 96.8 | **97.0** | **91.4** | 83.8 |
+| **qwen35_4b_tree**, the previous default | Qwen3.5-4B | shared-prefix tree in training (`src/selfjev/engine/tree.py`, texts ≤ 8K: 51.8K q), text shared at inference, r64, round-2b + round-3 data, all options in the question | **95.6** | **96.9** | 96.8 | **90.1** | **84.4** |
 | **qwen35_4b_combo** | Qwen3.5-4B | each option trained as a full sequence (no tree in training, texts ≤ 2K: 43.8K q), text shared at inference, r64, round-2b + round-3 data, all options in the question | 94.5 | 96.2 | 95.8 | 88.2 | 84.3 |
 | **tree_4b_combo** | Qwen3-4B-Instruct-2507 | tree, r64, round-2b + round-3 data (51.8K q), hard cases not capped, all options in the question | **94.5** | 96.0 | 97.5 | 85.9 | 82.7 |
 | **tree_4b_instruct_r3** | Qwen3-4B-Instruct-2507 | tree, r64, round-2b + round-3 data (51.9K q), hard cases not capped | **93.3** | 95.1 | 96.1 | 84.3 | 82.8 |
@@ -125,10 +125,30 @@ that decides between models.
 - GPT-6 Astra is not scored on eval2: it was one of the two judges that decided which questions were kept.
 - "Round-1 data" is the 10,112-question mix (public sets + synthetic); round 2 adds about 10K verified hard cases
   ([data](data.md)).
+- Only `selfjev-4b`'s adapter is on master (`weights/selfjev_4b`). `qwen35_4b_tree` and `tree_4b_combo` are at tag
+  `archive/pre-cleanup-2026-09-27`, with the code of every other architecture (Qwen3 trees, stock pairs, jina,
+  T5Gemma, the 27B teacher). All these reports were scored before the 2026-09-27 cleanup, the Qwen3.5 rows by the
+  forked-cache engine that `TreeServer` replaced.
 
 ??? note "All eval2 slices: type, tier, author, text length, trap, paired tests (generated)"
 
     --8<-- "reports/eval2/summary.md"
+
+## eval_llm: LLM-evaluation use cases
+
+946 frozen questions about LLM prompts, reasoning traces and outputs (score, judge, verify, guardrail, jailbreak),
+written by eval2's authors and kept only when two blind judges agree ([how it was built](llm_eval_data.md)). Scored
+so far:
+
+| run | eval_llm | binary | multiclass | multilabel EM |
+|---|---|---|---|---|
+| **Jev** (API) | 92.5 | **95.1** | **95.3** | 81.3 |
+| **selfjev-4b** | **93.1** | 94.3 | **95.3** | **86.8** |
+| `qwen35_4b_tree_sft_jevall__last`: `qwen35_4b_tree` + one epoch on Jev's soft targets (incl. the LLM-evaluation data) | 90.1 | 92.8 | 93.1 | 78.0 |
+| `qwen35_4b_tree`: never trained on LLM-evaluation data | 82.1 | 83.8 | 88.4 | 68.1 |
+
+`selfjev-4b` vs Jev: 33 / 27, p = 0.52. Sources: `reports/*/eval_llm/report.json`; Jev from
+`data/eval_llm/review/jev_answers.jsonl` ([llm_eval_data.md](llm_eval_data.md)).
 
 ## Dev benchmark: the original test split
 
@@ -140,7 +160,8 @@ models from each other. Selected rows:
 |---|---|---|---|---|---|
 | GPT-6 Astra (reasoning low) | **85.8** | 0.971 | **95.3** | **55.8** | 0.050 |
 | Jev | 82.7 | **0.981** | 91.6 | 40.1 | **0.045** |
-| Qwen3.5-4B trained with the tree, r64, round-2b + round-3 data, all options in question | 84.4 | 0.972 | 92.6 | 59.3 | 0.038 |
+| `selfjev-4b`: Qwen3.5-4B tree, from scratch on 80K questions with Jev's soft targets | 83.8 | 0.974 | 92.7 | 52.3 | 0.048 |
+| Qwen3.5-4B trained with the tree, r64, round-2b + round-3 data, all options in question (`qwen35_4b_tree`) | 84.4 | 0.972 | 92.6 | 59.3 | 0.038 |
 | Qwen3.5-4B, r64, round-2b + round-3 data, all options in question | 84.3 | 0.963 | 92.2 | 62.2 | 0.047 |
 | tree Instruct-4B, r64, round-2b + round-3 data, all options in question | 82.7 | 0.959 | 89.3 | 57.6 | 0.064 |
 | tree Instruct-4B, r64, round-2b data, all options in question | 83.5 | 0.966 | 89.3 | 59.0 | 0.038 |
@@ -154,7 +175,9 @@ models from each other. Selected rows:
 | stock 0.6B, untrained | 61.0 | 0.605 | 79.6 | 1.2 | 0.384 |
 
 Per-family tables for these models: [stock reranker](stock_model.md) and [tree scorer](tree_model.md). Jev and GPT-6
-Astra answers are cached in `reports/external/`, so reruns cost nothing.
+Astra answers are cached in `reports/external/cache/`, keyed by the request body: Jev reruns cost nothing, but GPT-6
+Astra's requests changed on 2026-09-27 (`max_tokens` 6000 → 8192), so its reruns miss the cache and pay again.
+`selfjev-4b`'s 52.3 multilabel exact match is the emotion-set effect of Jev's targets (finding 1).
 
 ### Every run (generated)
 

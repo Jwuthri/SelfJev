@@ -1,15 +1,18 @@
 # jina-reranker-v3.5 backend: a 0.6B listwise scorer trained the tree-r2b way
 
-Written 2026-09-24. A dead end: the code was removed on 2026-09-27 and is at tag
-[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27): [src/personal_jev/jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/jina.py) (scorer),
+!!! note "Status: archived (dead end)"
+    Written 2026-09-24. The code is only at tag `archive/pre-cleanup-2026-09-27`; the reports stay in `reports/`.
+
+Code at tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27): [src/personal_jev/jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/jina.py) (scorer),
 [train_jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/train_jina.py) (trainer), [tests/test_jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/tests/test_jina.py); config
 [configs/jina_r2b.json](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/configs/jina_r2b.json); GPU pipeline [scripts/run_jina_gpu.sh](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/scripts/run_jina_gpu.sh) via
-[scripts/aws_jina.sh](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/scripts/aws_jina.sh). Weights `runs/jina_r2b/adapter`
-(LoRA + projector + `jina_head.json`), reports `reports/jina_zeroshot/`, `reports/jina_r2b/`.
+[scripts/aws_jina.sh](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/scripts/aws_jina.sh). The trained adapter (`runs/jina_r2b/adapter`: LoRA +
+projector + `jina_head.json`) was not kept; training log `reports/train_meta/jina_r2b.json`, reports
+`reports/jina_zeroshot/`, `reports/jina_r2b/`.
 
 ## Bottom line
 
-Trained with the best recipe we have (round-2 hard cases with "none" rebalanced, one epoch, LoRA r=16), the 0.6B jina model
+Trained with the best recipe we had then (round-2 hard cases with "none" rebalanced, one epoch, LoRA r=16), the 0.6B jina model
 lands where the 0.6B Qwen reranker did, far below the 4B tree, on both test sets:
 
 | | jina v3.5 0.6B (this run) | Qwen3-Reranker-0.6B + LoRA (round 1) | Qwen3-Reranker-4B tree r2b | Jev |
@@ -21,7 +24,7 @@ lands where the 0.6B Qwen reranker did, far below the 4B tree, on both test sets
 | eval2 simple / hard / very hard | 80.6 / 70.7 / 68.5 | — | 95.2 / 89.9 / 86.5 | 98.5 / 96.7 / 96.5 |
 
 Zero-shot (untrained head set at logit 0 = median cosine): validation 58.6, eval2 46.5. Training: 16,301 questions over 11,774
-contexts, 346 steps, 72 min on one A10G (g5.xlarge, $1.006/h; whole job ≈ 1.5 h ≈ $1.60). Adapter reloads bit-exact.
+contexts, 345 steps, 72 min on one A10G (g5.xlarge, $1.006/h; whole job ≈ 1.5 h ≈ $1.60). Adapter reloads bit-exact.
 
 Where it loses most on eval2 vs the 4B tree: multilabel (−39 points), long states (59.7 vs 89.0), distractors (65.0 vs 88.2),
 injection (57.6 vs 82.1), role reversal (69.5 vs 93.0), evidence in the middle (66.7 vs 94.7). It is closest on plain
@@ -59,7 +62,7 @@ logit = scale · cos(proj(query), proj(passage)) + bias
   attend to earlier passages, so candidate order can matter; training shuffles question and candidate order, inference
   keeps request order. Contexts are capped at 64 passages (32 in training) and split beyond that.
 - Trained parameters: LoRA r=16 on q/k/v/o (4.6M), the projector (0.8M, saved with the adapter as `modules_to_save`) and
-  the two head scalars (`jina_head.json`; scale stays ≈ 9.8, bias ≈ −1.07). Loss = train.grouped_loss (BCE / grouped CE)
+  the two head scalars (`jina_head.json`; scale stays ≈ 9.8, bias ≈ −1.07). Loss = `train.grouped_loss` at the tag (BCE / grouped CE)
   on the logits, same schedule as the tree (lr 2e-4, 5% warmup, linear decay, grad accumulation 2, max_batch_tokens 16K,
   max_length 8192: 225 long questions dropped).
 - Validation curve (same mix as the tree runs): 46.6 → 69.6 (step 50) → 72.1 → 73.8 → 74.6 → 76.3 → 77.0 → 77.4 (step 345).
@@ -69,19 +72,20 @@ logit = scale · cos(proj(query), proj(passage)) + bias
 ## What could still move it (closed 2026-09-27: not pursued)
 
 - Second epoch, or higher LoRA capacity (r=64 + MLP targets): configs `jina_r2b_e2.json`, `jina_r2b_r64.json`, runner
-  `scripts/run_jina_followups.sh`. The 4B gained nothing from a second epoch; a 0.6B backbone with a 5M-parameter adapter
-  might be adapter-limited.
+  `scripts/run_jina_followups.sh` (all at the tag). The 4B gained nothing from a second epoch; a 0.6B backbone with a
+  5M-parameter adapter might be adapter-limited.
 - Pairwise layout (query = question + proposed answer, passage = state): closer to the model's pretraining, no sharing.
-- Round-3 data (40K questions, in flight elsewhere).
+- Round-3 data (38.6K questions, built the same day).
 
 ## Reproduce
 
-From a checkout of tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27):
+From a checkout of tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27)
+(package `personal_jev`, CLI `pjev`); the adapter was not kept, so `train-jina` comes first:
 
 ```bash
+uv run pjev train-jina configs/jina_r2b.json          # ~70 min on an A10G (~6× slower on the M5 Pro) -> runs/jina_r2b/adapter
+bash scripts/aws_jina.sh launch && bash scripts/aws_jina.sh run   # the same on a paid AWS box; then: log | pull | terminate
 uv run pjev classify examples/request.json --jina --dtype bfloat16 --adapter runs/jina_r2b/adapter
 uv run pjev eval --jina --dtype bfloat16 --max-length 16384 --adapter runs/jina_r2b/adapter --data data/eval2.jsonl --out reports/jina_r2b/eval2
-uv run pjev train-jina configs/jina_r2b.json          # ~70 min on an A10G; ~6× slower on the M5 Pro
-bash scripts/aws_jina.sh launch && bash scripts/aws_jina.sh run   # then: log | pull | terminate
 uv run python -m pytest -q tests/test_jina.py         # padding invariance + length accounting on the real model
 ```

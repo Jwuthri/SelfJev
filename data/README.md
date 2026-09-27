@@ -22,7 +22,7 @@ eval2 = [r for r in rows if r["dataset"] == "eval2"]                    # frozen
 teacher = [r["jev"] for r in train if "jev" in r]                     # Jev's probabilities, never the label
 ```
 
-The selfjev-4b recipe on top (not baked into the file): every non-test question, Jev's probabilities as half-weight soft targets (`scripts/train/jev_soft_targets.py`), and every option listed in the question (`selfjev.core.options`, applied by `selfjev finetune` and at serving time; `scripts/data/options_in_question.py` builds the eval copies in `data/ova/`).
+The selfjev-4b recipe on top (not baked into the file): every non-test question (the train and validation rows of the training datasets, minus the 1,200-question validation sample), Jev's probabilities as half-weight soft targets (`scripts/train/jev_soft_targets.py`), and every option listed in the question (`selfjev.core.options`, applied by `selfjev finetune` and at serving time; `scripts/data/options_in_question.py` builds the eval copies in `data/ova/`). Older mixes (family caps, round 2b) are history: [docs/data.md](../docs/data.md#the-training-mixes).
 
 ## Grow it: add a batch, never a new stand-alone dataset
 
@@ -37,7 +37,7 @@ New frozen test sets are the exception: built on purpose with other writers and 
 
 | dataset | file | what | used as | questions | texts | splits | types | Jev: have / accuracy | write-up |
 |---|---|---|---|---|---|---|---|---|---|
-| **hf** | `data/hf.jsonl` | public human-labeled sets (Banking77, AG News, TweetEval, MNLI, CLINC150, DBpedia, TREC, emotion, BoolQ, SST-2, ...) in our schema | training + dev-benchmark test | 16,800 | 16,800 | train 12,000, test 3,300, validation 750, calibration 750 | multiclass 10,200, binary 3,600, multilabel 3,000 | 16,800 / 75.2% | [link](../docs/data.md) |
+| **hf** | `data/hf.jsonl` | 11 public human-labeled sets in our schema: Banking77, AG News, TweetEval, MNLI, GoEmotions; held out (test rows only): CLINC150, DBpedia, TREC, dair-ai emotion, BoolQ, SST-2 | training + dev-benchmark test | 16,800 | 16,800 | train 12,000, test 3,300, validation 750, calibration 750 | multiclass 10,200, binary 3,600, multilabel 3,000 | 16,800 / 75.2% | [link](../docs/data.md) |
 | **synthetic** | `data/synthetic.jsonl` | round 1: trap-heavy authored texts, 6 families (12 Claude Sonnet agents) | training | 2,405 | 923 | train 2,080, calibration 122, validation 110, test 93 | binary 950, multiclass 762, multilabel 693 | 2,405 / 99.0% | [link](../docs/data.md) |
 | **hardcases** | `data/hardcases.jsonl` | round 2: verified hard cases (4 OpenRouter models + 8 Sonnet agents, blind Astra judge) | training | 10,142 | 4,054 | train 8,999, validation 1,143 | binary 4,474, multiclass 3,242, multilabel 2,426 | 10,142 / 95.7% | [link](../docs/hardcases_round2.md) |
 | **hardcases_r3** | `data/hardcases_r3.jsonl` | round 3: verified hard cases (Luna, Gemini 3.8 Flash, Grok 4.7; blind Astra judge) | training | 38,628 | 15,418 | train 34,868, validation 3,760 | binary 16,770, multiclass 12,402, multilabel 9,456 | 38,628 / 96.4% | [link](../docs/data.md) |
@@ -55,8 +55,8 @@ New frozen test sets are the exception: built on purpose with other writers and 
 
 | path | what |
 |---|---|
-| `data/ova/*.jsonl` | the test sets with every option listed in the question (the transform selfjev-4b trains and serves with), for `selfjev eval`; built by `scripts/data/options_in_question.py` |
-| `data/val_sample_1200.txt` | the 1,200 validation ids of every selfjev-4b run (`scripts/train/jev_soft_targets.py`) |
+| `data/ova/*.jsonl` | eval2, eval_llm and the dev benchmark's sources (hf, eval: every split, pass `--split test`) with every option listed in the question (the transform selfjev-4b trains and serves with), for `selfjev eval`; built by `scripts/data/options_in_question.py` |
+| `data/val_sample_1200.txt` | the 1,200-question validation sample of every Qwen3.5 run, held out of selfjev-4b's training mix (`scripts/train/jev_soft_targets.py`) |
 | `data/*/raw/, data/*/review/` | per-writer source files, judge answers, agreement reports (inputs of the builds above) |
 
 ## sha256 of the source files

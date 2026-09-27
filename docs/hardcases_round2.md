@@ -1,14 +1,18 @@
 # Round-2 hard-case data: generation, judging, and what it did to the model
 
+!!! note "Status: history, data still in use"
+    Round 2 (`data/hardcases.jsonl`) is part of `data/all.jsonl.gz` and of `selfjev-4b`'s training data. The Qwen3 tree
+    models retrained on it here (`tree_4b_r2`, `tree_4b_r2b`) are archived: code at tag `archive/pre-cleanup-2026-09-27`.
+
 Written 2026-09-24. Everything below is measured; paths point at the evidence. The cross-session ledger is
 [experiments.md](experiments.md).
 
 ## TL;DR
 
 - 4,103 states / 10,627 questions were written by five models, judged blind by GPT-6 Astra, and 10,142 kept
-  (95.4% author = judge). Cost: $22.86 generation + $36.24 judge + $0.30 Jev. Build: `data/hardcases.jsonl`.
-- Retraining the shared-prefix tree 4B on it (`runs/tree_4b_r2`) **helps the target task and hurts the aggregate
-  test number**: authored eval families 78.4 → 81.9%, every reasoning trap up (numeric +25, exception +29,
+  (95.4% author = judge). Cost: $22.86 generation + $36.24 judge + $0.27 Jev. Build: `data/hardcases.jsonl`.
+- Retraining the shared-prefix tree 4B on it (`tree_4b_r2`, reports in `reports/tree_4b_r2/`) **helps the target task
+  and hurts the aggregate test number**: authored eval families 78.4 → 81.9%, every reasoning trap up (numeric +25, exception +29,
   paraphrase +14, role reversal +13, injection +10, distractor +9, temporal +7, long state +6), but overall
   81.6 → 80.6% (McNemar p = 0.01) because CLINC intents fell 94.7 → 83.3%.
 - The CLINC loss has one cause: **all 50 CLINC errors are "none of the above" picks when a real intent applied**
@@ -54,7 +58,7 @@ Results: [data/hardcases/review/JUDGE.md](../data/hardcases/review/JUDGE.md); bu
   multilabel. 432 questions are author = Astra but Jev wrong: the slice that can beat Jev. Cheap second opinion, not a
   gate.
 
-## Retrain result (`runs/tree_4b_r2`, other session; test split 3,471 questions)
+## Retrain result (`tree_4b_r2`, other session; dev benchmark, 3,471 questions, `reports/tree_4b_r2/test/`)
 
 | slice | n | tree_4b (round-1 data) | tree_4b_r2 (+ hard cases) |
 |---|---|---|---|
@@ -87,7 +91,15 @@ Newly wrong CLINC questions: 34, all predicted `none`, mean max probability 0.61
 4. **multi_positive (44.4%, unchanged)** is the largest untouched slice: 3+ positives are only 21% of new multilabel
    questions; generate more with 3–5 positives.
 
+What came of it: 1 became round 2b (`data/hardcases_nb.jsonl` by `scripts/rebalance_nota.py`, both at the archive
+tag): CLINC 83.3 → 92.0 and dev benchmark 80.6 → 81.2 (`reports/tree_4b_r2b/test/`); the fix was motivated by this
+test-set diagnosis, so that CLINC score is no longer a clean held-out number. 3 became eval2
+([datasets](data.md#eval2-the-frozen-target-task-test-set)). 4 was taken up by round 3 (54% of multilabel questions
+with 3+ positives) and batch `llm_multilabel_v1`. `selfjev-4b` trains on round 2 as built, with no `none` rebalance.
+
 ## Rerunning
+
+The commands that built round 2 (new training data goes into a batch instead: [data/README.md](../data/README.md)):
 
 ```bash
 zsh -ic 'uv run python scripts/data/gen_hardcases.py --model openai/gpt-6-luna --budget 2 --max-questions 3000'  # resumes counters

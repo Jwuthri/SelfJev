@@ -2,7 +2,7 @@
   "name": "selfjev-4b",
   "base": "Qwen/Qwen3.5-4B",
   "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
-  "recipe": "selfjev finetune from scratch: new LoRA r64 on attention + DeltaNet projections, shared-prefix tree training (selfjev.qwen35_tree), lr 2e-4, 1 epoch; 79,943 non-test questions of data/all.jsonl.gz (incl. llm_multilabel_v1, numdate_neg_v1), texts <= 16K tokens; target 0.5 x verified label + 0.5 x Jev's probabilities; options listed in the question",
+  "recipe": "selfjev finetune from scratch: new LoRA r64 on attention + DeltaNet projections, shared-prefix tree training (selfjev.engine.tree), lr 2e-4, 1 epoch; 79,943 non-test questions of data/all.jsonl.gz (incl. llm_multilabel_v1, numdate_neg_v1), texts <= 16K tokens; target 0.5 x verified label + 0.5 x Jev's probabilities; options listed in the question",
   "prompt": "challenger-state-first-v1 (selfjev.engine.qwen35.Qwen35Scorer.entry)",
   "options_in_question": true,
   "eval2": 95.8,
@@ -17,7 +17,7 @@
     "selfjev serve --adapter weights/selfjev_4b",
     "selfjev merge --adapter weights/selfjev_4b --out runs/selfjev_4b/merged  # then: selfjev serve --engine vllm --model-dir runs/selfjev_4b/merged"
   ],
-  "note": "default model since 2026-09-26, replacing qwen35_4b_tree (eval2 95.6, dev 84.4, eval_llm 82.1): best on eval2 and eval_llm (Jev 92.5), fewer confident mistakes; lower on the dev benchmark's public emotion set (Jev's targets). Best-by-validation checkpoint (step 1,800 of 1,803).",
+  "note": "default model since 2026-09-26, replacing qwen35_4b_tree (eval2 95.6, dev 84.4, eval_llm 82.1; archived at tag archive/pre-cleanup-2026-09-27): best on eval2 and eval_llm (Jev 92.5), fewer confident mistakes; lower on the dev benchmark's public emotion set (Jev's targets). Best-by-validation checkpoint (step 1,800 of 1,803).",
   "adapter_sha256": "dfbf2834d883987893ec305a6093a345fd79c77f903f60f2f914cbe3b6058d1b",
   "source_run": "runs/qwen35_4b_tree_scratch_jevall/adapter",
   "train_meta": "reports/rlcd_jev_2026-09-26/train_meta_scratch_jevall.json",

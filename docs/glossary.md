@@ -8,13 +8,19 @@ hide:
 Every piece of shorthand used on this site, in plain words. On any page you can also hover a dotted-underlined term
 to see a one-line definition.
 
-## The two test sets
+## The test sets
 
 eval2
 :   The **main benchmark** since 2026-09-24: 1,991 questions about 647 texts, written to look like the real task
     (hard, trap-heavy, texts from 8 to 8K tokens). Written by three LLMs that never wrote training data, and a question
     is kept only when two other LLMs, judging blind, give the same answer. Nothing is ever trained or tuned on it.
     Jev scores 97.2%, our best model (`selfjev-4b`) 95.8%. Details: [data](data.md#eval2-the-frozen-target-task-test-set).
+
+eval_llm
+:   The frozen **LLM-evaluation** test set: 946 questions about 317 texts on scoring, judging, verifying, guardrail and
+    jailbreak checks of LLM prompts and outputs. Same writers as eval2; a question is kept only when two blind judges
+    (GPT-6 Astra and Claude Sonnet 5) both agree with the author. Jev scores 92.5%, `selfjev-4b` 93.1%.
+    Details: [LLM-evaluation data](llm_eval_data.md).
 
 dev benchmark (also "old test")
 :   The **original test split**: 3,471 questions, 3,300 of them from public datasets (Banking77, AG News, CLINC,
@@ -44,8 +50,13 @@ round 2b
     made the model reject valid answers.
 
 round 3
-:   38,628 more verified hard cases, built with round 2's lessons. Its training run was stopped halfway, so it is not
-    measured yet.
+:   38,628 more verified hard cases (GPT-6 Luna, Gemini 3.8 Flash, Grok 4.7; blind Astra judge), built with round 2's
+    lessons. Its first training run was stopped halfway; the rerun (`tree_4b_instruct_r3`) and every best model since
+    (`tree_4b_combo`, `qwen35_4b_tree`, `selfjev-4b`) train on it.
+
+batch
+:   How new training data is added now: a named set of new verified questions (for example `llm_multilabel_v1`) that
+    joins `data/all.jsonl.gz`, never a stand-alone dataset ([data/README.md](../data/README.md)).
 
 hard case / trap
 :   A question designed to fool a shallow reader. The trap tags on eval2:
@@ -88,9 +99,18 @@ state
 
 ## Models and how they are built
 
+selfjev-4b
+:   The default model: Qwen3.5-4B with a rank-64 LoRA adapter, trained with the tree on all 80K non-test questions,
+    Jev's probabilities as half-weight soft targets and every option listed in the question (`weights/selfjev_4b`).
+    Its reports are named `qwen35_4b_tree_scratch_jevall_`.
+
+archived
+:   Kept only at git tag `archive/pre-cleanup-2026-09-27`: every model but `selfjev-4b`, with its code, scripts and
+    configs (there the package is `personal_jev` and the CLI `pjev`). Reports stay in `reports/`.
+
 stock pairs
 :   The standard way to use a reranker: one sequence per (text, question, candidate). Accurate, but the text is re-read
-    for every candidate.
+    for every candidate. The first models used it (archived).
 
 shared-prefix tree (tree)
 :   Our architecture: the text is read once, and every question and candidate branches off it, still attending to the
@@ -98,10 +118,12 @@ shared-prefix tree (tree)
 
 reranker / Instruct base
 :   The two Qwen3 4B starting models: Qwen3-Reranker-4B (built to judge relevance) and Qwen3-4B-Instruct-2507 (a
-    general chat model). The Instruct base does better once the data is good.
+    general chat model). The Instruct base does better once the data is good. Both archived: `selfjev-4b` starts from
+    Qwen3.5-4B, a hybrid of Gated DeltaNet (recurrent) and attention layers.
 
 LoRA
-:   A small set of trainable weights added to a frozen model (0.3% of a 4B model). The only thing we train.
+:   A small set of trainable weights added to a frozen model: 1.4% of Qwen3.5-4B for `selfjev-4b`'s rank-64 adapter on
+    the attention and DeltaNet layers, 0.3% for the first rank-16 Qwen3 adapters. The only thing we train.
 
 r16 / r64 (rank)
 :   The size of the LoRA adapter: rank 64 has 4× the trainable weights of rank 16.
@@ -114,18 +136,26 @@ all options in the question (OVA)
 
 teacher / KD
 :   Qwen3.8-27B, a larger model used zero-shot as a *teacher*; knowledge distillation (KD) trains our model on its
-    probabilities. It did not help.
+    probabilities. It did not help (archived).
+
+soft targets (Jev targets)
+:   Training toward a mix of the verified label and a teacher's probabilities: 0.5 × label + 0.5 × Jev's stored
+    probabilities for `selfjev-4b` (`--soft-weight`). The label still decides; Jev only says how sure to be.
+
+RLCD
+:   Jev's name for training on calibration scores (proper scoring rules such as log, Brier and spherical), here
+    `selfjev rlcd`. Despite the name, no reinforcement learning is involved. [Details](finetune.md).
 
 custom model
-:   A first attempt at "read the text once": new cross-attention layers on top of a frozen encoder. Fast but inaccurate.
-    [Details](custom_model.md).
+:   A first attempt at "read the text once": new cross-attention layers on top of a frozen encoder. Fast but inaccurate
+    (archived). [Details](custom_model.md).
 
 merged / vLLM
 :   Serving tricks: *merged* folds the LoRA into the base weights; *vLLM* is a fast inference server whose prefix
     cache shares the text between questions.
 
 compact format
-:   A shorter tree layout tested for speed; it did not pay off.
+:   A shorter tree layout tested for speed; it did not pay off (archived).
 
 ### Reading a run name
 
@@ -136,13 +166,20 @@ Run names are built from these pieces:
 | `tree_` / `lora_` | shared-prefix tree / stock pairs |
 | `4b`, `8b`, `pilot` | model size (`pilot` = the first 0.6B run) |
 | `instruct` | Qwen3-4B-Instruct base instead of the reranker |
-| `r2`, `r2b`, `r3`, `r2x64` | training data round 2, 2b or 3 (none = round 1); `r2x64` = round 2 × rank 64 |
+| `r1`, `r2`, `r2b`, `r3`, `r2x64` | training data round 1, 2, 2b or 3 (none = round 1); `r2x64` = round 2 × rank 64 |
 | `r64`, `mlp` | LoRA rank 64, MLP targets (none = rank 16 on attention) |
 | `ova`, `kd` | all options in the question, distillation from the 27B teacher |
+| `combo` | the combined levers: rank 64, every option in the question, round-2b + round-3 data (`combo_r2`: round 2b only), and for Qwen3 the Instruct base |
+| `qwen35_` | Qwen3.5-4B base; there `tree` means trained with the tree (the earlier Qwen3.5 runs trained on full sequences) |
+| `scratch`, `sft`, `rlcd`, `cost` | a new adapter / a fine-tune of `qwen35_4b_tree` / RLCD from it / RLCD with a confident-mistake cost from the `sft` result |
+| `jevall`, `fresh` | all non-test data with Jev's probabilities as soft targets / 4,412 questions `qwen35_4b_tree` never trained on |
+| trailing `_`, `__last` | the report of the best-by-validation / of the last checkpoint |
 | `baseline` | untrained model |
 | `curve/` | one of the learning-curve / ablation runs |
 
-So `tree_4b_instruct_r2x64` = tree scorer, 4B, Instruct base, round-2(b) data × rank 64 (the best model on 2026-09-24).
+So `tree_4b_instruct_r2x64` = tree scorer, 4B, Instruct base, round-2(b) data × rank 64 (the best model on 2026-09-24),
+and `qwen35_4b_tree_scratch_jevall_` = Qwen3.5-4B trained with the tree, a new adapter on all the data with Jev's
+probabilities, best checkpoint: `selfjev-4b`.
 
 ## Metrics
 
@@ -181,8 +218,9 @@ OpenRouter / BYOK
 :   The API gateway used to call Jev and other models; BYOK ("bring your own key") means the bill goes to our own
     OpenAI or Google key.
 
-A10G, L40S, H100
-:   NVIDIA GPUs, from slowest to fastest, rented on AWS (g5, g6e, p5 instances).
+L4, A10G, L40S, H100
+:   NVIDIA GPUs, roughly from slowest to fastest, rented on AWS (g6, g5, g6e, p5 instances). `selfjev deploy aws`
+    defaults to an L4 (g6.xlarge).
 
 CLINC, Banking77, AG News, DBpedia, TREC, BoolQ, SST-2, MNLI, GoEmotions, TweetEval
 :   Public classification datasets in the dev benchmark (intents, topics, question types, yes/no reading, sentiment,

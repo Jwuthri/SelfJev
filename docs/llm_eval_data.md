@@ -22,7 +22,8 @@ Composition of the training file (from the file itself):
 - Target text length: roughly even over 8, 32, 64, 128, 256, 512, 1K, 2K, 4K, 8K tokens (≈ 1,000 each before the
   safety passes).
 - Types: binary 4,128 (true share 43–52% per use case), multiclass 3,008, multilabel 2,307.
-- Every family has ≈ 600–650 questions, under the trainer's 1,600-per-family cap.
+- Every family (use case × tier, 15 in all) has 575–679 questions, under the 1,600-per-family cap of the Qwen3-era
+  trainers (`selfjev-4b` trains with no cap).
 
 ## How
 
@@ -53,7 +54,8 @@ Composition of the training file (from the file itself):
    substance combinations, a body location), following safe-messaging practice. Kept on purpose: harmful *requests*
    (refused or not), jailbreak and injection attempts, crisis disclosures without method details, insults, fictional
    violence, policy breaches such as leaked codes: the classifier has to see them.
-   Removed (13 texts, from the raw files and scrubbed from the tracked generation caches): `lgf-0135` (reverse shell),
+   Removed (13 texts, from the raw files, and scrubbed from the generation caches `reports/hardcases_llm/gen_cache/`,
+   now only at tag `archive/pre-cleanup-2026-09-27`): `lgf-0135` (reverse shell),
    `lgf-0251` (netcat injection), `ldf-0109` (hash-cracking script), `ldf-0467` (step-by-step payment fraud),
    `lgf-0439` (firearm and acid smuggling tips), `lgf-0829` (self-harm encouragement), `lgf-0710`, `lgf-0384`,
    `lgf-0442`, `lgf-0443`, `lgf-0444`, `ldf-0403`, `lgf-0380` (self-harm method details).
@@ -99,7 +101,12 @@ kept targets of the strict build:
 
 ## Used since (2026-09-26)
 
-- The default model, `selfjev-4b`, is trained on `hardcases_llm.jsonl` (with every other non-test question): `eval_llm`
-  **93.1%** vs 82.1% for `qwen35_4b_tree`, which never saw this data (Jev 92.5%), and eval2 95.8% (no regression).
-  Reports: `reports/qwen35_4b_tree_scratch_jevall_/eval_llm/`, `reports/qwen35_4b_tree/eval_llm/`.
+- Batch `llm_multilabel_v1` extends the training data with the same use cases: 7,570 verified multilabel questions
+  with near-miss negatives and implicit positives (Luna, Gemini 3.8 Flash, Grok 4.7; blind Astra judge 89.7%; strict
+  build; the moderation screen flagged 254 of 4,364 texts, all read, 11 removed), $68.96 + Jev $0.30.
+  `data/batches/llm_multilabel_v1/README.md`, JOURNAL 2026-09-26 09:14.
+- The default model, `selfjev-4b`, is trained on `hardcases_llm.jsonl` and `llm_multilabel_v1` (with every other
+  non-test question): `eval_llm` **93.1%** vs 82.1% for `qwen35_4b_tree`, which never saw this data (Jev 92.5%), and
+  eval2 95.8% (no regression). Reports: `reports/qwen35_4b_tree_scratch_jevall_/eval_llm/`,
+  `reports/qwen35_4b_tree/eval_llm/`.
 - Training on it ended the held-out status of the dev benchmark's `eval_agent_output` family for `selfjev-4b`.

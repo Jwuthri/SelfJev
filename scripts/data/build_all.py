@@ -87,9 +87,11 @@ def main():
         'teacher = [r["jev"] for r in train if "jev" in r]                     # Jev\'s probabilities, never the label',
         "```",
         "",
-        "The selfjev-4b recipe on top (not baked into the file): every non-test question, Jev's probabilities as half-weight "
+        "The selfjev-4b recipe on top (not baked into the file): every non-test question (the train and validation rows of "
+        "the training datasets, minus the 1,200-question validation sample), Jev's probabilities as half-weight "
         "soft targets (`scripts/train/jev_soft_targets.py`), and every option listed in the question (`selfjev.core.options`, "
-        "applied by `selfjev finetune` and at serving time; `scripts/data/options_in_question.py` builds the eval copies in `data/ova/`).",
+        "applied by `selfjev finetune` and at serving time; `scripts/data/options_in_question.py` builds the eval copies in `data/ova/`). "
+        "Older mixes (family caps, round 2b) are history: [docs/data.md](../docs/data.md#the-training-mixes).",
         "",
         "## Grow it: add a batch, never a new stand-alone dataset",
         "",

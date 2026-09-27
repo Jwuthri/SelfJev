@@ -7,7 +7,8 @@ hide:
 
 **Can an open model do what Jev does?** [Jev](landscape.md) turns a text and a list of typed questions (yes/no, pick
 one, pick many) into calibrated decisions in about 150 ms, with no text generation. SelfJev rebuilds that interface on
-open Qwen3 and Qwen3.5 models with small LoRA adapters, and measures every step against Jev on the same questions.
+an open model, Qwen3.5-4B with a small LoRA adapter (Qwen3 models before it), and measures every step against Jev on
+the same questions.
 
 New to the shorthand (eval2, round 2b, r64, stock pairs…)? Hover any dotted-underlined term, or read the
 [glossary](glossary.md).
@@ -17,17 +18,18 @@ New to the shorthand (eval2, round 2b, r64, stock pairs…)? Hover any dotted-un
 <div class="stat"><strong>97.2%</strong><span>Jev on eval2: we are 1.4 points behind</span></div>
 <div class="stat"><strong>93.1%</strong><span>on eval_llm, the LLM-evaluation test set, level with Jev's 92.5%</span></div>
 <div class="stat"><strong>37×</strong><span>speed-up from reading the text once (shared-prefix tree)</span></div>
-<div class="stat"><strong>~$619</strong><span>logged spend: data, judges, GPUs, Jev calls</span></div>
+<div class="stat"><strong>~$786</strong><span>logged spend: data, judges, GPUs, Jev calls</span></div>
 </div>
 
 **The best model**, `selfjev-4b` ([weights/selfjev_4b](../weights/README.md)), is Qwen3.5-4B with a rank-64 LoRA adapter
 trained with our shared-prefix tree on all 80K non-test questions (public datasets plus LLM-written cases that a blind
 judge confirmed, texts up to 16K tokens), with half-weight Jev probabilities as soft targets and every option listed in
 the question. It scores 95.8% on eval2 (Jev 97.2%) and 93.1% on eval_llm (Jev 92.5%), with 11 confident mistakes on
-eval2 where its predecessor `qwen35_4b_tree` (95.6%) made 30. The fastest one to serve
-was its Qwen3 sibling `tree_4b_combo` (94.5%, archived), which on vLLM was cheaper per request than Jev on a busy GPU.
+eval2 where its predecessor `qwen35_4b_tree` (95.6%, archived) made 30. The fastest one measured
+was the Qwen3 tree `tree_4b_combo` (94.5%, archived), which on vLLM was cheaper per request than Jev on a busy GPU;
+`selfjev-4b`'s own tree server is not timed on a GPU yet.
 
-## The story in eleven steps
+## The story in twelve steps
 
 | when | step | result |
 |---|---|---|
@@ -42,11 +44,12 @@ was its Qwen3 sibling `tree_4b_combo` (94.5%, archived), which on vLLM was cheap
 | 09-24 | Round 3 (38.6K more verified questions) + every option listed in the question | **94.5%**: each adds about a point, and they stack |
 | 09-25 | Qwen3.5-4B, a hybrid model (3 recurrent Gated DeltaNet layers per attention layer), same levers | 94.5% trained on full sequences capped at 2K tokens |
 | 09-25 | A **tree for Qwen3.5**: its recurrent layers run level by level from copied states | **95.6%**, trained on texts up to 8K in 4.1 h |
+| 09-26 | **`selfjev-4b`**: a new adapter on all 80K non-test questions, texts up to 16K, Jev's probabilities as half-weight soft targets | **95.8%**, eval_llm 93.1% (Jev 92.5%), confident mistakes on eval2 30 → 11 |
 
-After that: Qwen3.5 on vLLM keeps its accuracy but is slow with many questions (vLLM reuses its recurrent state only
-every 528 tokens), and a first version of RLCD (Jev's name for training on calibration scores; despite the name, no reinforcement
-learning is involved) gave no gain on hard labels
-([fine-tune and RLCD](finetune.md)).
+Along the way: Qwen3.5 on vLLM keeps its accuracy but is slow with many questions (vLLM reuses its recurrent state only
+every 528 tokens), and RLCD (Jev's name for training on calibration scores; despite the name, no reinforcement
+learning is involved) gave no gain on hard labels; Jev's probabilities as soft targets are what cut the confident
+mistakes ([fine-tune and RLCD](finetune.md)).
 
 ## Where to go
 

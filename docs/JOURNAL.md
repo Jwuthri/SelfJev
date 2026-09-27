@@ -8,8 +8,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| **Retrain `selfjev-4b` with batch 2** (`selfjev_4b_v2`: the same recipe on 83,738 questions, i.e. + `mpos_distr_num_v1`; GPU preflight against selfjev-4b's eval2 report, then train, then eval2 / dev benchmark / eval_llm; user OK ≈ $21) | fork | `i-0700e0bcadbf72ad6` g6e.2xlarge us-east-2 ($2.242/h, 12 h cap) | 01:35 PDT 2026-09-27 | ≈ 11:30 PDT |
-| **Remove the code of every model but selfjev-4b, full docs audit** (user request). Other sessions: don't edit `src/`, `scripts/`, `tests/` or `docs/` until this row is gone | fork | this checkout | 01:40 PDT 2026-09-27 | ≈ 04:00 PDT |
+| **Retrain `selfjev-4b` with batch 2** (`selfjev_4b_v2`: the same recipe on 83,738 questions, i.e. + `mpos_distr_num_v1`; GPU preflight against selfjev-4b's eval2 report, then train, then eval2 / dev benchmark / eval_llm; user OK ≈ $21). **Decision rule, set before results:** the best-by-validation checkpoint (never picked on test) replaces `selfjev-4b` if eval2 ≥ 95.8 and eval_llm ≥ 92.6 (−0.5); batch 2 was test-diagnosis-motivated, so an eval2 gain is labeled as such | fork | `i-0700e0bcadbf72ad6` g6e.2xlarge us-east-2 ($2.242/h, 12 h cap) | 01:35 PDT 2026-09-27 | ≈ 11:30 PDT |
 
 ## Spend so far (real cost, BYOK upstream included)
 
@@ -36,7 +35,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 | AWS: tree LoRA-capacity ablation, 2 g5.xlarge, 21:05–21:46 and 21:05–21:59 | ≈ $1.60 | fork 2 |
 | AWS: combined levers (r2b data + r=64 / + MLP), 2 g5.xlarge, 00:17–02:38 and 00:17–03:10 | ≈ $5.26 | fork 2 |
 | `llm_multilabel_v1` batch: writing $26.60 + Astra judge $42.36 (both sessions) | $68.96 (approved ≈ $60, cap $70) | Synthetic data generation strategy |
-| Test-failure audit: Opus 5.5 relabel of 968 failed test questions | $4.92 |
+| Test-failure audit: Opus 5.5 relabel of 968 failed test questions | $4.92 | Synthetic data generation strategy |
 | Jev predictions for `llm_multilabel_v1` | $0.30 | Synthetic data generation strategy |
 | Jev predictions for every question of data/all.jsonl.gz (33,707 new texts) | $1.95 | Synthetic data generation strategy |
 | LLM-evaluation data: training writing $37.09 + Astra batch judge $37.95; `eval_llm` test writing $15.55 + Astra $3.39 + Sonnet 5 $2.37 + Jev $0.03 | $96.38 (approved ≈ $100) | Synthetic data generation strategy |
@@ -55,6 +54,34 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-27 02:20 PDT: only `selfjev-4b` on master, `runs/` deleted, every doc page audited (fork, user request)
+
+- **Code** (`bfa0825`, `a195c38`): Qwen3.5-4B only (the Qwen3.5-2B option and `--base` are gone), the unused
+  forked-cache scorer is gone (`TreeServer` and vLLM serve), `weights/qwen35_4b_tree` left master (in history and at tag
+  `archive/pre-cleanup-2026-09-27`; its reports stay), scripts that served only archived models are gone, and
+  `scripts/train/selfjev_4b.sh` is the recipe (GPU preflight, train, evals).
+- **Bugs the audit found** (`e4d3c72`): `selfjev classify` skipped the option lists `selfjev-4b` was trained with (the
+  server listed them; now both do); an unhandled error was a plain-text 500 without `x-request-id` (now JSON with the
+  id); `.pre-commit-config.yaml` had never been committed (a global gitignore excluded it). 82 CPU tests.
+- **`runs/`** (7.4 GB, 72 runs) moved to the macOS Trash; every run's `train_meta.json` is in `reports/train_meta/`
+  (`runs/a/b` → `a__b.json`), which the ledger now reads; its weights column names the kept adapter.
+- **Docs:** three parallel audits of all 24 pages plus README, AGENTS, `weights/` and the data catalog: stale paths,
+  commands and claims fixed, archived models marked (with the tag's `personal_jev` / `pjev` names), the eval2 McNemar
+  column now compares with `selfjev-4b`, spend recomputed from the table below (≈ $786 logged as of today), and the nav
+  groups the archived model pages. Open: `TreeServer` latency has never been measured on a GPU.
+- **Cost:** $0.
+
+### 2026-09-27 01:42 PDT: on a GPU, TreeServer gives `selfjev-4b`'s answers (preflight of the `selfjev_4b_v2` retrain) (fork)
+
+- **Why:** since the cleanup, `selfjev serve` and `selfjev eval` score with `TreeServer` (the shared-prefix tree, forward
+  only); `selfjev-4b`'s stored reports came from the archived forked-cache engine, and the restructured code had never
+  run on a GPU. `scripts/train/selfjev_4b.sh` checks this before it trains.
+- **How:** `selfjev eval --adapter weights/selfjev_4b --data data/ova/eval2.jsonl --limit 400` on the L40S box
+  `i-0700e0bcadbf72ad6`, compared question by question with `reports/qwen35_4b_tree_scratch_jevall_/eval2/report.json`.
+- **Result:** 99.8% of the 400 decisions agree; largest per-question probability difference: median 0.0003, p99 0.0224.
+  Latency was not measured.
+- **Cost:** a few minutes of the retrain box (in its line). **Verdict:** the restructured engine is sound on GPU.
 
 ### 2026-09-27 01:40 PDT: repo cleanup and the product: `selfjev` package, SDK, server with Jev's API, fine-tuning over HTTP, deployment (fork, user request)
 

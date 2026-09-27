@@ -5,12 +5,14 @@ hide:
 
 # Key findings
 
-Everything we learned from 2026-09-22 to 2026-09-24, one finding per box. Each box gives the claim, the numbers and the
+Everything we learned from 2026-09-22 to 2026-09-27, one finding per box. Each box gives the claim, the numbers and the
 evidence file.
 
 **How to read the numbers** (every other term is in the [glossary](glossary.md)):
 
 - **eval2** is the frozen target-task test set (1,991 questions). It has been the primary benchmark since 2026-09-24.
+- **eval_llm** is the frozen LLM-evaluation test set (946 questions: score, judge, verify, guardrail, jailbreak;
+  [how it was built](llm_eval_data.md)), scored since 2026-09-26.
 - **dev benchmark** is the original 3,471-question test split (`hf.jsonl` test + `eval.jsonl` test). It is 95% public
   datasets and was reused for many decisions, so it is a development benchmark, not a clean test.
 - **p** is a paired exact McNemar test on the same questions. "142 / 34" means 142 questions only the first model gets
@@ -19,19 +21,25 @@ evidence file.
 ## The headline
 
 !!! success "1. Best model: `selfjev-4b`, 95.8% on eval2 and 93.1% on eval_llm (Jev 97.2% and 92.5%)"
-    **`selfjev-4b`** (2026-09-26): the same Qwen3.5-4B + LoRA r64 tree recipe, trained from scratch on all 79.9K
-    non-test questions of `data/all.jsonl.gz` (texts up to 16K tokens, the LLM-evaluation data and two new verified
-    batches) with half-weight Jev probabilities as soft targets. eval2 **95.8%** (vs its predecessor 33 / 29, p = 0.70),
-    eval_llm **93.1%** (predecessor 82.1%; Jev 92.5%, 33 / 27, p = 0.52), dev benchmark 83.8% (−0.7, from Jev's targets
-    on the public emotion set), confident mistakes on eval2 30 → 11 (Jev 7). Long-text errors 8 → 3.
+    **`selfjev-4b`** (2026-09-26, the default, `weights/selfjev_4b`): Qwen3.5-4B + LoRA r64 trained with the
+    shared-prefix tree, every option listed in the question, from scratch on 79.9K non-test questions of
+    `data/all.jsonl.gz` (texts up to 16K tokens, the LLM-evaluation data and two new verified batches; the later batch
+    `mpos_distr_num_v1` is not in it), with half-weight Jev probabilities as soft targets.
 
-    Its predecessor, **Qwen3.5-4B + LoRA r=64, trained with the shared-prefix tree, every option listed in the question,
-    round-2b + round-3 verified data** (`qwen35_4b_tree`, 51.8K training questions, texts up to 8K tokens), scores
-    **95.6%** on eval2 and **84.4%** on the dev benchmark.
+    - eval2 **95.8%**: Jev 97.2% (23 / 52, p = 0.001), its predecessor 95.6% (33 / 29, p = 0.70). Binary 96.8 vs Jev
+      97.8, multiclass 97.0 vs 98.1, multilabel exact match 91.4 vs 94.2; the simple tier level (98.5 vs 98.5).
+    - eval_llm **93.1%**: level with Jev's 92.5% (33 / 27, p = 0.52); its predecessor, which never saw this kind of
+      data, 82.1%.
+    - Dev benchmark 83.8%: above Jev's 82.7% (164 / 128, p = 0.04), 0.7 below its predecessor (103 / 127, p = 0.13),
+      from Jev's targets on the public emotion set.
+    - Confident mistakes on eval2 30 → 11 (Jev 7); long-text errors 8 → 3.
 
-    - Jev scores 97.2% on eval2 (31 / 64, p = 0.0009) and 82.7% on the dev benchmark (238 / 178, p = 0.004: ours is
-      higher).
-    - Binary 96.9 vs 97.8, multiclass 96.8 vs 98.1, multilabel exact match 90.1 vs 94.2; the simple tier 98.6 vs 98.5.
+    Its predecessor, **`qwen35_4b_tree`** (2026-09-25; weights at tag `archive/pre-cleanup-2026-09-27`), is the same
+    recipe on the older mix (round-2b + round-3 verified data), hard labels, texts up to 8K tokens (51.8K training
+    questions):
+    **95.6%** on eval2 (Jev 31 / 64, p = 0.0009) and **84.4%** on the dev benchmark (Jev 238 / 178, p = 0.004: ours is
+    higher).
+
     - Above both previous best models, which tied at 94.5:
       - `qwen35_4b_combo`, the same base and data trained on full sequences capped at 2K tokens (18.5% of the data
         dropped): 52 / 31, p = 0.028. The tree in training is worth +1.1, in 38% less training time.
@@ -41,7 +49,8 @@ evidence file.
     - Qwen3.5 is mostly Gated DeltaNet (a recurrence), which a tree mask cannot isolate: its tree runs those layers
       level by level from copied states, with gradients through them ([tree scorer](tree_model.md#qwen35-hybrid-deltanet)).
 
-    Evidence: [eval2 summary](../reports/eval2/summary.md), [leaderboard](leaderboard.md).
+    Evidence: [eval2 summary](../reports/eval2/summary.md), [leaderboard](leaderboard.md), JOURNAL 2026-09-25 16:05 and
+    2026-09-26 21:25.
 
 !!! warning "1b. More verified hard cases from the same kind of writers has hit diminishing returns"
     On the Instruct base with r=64, each data round adds less on eval2:
@@ -56,21 +65,25 @@ evidence file.
     - Round 3 had more multi-positive multilabel questions and far fewer "none" answers than round 2, but it came from
       the same kind of LLM writers (Luna, Gemini Flash, Grok) and the same Astra judge.
     - What moved eval2 after round 3 was the question format, not more data. Listing the options in the question adds
-      +1.2 on top of round 3 (`tree_4b_combo`, 94.5; 60 / 37, p = 0.025; finding 1).
+      +1.2 on top of round 3 (`tree_4b_combo`, 94.5; 60 / 37, p = 0.025; finding 13).
       - On round-2b data alone the same change ties (`tree_4b_combo_r2`, 92.9 vs 92.7, p = 0.83).
       - "Option pointers" (`tree_4b_combo_ptr`) is a dead end: −0.9 and only ~1.1× faster.
-    - The remaining 2.7 points to Jev (97.2) need something other than more of this data:
-      - multilabel exact match (85.9 vs 94.2) is still the biggest gap;
+    - At 94.5, the 2.7 points left to Jev (97.2) needed something other than more of this data:
+      - multilabel exact match (85.9 vs 94.2) was the biggest gap;
       - teacher ensembles scored 94.5 at 27B cost, and distilling them at weight 0.5 gave nothing (`tree_4b_ova_kd`).
+    - What came next: the Qwen3.5 base trained with its own tree (95.6), then new kinds of verified data
+      (LLM-evaluation texts, targeted batches) with Jev's soft targets (`selfjev-4b`, 95.8; finding 1).
 
 !!! success "2. A frozen open 4B model plus a small adapter gets most of the way"
     The core idea behind Jev is not a moat. A LoRA adapter on 0.3% of the weights, trained on about 10K examples for
     under an hour on one cloud GPU:
 
     - moves Qwen3-Reranker-4B from 62.8% to 80.3% on the dev benchmark;
-    - the shared-prefix tree reaches 81.6%, and the best recipe 82.7%, the same as Jev.
+    - the shared-prefix tree reaches 81.6% (Jev 82.7%).
 
-    What remains is data for hard reasoning cases, calibration that holds on new tasks, and serving speed.
+    With more verified data, the Qwen3.5 base and Jev's soft targets (80K questions, ≈ $21 on one L40S), `selfjev-4b`
+    reaches 83.8% there and 95.8% on eval2 (Jev 97.2%). What remains is data for hard reasoning cases, calibration that
+    holds on new tasks, and serving speed.
 
 ## Evaluation
 
@@ -78,10 +91,11 @@ evidence file.
     Every trained 4B model and both frontier models sit between 80% and 86% on the dev benchmark: Jev 82.7, GPT-6
     Astra 85.8.
     Label noise in public sets (GoEmotions, TweetEval, dair-ai emotion) sets that ceiling, and 3,300 of its 3,471
-    questions are public datasets.
+    questions are public datasets. A blind relabel (2026-09-26) found 317 of 778 dev-benchmark failures (41%) to look like
+    label problems.
 
-    On eval2 our models spread from 68.8% (0.6B) to 92.7%, and Jev scores 97.2%. Levers the dev benchmark called ties or
-    losses turned out to be real on eval2:
+    On eval2 our models spread from 68.8% (0.6B) to 95.8% (`selfjev-4b`), and Jev scores 97.2%. Levers the dev
+    benchmark called ties or losses turned out to be real on eval2:
 
     | lever | dev benchmark | eval2 |
     |---|---|---|
@@ -100,13 +114,19 @@ evidence file.
       main trap tag.
     - A `none` option is correct in 14.8% of the multiclass questions that offer one.
     - Jev scores 97.2% on it. GPT-6 Astra is not scored, since it was one of the judges.
+    - Its labels hold up: a blind Claude Opus 5.5 relabel of every question `qwen35_4b_tree` or Jev got wrong
+      (2026-09-26) found 114 of 119 failures to be real model errors and one clear label error (`eg-0024-q1`). eval2
+      stays frozen, with an errata list.
 
-    Evidence: [data/eval2/REVIEW.md](../data/eval2/REVIEW.md).
+    Evidence: [data/eval2/REVIEW.md](../data/eval2/REVIEW.md), [failure audit](../reports/audit_2026-09-26/AUDIT.md).
 
 !!! warning "5. Both test sets are now development sets"
     - The dev benchmark has driven many choices. An early review found 22 test questions whose MNLI premise also
       appears in a selection split, and near-duplicate authored policy texts across splits.
-    - eval2 has since informed the research direction, although nothing was trained, tuned or calibrated on it.
+    - eval2 has since informed the research direction, although nothing was trained, tuned or calibrated on it. Its
+      failure audit (2026-09-26) motivated two training batches, labeled as test-diagnosis-motivated.
+    - eval_llm has not been mined for our errors, but it informs choices too: `selfjev-4b`'s promotion and the next
+      retrain's decision rule use it.
     - A fresh final set is needed before claiming a result against Jev.
 
     Evidence: [review 2026-09-23](../reports/review_2026-09-23.md).
@@ -136,7 +156,8 @@ evidence file.
     - All 34 newly wrong CLINC answers picked `none`; `none` predictions rose from 61 to 95, with 45 gold.
     - Ignoring `none`, both models rank the right intent first on 254 of 255 in-scope questions. The model did not
       forget intents; it became too willing to reject.
-    - Capping `none`-correct at 10% (round 2b, `scripts/data/rebalance_nota.py`) brought CLINC back to 92.0%.
+    - Capping `none`-correct at 10% (round 2b, `scripts/rebalance_nota.py` at tag `archive/pre-cleanup-2026-09-27`)
+      brought CLINC back to 92.0%.
 
     This fix came from a test diagnosis, so it is labeled as such. Evidence:
     [tree review](../reports/tree_review_2026-09-23/review.md).
@@ -161,8 +182,11 @@ evidence file.
       Cost: $22.86 generation + $36.24 judging.
     - **Round 3:** 38,628 verified questions, 97.0% author–judge agreement, 54% of multilabel questions with 3+
       positives. About $280.
+    - **Since then** every new set is a batch that grows one dataset (`data/all.jsonl.gz`, 93,237 questions): the
+      LLM-evaluation data (9,443 training questions + the frozen `eval_llm`, $96.38), `llm_multilabel_v1` (7,570,
+      $68.96), `numdate_neg_v1` (549, $3.08) and `mpos_distr_num_v1` (3,645, $19.81); author–judge agreement 89.7–95.6%.
     - Author quality varies: DeepSeek V4 Flash agrees with the judge only 82.1% of the time, Grok 4.7 98.9%.
-    - Batch judging through OpenAI's Batch API costs about $3.40–4.16 per 1,000 questions.
+    - Batch judging through OpenAI's Batch API costs about $3.40–4.60 per 1,000 questions.
     - Jev agrees with authors on 93.0%: a useful second opinion, never the gate.
 
     Evidence: [round-2 write-up](hardcases_round2.md), [data](data.md).
@@ -202,7 +226,9 @@ evidence file.
 
     - Dev benchmark 82.6 vs 81.2 (130 / 82, p = 0.001), multilabel exact match 57.8 vs 51.7.
     - eval2 91.6 vs 90.6 (66 / 46, p = 0.07).
-    - One run each. Requests at inference time need the same transform.
+    - One run each. Requests at inference time need the same transform: `selfjev serve` and `selfjev classify` apply
+      it by default, and the evaluation files are transformed ahead (`data/ova/`). `selfjev-4b` and the three best
+      models before it (`qwen35_4b_tree`, `qwen35_4b_combo`, `tree_4b_combo`) all use it.
 
 !!! failure "14. A new cross-attention head on a shared encoding does not work (as specified)"
     The v1-spec model encodes the text once, encodes each candidate separately, and scores with 2 new cross-attention
@@ -223,10 +249,12 @@ evidence file.
     | T5Gemma 2 1B–1B, shared encoder + decoder branches (round-1 data) | 73.0 | 75.4 |
     | T5Gemma 2, round-2b data, **decoder-only LoRA by mistake** | 76.8 | 73.8 |
     | jina-reranker-v3.5 0.6B, listwise, round-2b data | 73.3 | 76.6 |
-    | Qwen3.5-2B, shared document with forked native cache (round-1 data) | not scored | 79.9 |
+    | Qwen3.5-2B, shared document with forked native cache (round-1 data) | 84.3 | 79.9 |
+    | *tree 4B, round-1 data (reference)* | *85.1* | *81.6* |
     | *tree 4B, round-2b data (reference)* | *90.6* | *81.2* |
 
-    Evidence: [other challengers](challengers.md).
+    Qwen3.5-2B came closest (84.3 vs 85.1 on the same round-1 data); its 4B sibling has been the base of the best models
+    since 2026-09-25, `selfjev-4b` included. Evidence: [other challengers](challengers.md), JOURNAL 2026-09-24 16:18.
 
 ## Distillation and calibration
 
@@ -238,7 +266,28 @@ evidence file.
 !!! failure "17. ...but distilling it into the tree did not help"
     Soft targets from the 27B at weight 0.5 on the target-task training rows (`tree_4b_ova_kd`): eval2 91.0 vs 91.6
     (p = 0.21), dev benchmark 82.5 vs 82.6. Where the teacher disagrees with the verified label (12–20% of rows),
-    the loss pulls toward the wrong answer. Untried: multiclass-only distillation, a lower weight, an r64 student.
+    the loss pulls toward the wrong answer. The follow-ups (multiclass only, a lower weight, an r64 student) were closed
+    untried at the 2026-09-27 cleanup; the teacher's code is at tag `archive/pre-cleanup-2026-09-27`.
+
+!!! success "17b. Jev's probabilities as soft targets cut confident mistakes; RLCD adds nothing over a fine-tune"
+    From `qwen35_4b_tree` (eval2 95.58), one epoch on 69.5K non-test questions with the target 0.5 × verified label +
+    0.5 × Jev's probabilities (the label stays the argmax, so Jev never decides a label):
+
+    | eval2 | accuracy | Brier | confident mistakes (≥ 0.9 sure) |
+    |---|---|---|---|
+    | start | 95.58 | 0.0480 | 30 |
+    | B: fine-tune on Jev's targets | 95.73 (19 / 16, p = 0.74) | **0.0438** | 14 |
+    | A: RLCD on the same targets | 95.43 (vs B 4 / 10, p = 0.18) | 0.0446 | 22 |
+    | C: B + RLCD with a 5× cost per confident mistake | 95.68 (vs B 9 / 10, p = 1) | 0.0518 | **8** |
+    | Jev | 97.24 | 0.0335 | 7 |
+
+    - RLCD with proper-score rewards is fine-tuning with noise: its rewards peak at the same target. On hard labels it
+      did nothing either (2026-09-25).
+    - C's 8 confident mistakes come from being less sure overall: at equal coverage it is no better than B. Jev's edge
+      is ranking (8 mistakes among its 92% most confident decisions, B 20), not hedging.
+    - Trained from scratch on all the data with these targets, the recipe became `selfjev-4b` (finding 1).
+
+    Evidence: [fine-tune and RLCD](finetune.md), JOURNAL 2026-09-26 09:10 and 15:15.
 
 !!! warning "18. Calibration: temperatures near 1, thresholds that hurt, and a bias on unseen tasks"
     - After LoRA the fitted temperatures are about 1: the raw scores are already calibrated in distribution (tree
@@ -275,6 +324,9 @@ evidence file.
     - FP8 (vLLM dynamic) changes nothing: at 4B the H100 is overhead-bound, not compute-bound.
     - Jev's marginal cost per token is still ≈ 6× lower (2.2–2.6 vs ≈ 15 ms per 1,000 tokens), so it is a smaller model
       or more GPUs per request; up to 4K tokens the fixed costs decide.
+    - These are the Qwen3 tree's numbers (`tree_4b_combo`, weights at tag `archive/pre-cleanup-2026-09-27`). The
+      default `selfjev-4b` (Qwen3.5) is served by `TreeServer` (finding 20), whose latency has not been measured on a
+      GPU yet.
 
     Evidence: [speed](speed.md#the-same-model-on-an-h100-2026-09-26), [latency summary](../reports/latency/summary.md),
     [JOURNAL 2026-09-26](JOURNAL.md).
@@ -291,6 +343,10 @@ evidence file.
       server side up to 2K tokens (L40S; Jev 102–106 ms). With 16 questions it is slow (454–1,138 ms): vLLM caches its
       recurrent state only every 528 tokens, so each candidate recomputes the end of the text. The Qwen3 tree on vLLM
       takes 163–424 ms there.
+    - So `selfjev serve` serves `selfjev-4b` with the Qwen3.5 training tree run forward only (`TreeServer`,
+      `src/selfjev/engine/tree.py`, the default engine; vLLM stays an option): the text once, each question once, then
+      each candidate, the same work as the Qwen3 tree. It matches standalone sequences in a CPU test; its latency on a
+      GPU has not been measured yet.
 
     Evidence: [latency optimization](../reports/latency_optimization_2026-09-24/conclusions.md),
     [JOURNAL 2026-09-25 18:05](JOURNAL.md).
@@ -309,29 +365,28 @@ evidence file.
 
 ## Where the gap to Jev is
 
-!!! abstract "22. Multilabel, negations, numbers and dates"
-    The previous default (`qwen35_4b_tree`; `selfjev-4b`'s slices are in
-    [reports/eval2/summary.md](../reports/eval2/summary.md)) vs Jev on eval2, every slice with n ≥ 100 and a gap of 3
-    points or more:
+!!! abstract "22. Several correct answers, numbers and distractors"
+    `selfjev-4b` vs Jev on eval2, every slice with n ≥ 100 and a gap of 3 points or more
+    ([reports/eval2/summary.md](../reports/eval2/summary.md)):
 
     | slice | n | ours | Jev | gap |
     |---|---|---|---|---|
-    | double negation | 126 | 94.4 | 99.2 | 4.8 |
-    | multi-positive | 322 | 91.3 | 96.0 | 4.7 |
-    | distractor | 474 | 92.8 | 97.0 | 4.2 |
-    | multilabel exact match | 382 | 90.1 | 94.2 | 4.1 |
-    | hypothetical | 128 | 94.5 | 98.4 | 3.9 |
-    | numeric reasoning | 224 | 88.4 | 92.0 | 3.6 |
-    | temporal reasoning | 203 | 85.7 | 89.2 | 3.5 |
-    | paraphrase | 218 | 92.2 | 95.4 | 3.2 |
-    | long state | 191 | 95.8 | 99.0 | 3.2 |
-    | very hard tier | 654 | 93.4 | 96.5 | 3.1 |
+    | multi-positive | 322 | 91.0 | 96.0 | 5.0 |
+    | numeric reasoning | 224 | 87.5 | 92.0 | 4.5 |
+    | multi-turn | 149 | 92.6 | 96.0 | 3.4 |
+    | distractor | 474 | 93.9 | 97.0 | 3.1 |
 
-    Every gap is now under 5 points (with `tree_4b_instruct_r2x64` they reached 10.7). On the simple tier we are level
-    (98.6 vs 98.5).
-
-    Text length is not our weakness: 96.6% at 1K–4K tokens and 97.0% above 4K (Jev 98.0 and 98.8). Numbers and dates are also Jev's
-    weakest slices (92.0, 89.2), with multilabel (94.2).
+    - Just under 3 points: multilabel exact match (91.4 vs 94.2) and role reversal (94.1 vs 96.8). Level on the simple
+      tier (98.5 vs 98.5), ahead on exceptions (96.2 vs 95.3).
+    - Counted in wrong questions against Jev: multi-positive 29 vs 13, distractor 29 vs 14, numeric 28 vs 18 (JOURNAL
+      2026-09-26 21:25). Batch `mpos_distr_num_v1` (3,645 questions) targets these three; it was motivated by a test
+      diagnosis, and the retrain with it (`selfjev_4b_v2`, started 2026-09-27) has no results yet.
+    - The previous default (`qwen35_4b_tree`) also had double negation (94.4 vs 99.2), hypothetical (94.5 vs 98.4),
+      temporal (85.7 vs 89.2), paraphrase (92.2 vs 95.4), long state (95.8 vs 99.0), the very hard tier (93.4 vs 96.5)
+      and multilabel exact match (90.1 vs 94.2) on this list; `selfjev-4b` brought each under 3 points. Multi-turn is
+      new on it (94.0 → 92.6). With `tree_4b_instruct_r2x64` the gaps reached 10.7.
+    - Text length is not our weakness: 97.6% at 1K–4K tokens and 97.6% above 4K (Jev 98.0 and 98.8). Numbers and dates
+      are also Jev's weakest slices (92.0, 89.2), with multilabel (94.2).
 
 ## Process lessons
 
@@ -350,7 +405,8 @@ evidence file.
 !!! warning "24. Shared cloud accounts need a written owner for every box"
     - An unlogged `aws ec2 stop-instances` from the laptop killed the round-3 training run at step ≈ 500 of 915.
       Only the step-300 checkpoint survived: 90.8 on eval2, not a verdict on round 3.
-    - GPU capacity was scarce throughout: no g6e.2xlarge/4xlarge at first, no H100 in any Ohio zone, and L40S often
-      unavailable.
+    - GPU capacity was scarce on 2026-09-23/24: no g6e.2xlarge/4xlarge at first, no H100 in any Ohio zone, and L40S
+      often unavailable. From 2026-09-25 every training run found an L40S (g6e.2xlarge, us-east-2); an H100 was found
+      once, as spot (2026-09-26).
     - Rule since then: every box is tagged and listed in the JOURNAL's *In flight* table, and nobody touches another
       session's box.

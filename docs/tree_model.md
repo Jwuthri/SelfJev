@@ -1,23 +1,30 @@
 # Shared-prefix tree scorer
 
+!!! info "Status: current"
+    The tree is the architecture of `selfjev-4b`, the default model; its Qwen3.5 version is
+    [src/selfjev/engine/tree.py](../src/selfjev/engine/tree.py) ([below](#qwen35-hybrid-deltanet)). The rest of the page
+    measures the first tree, on Qwen3 (2026-09-23), whose code is archived at tag `archive/pre-cleanup-2026-09-27`.
+
 The text is read **once**, and every question and candidate still reads it through **all** of the model's layers,
 in one forward pass with no text generation. It combines what we measured separately:
 
 - the stock reranker's joint reading of text and question (accurate, but it re-reads the text for every
-  candidate);
+  candidate; see [stock_model.md](stock_model.md));
 - the custom model's shared text encoding (fast, but text and question met only in 2 small layers at the end,
   and yes/no questions stayed at chance; see [custom_model.md](custom_model.md)).
 
 Code: the Qwen3 tree of these runs is at tag `archive/pre-cleanup-2026-09-27` ([tree.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/tree.py),
 [train_tree.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/train_tree.py), [tests/test_tree.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/tests/test_tree.py)); the Qwen3.5 tree of
-`selfjev-4b` is [src/selfjev/engine/tree.py](../src/selfjev/engine/tree.py), tests in [tests/engine/](../tests/engine/test_tree.py).
+`selfjev-4b` is [src/selfjev/engine/tree.py](../src/selfjev/engine/tree.py) (training and `TreeServer`), tests in
+[tests/engine/](../tests/engine/test_tree.py).
 
-> **Update 2026-09-24.** This page describes the first tree runs (round-1 data, dev benchmark). Every later best model
-> is a tree too: round-2b data 90.6% on eval2, all options in the question 91.6%, and Qwen3-4B-Instruct-2507 + LoRA r64
-> + round-2 data **92.7%** (Jev 97.2%). The Instruct base, weaker here on the dev benchmark, is +3.0 on eval2. See the
+> **Later results.** The measurements below are the first tree runs (round-1 data, dev benchmark, 2026-09-23). Every
+> later best model is a tree too: round-2b data 90.6% on eval2, all options in the question 91.6%,
+> Qwen3-4B-Instruct-2507 + LoRA r64 + round-2 data 92.7%, then Qwen3.5-4B with its own tree: `qwen35_4b_tree` 95.6% and
+> `selfjev-4b` **95.8%** (Jev 97.2%). The Instruct base, weaker here on the dev benchmark, is +3.0 on eval2. See the
 > [leaderboard](leaderboard.md) and [key findings](findings.md).
 
-**Bottom line (test split, 3,471 questions, measured 2026-09-23 on an AWS A10G, bf16).**
+**Bottom line (Qwen3 tree; dev benchmark = the 3,471-question test split; 2026-09-23, one AWS A10G, bf16).**
 - **Qwen3-Reranker-4B + LoRA in the tree format scores 81.6%.** On the same data with the same LoRA settings, the
   stock 4B scores 80.3% (p = 0.016) and the stock 8B scores 80.7%. Jev scores 82.7%; the gap is not significant
   (p = 0.08).
@@ -25,7 +32,7 @@ Code: the Qwen3 tree of these runs is at tag `archive/pre-cleanup-2026-09-27` ([
   candidates take 2.8 s instead of 90.4 s on an 8K-token text, and 5.6 s instead of 207 s on a 16K-token text.
   With a single question, both take the same time.
 - **The reranker is the better base once fine-tuned.** Qwen3-4B-Instruct-2507 was ahead before training (72.0% vs
-  66.9% on validation) but scores 80.4% on test after LoRA, vs 81.6% (p = 0.016).
+  66.9% on validation) but scores 80.4% on the dev benchmark after LoRA, vs 81.6% (p = 0.016).
 
 ## What is computed
 
@@ -39,19 +46,22 @@ Code: the Qwen3 tree of these runs is at tag `archive/pre-cleanup-2026-09-27` ([
   its ancestors, and never a sibling. Position ids continue from the parent.
 - **Exact pairwise semantics.** Each leaf scores exactly like the standalone causal sequence
   `instructions + text + question + candidate`, i.e. the stock reranker's pairwise judgment with the text moved
-  first so it can be shared. `tests/test_tree.py` checks this against standalone runs: 1e-4 on a tiny model, 1.7e-5
-  on the real 0.6B reranker. Extra questions and candidate order cannot change an answer, and a test checks that too.
+  first so it can be shared. `tests/test_tree.py` (at the tag) checks this against standalone runs: 1e-4 on a tiny
+  model, 1.7e-5 on the real 0.6B reranker. Extra questions and candidate order cannot change an answer, and a test
+  checks that too.
 - **Two execution paths, both exact:**
   - `packed` (training): one pass over the whole tree with a [T, T] mask.
   - `cached` (inference): the text alone with the plain causal kernel into a KV cache, then all branches in one
     second pass against that cache. The text costs one pass however many questions there are.
-- **Readout.** `s = z_yes − z_no` at each leaf's last token, then the same `classify.decide` as every backend:
-  sigmoid for binary, softmax within a question for multiclass, per-candidate sigmoid for multilabel.
+- **Readout.** `s = z_yes − z_no` at each leaf's last token, then the same `decide` as every backend (now
+  `selfjev.core.answers.decide`): sigmoid for binary, softmax within a question for multiclass, per-candidate sigmoid
+  for multilabel.
 - **Format `tree-v1`.** It is the stock `answer-v1` mapping (the one validation selected for the 4B reranker) with
   the text first. Template pieces are tokenized with their control tokens; user text is tokenized with
   `split_special_tokens`, so `<|im_end|>` inside a text stays plain text. The reranker uses its official assistant
   suffix; instruct models use `<|im_end|>\n<|im_start|>assistant\n`. The format sha is recorded in every report.
-- **Backbones.** Any Qwen3-architecture causal LM works. Hybrid models are out for now:
+- **Backbones.** Any Qwen3-architecture causal LM works. Hybrid models were out at first (Qwen3.5 was solved later,
+  [below](#qwen35-hybrid-deltanet)):
   - Qwen3.5 makes 3 of every 4 layers recurrent (linear attention), which cannot keep branches isolated in one pass.
   - Gemma-4-E4B uses 512-token sliding windows in 5 of 6 layers.
 
@@ -59,7 +69,7 @@ Code: the Qwen3 tree of these runs is at tag `archive/pre-cleanup-2026-09-27` ([
 
 Sources: `reports/<run>/test/report.json`; Jev and GPT-6 Astra from `reports/external/full/`.
 
-| test, 3,471 questions | stock 4B | stock 4B + LoRA | **tree 4B + LoRA** | tree Instruct-4B + LoRA | stock 8B + LoRA | Jev | GPT-6 Astra |
+| dev benchmark, 3,471 questions | stock 4B | stock 4B + LoRA | **tree 4B + LoRA** | tree Instruct-4B + LoRA | stock 8B + LoRA | Jev | GPT-6 Astra |
 |---|---|---|---|---|---|---|---|
 | run | `baseline_4b` | `lora_4b` | **`tree_4b`** | `tree_4b_instruct` | `lora_8b` | | |
 | question accuracy % | 62.8 | 80.3 | **81.6** | 80.4 | 80.7 | 82.7 | 85.8 |
@@ -78,7 +88,8 @@ Sources: `reports/<run>/test/report.json`; Jev and GPT-6 Astra from `reports/ext
 | tree 4B vs Jev | 217 | 256 | 0.08 (not significant) |
 | tree 4B vs GPT-6 Astra | 150 | 297 | 3e-12 |
 
-**Validation (868 questions, the split used for model selection), before and after LoRA:**
+**Validation (868 questions, the split used for model selection), before and after LoRA** (`reports/<run>/validation/`;
+the untrained tree rows are `reports/tree_zeroshot_{reranker,instruct}_4b/`, at the tag):
 
 | | untrained | + LoRA |
 |---|---|---|
@@ -130,24 +141,26 @@ validation, and the reranker wins on test.
   hence the 2–3× gain.
 - **Absolute latency** is A10G-bound; see the end-to-end comparison with Jev below.
 
-### End to end vs Jev (2026-09-23)
+### End to end vs Jev (A10G, 2026-09-23)
 
 The same decisions-API requests were sent from a Mac in California to both services, one at a time:
-- **Jev** through OpenRouter, whose edge is 12 ms away;
+- **Jev** through OpenRouter, whose edge is 7–13 ms away;
 - **ours** (tree 4B + LoRA) on one AWS A10G in us-east-1, 71 ms away.
 
-The table gives p50 over 10 timed rounds, text 8 → 4,096 tokens, choice questions with 3 options. Full tables, p95,
-server-side times and cost: [reports/latency/summary.md](../reports/latency/summary.md); script
-`scripts/latency_sweep.py` (at the archive tag), chart `scripts/eval/latency_chart.py`.
+The table gives p50 wall times at the client, text 8 → 4,096 tokens, choice questions with 3 options: ours over 10
+timed rounds; Jev pooled over the 5 sweep runs of 2026-09-23 to 09-26 (50 samples per cell; the 2026-09-23 runs alone
+gave 143–178 ms, per the JOURNAL). Full tables, p95, server-side times and cost:
+[reports/latency/summary.md](../reports/latency/summary.md); script `scripts/latency_sweep.py` and chart
+`scripts/latency_chart.py`, both at the archive tag.
 
 ![latency vs text length](../reports/latency/latency.png)
 
 | text tokens | Jev, 1 q | ours vLLM, 1 q | ours transformers, 1 q | Jev, 16 q | ours vLLM, 16 q |
 |---|---|---|---|---|---|
-| 8 | 148 ms | **120 ms** | 196 ms | 159 ms | 336 ms |
-| 512 | **156 ms** | 197 ms | 263 ms | **160 ms** | 467 ms |
-| 2,048 | **144 ms** | 424 ms | 598 ms | **156 ms** | 767 ms |
-| 4,096 | **154 ms** | 755 ms | 1,062 ms | **174 ms** | 1,195 ms |
+| 8 | 129 ms | **120 ms** | 196 ms | **139 ms** | 336 ms |
+| 512 | **135 ms** | 197 ms | 263 ms | **144 ms** | 467 ms |
+| 2,048 | **129 ms** | 424 ms | 598 ms | **152 ms** | 767 ms |
+| 4,096 | **139 ms** | 755 ms | 1,062 ms | **155 ms** | 1,195 ms |
 
 - **Jev's curve is flat.** Its compute for ~6K tokens takes tens of ms, so its time is mostly network and API
   overhead.
@@ -163,7 +176,8 @@ server-side times and cost: [reports/latency/summary.md](../reports/latency/summ
 
 ## Training
 
-Sources: `runs/tree_4b*/train_meta.json`, `configs/tree_4b*.json`.
+Sources: the training logs `reports/train_meta/tree_4b.json` and `reports/train_meta/tree_4b_instruct.json`; configs
+`configs/tree_4b*.json` at the tag.
 - **Data:** the same 10,112 training questions as every other run (seed 13, at most 1,600 per family), with 983
   validation questions.
 - **LoRA:** r = 16 on q/k/v/o (11,796,480 trainable parameters), lr 2e-4, 5% warm-up, 1 epoch, bf16, gradient
@@ -177,9 +191,10 @@ Sources: `runs/tree_4b*/train_meta.json`, `configs/tree_4b*.json`.
 
 ## Calibration
 
-The held-out temperatures are about 1 (binary 1.02, multiclass 1.06, multilabel 0.99), so the raw scores are
-already calibrated: binary ECE 0.077, multiclass 0.029, multilabel 0.017. The thresholds chosen on validation lower
-test accuracy from 81.6% to 79.3%, so **serve `tree_4b` without the calibration file**, with the default 0.5
+The held-out temperatures are about 1 (binary 1.02, multiclass 1.06, multilabel 0.99; `calib/tree_4b.json` at the
+tag), so the raw scores are already calibrated: binary ECE 0.077, multiclass 0.029, multilabel 0.017
+(`reports/tree_4b/test/`). The thresholds chosen on validation lower test accuracy from 81.6% to 79.3%
+(`reports/tree_4b/test_calibrated/`), so `tree_4b` was served **without the calibration file**, with the default 0.5
 thresholds.
 
 ## Qwen3.5 (hybrid DeltaNet)
@@ -197,33 +212,48 @@ full-attention layer. A tree mask cannot hide one branch from its siblings insid
 Every leaf equals its standalone sequence (root + question + leaf). `tests/engine/test_tree.py` checks scores and every
 gradient against full sequences on a tiny random model in fp32. On the real model, fp32 scores agree within 0.004 and
 LoRA gradients at cosine 0.99997; in bf16 the tree is as close to full sequences as full sequences are to themselves
-re-batched (`reports/qwen35_4b_tree/checks/`). Token ids are `Qwen35Scorer.entry`'s, so inference forks the native
-cache and needs no tree code.
+re-batched (`reports/qwen35_4b_tree/checks/`). Token ids are `Qwen35Scorer.entry`'s
+([`selfjev/engine/qwen35.py`](../src/selfjev/engine/qwen35.py)). The first Qwen3.5 adapters were served by forking the
+model's native cache (archived); on master `TreeServer` serves with the same tree, forward only (the text once per
+request, each question once, then each candidate; on an L40S it agrees with the old engine on 99.8% of 400 eval2
+decisions, [JOURNAL 2026-09-27 01:42](JOURNAL.md)), and vLLM serves the merged adapter with its prefix cache
+([`selfjev/engine/vllm.py`](../src/selfjev/engine/vllm.py)).
 
-Training with it (`selfjev finetune`) encodes each text once per state instead of once per candidate:
-texts up to 8K tokens fit, 51.8K questions in 4.1 h on one L40S, where full-sequence training had to drop 18.5% of the
-data at 2K tokens and took 6.6 h. `qwen35_4b_tree` scores 95.6 on eval2 against 94.5 without the tree
-([JOURNAL 2026-09-25](JOURNAL.md)).
+Training with it (`run_qwen35.py --tree` at the time, `selfjev finetune` now) encodes each text once per state instead
+of once per candidate. For `qwen35_4b_tree`, texts up to 8K tokens fit, 51.8K questions in 4.1 h on one L40S, where
+full-sequence training (`qwen35_4b_combo`) had to drop 18.5% of the data at 2K tokens and took 6.6 h
+(`reports/train_meta/qwen35_4b_tree.json`, `qwen35_4b_combo.json`); it scores 95.6 on eval2 against 94.5 without the
+tree ([JOURNAL 2026-09-25](JOURNAL.md)). `selfjev-4b` is the same tree trained from scratch on 79,943 questions with
+texts up to 16K tokens: eval2 95.8, eval_llm 93.1 ([weights/selfjev_4b/model.json](../weights/selfjev_4b/model.json)).
 
 ## Limitations
 
+Of the Qwen3 tree runs above:
+
 - One seed and one hyperparameter setting per backbone.
 - The 81.6% vs 80.3% gain over stock is significant (p = 0.016) but modest.
-- Speed was measured on one A10G only (the L40S was out of capacity); no H100 numbers yet.
-- The eval-data caveats of the main README apply: LLM-written `eval_*` families with 17–32 questions each, and
+- Speed on this page is one A10G (the L40S was out of capacity then); L40S and H100 numbers came later
+  ([speed](speed.md)).
+- The dev benchmark's caveats apply ([data](data.md)): LLM-written `eval_*` families with 17–32 questions each, and
   possible pretraining overlap of the public sets.
-- Remaining gap to Jev and GPT-6 Astra: sarcasm and sentiment (SST-2 84.0 vs Jev 96.7), BoolQ (83.3 vs 90.7), and
-  judging AI replies (`eval_agent_output`, 61.5 vs 92.3).
+- Remaining gap to Jev and GPT-6 Astra then: sarcasm and sentiment (SST-2 84.0 vs Jev 96.7), BoolQ (83.3 vs 90.7),
+  and judging AI replies (`eval_agent_output`, 61.5 vs 92.3).
 
 ## Reproduce
 
-From a checkout of tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27):
+The current tree: `uv run pytest tests/engine` on master (scores and gradients equal full sequences, the tree server);
+training with `selfjev finetune` ([fine-tune](finetune.md)); the `selfjev-4b` recipe is
+[scripts/train/selfjev_4b.sh](../scripts/train/selfjev_4b.sh).
+
+The Qwen3 tree, from a checkout of tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27)
+(package `personal_jev`, CLI `pjev`). Its adapters were not kept, so train one first:
 
 ```bash
-uv run pytest tests/test_tree.py                              # 10 tests; 2 load the real 0.6B reranker
+uv run pytest tests/test_tree.py                              # the last 2 tests load the real 0.6B reranker
+uv run pjev train-tree configs/tree_4b.json                   # CUDA GPU: LoRA -> runs/tree_4b/adapter
 uv run pjev classify examples/request.json --tree --model Qwen/Qwen3-Reranker-4B \
   --revision 22e683669bc0f0bd69640a1354a6d0aebcfeede5 --adapter runs/tree_4b/adapter --dtype bfloat16
 ```
 
-The GPU pipeline of these runs (`scripts/run_tree_gpu.sh`: untrained check, LoRA x2, evals, benchmarks) is at tag
-[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27).
+The GPU pipeline of these runs (`scripts/run_tree_gpu.sh`: untrained check, LoRA x2, evals, benchmarks) is at the same
+tag.

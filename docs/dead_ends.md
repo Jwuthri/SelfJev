@@ -20,6 +20,9 @@ table in the [experiment ledger](experiments.md#dead-ends-do-not-redo).
 | Astra's verbalized probabilities as soft labels | 98.8% of questions are all ≤ 0.05 or ≥ 0.95: the same as hard labels | data check |
 | Round-2 data with `none` over-represented | CLINC 94.7 → 83.3: the model rejects valid intents | dev benchmark |
 | Qwen3.5 trained on full sequences (one per candidate), texts capped at 2K | 94.5: 18.5% of the data dropped; the tree, same data up to 8K, scores 95.6 (p = 0.028) | eval2 |
+| RLCD on hard labels, from `qwen35_4b_tree` | on questions it already fits, worse on every validation measure within 100 steps; on 4,412 fresh questions 95.63 vs 95.58 (p = 1), more confident mistakes (34 vs 30) | eval2 |
+| RLCD instead of a fine-tune on the same Jev soft targets | 95.43 vs 95.73 (4 / 10, p = 0.18), confident mistakes 22 vs 14: a proper-score reward of the same target is fine-tuning with noise | eval2 |
+| RLCD with a 5× cost per confident mistake, on top of that fine-tune | 8 confident mistakes (Jev 7, the fine-tune 14), but only by being less sure overall: no better at equal coverage, Brier 0.0518 vs 0.0438 | eval2 |
 
 ## Architectures
 
@@ -46,7 +49,7 @@ training label sets.
 | Explicit attention mask in the custom encoder | identical outputs, 1.7–2.2× slower on MPS, loses the fast kernel on CUDA |
 | Compact tree format (shorter branches) | 7.4% faster on vLLM (gate: 15%), CLINC 94.7 → 91.7 |
 | Direct branch-mask construction | exact scores, but only 967 → 961 ms: attention and matmuls dominate |
-| Qwen3.5 on vLLM for many questions per text | exact, but 454–1,138 ms for 16 questions (Qwen3 tree: 163–424): vLLM reuses the recurrent state only every 528 tokens, so each candidate recomputes part of the text ([speed](speed.md#qwen35-on-vllm-2026-09-25-l40s)) |
+| Qwen3.5 on vLLM for many questions per text | exact, but 454–1,138 ms for 16 questions (Qwen3 tree: 163–424): vLLM reuses the recurrent state only every 528 tokens, so each candidate recomputes part of the text ([speed](speed.md#qwen35-on-vllm-2026-09-25-l40s)). `selfjev serve` defaults to `TreeServer` instead, not yet timed on a GPU |
 | vLLM `mamba_block_size` 64 or 16 for Qwen3.5 | no effect in vLLM 0.30: cache hits stay on the 528-token attention block |
 
 ## Operations
@@ -54,7 +57,8 @@ training label sets.
 - **Stopped runs lose everything after the last checkpoint.** The round-3 run was stopped at step ≈ 500 of 915 by an
   unlogged command; step 300 was the last checkpoint saved. The stock 4B round-2 control was stopped to free a GPU and
   never rerun.
-- **GPU capacity is not guaranteed.** g6e (L40S), H100, Blackwell and A100 launches failed across regions on several
-  days; plan runs for g5 (A10G) and treat faster GPUs as a bonus.
+- **GPU capacity is not guaranteed.** g6e (L40S), H100, Blackwell and A100 launches failed across regions on
+  2026-09-23/24. From 2026-09-25 every training run found an L40S (g6e.2xlarge, us-east-2), but H100s were found only
+  once, as spot (2026-09-26): check capacity before planning, and keep g5 (A10G) as the fallback.
 - **Training on a laptop** (MPS) is slow and unsafe for other work: every 4B/8B number comes from AWS, and the rules now
   forbid heavy jobs on the laptop.

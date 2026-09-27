@@ -1,5 +1,10 @@
 # Stock reranker + LoRA
 
+!!! note "Status: archived"
+    Research history (2026-09-22 to 09-23). The code, configs and pipeline scripts of this backend are only at tag
+    `archive/pre-cleanup-2026-09-27`; its reports stay in `reports/`. The current model is `selfjev-4b`
+    ([shared-prefix tree](tree_model.md)).
+
 The first backend and the baseline for everything else: [Qwen3-Reranker](https://huggingface.co/Qwen/Qwen3-Reranker-0.6B)
 scores every (text, question, candidate) triple as its own sequence and reads the `yes` − `no` logit. LoRA adapters
 on the attention projections are the only trained parameters: no new head, probe or cross-attention. How the scoring
@@ -102,9 +107,12 @@ noisy-label public sets (GoEmotions, TweetEval, dair-ai emotion) every model sta
 - LoRA r=16, α=32, dropout 0.05 on `q/k/v/o_proj`: 4,587,520 trainable of 600M parameters (0.76%). Base in bf16 with
   fp32 adapters and gradient checkpointing; lr 2e-4, 5% warmup, linear decay, 1 epoch.
 - Data: 10,112 questions (public datasets capped at 1,600 per family + 2,112 synthetic). 183 optimizer steps in 1.05 h.
-- Validation loss 1.129 at step 0 → 0.435 at step 150, the selected checkpoint. The adapter reloads exactly.
+- Validation loss 1.129 at step 0 → 0.435 at step 150, the selected checkpoint. The reloaded adapter reproduced scores
+  within 0.125 logit on 64 questions (bf16 on MPS).
 - Prompt `task-v1` was chosen on validation only (0.614 vs 0.597–0.609 for the other three), a small margin.
-- Config [configs/lora_pilot.json](../configs/lora_pilot.json).
+- Training log `reports/train_meta/lora_pilot.json`; config
+  [configs/lora_pilot.json](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/configs/lora_pilot.json)
+  (at the tag).
 
 ### Speed on the laptop (end-to-end p50, one request at a time)
 
@@ -139,7 +147,8 @@ Full tables, per family and per trap, with paired tests: [reports/scale_comparis
   temporal 51.7 vs 79.3, role reversal 60 vs 100, injection 70 vs 100).
 - **Recipe:** prompt picked per model on validation (4B `answer-v1`, 8B `task-v1`); LoRA r16 on q/k/v/o, 11.8M
   trainable parameters for the 4B (0.29%) and 15.3M for the 8B (0.19%); same 10,112 questions; bf16.
-- **Time and cost:** 42 min to train the 4B, 50 min for the 8B; 3.16 instance-hours on one `g6e.xlarge` ≈ $5.89.
+- **Time and cost:** 42 min to train the 4B, 50 min for the 8B (`reports/train_meta/lora_4b.json`, `lora_8b.json`);
+  3.16 instance-hours on one `g6e.xlarge` ≈ $5.89.
 - **Precision caveat:** the 0.6B columns ran in fp32 on the Mac, the 4B/8B in bf16 on the GPU.
 
 **Speed on the same GPU** (L40S, bf16, end-to-end p50, adapters not merged):
@@ -177,13 +186,14 @@ Ten more stock 4B LoRA runs, one A10G each (≈ $23 in total), to see what moves
 
 ## Reproduce
 
-The pipeline scripts of these runs are at tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27); the configs
-(`configs/lora_pilot.json`, `configs/curve/`) are still here. From a checkout of the tag:
+The pipeline scripts and configs of these runs (`configs/lora_pilot.json`, `configs/curve/`) are at tag
+[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27) (package
+`personal_jev`, CLI `pjev`); the training logs are in `reports/train_meta/`. From a checkout of the tag:
 
 ```bash
-scripts/run_experiments.sh                      # 0.6B: baseline evals, calibration, LoRA, tuned evals, compare, bench
+scripts/run_experiments.sh STEP                 # 0.6B: baseline | train | tuned | synthetic | compare | bench (no STEP: all, custom model too)
 scripts/run_model.sh 4b Qwen/Qwen3-Reranker-4B 22e683669bc0f0bd69640a1354a6d0aebcfeede5   # same pipeline on a GPU box
 scripts/run_model.sh 8b Qwen/Qwen3-Reranker-8B 77d193c791ed757ca307ee72715aa132723da912
 uv run python scripts/scale_table.py > reports/scale_comparison.md
-scripts/run_curve.sh                            # learning curves, configs in configs/curve/
+scripts/run_curve.sh NAME [NAME ...]            # learning curves, one run per configs/curve/NAME.json
 ```

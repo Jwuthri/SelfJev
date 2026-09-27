@@ -2,8 +2,9 @@
 
 - Subset: every eval.jsonl test question + N sampled per hf.jsonl test family (seeded).
 - Budget: spend = max(OpenRouter account usage delta, summed per-call cost incl. BYOK upstream cost), re-checked
-  while running; the run stops before the spend passes --budget. Raw responses are cached in reports/external/cache/, so reruns never
-  pay twice. The API key comes from OPENROUTER_API_KEY and is never printed.
+  while running; the run stops before the spend passes --budget. Raw responses are cached in reports/external/cache/, so reruns
+  don't pay twice for the same request (the request body is the key: GPT-6 Astra calls sent before the 2026-09-27
+  max_tokens change miss the cache). The API key comes from OPENROUTER_API_KEY and is never printed.
 - Metrics use the same evaluator as our own reports, on the questions every model answered.
 - Data sent: synthetic eval texts and public-dataset texts only (no private data).
 

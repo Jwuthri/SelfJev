@@ -1,13 +1,18 @@
 # Other challengers
 
+!!! note "Status: archived"
+    Research history. None of these models is on master: their code is at tag
+    `archive/pre-cleanup-2026-09-27` (the Qwen3.5-2B run never was in this repo); reports stay in `reports/`.
+
 Backbones and architectures tried against the 4B tree, and one teacher. None beats it; the teacher is the most
-interesting result.
+interesting result. For scale: the current model, `selfjev-4b` (a Qwen3.5-4B tree), scores 95.8 on eval2 and 83.8 on
+the dev benchmark.
 
 | challenger | idea | eval2 | dev benchmark | verdict |
 |---|---|---|---|---|
 | *tree Qwen3-Reranker-4B, round-2b data (reference)* | shared-prefix tree | *90.6* | *81.2* | |
 | Qwen3.8-27B-FP8, zero-shot | a big model as a teacher | **91.4** | — | matches `tree_4b_ova` (91.6), with different errors |
-| Qwen3.5-2B, shared document with forked native cache | linear attention, smaller | not scored | 79.9 (round-1 data) | promising on speed at 8K tokens; needs eval2 |
+| Qwen3.5-2B, shared document with forked native cache | linear attention, smaller | 84.3 (round-1 data) | 79.9 (round-1 data) | promising on speed at 8K tokens; superseded by Qwen3.5-4B |
 | T5Gemma 2 1B–1B, shared encoder + decoder branches | pretrained encoder–decoder | 73.0 | 75.4 | 17 points behind |
 | jina-reranker-v3.5 (0.6B), listwise | one pass per text, pretrained relevance head | 73.3 | 76.6 | sub-1B ceiling; non-commercial license |
 | custom cross-attention on Qwen 0.6B (v1 spec) | encode once, new cross-attention + heads | — | 39.0 / 58.2 | [not competitive](custom_model.md) |
@@ -69,8 +74,9 @@ entry of 2026-09-24 10:42):
 - Why it was not in the tree at first: Qwen3.5 makes 3 of every 4 layers recurrent, which a tree mask cannot keep
   isolated in one packed pass. The forked cache does it at inference, and training ran one full sequence per candidate.
 - What came next: Qwen3.5-4B with the best recipe scored 93.7 on eval2 (round-2b data), 94.5 with option lists and
-  round 3, and **95.6**, the best model, once it was trained with its own tree (DeltaNet layers level by level from
-  copied states: [shared-prefix tree](tree_model.md#qwen35-hybrid-deltanet)).
+  round 3, and 95.6 once it was trained with its own tree (DeltaNet layers level by level from copied states:
+  [shared-prefix tree](tree_model.md#qwen35-hybrid-deltanet)). The same tree on every non-test question with Jev's
+  probabilities as half-weight targets is `selfjev-4b`, the default model: **95.8**.
 
 ## jina-reranker-v3.5 (0.6B, listwise)
 

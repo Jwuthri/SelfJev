@@ -3,18 +3,21 @@
 !!! abstract "Bottom line"
     - **Sharing the text is the big win.** The shared-prefix tree is 32–37× faster than stock pairs for 16 questions ×
       3 candidates on 8K–16K-token texts, at the same quality.
-    - **Jev is flat at ~150 ms**, from 8 to 4,096 tokens and 1 to 16 questions. Our tree 4B on one A10G matches it only
-      for short texts with one question and is 5× slower at 4,096 tokens. **On one H100 the same 4B is faster than Jev
-      inside the machine at every size** (22 vs 110 ms server-side for short texts, 82 vs 122 ms at 4,096 tokens); the
-      remaining end-to-end gap is network distance. FP8 adds nothing.
-    - **Serving:** vLLM with the prefix cache and merged weights is the best general option. A shorter "compact" tree
-      format did not pay off.
+    - **Jev is flat at ~150 ms**, from 8 to 4,096 tokens and 1 to 16 questions. Our Qwen3 tree 4B on one A10G matches
+      it only for short texts with one question and is 5× slower at 4,096 tokens. **On one H100 the same model is faster
+      than Jev inside the machine** at every size with one question (22 vs 110 ms server-side for short texts, 82 vs
+      122 ms at 4,096 tokens) and with 16 questions up to 2,048 tokens (4,096 × 16: 189 vs 134 ms); the remaining
+      end-to-end gap is network distance. FP8 adds nothing.
+    - **Serving:** for an attention model, vLLM with the prefix cache and merged weights is the best general option. A
+      shorter "compact" tree format did not pay off.
     - **Cost:** a fully busy A10G is cheaper per request than Jev (up to 3×, less with many questions); an idle one is
       not. On an L40S the Qwen3 tree on vLLM is cheaper than Jev in every cell measured.
-    - **Qwen3.5 (the most accurate model) on vLLM** keeps its accuracy and is fast for one question (87–131 ms server
-      side up to 2K tokens on an L40S), but slow for many: vLLM reuses a hybrid model's recurrent state only every 528
-      tokens, so each candidate recomputes part of the text. Serving it with its own tree fixes the work; it is not
-      timed on a GPU yet.
+    - **The default model, `selfjev-4b` (Qwen3.5), has no GPU latency yet.** The numbers above are the Qwen3 tree's
+      (`tree_4b_combo`, weights at tag `archive/pre-cleanup-2026-09-27`). The same Qwen3.5 architecture on vLLM keeps
+      its accuracy and is fast for one question (87–131 ms server side up to 2K tokens on an L40S), but slow for many:
+      vLLM reuses a hybrid model's recurrent state only every 528 tokens, so each candidate recomputes part of the
+      text. `selfjev serve` therefore serves it with its own tree (`TreeServer`, the default engine), which does the
+      Qwen3 tree's work; that engine has not been timed on a GPU.
 
 ## Tree vs stock pairs (same A10G, bf16, unmerged LoRA)
 
@@ -59,7 +62,8 @@ text: 97.2% on round-2 questions whose evidence is at the end of a text over 4K 
 The same sweep, same day, same client: Jev through OpenRouter (11 ms away) against `tree_4b_combo` merged on vLLM 0.30
 on one **p5.4xlarge spot** (1× H100 80 GB, ≈ $2.54/h, us-east-2, 61 ms away), in bf16 and with vLLM's dynamic FP8
 (`--quantization fp8`). The A10G and L40S columns are the earlier sweeps of the same model. p50 ms, wall at the client /
-server inside the box (Jev: inside OpenRouter). Raw rows: `reports/latency/requests_h100.jsonl`.
+server inside the box (Jev: inside OpenRouter). Raw rows: `reports/latency/requests_h100.jsonl`. The model's weights,
+its vLLM code and the sweep script (`scripts/latency_sweep.py`) are at tag `archive/pre-cleanup-2026-09-27`.
 
 | text tokens | questions | Jev wall / server | A10G | L40S | H100 bf16 | H100 FP8 |
 |---|---|---|---|---|---|---|
@@ -86,8 +90,9 @@ server inside the box (Jev: inside OpenRouter). Raw rows: `reports/latency/reque
   at 8 tokens × 1 question (Jev $0.016); 105 requests/s and $0.007 at 512 × 1 (Jev $0.038); 5.9 requests/s and $0.124 at
   4,096 × 16 (Jev $0.265). 2.1–6.5× cheaper than Jev in every cell on spot; at $6.88/h on demand still below Jev
   everywhere except within 10% at 4,096 × 16.
-- So the speed gap was hardware, not architecture. Speed is now a deployment question (GPU class and placement); the
-  open work is accuracy.
+- So the speed gap was hardware, not architecture. For this model speed is a deployment question (GPU class and
+  placement); the default `selfjev-4b` still has to be timed on its own engine
+  ([below](#qwen35-on-vllm-2026-09-25-l40s)).
 
 ## Serving optimizations (2026-09-24)
 
@@ -109,11 +114,13 @@ request, model resident, network excluded ([conclusions](../reports/latency_opti
   over-rejection (94.67 → 91.67%, all nine changes to `none`). Experimental only.
 - **Cache matters:** with the document root already cached, R1 vLLM answers new questions in 409 ms; a fully repeated
   request takes 185 ms. Those are different workloads from a new document.
-- Faster GPUs (L40S, H100, Blackwell, A100) could not be launched in three regions: no faster-GPU numbers exist.
+- Faster GPUs (L40S, H100, Blackwell, A100) could not be launched in three regions that day; the L40S (2026-09-25)
+  and H100 (2026-09-26) numbers on this page came later.
 
 ## Qwen3.5 on vLLM (2026-09-25, L40S)
 
-`qwen35_4b_tree` merged into Qwen3.5-4B and served by vLLM 0.30 (`selfjev/engine/vllm.py`), next to the Qwen3 tree
+`qwen35_4b_tree` (the same architecture as `selfjev-4b`) merged into Qwen3.5-4B and served by vLLM 0.30 (the code is
+now `src/selfjev/engine/vllm.py`: `selfjev merge`, then `selfjev serve --engine vllm`), next to the Qwen3 tree
 (`tree_4b_combo`) on the same GPU, with Jev in the same sweep from California. Accuracy through vLLM is unchanged: eval2
 95.58% (transformers 95.58%), and 94.53% for the Qwen3 tree (94.48%). Server-side p50 (ms; Jev: time inside
 OpenRouter):
@@ -140,11 +147,19 @@ the last block boundary plus its question:
 | 4,096 tokens | 7,186 → 400 ms | 17,424 → 1,025 ms |
 
 `mamba_block_size` does not change this in vLLM 0.30; caching the state in bf16 halves the block to 272 tokens, with
-mixed effects (256 tokens 407 ms, 1K 744 ms, 4K 689 ms). The fix is to serve Qwen3.5 with its own tree, as in
-training: `selfjev.engine.tree.TreeServer` computes the text once, each question once and each candidate's own
-tokens, the same work as the Qwen3 tree. It matches standalone sequences exactly in a CPU test; GPU timings are still to
-do. Sources: [JOURNAL 2026-09-25 18:05](JOURNAL.md), `reports/latency/requests_qwen35.jsonl`,
-`reports/qwen35_4b_tree/vllm/probe.log`.
+mixed effects (256 tokens 407 ms, 1K 744 ms, 4K 689 ms). Sources: [JOURNAL 2026-09-25 18:05](JOURNAL.md),
+`reports/latency/requests_qwen35.jsonl`, the probe script `reports/qwen35_4b_tree/vllm/cache_probe.py` (its log is not
+in git).
+
+**What serves `selfjev-4b` now.** The fix is to serve Qwen3.5 with its own tree, as in training: `TreeServer`
+(`src/selfjev/engine/tree.py`) computes the text once, each question once and each candidate's own tokens, the same
+work as the Qwen3 tree. Since the 2026-09-27 cleanup it is the default engine of `selfjev serve`, `eval` and `bench`
+(vLLM stays available with `--engine vllm`). It matches standalone sequences in a CPU test
+(`tests/engine/test_tree.py`) and, on an L40S, the forked-cache engine's stored eval2 answers of `selfjev-4b`: 99.8% of
+400 decisions agree, median probability difference 0.0003 ([JOURNAL 2026-09-27 01:42](JOURNAL.md)). But **its latency has not been measured on a GPU**, on any GPU class, including the L4
+(g6.xlarge) that `selfjev deploy aws` picks by default: there are no numbers for it yet. `selfjev bench` on a GPU box
+is the first step. For reference, the forked-cache engine it replaced took 156 and 252 ms for one question at 512 and
+2,048 tokens, and 341 and 508 ms for 16 questions (in-process p50 on the L40S, `reports/qwen35_4b_tree/bench.json`).
 
 ## Cost vs Jev
 

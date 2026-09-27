@@ -4,8 +4,9 @@
 
 Jev (TypeSafe, `typesafe/jev`, served through OpenRouter) turns a model into a typed decision engine: send a text (the
 *state*) and questions of type `noul` (yes/no), `choice` or `score`, get typed answers with probabilities, with no text
-generation. SelfJev copies the **interface**, not the model: our native schema is our own, and `selfjev serve` also
-exposes a route with the same request/response shape ([how it works](how_it_works.md)).
+generation. SelfJev copies the **interface**, not the model: `selfjev serve` answers Jev's requests at Jev's paths
+(`/v1/systemone`, `/api/alpha/decisions`, `/v1/decisions`), so Jev clients work by changing the base URL and the key
+([API](api.md), [how it works](how_it_works.md)).
 
 **What TypeSafe discloses** (public web, read 2026-09-23):
 
@@ -24,8 +25,8 @@ marktechpost.com/2026/09/19/typesafe-ai-releases-jev/.
 
 | | result |
 |---|---|
-| accuracy | eval2 97.2%, dev benchmark 82.7% (GPT-6 Astra 85.8%) |
-| weakest slices on eval2 | temporal 89.2, numeric 92.0, multilabel exact match 94.2 |
+| accuracy | eval2 97.2%, eval_llm 92.5%, dev benchmark 82.7% (GPT-6 Astra 85.8%) |
+| weakest slices | eval2: temporal 89.2, numeric 92.0, multilabel exact match 94.2; eval_llm: verify 86.7, multilabel exact match 81.3 |
 | latency | flat 143–178 ms p50 from California, 8 → 4,096 tokens, 1 or 16 questions |
 | marginal speed | 132–137 ms fixed + 2.2–2.6 ms per 1,000 tokens ≈ 400K tokens/s |
 | long texts | reads the whole text: 97.2% on evidence at the end of 4K–17.6K-token texts |
@@ -35,14 +36,17 @@ marktechpost.com/2026/09/19/typesafe-ai-releases-jev/.
 
 **Our reading** (2026-09-25 update: [what Jev's behaviour implies and what to build next](../reports/jev_hypothesis_2026-09-25.md)):
 the gap is mostly training, not architecture. 4B → 8B, a bigger adapter and stock → tree each moved
-the dev benchmark by ≤ 1.3 points, while 10K verified target-task questions moved eval2 by +5.5. Its speed is mostly the
-hardware: on one H100 our 4B tree is faster than Jev inside the machine at every size (2026-09-26, [speed](speed.md#the-same-model-on-an-h100-2026-09-26));
-its per-token cost is still ≈ 6× ours, so a smaller model or more GPUs per request, and the end-to-end difference is
-network distance.
+the dev benchmark by ≤ 1.3 points, while 10K verified target-task questions moved eval2 by +5.5. Our default model,
+`selfjev-4b`, is now 1.4 points behind on eval2 (95.8), level on eval_llm (93.1, p = 0.52) and ahead on the dev
+benchmark (83.8). Jev's speed is mostly the hardware: on one H100 our Qwen3 4B tree is faster than Jev inside the
+machine in every cell but 4,096 tokens × 16 questions (2026-09-26, [speed](speed.md#the-same-model-on-an-h100-2026-09-26));
+Jev's per-token cost is still ≈ 6× lower than ours, so a smaller model or more GPUs per request, and the end-to-end
+difference is network distance. `selfjev-4b`'s own serving engine is not timed on a GPU yet.
 
 ## Open "Jev-like" models (survey of Hugging Face model cards, 2026-09-24)
 
-Nothing downloaded or run; claims are each model's own, on its own benchmark, and **not comparable with ours**.
+Nothing was downloaded or run for the survey (Eikos-4B was scored later, below); claims are each model's own, on its
+own benchmark, and **not comparable with ours**.
 
 | camp | models | notes |
 |---|---|---|
@@ -65,7 +69,8 @@ Nothing downloaded or run; claims are each model's own, on its own benchmark, an
   fitting (ECE 0.466 → 0.081).
 - Its Jev latency figure (236–276 ms p50) is slower than we measured (143–178 ms).
 - Verdict: the faster and multilingual option (≈ 33 ms on a T4), not the more accurate one on long, trap-heavy texts.
-  Our closest measured analogue, jina 0.6B listwise, scores 73.3 on eval2. Scoring Laya on eval2 is free and open.
+  Our closest measured analogue, jina 0.6B listwise, scores 73.3 on eval2. Scoring Laya on eval2 is open (no API cost;
+  a small GPU box, never the laptop).
 
 ### Eikos-4B (`caiovicentino1/Eikos-4B`, MIT)
 
@@ -74,11 +79,15 @@ Nothing downloaded or run; claims are each model's own, on its own benchmark, an
 - vLLM ≥ 0.30 with `--enable-prefix-caching --mamba-cache-mode all` shares the state across questions (the card
   reports that vLLM 0.11 lost 3–6 points on batched long shared documents).
 - Own-harness claims: JevBench public hard 72.1 (Jev 73.0 on the official leaderboard), ECE 0.033.
-- Evidence that the Qwen3.5 base works for typed decisions; see the Qwen3.5-4B [open idea](next.md).
+- Evidence that the Qwen3.5 base works for typed decisions. Zero-shot through our option mapping it scores 92.8 on
+  eval2 (`reports/eikos_4b/`). Qwen3.5-4B has been the base of our best models since 2026-09-25, `selfjev-4b`
+  included.
 
 ### Qwen3.5 and Qwen3.8 as bases
 
 - Qwen3.8 has no small dense model: 27B (48 linear-attention + 16 full layers), a 180B MoE and a 2.4T MoE.
-- Qwen3.5 has 0.8/2/4/9/27B; the 4B has 32 layers (24 Gated DeltaNet + 8 full attention) and 262K positions. Our tree
-  cannot branch its linear-attention layers in one pass; a forked native cache can
-  ([challengers](challengers.md#qwen35-2b-linear-attention-with-a-forked-cache)).
+- Qwen3.5 has 0.8/2/4/9/27B; the 4B has 32 layers (24 Gated DeltaNet + 8 full attention) and 262K positions. A tree
+  mask cannot branch its linear-attention layers in one pass. First a forked native cache did it
+  ([challengers](challengers.md#qwen35-2b-linear-attention-with-a-forked-cache)); now our Qwen3.5 tree
+  (`src/selfjev/engine/tree.py`) runs those layers level by level from copied states, in training and serving
+  ([tree scorer](tree_model.md#qwen35-hybrid-deltanet)).

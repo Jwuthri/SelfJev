@@ -18,11 +18,13 @@ nav = [
     { "What didn't work" = "dead_ends.md" },
   ] },
   { "Models" = [
-    { "Stock reranker + LoRA" = "stock_model.md" },
-    { "Shared-prefix tree (best)" = "tree_model.md" },
-    { "Custom cross-attention" = "custom_model.md" },
-    { "Other challengers" = "challengers.md" },
-    { "jina-reranker-v3.5" = "jina_model.md" },
+    { "Shared-prefix tree (selfjev-4b)" = "tree_model.md" },
+    { "Archived" = [
+      { "Stock reranker + LoRA" = "stock_model.md" },
+      { "Custom cross-attention" = "custom_model.md" },
+      { "jina-reranker-v3.5" = "jina_model.md" },
+      { "Other challengers" = "challengers.md" },
+    ] },
   ] },
   { "Data" = [
     { "Datasets and labels" = "data.md" },

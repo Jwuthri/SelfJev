@@ -1,9 +1,16 @@
 # Custom shared-state model
 
+!!! note "Status: archived (dead end)"
+    Research history (2026-09-22 to 09-23). The code, tests, configs and calibration files are only at tag
+    `archive/pre-cleanup-2026-09-27`; its reports and diagnostics stay in `reports/`.
+
 This is the "encode the text once, then cross-attention + small heads" architecture from the v1 spec, built on the
-same `Qwen/Qwen3-Reranker-0.6B` backbone as the stock backend. It is implemented, trained, tested and benchmarked.
-It is a dead end: its code, tests, configs and calibration files were removed on 2026-09-27 and are at tag
-[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27) (`src/personal_jev/custom.py`, `train_custom.py`).
+same `Qwen/Qwen3-Reranker-0.6B` backbone as the stock backend. It was implemented, trained, tested and benchmarked, and
+it is a dead end. Code at tag
+[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27):
+[src/personal_jev/custom.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/custom.py),
+[train_custom.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/train_custom.py),
+[tests/test_custom.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/tests/test_custom.py).
 
 **Bottom line.**
 - **As specified, it scores 39.0% question accuracy** on the 3,471-question test split. For comparison, the
@@ -95,7 +102,8 @@ score  = head(mean over the candidate's tokens of LN(q))   binary_head: binary +
   checked all of this.
 - **Checkpoint.** A complete checkpoint holds `modules.safetensors` (all new modules plus the standardization
   buffers), `adapter/` (LoRA) or `backbone.safetensors` (full fine-tune), and `config.json` (base revision, arch,
-  format). Reloading reproduced scores within 9.5e-7 to 5.7e-6 (`reload_check` in each `runs/*/train_meta.json`).
+  format). Reloading reproduced scores within 9.5e-7 to 5.7e-6 (`reload_check` in each
+  `reports/train_meta/custom_*.json`). The checkpoints themselves were not kept.
 
 ### Additions beyond the spec, each measured
 
@@ -103,15 +111,15 @@ score  = head(mean over the candidate's tokens of LN(q))   binary_head: binary +
 |---|---|---|
 | Fixed per-dimension standardization `z()` of Qwen's last hidden states | Raw token states share one dominant direction: mean pairwise cosine 0.492, 47.9% of the energy in the mean direction. Standardized: 0.002 and 0.000. | `reports/custom_diagnostics/logs/features.log`. Parameter-free MaxSim, last layer: Banking77 23/40 raw vs 31/40 standardized; AG News 11/40 vs 23/40 |
 | Tied random init: `W_c = W_m`, per block `Wq = Wk` (random orthogonal), `Wo = Wvᵀ` | At step 0, each candidate token attends to the most similar state tokens | Banking77 validation accuracy at step 250 on a hard mix: 17.3% untied vs 40.0% tied (`fam_mix_untied.log`, `fam_mix.log`) |
-| Learnable null key/value slot in the cross-attention | Lets a candidate token express "nothing matches" instead of forced averaging | Same probe: 40.0% → 58.0% (`fam_mix_null.log`). Full mix, epoch 1 validation loss: 1.001 → 0.952 (`custom_frozen_nonull.log`, `runs/custom_frozen.log`) |
-| Heads' last layer initialized to zero | The untrained model outputs logit 0 (p = 0.5, uniform softmax) instead of noise | `test_untrained_heads_start_at_logit_zero` |
+| Learnable null key/value slot in the cross-attention | Lets a candidate token express "nothing matches" instead of forced averaging | Same probe: 40.0% → 58.0% (`fam_mix_null.log`). Full mix, epoch 1 validation loss: 1.001 → 0.952 (`custom_frozen_nonull.log`, `reports/train_meta/custom_frozen.json`) |
+| Heads' last layer initialized to zero | The untrained model outputs logit 0 (p = 0.5, uniform softmax) instead of noise | `test_untrained_heads_start_at_logit_zero` (archived `tests/test_custom.py`) |
 | No attention mask in the backbone | Right padding plus a causal model means real tokens never see padding. An explicit mask disabled the fast attention path on MPS. | MPS, bucketed, 8K-token state, 1 × 3: 6,073 → 3,937 ms. 32K, 1 binary: 47,974 → 24,418 ms (`reports/bench/pre_mask_fix/` vs `reports/bench/custom_*`) |
 | MPS-only shape buckets (round rows and lengths up; at most 25% padding) | MPS compiles and keeps a graph for every new tensor shape, so memory grew every training step | 160 training steps: heap 210 → 2,694 MB without buckets vs 214 → 914 MB with buckets, for +6.7% time (179.6 s → 191.7 s; `shapes_nobuckets.log`, `shapes_buckets_25pct.log`). Off on CUDA and CPU. |
 | Opt-in `similarity` term: `score += w_type · MaxSim` | Adds a generic "does this description match the text" signal. MaxSim is the mean over the candidate's content tokens (the description, or the question for binary) of each token's best cosine match in the state, on the standardized features. `w` starts at 20 for multiclass and 0 otherwise, so the untrained multiclass scorer is exactly the parameter-free MaxSim rule. | Test accuracy 39.0% → 48.0% frozen, 58.2% with joint LoRA (table above) |
 
 ## Training runs
 
-Source: `runs/<run>/train_meta.json` and the `configs/<run>.json` files.
+Source: the training logs `reports/train_meta/<run>.json`; configs `configs/<run>.json` at the tag.
 - Training data: 10,112 questions (the same selection as the stock LoRA pilot: seed 13, at most 1,600 per family).
 - Validation: 983 questions.
 - Precision: backbone in bf16, new modules in fp32.
@@ -122,14 +130,14 @@ Source: `runs/<run>/train_meta.json` and the `configs/<run>.json` files.
 | run | where | backbone | train questions | steps | wall | best validation loss / accuracy | test accuracy |
 |---|---|---|---|---|---|---|---|
 | `custom_frozen` (spec) | M5 Pro, MPS | frozen | 10,112 | 1,764 (6 epochs) | 23.7 min | 0.800 / 51.2% (step 1,176) | 39.0% |
-| `custom_lora` (spec, Stage B) | M5 Pro, MPS | LoRA on top of `custom_frozen` | 10,112 | stopped at 390 of 882 | — | 0.800 → 0.829 → 0.810, no gain | not evaluated |
+| `custom_lora` (spec, Stage B; log not kept) | M5 Pro, MPS | LoRA on top of `custom_frozen` | 10,112 | stopped at 390 of 882 | — | 0.800 → 0.829 → 0.810, no gain | not evaluated |
 | `custom_distill_frozen` | M5 Pro, MPS | frozen | 16,671 (+ mixed labels) | 2,028 | 39.7 min | 0.838 / 45.7% | 37.7% |
 | `custom_distill_lora` | A10G, CUDA | joint (50 warm-up steps) | 16,671 (+ mixed labels) | 2,028 | 49.7 min | 0.799 / 49.7% | 39.7% |
 | `custom_sim_frozen` | A10G, CUDA | frozen | 10,112 | 1,176 | 7.6 min | 0.742 / 53.7% | 48.0% |
 | `custom_sim_lora` | A10G, CUDA | joint (50 warm-up steps) | 10,112 | 1,176 | 28.9 min | 0.562 / 60.1% (step 882) | 58.2% |
 | stock LoRA pilot (reference) | M5 Pro, MPS | stock scorer + LoRA | 10,112 | 183 | 1.05 h | 0.435 / 74.2% | 73.5% |
 
-"Mixed labels" means `data/distill.jsonl` (`scripts/build_distill.py`; both archived):
+"Mixed labels" means `data/distill.jsonl` (`scripts/build_distill.py`; both at the tag):
 - Each training state gets a multiclass question whose candidates are drawn from the descriptions of all training
   families.
 - Labels come from the local stock reranker + LoRA acting as teacher. 6,559 of 12,260 questions were kept (teacher
@@ -158,9 +166,9 @@ Source: `runs/<run>/train_meta.json` and the `configs/<run>.json` files.
    variant. In `custom_sim_frozen` and `custom_sim_lora`:
    - the learned binary similarity weight is 0.094 and 0.076, versus 19.75 and 20.03 for multiclass;
    - the binary head's last layer has norm 0.086 and 0.121: it barely moved from its zero start.
-   (Read from `runs/custom_sim_*/checkpoint/modules.safetensors`.)
+   (Read from the two checkpoints' `modules.safetensors`, which were not kept.)
 4. **The training schedule is not the bottleneck.**
-   - Stage B LoRA on the spec model gave no validation gain (`runs/custom_lora.log`).
+   - Stage B LoRA on the spec model gave no validation gain (its log, `runs/custom_lora.log`, was not kept).
    - Joint LoRA from the start on the mixed-label data scored 39.7% vs 39.0% (301 vs 276 questions only one of them
      gets right, p ≈ 0.32).
    - More label variety alone did not help either (37.7%).
@@ -212,7 +220,8 @@ Source: `runs/<run>/train_meta.json` and the `configs/<run>.json` files.
 
 ## Calibration
 
-Source: `calib/<run>.json` (archived), fit on the calibration split, with thresholds chosen on validation.
+Source: temperatures from `calib/<run>.json` (at the tag), fit on the calibration split, with thresholds chosen on
+validation; ECE and accuracy from `reports/<run>/test/` and `test_calibrated/`.
 
 | run | temperatures (binary / multiclass / multilabel) | binary ECE | multiclass ECE | question accuracy |
 |---|---|---|---|---|
@@ -236,7 +245,8 @@ almost no signal, so no temperature can fix them: held-out temperature scaling m
 
 ## Reproduce
 
-From a checkout of tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27):
+From a checkout of tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27)
+(package `personal_jev`, CLI `pjev`); the checkpoints were not kept, so the `classify` line needs the `custom_sim` step first:
 
 ```bash
 uv run pytest tests/test_custom.py                 # new-model tests; the 3 real-model ones load the pinned base Qwen
@@ -248,7 +258,8 @@ uv run pjev classify examples/request.json --checkpoint runs/custom_sim_lora/che
 uv run pjev train-custom configs/custom_lora.json  # Stage B on top of custom_frozen (spec schedule)
 ```
 
-The diagnostic scripts and their logs are in `reports/custom_diagnostics/`:
+The diagnostic scripts and their logs are in `reports/custom_diagnostics/` (the scripts import `personal_jev`: run them
+from the tag):
 - `features.py`: anisotropy and MaxSim;
 - `maxsim_heldout.py`: MaxSim vs the trained model;
 - `families.py`: interference and init probes;

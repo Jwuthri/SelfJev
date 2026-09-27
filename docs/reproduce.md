@@ -8,9 +8,9 @@ uv sync --group data     # + datasets/pyarrow, only needed to rebuild data/hf.js
 uv sync --extra gpu      # Linux CUDA boxes: fast Gated DeltaNet kernels (flash-linear-attention)
 ```
 
-The base model (Qwen3.5-4B, ≈ 9 GB) is pinned to a revision and downloads on first use. The adapters are in
-[weights/](../weights/README.md) (Git LFS, with a `model.json` each); every other trained adapter lives in `runs/`,
-which is not in git.
+The base model (Qwen3.5-4B, ≈ 9 GB) is pinned to a revision and downloads on first use. The adapter, `selfjev-4b`, is
+in [weights/](../weights/README.md) (Git LFS, with its `model.json`: `git lfs pull --include "weights/selfjev_4b/*"`).
+New runs write to `runs/`, which is not in git; the training logs of past runs are in `reports/train_meta/`.
 
 ## Use
 
@@ -18,15 +18,20 @@ The default model needs a CUDA GPU. Serve it and call it with the SDK ([API](api
 Python directly:
 
 ```python
+import json
+
 from selfjev.core.answers import classify
+from selfjev.core.options import with_options
 from selfjev.engine.tree import TreeServer
 
 scorer = TreeServer("weights/selfjev_4b")  # loads Qwen3.5-4B + the LoRA (merged) on the GPU
-result = classify(scorer, request_dict)  # internal schema (examples/request.json): {"questions": [...], "meta": {...}}
+request = json.load(open("examples/request.json"))  # the internal schema: {"state": ..., "questions": [...]}
+request["questions"] = [with_options(q, q["id"]) for q in request["questions"]]  # the option lists, as the server adds them
+result = classify(scorer, request)  # {"questions": [one decision each], "meta": {...}}
 ```
 
 ```bash
-uv run selfjev classify examples/request.json   # the same from the command line
+uv run selfjev classify examples/request.json   # from the command line; scores the request as given (no option lists)
 uv run selfjev --help                           # serve / classify / eval / calibrate / compare / bench / finetune / rlcd / merge / deploy
 ```
 
@@ -40,8 +45,8 @@ uv run selfjev merge --adapter weights/selfjev_4b --out runs/selfjev_4b/merged
 ~/vllm-env/bin/python -m selfjev.cli serve --engine vllm --model-dir runs/selfjev_4b/merged
 ```
 
-Both answer Jev's `POST /v1/systemone` (also at `/api/alpha/decisions`, [API](api.md)) and the internal
-`POST /classify`. The vLLM venv: `uv venv ~/vllm-env --python 3.12 && uv pip install --python ~/vllm-env/bin/python
+Both answer Jev's `POST /v1/systemone` (also at `/api/alpha/decisions` and `/v1/decisions`, [API](api.md)) and the
+internal `POST /classify`. The vLLM venv: `uv venv ~/vllm-env --python 3.12 && uv pip install --python ~/vllm-env/bin/python
 vllm` (0.30.0 measured), run with `PYTHONPATH=src`.
 
 ## Fine-tune on your data, then RLCD (CUDA GPU)
@@ -82,8 +87,9 @@ uv run python scripts/data/build_all.py                                    # dat
 scripts/aws/aws_launch.sh selfjev-mine 10 "us-east-2:g6e.2xlarge us-east-1:g6e.2xlarge us-west-2:g6e.2xlarge"
 # the default model, selfjev-4b: every non-test question of data/all.jsonl.gz, 0.5 × label + 0.5 × Jev
 uv run python scripts/train/jev_soft_targets.py  # local and free: runs/jev_all/{train,val}.jsonl.gz
-bash scripts/train/jev_soft_box.sh scratch       # on the box (repo + runs/jev_all synced): selfjev finetune, new LoRA r64, lr 2e-4,
-                                                 # texts up to 16K, then eval2, the dev benchmark and eval_llm (≈ 9 h, one L40S)
+nohup bash scripts/train/selfjev_4b.sh mine > train.log 2>&1 < /dev/null &   # on the box (what to sync: the script's header):
+    # a GPU preflight against selfjev-4b's eval2 report, selfjev finetune (new LoRA r64, lr 2e-4, texts up to 16K), then
+    # eval2, the dev benchmark and eval_llm for the best and the last checkpoint (≈ 9–10 h, one L40S)
 # score any Qwen3.5 adapter: eval2, the dev benchmark (hf + eval test rows), eval_llm
 uv run selfjev eval --adapter runs/mine/adapter --data data/ova/eval2.jsonl --out reports/mine/eval2
 uv run selfjev eval --adapter runs/mine/adapter --data data/ova/hf.jsonl data/ova/eval.jsonl --split test --out reports/mine/test
@@ -95,16 +101,20 @@ uv run python scripts/eval/calibration_table.py qwen35_4b_tree_scratch_jevall_ q
 
 ### Older recipes
 
-`weights/qwen35_4b_tree` (the previous default), the Qwen3 tree models (`tree_4b_combo` and earlier), the stock
-reranker pipeline, the custom, jina and T5Gemma models and their training scripts and configs are at the tag
-[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27). Their round-2b and `data/ova/` training copies rebuild byte for byte with:
+The previous default `qwen35_4b_tree` (adapter in `weights/qwen35_4b_tree`), the Qwen3 tree models (`tree_4b_combo`
+and earlier), the stock reranker pipeline, the forked-cache Qwen3.5 engine, the custom, jina and T5Gemma models and
+their training scripts and configs are at the tag
+[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27), where the
+package is `src/personal_jev/`, the CLI `uv run pjev ...` and the scripts sit directly in `scripts/`. Their round-2b
+and `data/ova/` training copies rebuild byte for byte, from a checkout of the tag, with:
 
 ```bash
-uv run python scripts/data/rebalance_nota.py && uv run python scripts/data/options_in_question.py data/synthetic.jsonl data/hardcases.jsonl data/hardcases_nb.jsonl data/hardcases_r3.jsonl
+uv run python scripts/rebalance_nota.py && uv run python scripts/options_in_question.py data/synthetic.jsonl data/hardcases.jsonl data/hardcases_nb.jsonl data/hardcases_r3.jsonl
 ```
 
-Jev and GPT-6 Astra on the same questions (responses cached under `reports/external/cache/`, so reruns cost nothing;
-stops at `--budget` USD):
+Jev and GPT-6 Astra on the same questions (responses cached under `reports/external/cache/`, so Jev reruns cost
+nothing; Astra's request asks for 8,192 output tokens since 2026-09-27, 6,000 before, so an Astra rerun misses the old
+cache and pays again; the run stops at `--budget` USD):
 
 ```bash
 zsh -ic 'uv run python scripts/eval/compare_external.py --per-hf-family 300 --tag full --only jev --budget 5'
@@ -135,14 +145,15 @@ ledger section of `docs/experiments.md`), so re-running `eval2_summary.py` and `
 
 ```
 src/selfjev/       client.py + types.py (the SDK)   server/ (the HTTP API, fine-tuning jobs)   engine/ (qwen35: model,
-                   prompt, cache; tree: shared-prefix tree, TreeServer; vllm)   core/ (request schema, option lists,
+                   prompt, readout; tree: shared-prefix tree, TreeServer; vllm)   core/ (request schema, option lists,
                    typed answers)   training/ (finetune, RLCD, losses, tree batching)   evaluation/ (eval, calibration,
                    benchmark, stats)   data/ (loading, validation, catalog, paid API clients)   deploy/ (AWS)   cli.py
 scripts/           data/ (builders, generators, judges, batches), eval/ (summaries, Jev comparison, calibration),
                    train/ (the selfjev-4b recipe), aws/ (aws_launch.sh), docs/ (the site's link extension)
-data/              hf / eval / synthetic / hardcases* / batches / eval2 / eval_llm (+ briefs and reviews); data/README.md
+data/              hf / eval / synthetic / hardcases* / batches / eval2 / eval_llm (+ briefs and reviews), ova/ (the test
+                   sets with option lists), all.jsonl.gz (built locally, not in git); data/README.md
 deploy/            Dockerfile, docker-compose.yml
-weights/           selfjev_4b and qwen35_4b_tree (Git LFS) with model.json: base model, revision, recipe, scores
+weights/           selfjev_4b (Git LFS) with model.json: base model, revision, recipe, scores
 reports/           every eval report, benchmark, review and summary
 docs/              this site: API, deploy, findings, write-ups, ledger (experiments.md) and journal
 tests/             mirrors src/selfjev: core, data, engine, training, evaluation, server, client, deploy (CPU only)
