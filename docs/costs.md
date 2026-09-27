@@ -16,6 +16,7 @@ the jina box ≈ $1.60, the latency/compact and T5Gemma L40S boxes) were not rec
 | Jev on eval2 | $0.05 |
 | Jev on every question of `data/all.jsonl.gz` (33,707 texts not cached) | $1.95 |
 | `numdate_neg_v1`: 549 double-negation / number / date questions (Luna $0.28 + Astra $2.78 + Jev $0.02) | $3.08 |
+| `mpos_distr_num_v1`: 3,645 several-correct / distractor / number questions (Luna $1.87 + Astra $17.80 + Jev $0.14) | $19.81 |
 | `llm_multilabel_v1` multilabel batch: writing $26.60 + Astra judge $42.36 | $68.96 |
 | Test-failure audit (Opus 5.5 relabel, 968 questions) | $4.92 |
 | Jev predictions for `llm_multilabel_v1` | $0.30 |

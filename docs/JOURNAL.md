@@ -8,14 +8,14 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| **Repo cleanup + rename `personal_jev` → `selfjev`** (user request): the audit's plan (dead-end models, one-off scripts, caches, stale docs), then the package rename, tooling and CI; tag `archive/pre-cleanup-2026-09-27` keeps the old state. **Other sessions: don't edit `src/`, `scripts/`, `tests/` or `docs/` until this row is gone** | fork (RLCD session) | this checkout | 00:15 PDT 2026-09-27 | a few hours |
-| Batch `mpos_distr_num_v1` (≈ 4K questions: several correct answers, distractors, numbers; Luna writer, blind Astra judge, Jev column; test-diagnosis-motivated: the eval2 audit; user OK ≈ $15–25) | fork (RLCD session) | laptop (API only) | 21:50 PDT 2026-09-26 | ≈ 23:30 PDT |
+| **Repo cleanup + rename `personal_jev` → `selfjev`** (user request): the audit's plan (dead-end models, one-off scripts, caches, stale docs), then the package rename, tooling and CI; tag `archive/pre-cleanup-2026-09-27` keeps the old state. **Other sessions: don't edit `src/`, `scripts/`, `tests/` or `docs/` until this row is gone** | fork (RLCD session) | this checkout | 00:15 PDT 2026-09-27 | ≈ 02:30 PDT (docs left) |
 
 ## Spend so far (real cost, BYOK upstream included)
 
 | item | cost | who |
 |---|---|---|
-| AWS: retrain from scratch g6e.2xlarge `i-07c6e6d8cb3d6316b` us-east-2, 18:59 UTC 2026-09-26 – 04:17 UTC 09-27 (9.3 h), shut down from inside (terminate on shutdown); SG and key pair to delete after SSO login | ≈ $20.80 | fork |
+| `mpos_distr_num_v1` batch: Luna $1.87 (OpenAI API) + Astra batch judge $17.80 (3.05M in / 0.10M out tokens) + Jev $0.14 | $19.81 (quoted ≈ $19) | fork |
+| AWS: retrain from scratch g6e.2xlarge `i-07c6e6d8cb3d6316b` us-east-2, 18:59 UTC 2026-09-26 – 04:17 UTC 09-27 (9.3 h), shut down from inside (terminate on shutdown); SG and key pair deleted after the SSO login | ≈ $20.80 | fork |
 | AWS: Jev soft targets C (RLCD + confident-mistake cost) g6e.2xlarge `i-0a89de33e08abb323` us-east-2, 15:08–22:14 UTC 2026-09-26 (7.1 h), terminated; SG and key pair deleted | ≈ $15.90 | fork |
 | `numdate_neg_v1` batch: Luna $0.28 (OpenAI API) + Astra batch judge $2.78 + Jev $0.02 | $3.08 | fork |
 | AWS: Jev soft targets A (RLCD) g6e.2xlarge `i-0e27aba020500d7fa` us-east-2, 08:49–16:03 UTC 2026-09-26 (7.2 h), terminated; SG and key pair deleted | ≈ $16.20 | fork |
@@ -54,6 +54,21 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-27 01:20 PDT: `mpos_distr_num_v1` built: 3,645 verified several-correct, distractor and number questions ($19.81) (fork)
+
+- **Why:** on eval2 `selfjev-4b` still makes far more real errors than Jev on several-correct-answer questions (29 vs
+  13), near-miss distractors (29 vs 14) and numbers (28 vs 18). Test-diagnosis-motivated (the eval2 audit,
+  `reports/audit_2026-09-26/AUDIT.md`): the writer saw only the abstract trap names, never test items.
+- **How:** `gen_hardcases.py --batch mpos_distr_num_v1 --round3 --traps multi_positive,distractor,numeric_reasoning`
+  (GPT-6 Luna, 1,671 texts from 8 to 8,192 tokens, 4,041 questions), then `scripts/data/grow_batch.sh` judge / build /
+  finish: blind GPT-6 Astra judge, strict build with the overlap guard against every test set, OpenAI moderation, Jev.
+- **Result:** writer = judge on 95.6% (distractor 97.4, multi_positive 95.4, numeric 94.5); 3,645 of 4,041 questions kept
+  (train 3,282, validation 363; multilabel 1,471, binary 1,299, multiclass 875): 179 dropped where the judge
+  disagreed, 217 more by `--strict` because another question of the same text did. Moderation flagged 0 of 1,671 texts. Jev gets 94.8% right.
+  `data/all.jsonl.gz` now has 93,237 questions. Review: `data/batches/mpos_distr_num_v1/review/JUDGE.md`.
+- **Cost:** Luna $1.87 + Astra batch judge $17.80 + Jev $0.14 = $19.81 (quoted ≈ $19; the judge ran ≈ $2 over my estimate).
+- **Verdict:** data only; `selfjev-4b` does not include it. Using it takes one more retrain (≈ $21, ≈ 9 h), not started.
 
 ### 2026-09-26 21:40 PDT: `selfjev-4b` is the default model (fork, user request)
 
