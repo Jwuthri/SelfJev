@@ -1,8 +1,8 @@
 """Latency / throughput / memory on synthetic workloads. Numbers describe this machine and settings only.
 
 Workload = state length x questions x candidates per question. Stock backend: every candidate is a separate pair
-that re-encodes the full state, so pairs x state tokens is the real work. Custom model (--checkpoint): the state
-is encoded once per request and only the short question+candidate sequences scale with the candidate count.
+that re-encodes the full state, so pairs x state tokens is the real work. Shared-prefix tree (--tree): the state is
+encoded once per request and only the short question+candidate branches scale with the candidate count.
 """
 import gc
 import json
@@ -77,16 +77,13 @@ def default_grid(lengths=(512, 2048, 8192), questions=(1, 4, 16)):
 
 
 def run(adapter=None, device=None, dtype="float32", grid=None, repeats=20, warmup=1, max_batch_tokens=16384, out_dir=None,
-        min_repeats=3, row_budget_s=60.0, checkpoint=None, model_id=None, revision=None, tree=False):
+        min_repeats=3, row_budget_s=60.0, model_id=None, revision=None, tree=False):
     grid = grid or default_grid()
     t0 = time.perf_counter()
     if tree:
         from .tree import TreeScorer
         scorer = TreeScorer(model_id, revision, adapter=adapter, device=device, dtype=dtype, max_length=MAX_CONTEXT,
                             max_batch_tokens=max_batch_tokens)
-    elif checkpoint:
-        from .custom import CustomScorer
-        scorer = CustomScorer(checkpoint, device=device, dtype=dtype, max_length=MAX_CONTEXT, max_batch_tokens=max_batch_tokens)
     else:
         scorer = Scorer(adapter=adapter, device=device, dtype=dtype, max_length=MAX_CONTEXT, max_batch_tokens=max_batch_tokens,
                         **({"model_id": model_id, "revision": revision} if model_id else {}))

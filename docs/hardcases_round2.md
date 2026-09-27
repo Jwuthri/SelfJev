@@ -95,4 +95,5 @@ zsh -ic 'uv run python scripts/judge_hardcases.py --jev'          # judges every
 uv run python scripts/build_hardcases.py                         # other session's build: keeps author = judge, leakage guard
 ```
 
-Raw responses and per-call logs: `reports/hardcases/` (gen_cache, gen_log.jsonl, run_*.log, judge_run*.log).
+Raw responses and per-call logs (`reports/hardcases/gen_cache/`, `gen_log.jsonl`) were removed in the 2026-09-27 cleanup
+and are at tag `archive/pre-cleanup-2026-09-27`; the parsed texts are in `data/hardcases/raw/`.

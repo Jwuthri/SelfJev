@@ -97,9 +97,9 @@ kept targets of the strict build:
 | test judges (Astra batch $3.39, Sonnet 5 $2.37) + Jev $0.03 | $5.79 |
 | **total** | **$96.38** (approved ≈ $100, cap $125) |
 
-## Not done yet
+## Used since (2026-09-26)
 
-- No model has been trained on it or scored on `eval_llm`. First step: score the current best (`qwen35_4b_tree`,
-  `tree_4b_combo`) on `eval_llm` for a baseline, then retrain with `hardcases_llm.jsonl` added and compare on eval2
-  (no regression) and `eval_llm` (the gain). Both need an AWS GPU and a price OK.
-- Training on it ends the held-out status of the dev benchmark's `eval_agent_output` family.
+- The default model, `selfjev-4b`, is trained on `hardcases_llm.jsonl` (with every other non-test question): `eval_llm`
+  **93.1%** vs 82.1% for `qwen35_4b_tree`, which never saw this data (Jev 92.5%), and eval2 95.8% (no regression).
+  Reports: `reports/qwen35_4b_tree_scratch_jevall_/eval_llm/`, `reports/qwen35_4b_tree/eval_llm/`.
+- Training on it ended the held-out status of the dev benchmark's `eval_agent_output` family for `selfjev-4b`.

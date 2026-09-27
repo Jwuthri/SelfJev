@@ -1,4 +1,5 @@
 {
+  "_note": "data/hardcases_nb.jsonl is not tracked: rebuild it first (docs/reproduce.md, Older recipes)",
   "train_files": ["data/hf.jsonl", "data/synthetic.jsonl", "data/hardcases_nb.jsonl", "data/hardcases_r3.jsonl"],
   "val_files": ["data/hf.jsonl", "data/synthetic.jsonl", "data/eval.jsonl", "data/hardcases.jsonl", "data/hardcases_r3.jsonl"],
   "out_dir": "runs/tree_4b_instruct_r3",

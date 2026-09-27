@@ -1,5 +1,7 @@
 # T5Gemma 2 on matched round-2b data
 
+**Closed 2026-09-27 (repo cleanup):** the corrected full encoder–decoder run was never completed and T5Gemma is a dead end (eval2 73.0 / 76.8). The code (`src/personal_jev/t5_shared.py`, the `*_t5_*` scripts) and this folder's raw artifacts (JSON, logs, code snapshots) are at tag `archive/pre-cleanup-2026-09-27`; the scored reports below stay. The status line that follows is from 2026-09-24.
+
 Status: **correcting and rerunning the intended full encoder–decoder adaptation**, 24 September 2026 UTC. An implementation audit found that the first pilot targeted only decoder LoRA: the encoder filter missed the native `encoder.text_model` path. Its 73.84% development / 76.80% eval2 scores and 266.61 ms primary latency belong to that decoder-only run. They are preserved in [decoder_only_audit](decoder_only_audit/README.md) and are not a result for the intended full adaptation. The corrected run is `runs/t5gemma2_r2b_full`; it uses identical frozen data and recipe, explicit adapter coverage of both text stacks, and separate first-step gradient checks. No corrected quality result is available yet.
 
 The historical T5 rescore is valid: all 3,471 decisions reproduce the old report (75.37% development); eval2 is 72.98%. Tree round-2b's existing eval2 report is 90.56%; dedicated same-L40S tree controls remain pending.

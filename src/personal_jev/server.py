@@ -82,11 +82,11 @@ def answers_from(result: dict, decode: dict) -> dict:
     return out
 
 
-def make_handler(scorer, calibration=None, prompt=DEFAULT_PROMPT, options_in_question=False, option_pointers=False):
+def make_handler(scorer, calibration=None, prompt=DEFAULT_PROMPT, options_in_question=False):
     def prepare(req):  # adapters trained on data/ova/ see every option in the question text (options.py)
-        if not (options_in_question or option_pointers) or not isinstance(req, dict) or not isinstance(req.get("questions"), list):
+        if not options_in_question or not isinstance(req, dict) or not isinstance(req.get("questions"), list):
             return req
-        return req | {"questions": [with_options(q, str(q.get("id")), option_pointers) if isinstance(q, dict) and q.get("type") in ("multiclass", "multilabel")
+        return req | {"questions": [with_options(q, str(q.get("id"))) if isinstance(q, dict) and q.get("type") in ("multiclass", "multilabel")
                                      and isinstance(q.get("candidates"), list) else q for q in req["questions"]]}
 
     lock = threading.Lock()  # ponytail: one model, one request at a time; a batching queue if throughput matters
@@ -129,7 +129,7 @@ def make_handler(scorer, calibration=None, prompt=DEFAULT_PROMPT, options_in_que
     return Handler
 
 
-def serve(scorer, host="127.0.0.1", port=8000, calibration=None, prompt=DEFAULT_PROMPT, options_in_question=False, option_pointers=False):
-    httpd = ThreadingHTTPServer((host, port), make_handler(scorer, calibration, prompt, options_in_question, option_pointers))
+def serve(scorer, host="127.0.0.1", port=8000, calibration=None, prompt=DEFAULT_PROMPT, options_in_question=False):
+    httpd = ThreadingHTTPServer((host, port), make_handler(scorer, calibration, prompt, options_in_question))
     print(f"serving on http://{host}:{httpd.server_port}  (POST /classify, POST /api/alpha/decisions)", flush=True)
     httpd.serve_forever()

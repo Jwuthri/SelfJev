@@ -1,4 +1,5 @@
 {
+  "_note": "data/hardcases_nb.jsonl is not tracked: rebuild it first (docs/reproduce.md, Older recipes)",
   "train_files": [
     "data/hf.jsonl",
     "data/synthetic.jsonl",

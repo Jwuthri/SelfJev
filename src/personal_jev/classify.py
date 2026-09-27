@@ -1,5 +1,6 @@
 """Score every (state, question, candidate) item in one batched call, then group back per question.
-Works with the stock reranker (model.Scorer: one joint pair per item) and the custom model (custom.CustomScorer).
+Works with the stock reranker (model.Scorer: one joint pair per item) and every shared-state scorer that implements
+score_requests (tree.TreeScorer, qwen35_tree.TreeServer, vllm_tree, vllm_qwen35, challengers.ChallengerScorer).
 
 binary:     p_yes = sigmoid(s / T); selected = p_yes >= threshold
 multiclass: p = softmax(scores / T) within the question; selected = argmax (or None when abstaining)
@@ -57,7 +58,7 @@ def decide(q: Question, scores: list[float], calibration=None) -> dict:
 def classify_many(scorer, requests, calibration=None, prompt=DEFAULT_PROMPT) -> tuple[list[list[dict]], dict]:
     """All pairs from all requests go through one scorer.score call (length-sorted batching)."""
     reqs = [r if isinstance(r, Request) else parse_request(r) for r in requests]
-    if hasattr(scorer, "score_requests"):  # custom shared-state model: each distinct state encoded once
+    if hasattr(scorer, "score_requests"):  # shared-state scorers: each distinct state encoded once
         per_request, stats = scorer.score_requests(reqs)
         return [[decide(q, s, calibration) for q, s in zip(r.questions, qs)] for r, qs in zip(reqs, per_request)], stats
     texts, owners = [], []
@@ -84,7 +85,7 @@ def classify_many(scorer, requests, calibration=None, prompt=DEFAULT_PROMPT) -> 
 
 
 def run_meta(scorer, calibration=None, prompt=DEFAULT_PROMPT) -> dict:
-    # the custom model's meta carries its own formatting name/sha, which overrides the stock prompt mapping
+    # a shared-state scorer's meta carries its own format name/sha, which overrides the stock prompt mapping
     return {"prompt": prompt, "prompt_sha": prompt_sha(prompt)} | scorer.meta | {"calibration": (calibration or {}).get("fit")}
 
 

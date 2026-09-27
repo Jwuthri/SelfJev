@@ -30,7 +30,7 @@ its sources.
 | `data/eval.jsonl` | authored evaluation set over 7 families, hard cases tagged | 155 texts / 398 questions: validation 118, calibration 109, test 171 | 7 Claude Opus agents from [data/eval/BRIEF.md](../data/eval/BRIEF.md); a blind Opus relabelling agreed 398/398; not human-reviewed |
 | `data/synthetic.jsonl` | hard, long, trap-heavy training data, 6 families | 923 texts / 2,405 questions | 12 Claude Sonnet agents from [data/synthetic/BRIEF.md](../data/synthetic/BRIEF.md); an Opus review dropped 43 questions |
 | `data/hardcases.jsonl` | **round 2**: verified hard-case training data | 10,142 kept of 10,627 (train 0.9 / validation 0.1) | 4 OpenRouter models + 8 Claude Sonnet agents, blind GPT-6 Astra judge ([round-2 write-up](hardcases_round2.md)) |
-| `data/hardcases_nb.jsonl` | round 2b: round 2 with `none`-correct capped at 10% | 9,982 questions | [scripts/rebalance_nota.py](../scripts/rebalance_nota.py) |
+| `data/hardcases_nb.jsonl` | round 2b: round 2 with `none`-correct capped at 10% (not tracked: rebuild it, [reproduce](reproduce.md#older-recipes)) | 9,982 questions | [scripts/rebalance_nota.py](../scripts/rebalance_nota.py) (seeded) |
 | `data/hardcases_r3.jsonl` | **round 3**: verified hard-case training data | 38,628 questions (train 34,868 / validation 3,760) | GPT-6 Luna, Gemini 3.8 Flash, Grok 4.7; blind Astra judge |
 | `data/eval2.jsonl` | **eval2**: frozen target-task test set | 1,991 questions / 647 texts, all `test` | Claude Opus 5.5, Kimi K3, GLM 5.3; two blind judges |
 | `data/hardcases_llm.jsonl` | **LLM-evaluation** training data: score, judge, verify, guardrail, jailbreak ([llm_eval_data.md](llm_eval_data.md)) | 9,443 questions (train 8,497 / validation 946) | GPT-6 Luna, Gemini 3.8 Flash, Grok 4.7, DeepSeek V4 Flash; blind Astra judge; strict build + moderation review |
@@ -58,7 +58,8 @@ its sources.
 | round 2b: round 1 + `hardcases_nb.jsonl` | `tree_4b_r2b`, `tree_4b_ova`, the capacity runs | 16,375 |
 | round 2b with the hard-case families exempt from the 1,600-per-family cap | `tree_4b_instruct_r2x64` | 18,681 |
 | round 3: the above + `hardcases_r3.jsonl` (r3 families exempt too) | `tree_4b_instruct_r3` | 51.9K |
-| round 3 with every option listed in the question (`data/ova/`) | `tree_4b_combo`, `qwen35_4b_combo` (texts ≤ 2K: 43.8K), **`qwen35_4b_tree`** (best, texts ≤ 8K) | 51.8K |
+| round 3 with every option listed in the question (`data/ova/`) | `tree_4b_combo`, `qwen35_4b_combo` (texts ≤ 2K: 43.8K), `qwen35_4b_tree` (texts ≤ 8K) | 51.8K |
+| every non-test question of `data/all.jsonl.gz` (no family cap, no `none` rebalance, texts ≤ 16K), options in the question, target 0.5 × label + 0.5 × Jev | **`selfjev-4b`** (the default) | 79.9K |
 
 ## Generating and judging hard cases
 

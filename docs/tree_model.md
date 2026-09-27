@@ -218,7 +218,9 @@ data at 2K tokens and took 6.6 h. `qwen35_4b_tree` scores 95.6 on eval2 against 
 
 ```bash
 uv run pytest tests/test_tree.py                              # 10 tests; 2 load the real 0.6B reranker
-scripts/run_tree_gpu.sh                                        # on a CUDA box: untrained check, LoRA x2, evals, benchmarks
 uv run pjev classify examples/request.json --tree --model Qwen/Qwen3-Reranker-4B \
   --revision 22e683669bc0f0bd69640a1354a6d0aebcfeede5 --adapter runs/tree_4b/adapter --dtype bfloat16
 ```
+
+The GPU pipeline of these runs (`scripts/run_tree_gpu.sh`: untrained check, LoRA x2, evals, benchmarks) is at tag
+[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27).

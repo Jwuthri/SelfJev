@@ -15,7 +15,8 @@ interesting result.
 ## Qwen3.8-27B as a teacher, and distillation
 
 - **What:** Qwen3.8-27B-FP8 on vLLM, thinking off, zero-shot. The answer probability is read from the next-token
-  distribution restricted to the answer tokens ([scripts/teacher_scores.py](../scripts/teacher_scores.py)).
+  distribution restricted to the answer tokens ([scripts/teacher_scores.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/scripts/teacher_scores.py), archived).
+  Distillation from it was dropped on 2026-09-27; its eval2 and validation scores stay in `reports/teacher/`.
 - **Validation** (2,121 questions): 82.4% overall; 69.7% on public sets, 93.2% on authored, 88.1% on Astra-verified hard
   cases. It loses on public-set label conventions and wins on target-task questions.
 - **eval2:** 91.4% (binary 93.4, multiclass 97.8, multilabel 75.9), vs 91.6% for `tree_4b_ova`. 112 questions only
@@ -28,8 +29,8 @@ interesting result.
   the 8,372 target-task rows (gold on the 8,000 public rows): eval2 91.0 vs 91.6 (33 / 45, p = 0.21), dev benchmark
   82.5 vs 82.6. The teacher disagrees with the verified label on 12–20% of rows, and the 0.5 weight pulls toward those
   wrong answers.
-- **Untried:** teacher on multiclass only (its strongest type), a lower weight, an r64 student, or serving the
-  ensemble directly.
+- **Not pursued** (closed 2026-09-27): teacher on multiclass only (its strongest type), a lower weight, an r64
+  student. Serving an ensemble stays open as the cascade idea in the [ledger](experiments.md).
 - Cost: validation and training-split scoring on one L40S ≈ $6.20; the distillation run ≈ $2.90.
 
 ## T5Gemma 2: a pretrained encoder–decoder with a shared document
@@ -42,15 +43,16 @@ pretrained decoder against that shared memory. It had already been tried in an e
 |---|---|---|---|---|---|
 | `t5_r1` (historical, rescored) | round 1 | LoRA r16, encoder + decoder, 823 steps | 73.0 | 75.4 | 203 ms (merged tree 4B: 297 ms) |
 | `t5_r2b`, decoder-only audit | round 2b | LoRA r16, **decoder only by mistake** | 76.8 | 73.8 | 266.6 ms |
-| `t5_r2b_full` | round 2b | LoRA r16, encoder + decoder | no result yet | | |
+| `t5_r2b_full` | round 2b | LoRA r16, encoder + decoder | never run (closed 2026-09-27) | | |
 
 - **The pilot bug:** the target filter used `model.encoder.layers`, but the native path is
-  `model.encoder.text_model.layers`. The adapter had 208 decoder tensors and 0 encoder tensors. A unit test now checks
-  PEFT coverage and non-zero gradients on both stacks.
-- **Verdict so far:** 14–18 points behind the tree on eval2. Faster than the tree at 2K × 16 × 3 on the same GPU, but
+  `model.encoder.text_model.layers`. The adapter had 208 decoder tensors and 0 encoder tensors. A unit test (archived
+  with the code) checked PEFT coverage and non-zero gradients on both stacks.
+- **Verdict:** a dead end (closed 2026-09-27). 14–18 points behind the tree on eval2. Faster than the tree at 2K × 16 × 3 on the same GPU, but
   not by the 2× the promotion gate asked for, and not with acceptable quality.
 - Protocol, audits and raw results: [reports/t5_round2b_2026-09-24/](../reports/t5_round2b_2026-09-24/README.md).
-  Code: [src/personal_jev/t5_shared.py](../src/personal_jev/t5_shared.py).
+  Code (removed 2026-09-27): [src/personal_jev/t5_shared.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/t5_shared.py) at tag
+  `archive/pre-cleanup-2026-09-27`.
 
 ## Qwen3.5-2B: linear attention with a forked cache
 

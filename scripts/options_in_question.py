@@ -3,9 +3,10 @@ so each leaf still judges one candidate but now sees all the alternatives (one v
 code, format and readout are unchanged, and every row keeps its id, split and target.
 
 Options are listed in a fixed random order per question (seeded by id), so list position carries no signal.
-Binary questions are unchanged. Apply the same transform at inference time (transform()).
+Binary questions are unchanged. Apply the same transform at inference time (transform(), `--options-in-question`).
+Rebuilds the untracked training copies byte for byte (docs/reproduce.md, "Older recipes").
 
-usage: uv run python scripts/options_in_question.py [--pointers] data/hf.jsonl ...   -> data/ova/ (or data/ptr/)<name>.jsonl
+usage: uv run python scripts/options_in_question.py data/hf.jsonl ...   -> data/ova/<name>.jsonl
 """
 import json
 import sys
@@ -16,15 +17,14 @@ sys.path.insert(0, str(ROOT / "src"))
 from personal_jev.options import with_options  # noqa: E402
 
 
-def transform(row, pointers=False):
-    return row | {"question": with_options(row["question"], row["id"], pointers)}
+def transform(row):
+    return row | {"question": with_options(row["question"], row["id"])}
 
 
 if __name__ == "__main__":
-    pointers = "--pointers" in sys.argv  # numbered list + "option k" leaves (personal_jev.options) -> data/ptr/
-    out = Path("data/ptr" if pointers else "data/ova")
+    out = Path("data/ova")
     out.mkdir(exist_ok=True)
-    for f in [x for x in sys.argv[1:] if x != "--pointers"]:
-        rows = [transform(json.loads(line), pointers) for line in open(f)]
+    for f in sys.argv[1:]:
+        rows = [transform(json.loads(line)) for line in open(f)]
         (out / Path(f).name).write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
         print(f"{f} -> {out / Path(f).name}: {len(rows)} rows")

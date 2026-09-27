@@ -5,6 +5,7 @@ TEST questions: use for analysis and to steer new training data only; never trai
 - LoRA wrong: 919 (516 where Jev is right, 403 where Jev is also wrong)
 - LoRA right and Jev wrong: 197
 - Full list, worst first (Jev-right cases, then by LoRA's confidence in its wrong answer): `reports/external/failures.jsonl`
+  (removed 2026-09-27 with its generator `scripts/failures.py`; both at tag `archive/pre-cleanup-2026-09-27`)
 
 ## Error rate by family (sorted by LoRA - Jev gap)
 

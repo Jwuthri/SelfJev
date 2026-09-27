@@ -310,7 +310,9 @@ evidence file.
 ## Where the gap to Jev is
 
 !!! abstract "22. Multilabel, negations, numbers and dates"
-    Best model (`qwen35_4b_tree`) vs Jev on eval2, every slice with n ≥ 100 and a gap of 3 points or more:
+    The previous default (`qwen35_4b_tree`; `selfjev-4b`'s slices are in
+    [reports/eval2/summary.md](../reports/eval2/summary.md)) vs Jev on eval2, every slice with n ≥ 100 and a gap of 3
+    points or more:
 
     | slice | n | ours | Jev | gap |
     |---|---|---|---|---|

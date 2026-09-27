@@ -4,20 +4,19 @@ What we would do next, in priority order. To work on one, claim it in the *Open 
 [experiment ledger](experiments.md#open-ideas-claim-before-starting-edit-the-status-cell) first; paid runs need the
 user's OK with a price.
 
-## 1. Close the quality gap (1.6 points on eval2)
+## 1. Close the quality gap (1.4 points on eval2)
 
-The best model, `qwen35_4b_tree`, scores 95.6 against Jev's 97.2. Multilabel is still about half of the gap
-(exact match 90.1 vs 94.2), then numbers and dates.
+The default model, `selfjev-4b`, scores 95.8 against Jev's 97.2. The largest slice gaps are multi-positive questions
+(91.0 vs 96.0), numeric reasoning (87.5 vs 92.0), distractors (93.9 vs 97.0) and multilabel exact match (91.4 vs 94.2)
+([eval2 summary](../reports/eval2/summary.md)).
 
 | idea | why | cost |
 |---|---|---|
-| **RLCD with a reward that carries more than the label**: soft targets (the two judges' agreement, a teacher's probabilities) or a cost that punishes confident mistakes | the first RLCD test on hard labels gave nothing (accuracy 95.63 vs 95.58, ECE 0.010 vs 0.005); Jev's edge is hedged mistakes (7 of 57 at ≥ 0.9, ours 30 of 99) | ≈ $6 per test on an L40S |
-| **Multilabel with many positives**: more verified questions with 3+ correct labels and zero-positive ones | the largest remaining slice gap (90.1 vs 94.2 exact match) | generation + blind judge |
-| **Numbers, dates and grading** with verified answers | numeric 88.4 vs 92.0, temporal 85.7 vs 89.2 on eval2 | generation + blind judge |
+| **Multilabel with many positives**: more verified questions with 3+ correct labels and zero-positive ones | multi-positive 91.0 vs 96.0, multilabel exact match 91.4 vs 94.2 | generation + blind judge |
+| **Numbers, dates and grading** with verified answers | numeric 87.5 vs 92.0, temporal 88.2 vs 89.2 on eval2 | generation + blind judge |
 | **Question-level sharing in the Qwen3.5 tree for longer questions**, and texts beyond 8K in training | the tree made 8K training possible; 2,013 questions (3.7%) are still dropped | GPU time only |
 | **Parallel-readout branch** (one branch per question, a yes/no readout per option + `none`, listwise loss) | the shape Jev's disclosures imply; multilabel and `none` decided jointly ([memo](../reports/jev_hypothesis_2026-09-25.md)) | code + ≈ $12 |
 | **Serving cascade / ensemble**: the 50/50 average of `qwen35_4b_tree` and `tree_4b_combo` scores 95.9 on eval2, with the 27B teacher 96.5 (nothing fitted) | two models' errors overlap little (either is right on 97.6%) | $0 to decide; 2× serving compute |
-| **Use the 27B teacher better**: multiclass-only distillation, a lower weight | distillation at weight 0.5 gave nothing | ≈ $3 GPU each |
 
 ## 2. Close the speed gap
 
@@ -49,3 +48,7 @@ only for one question up to ~1K tokens; the Qwen3.5 model is slow with many ques
 - Qwen3.5-4B with a forked cache (94.5), then trained with its own tree (**95.6**).
 - The vLLM path scored on eval2: the same accuracy as transformers for both best models.
 - `pjev finetune` and `pjev rlcd`, and the best weights in the repo ([weights/](../weights/README.md)).
+- Jev's probabilities as soft targets, and RLCD with a confident-mistake cost: confident mistakes on eval2 30 → 14 and 8,
+  accuracy flat. Retrained from scratch on everything with them: **`selfjev-4b`**, the default (eval2 95.8, eval_llm 93.1).
+- Distilling the 27B teacher further was dropped (weight 0.5 gave nothing); its code is at tag
+  `archive/pre-cleanup-2026-09-27`.

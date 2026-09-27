@@ -12,6 +12,7 @@
 """
 import argparse
 import json
+import os
 import re
 import sys
 from collections import Counter, defaultdict
@@ -106,9 +107,10 @@ def main():
         kept.extend(ks)
     write_jsonl(Path(a.out), kept)
     total = Counter()
+    brief = lambda name: Path(os.path.relpath(ROOT / "data/hardcases" / name, REVIEW.resolve())).as_posix()  # noqa: E731
     lines = ["# Hard-case data review (round 2)", "",
-             "Authors: 8 Claude Sonnet sub-agents ([BRIEF_sonnet_agents.md](../BRIEF_sonnet_agents.md), prefixes h*) and OpenRouter "
-             "models via scripts/gen_hardcases.py ([BRIEF.md](../BRIEF.md), prefixes gf/gk/df/lu; see each row's provenance). "
+             f"Authors: 8 Claude Sonnet sub-agents ([BRIEF_sonnet_agents.md]({brief('BRIEF_sonnet_agents.md')}), prefixes h*) and OpenRouter "
+             f"models via scripts/gen_hardcases.py ([BRIEF.md]({brief('BRIEF.md')}), prefixes gf/gk/df/lu; see each row's provenance). "
              f"Blind judge: {judges or 'none'}. A question is kept only if the judge's answer equals the authored label. "
              "LLM-verified, not human-reviewed.", "",
              f"States dropped for overlap with {', '.join(a.guard)}: {leak}", "",

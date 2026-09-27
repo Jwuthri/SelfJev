@@ -138,7 +138,7 @@ def lora_targets(model, wanted):
 
 
 def select_data(cfg, rng):
-    """Train and validation examples; same seed and config -> same questions (shared by train_custom)."""
+    """Train and validation examples; same seed and config -> same questions (shared by train_tree and run_qwen35)."""
     train_ex = load(cfg["train_files"], {"train"})
     if cap := cfg["max_train_per_family"]:  # data-mixture control: no single family dominates the pilot
         fams, exempt = {}, set(cfg.get("cap_exempt_families") or [])  # exempt: e.g. an added family for a data curve

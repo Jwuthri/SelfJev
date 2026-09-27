@@ -85,8 +85,9 @@ noisy-label public sets (GoEmotions, TweetEval, dair-ai emotion) every model sta
 - Largest gaps to Jev by hard-case tag, in error-rate points: sarcasm +67, numeric reasoning +56, role reversal +53,
   injection +50, paraphrase +50, distractors +49, lexical overlap +45, long states +44, negation +43, temporal
   reasoning +41. Training closed most of the gap on contradiction (+9) and missing evidence (+3).
-- [failures.jsonl](../reports/external/failures.jsonl) lists every miss worst-first. These are **test** questions:
-  use them to design new training data, never as training data.
+- [failures.md](../reports/external/failures.md) summarizes the misses (the per-question list, `failures.jsonl`, is at tag
+  [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27)). These are **test** questions: use them to design new training data, never
+  as training data.
 
 ### Calibration
 
@@ -175,6 +176,9 @@ Ten more stock 4B LoRA runs, one A10G each (≈ $23 in total), to see what moves
   tree format on eval2 it is +3.0 ([findings](findings.md#architecture-and-base-model)).
 
 ## Reproduce
+
+The pipeline scripts of these runs are at tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27); the configs
+(`configs/lora_pilot.json`, `configs/curve/`) are still here. From a checkout of the tag:
 
 ```bash
 scripts/run_experiments.sh                      # 0.6B: baseline evals, calibration, LoRA, tuned evals, compare, bench

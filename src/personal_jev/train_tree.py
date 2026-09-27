@@ -122,27 +122,11 @@ def validate(model, items, roots, max_batch_tokens):
     return {"loss": loss, "question_accuracy": sum(v for (t, ok), v in by.items() if ok) / len(items), "accuracy_by_type_at_T1_t0.5": acc}, scores
 
 
-def distillation_loss(scores, items):
-    """Sum of equal-weight per-question soft-target cross entropies at T=1.
-
-    Teacher probabilities supplement gold targets; they are not relabeled ground truth.
-    Multiclass candidate order must follow the student's shuffled item order.
-    """
-    import torch.nn.functional as F
-    loss, k = scores.new_zeros(()), 0
-    for it in items:
-        x = scores[k:k + len(it["ids"])].float()
-        target = torch.tensor(it["teacher_scores"], device=x.device, dtype=torch.float32)
-        loss = loss + (-(target.softmax(-1) * x.log_softmax(-1)).sum() if it["type"] == "multiclass"
-                       else F.binary_cross_entropy_with_logits(x, target.sigmoid()))
-        k += len(it["ids"])
-    assert k == len(scores)
-    return loss
-
-
 def train(config_path=None, **overrides):
     cfg = DEFAULTS | (json.loads(Path(config_path).read_text()) if config_path else {}) | overrides
     cfg["lora"] = DEFAULTS["lora"] | cfg.get("lora", {})
+    if cfg.get("teacher_weight"):  # 27B-teacher distillation was a dead end (tree_4b_ova_kd)
+        raise ValueError("teacher distillation was removed; its code is at tag archive/pre-cleanup-2026-09-27")
     out = Path(cfg["out_dir"])
     out.mkdir(parents=True, exist_ok=True)
     rng = random.Random(cfg["seed"])
@@ -169,20 +153,6 @@ def train(config_path=None, **overrides):
     train_ex, val_ex = select_data(cfg, rng)
     train_items, train_roots, dropped_train = encode_items(enc, train_ex, cfg["max_length"])
     val_items, val_roots, dropped_val = encode_items(enc, val_ex, cfg["max_length"])
-    teacher_weight = cfg.get("teacher_weight", 0.0)
-    if not 0 <= teacher_weight <= 1:
-        raise ValueError("teacher_weight must be in [0, 1]")
-    if teacher_weight:
-        teacher = json.loads(Path(cfg["teacher_file"]).read_text())
-        if teacher.get("splits") != ["train"] or teacher.get("data") != {p: sha256_file(p) for p in cfg["train_files"]}:
-            raise ValueError("Teacher cache must contain only train rows from the exact training files")
-        if set(teacher["scores"]) != {it["id"] for it in train_items}:
-            raise ValueError("Teacher cache IDs must exactly match the selected training questions")
-        for it in train_items:
-            row = teacher["scores"][it["id"]]
-            if row["candidate_ids"] != it["candidate_ids"] or len(row["scores"]) != len(it["ids"]):
-                raise ValueError(f"Teacher candidate mismatch: {it['id']}")
-            it["teacher_scores"] = row["scores"]
     (out / "selected_examples.json").write_text(json.dumps({"train": [it["id"] for it in train_items],
                                                             "validation": [it["id"] for it in val_items]}))
     per_epoch = math.ceil(len(micro_batches(train_items, train_roots, cfg["max_batch_tokens"], random.Random(0))) / cfg["grad_accum"])
@@ -220,8 +190,7 @@ def train(config_path=None, **overrides):
             for b in group:
                 items = group_by_state([shuffle_candidates(train_items[i], rng) for i in b])
                 scores = model.packed(trees_for(items, train_roots))
-                loss = ((1 - teacher_weight) * grouped_loss(scores, items)
-                        + (teacher_weight * distillation_loss(scores, items) if teacher_weight else 0)) / nq
+                loss = grouped_loss(scores, items) / nq
                 loss.backward()
                 step_loss += loss.item()
             if not all(p.grad is not None and torch.isfinite(p.grad).all() for p in params):
@@ -255,7 +224,6 @@ def train(config_path=None, **overrides):
     again = [x for s in score_items(re.model, reload_items, val_roots, cfg["max_batch_tokens"]) for x in s]
     meta = {"config": cfg, "base": {"model": cfg["model_id"], "revision": cfg["revision"]}, "format": enc.format,
             "init_adapter_sha256": sha256_file(Path(cfg["init_adapter"]) / "adapter_model.safetensors") if cfg.get("init_adapter") else None,
-            "teacher_file_sha256": sha256_file(cfg["teacher_file"]) if teacher_weight else None,
             "lora": lc | {"trainable_params": trainable, "total_params": total, "linear_modules_available": linear},
             "data": {"train_files": [{"path": p, "sha256": sha256_file(p)} for p in cfg["train_files"]],
                      "val_files": [{"path": p, "sha256": sha256_file(p)} for p in cfg["val_files"]],

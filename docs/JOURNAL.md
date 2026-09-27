@@ -8,9 +8,8 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
+| **Repo cleanup + rename `personal_jev` → `selfjev`** (user request): the audit's plan (dead-end models, one-off scripts, caches, stale docs), then the package rename, tooling and CI; tag `archive/pre-cleanup-2026-09-27` keeps the old state. **Other sessions: don't edit `src/`, `scripts/`, `tests/` or `docs/` until this row is gone** | fork (RLCD session) | this checkout | 00:15 PDT 2026-09-27 | a few hours |
 | Batch `mpos_distr_num_v1` (≈ 4K questions: several correct answers, distractors, numbers; Luna writer, blind Astra judge, Jev column; test-diagnosis-motivated: the eval2 audit; user OK ≈ $15–25) | fork (RLCD session) | laptop (API only) | 21:50 PDT 2026-09-26 | ≈ 23:30 PDT |
-| T5Gemma matched round-2b: correcting decoder-only targeting bug; full encoder+decoder retraining, then same-L40S controls; H100 unavailable | Codex tree latency/compact | original master; Ohio L40S `i-087b024b35cff657b` ($3.00424/h) | 2026-09-24 UTC | cap 2026-09-24 14:38:54 UTC; collect/terminate earlier |
-| **owner unknown**: "selfjev-challengers-20260924" | not this session, fork or fork 2 (a Codex session?). Owner: add yourself here | AWS `i-03916322f7dd879be` g6e.4xlarge, `i-0683c5909b7440e8f` g5.4xlarge | 20:27–20:51 | ? |
 
 ## Spend so far (real cost, BYOK upstream included)
 

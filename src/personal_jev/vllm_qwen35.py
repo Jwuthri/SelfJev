@@ -66,8 +66,8 @@ class VllmQwen35Scorer:
         from transformers import AutoTokenizer
         from vllm import LLM, SamplingParams
         self.max_length, self.tokenizer = max_length, AutoTokenizer.from_pretrained(model_dir)
-        self._enc = object.__new__(ChallengerScorer)  # only its prompt builder: entry() needs these four attributes
-        self._enc.__dict__.update(name="qwen35_4b", tokenizer=self.tokenizer, max_length=max_length, gli_native=False)
+        self._enc = object.__new__(ChallengerScorer)  # only its prompt builder: entry() needs these attributes
+        self._enc.__dict__.update(name="qwen35_4b", tokenizer=self.tokenizer, max_length=max_length)
         self.yes, self.no = (self._enc.tokens(s) for s in ("yes", "no"))
         assert len(self.yes) == len(self.no) == 1, (self.yes, self.no)
         self.yes, self.no = self.yes[0], self.no[0]

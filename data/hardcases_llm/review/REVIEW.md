@@ -1,6 +1,6 @@
 # Hard-case data review (round 2)
 
-Authors: 8 Claude Sonnet sub-agents ([BRIEF_sonnet_agents.md](../BRIEF_sonnet_agents.md), prefixes h*) and OpenRouter models via scripts/gen_hardcases.py ([BRIEF.md](../BRIEF.md), prefixes gf/gk/df/lu; see each row's provenance). Blind judge: gpt-6-astra effort=low batch batch_6ab745e004cc8190908c389b9dc95ff3, gpt-6-astra effort=low batch batch_6ab74bb99b988190bc04b38df5558ec2, gpt-6-astra effort=low batch batch_6ab74bbbd3808190a0bc27373f2faf31, gpt-6-astra effort=low batch batch_6ab74bbdaa3481909b5efede8e381f65, gpt-6-astra effort=low batch batch_6ab74bbec818819098ea9006e552eb96. A question is kept only if the judge's answer equals the authored label. LLM-verified, not human-reviewed.
+Authors: 8 Claude Sonnet sub-agents ([BRIEF_sonnet_agents.md](../../hardcases/BRIEF_sonnet_agents.md), prefixes h*) and OpenRouter models via scripts/gen_hardcases.py ([BRIEF.md](../../hardcases/BRIEF.md), prefixes gf/gk/df/lu; see each row's provenance). Blind judge: gpt-6-astra effort=low batch batch_6ab745e004cc8190908c389b9dc95ff3, gpt-6-astra effort=low batch batch_6ab74bb99b988190bc04b38df5558ec2, gpt-6-astra effort=low batch batch_6ab74bbbd3808190a0bc27373f2faf31, gpt-6-astra effort=low batch batch_6ab74bbdaa3481909b5efede8e381f65, gpt-6-astra effort=low batch batch_6ab74bbec818819098ea9006e552eb96. A question is kept only if the judge's answer equals the authored label. LLM-verified, not human-reviewed.
 
 States dropped for overlap with data/eval.jsonl, data/eval2.jsonl, data/eval_llm.jsonl: 0
 

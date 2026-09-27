@@ -14,26 +14,20 @@ of it, distilling Jev's hedging).
 """
 import gzip
 import json
-import random
 import sys
 from collections import Counter
 from pathlib import Path
 
 sys.path[:0] = ["src", "scripts"]
 from build_all import TEST_DATASETS  # noqa: E402
-from personal_jev.train import DEFAULTS, select_data  # noqa: E402
 
 OUT = Path("runs/jev_all")
-R = ["r2_simple", "r2_hard", "r2_very_hard", "r3_simple", "r3_hard", "r3_very_hard"]
 
 
 def val_ids():
-    """qwen35_4b_tree's validation sample (scratchpad q35r_steps.sh of the RLCD tests, run_qwen35.py's selection)."""
-    d = "data/ova"
-    cfg = DEFAULTS | dict(train_files=[f"{d}/{f}.jsonl" for f in ("hf", "synthetic", "hardcases_nb", "hardcases_r3")],
-                          val_files=[f"{d}/{f}.jsonl" for f in ("hf", "synthetic", "eval", "hardcases", "hardcases_r3")],
-                          max_train_per_family=1600, cap_exempt_families=R, max_val_questions=1200, max_train_questions=None)
-    return {r["id"] for r in select_data(cfg, random.Random(13))[1]}
+    """The 1,200-question validation sample of every Qwen3.5 run since qwen35_4b_tree (run_qwen35.py's selection, seed 13),
+    frozen in data/val_sample_1200.txt so the recipe no longer depends on the data/ova training copies."""
+    return set(Path("data/val_sample_1200.txt").read_text().split())
 
 
 def label_prob(r, s):

@@ -1,4 +1,4 @@
-"""pjev: classify | eval | calibrate | compare | bench | serve | train | train-custom | train-tree | finetune | rlcd"""
+"""pjev: classify | eval | calibrate | compare | bench | serve | train | train-tree | finetune | rlcd"""
 import argparse
 import json
 import sys
@@ -9,18 +9,10 @@ from .model import MODEL_ID, MODEL_REVISION
 
 
 def _scorer(a):
-    if a.jina:
-        from .jina import JINA, JinaScorer
-        model, rev = (a.model, a.revision) if a.model.startswith("jinaai/") else JINA
-        return JinaScorer(model, rev, adapter=a.adapter, device=a.device, dtype=a.dtype, max_length=a.max_length, max_batch_tokens=a.max_batch_tokens)
     if a.tree:
         from .tree import TreeScorer
         return TreeScorer(a.model, a.revision, adapter=a.adapter, device=a.device, dtype=a.dtype, max_length=a.max_length,
                           max_batch_tokens=a.max_batch_tokens, merge=a.merge)
-    if a.checkpoint:
-        from .custom import CustomScorer
-        return CustomScorer(a.checkpoint, device=a.device, dtype=a.dtype, max_length=a.max_length,
-                            max_candidate_length=a.max_candidate_length, max_batch_tokens=a.max_batch_tokens)
     from .model import Scorer
     return Scorer(adapter=a.adapter, device=a.device, dtype=a.dtype, max_length=a.max_length, max_batch_tokens=a.max_batch_tokens,
                   model_id=a.model, revision=a.revision)
@@ -35,25 +27,22 @@ def _calibration(a, scorer):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog="pjev", description="Instruction-conditioned classification on Qwen3-Reranker-0.6B: "
-                                 "custom shared-state model (--checkpoint) or the stock reranker backend")
+    ap = argparse.ArgumentParser(prog="pjev", description="Instruction-conditioned binary / multiclass / multilabel decisions "
+                                 "with open Qwen models: the stock Qwen3-Reranker backend (default) or the shared-prefix tree "
+                                 "(--tree). The default model, selfjev-4b, is trained by `pjev finetune` and served by "
+                                 "`python -m personal_jev.qwen35_tree serve`")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     def model_args(p):
         p.add_argument("--tree", action="store_true", help="shared-prefix tree scorer (tree.py) on --model/--revision; "
                                                                 "--adapter from `pjev train-tree`")
-        p.add_argument("--jina", action="store_true", help="jina-reranker-v3.5 listwise scorer (jina.py); --adapter from `pjev train-jina`")
-        p.add_argument("--checkpoint", help="custom shared-state model checkpoint (from `pjev train-custom`); "
-                                            "default: the stock reranker backend")
         p.add_argument("--model", default=MODEL_ID, help="stock backend: Qwen3-Reranker checkpoint (0.6B / 4B / 8B)")
         p.add_argument("--revision", default=MODEL_REVISION, help="stock backend: pinned HF commit for --model")
         p.add_argument("--merge", action="store_true", help="--tree: merge the LoRA adapter into the weights (inference speed)")
-        p.add_argument("--adapter", help="stock backend only: LoRA adapter directory (default: unmodified base model)")
+        p.add_argument("--adapter", help="LoRA adapter directory (default: unmodified base model)")
         p.add_argument("--device", help="cuda | mps | cpu (default: best available)")
         p.add_argument("--dtype", default="float32", choices=["float32", "bfloat16", "float16"])
-        p.add_argument("--max-length", type=int, default=8192, help="max tokens per pair (custom: per state) incl. template; "
-                                                                        "longer input is an error")
-        p.add_argument("--max-candidate-length", type=int, default=512, help="custom model: max tokens per question+candidate text")
+        p.add_argument("--max-length", type=int, default=8192, help="max tokens per pair incl. template; longer input is an error")
         p.add_argument("--max-batch-tokens", type=int, default=16384, help="padded tokens per forward pass")
         p.add_argument("--calibration", help="calibration JSON from `pjev calibrate` (must match model/adapter/prompt)")
         p.add_argument("--prompt", default=DEFAULT_PROMPT, choices=sorted(PROMPTS), help="question-to-pair mapping (see formatting.py)")
@@ -87,18 +76,10 @@ def main(argv=None):
     p.add_argument("--port", type=int, default=8000)
     p.add_argument("--options-in-question", action="store_true", help="list every option in the question text "
                    "(required for adapters trained on data/ova/)")
-    p.add_argument("--option-pointers", action="store_true", help="numbered options in the question, "
-                   "'option k' leaves (adapters trained on data/ptr/)")
     p = sub.add_parser("train", help="stock backend: LoRA training from a JSON config")
     p.add_argument("config")
     p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
-    p = sub.add_parser("train-custom", help="custom model: new-module warm-up, then LoRA/full backbone adaptation")
-    p.add_argument("config")
-    p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
     p = sub.add_parser("train-tree", help="shared-prefix tree scorer: LoRA on any Qwen3-architecture causal LM")
-    p.add_argument("config")
-    p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
-    p = sub.add_parser("train-jina", help="jina-reranker-v3.5 listwise scorer: LoRA + projector + head scalars")
     p.add_argument("config")
     p.add_argument("--set", nargs="*", default=[], metavar="KEY=JSON", help="override config keys, e.g. max_steps=20")
     def finetune_args(p, rlcd=False):  # personal_jev.finetune: the Qwen3.5 tree recipe on your JSONL data, one CUDA GPU
@@ -153,23 +134,17 @@ def main(argv=None):
         from .benchmark import default_grid, run
         grid = default_grid(tuple(map(int, a.lengths.split(","))), tuple(map(int, a.questions.split(","))))
         rep = run(a.adapter, a.device, a.dtype, grid, a.repeats, max_batch_tokens=a.max_batch_tokens, out_dir=a.out,
-                  checkpoint=a.checkpoint, model_id=a.model, revision=a.revision, tree=a.tree)
+                  model_id=a.model, revision=a.revision, tree=a.tree)
         print((Path(a.out) / "bench.md").read_text())
     elif a.cmd == "serve":
         from .server import serve
         scorer = _scorer(a)
-        serve(scorer, a.host, a.port, _calibration(a, scorer), a.prompt, a.options_in_question, a.option_pointers)
+        serve(scorer, a.host, a.port, _calibration(a, scorer), a.prompt, a.options_in_question)
     elif a.cmd == "train":
         from .train import train
         train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
-    elif a.cmd == "train-custom":
-        from .train_custom import train
-        train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
     elif a.cmd == "train-tree":
         from .train_tree import train
-        train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
-    elif a.cmd == "train-jina":
-        from .train_jina import train
         train(a.config, **{k: json.loads(v) for k, v in (s.split("=", 1) for s in a.set)})
     elif a.cmd in ("finetune", "rlcd"):
         from .finetune import train

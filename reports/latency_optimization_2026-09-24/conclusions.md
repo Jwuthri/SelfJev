@@ -87,6 +87,8 @@ A second copy of the trained adapter, intermediate checkpoints and training meta
 - `acceptance.json`: explicit gate results.
 - `compact_development_comparison.json`, `compact_fresh_comparison.json`, `clinc_regressions.json`, and `challenge_audit.json`: paired changes and diagnostic cases.
 - Raw benchmark JSON files: every measured repetition, score and cache count. `cloud_logs/` and the compressed profiler trace preserve execution evidence.
+  The uncited raw files, `cloud_logs/`, the profiler trace and the source snapshots were removed on 2026-09-27; they are
+  at tag `archive/pre-cleanup-2026-09-27`.
 - `runs/tree_4b_compact_v2/adapter`: the trained adapter; SHA-256 `0b51c5c717b44e0c85a6aae5d98899d128917add7a31448ea21a9ef5ab787a60`.
 
 Validation includes **58 focused tests** (two separate real-model tests excluded), GPU mask equivalence on **104 R1 requests and 104 compact requests**, full evaluations, and an exact adapter reload check. **34 downloaded data/model/result artifacts were checked against remote SHA-256 hashes with no mismatches.** Intermediate selected adapters are preserved locally. The derived merged base-weight copy can be regenerated from the pinned base model and saved adapter; it is not needed to preserve the trained result.

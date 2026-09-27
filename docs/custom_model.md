@@ -2,6 +2,8 @@
 
 This is the "encode the text once, then cross-attention + small heads" architecture from the v1 spec, built on the
 same `Qwen/Qwen3-Reranker-0.6B` backbone as the stock backend. It is implemented, trained, tested and benchmarked.
+It is a dead end: its code, tests, configs and calibration files were removed on 2026-09-27 and are at tag
+[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27) (`src/personal_jev/custom.py`, `train_custom.py`).
 
 **Bottom line.**
 - **As specified, it scores 39.0% question accuracy** on the 3,471-question test split. For comparison, the
@@ -89,8 +91,8 @@ score  = head(mean over the candidate's tokens of LN(q))   binary_head: binary +
   - held-out temperatures and thresholds apply as before.
 - **Sharing.** Identical states in a call are encoded once. Candidate tokens are packed per state, so K/V are
   projected once per state per block and never copied per candidate. Candidates never attend to each other.
-  Every response's `meta` counts `state_sequences`, `memory_rows` and tokens, and `tests/test_custom.py` checks all
-  of this.
+  Every response's `meta` counts `state_sequences`, `memory_rows` and tokens, and `tests/test_custom.py` (archived)
+  checked all of this.
 - **Checkpoint.** A complete checkpoint holds `modules.safetensors` (all new modules plus the standardization
   buffers), `adapter/` (LoRA) or `backbone.safetensors` (full fine-tune), and `config.json` (base revision, arch,
   format). Reloading reproduced scores within 9.5e-7 to 5.7e-6 (`reload_check` in each `runs/*/train_meta.json`).
@@ -127,7 +129,7 @@ Source: `runs/<run>/train_meta.json` and the `configs/<run>.json` files.
 | `custom_sim_lora` | A10G, CUDA | joint (50 warm-up steps) | 10,112 | 1,176 | 28.9 min | 0.562 / 60.1% (step 882) | 58.2% |
 | stock LoRA pilot (reference) | M5 Pro, MPS | stock scorer + LoRA | 10,112 | 183 | 1.05 h | 0.435 / 74.2% | 73.5% |
 
-"Mixed labels" means `data/distill.jsonl` (`scripts/build_distill.py`):
+"Mixed labels" means `data/distill.jsonl` (`scripts/build_distill.py`; both archived):
 - Each training state gets a multiclass question whose candidates are drawn from the descriptions of all training
   families.
 - Labels come from the local stock reranker + LoRA acting as teacher. 6,559 of 12,260 questions were kept (teacher
@@ -210,7 +212,7 @@ Source: `runs/<run>/train_meta.json` and the `configs/<run>.json` files.
 
 ## Calibration
 
-Source: `calib/<run>.json`, fit on the calibration split, with thresholds chosen on validation.
+Source: `calib/<run>.json` (archived), fit on the calibration split, with thresholds chosen on validation.
 
 | run | temperatures (binary / multiclass / multilabel) | binary ECE | multiclass ECE | question accuracy |
 |---|---|---|---|---|
@@ -233,6 +235,8 @@ almost no signal, so no temperature can fix them: held-out temperature scaling m
   the M5 Pro.
 
 ## Reproduce
+
+From a checkout of tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27):
 
 ```bash
 uv run pytest tests/test_custom.py                 # new-model tests; the 3 real-model ones load the pinned base Qwen

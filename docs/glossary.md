@@ -14,7 +14,7 @@ eval2
 :   The **main benchmark** since 2026-09-24: 1,991 questions about 647 texts, written to look like the real task
     (hard, trap-heavy, texts from 8 to 8K tokens). Written by three LLMs that never wrote training data, and a question
     is kept only when two other LLMs, judging blind, give the same answer. Nothing is ever trained or tuned on it.
-    Jev scores 97.2%, our best model 92.7%. Details: [data](data.md#eval2-the-frozen-target-task-test-set).
+    Jev scores 97.2%, our best model (`selfjev-4b`) 95.8%. Details: [data](data.md#eval2-the-frozen-target-task-test-set).
 
 dev benchmark (also "old test")
 :   The **original test split**: 3,471 questions, 3,300 of them from public datasets (Banking77, AG News, CLINC,
@@ -142,7 +142,7 @@ Run names are built from these pieces:
 | `baseline` | untrained model |
 | `curve/` | one of the learning-curve / ablation runs |
 
-So `tree_4b_instruct_r2x64` = tree scorer, 4B, Instruct base, round-2(b) data × rank 64: the best model.
+So `tree_4b_instruct_r2x64` = tree scorer, 4B, Instruct base, round-2(b) data × rank 64 (the best model on 2026-09-24).
 
 ## Metrics
 

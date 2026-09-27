@@ -33,8 +33,7 @@ from .schemas import Question
 
 RERANKER_4B = ("Qwen/Qwen3-Reranker-4B", "22e683669bc0f0bd69640a1354a6d0aebcfeede5")
 INSTRUCT_4B = ("Qwen/Qwen3-4B-Instruct-2507", "cdbee75f17c01a7cc42f958dc650907174af0554")
-FORMAT = "tree-v1"
-COMPACT_FORMAT = "tree-compact-v2"
+FORMAT = "tree-v1"  # the compact variant (tree-compact-v2) was a dead end: tag archive/pre-cleanup-2026-09-27
 # Template text around the user's text. The state comes FIRST so it can be shared; the question and proposed answer
 # follow (the stock "answer-v1" mapping, which validation selected for the 4B reranker).
 STATE_TEXT = ("<Document>: ", "\n")
@@ -51,11 +50,7 @@ def format_config(model_id: str, format_name: str = FORMAT) -> dict:
     cfg = {"name": FORMAT, "prefix": PREFIX, "state": STATE_TEXT, "question": QUESTION_TEXT, "leaf": LEAF_TEXT,
            "suffix": suffix_for(model_id), "binary_answer": BINARY_ANSWER, "readout": ["yes", "no"],
            "user_text": "split_special_tokens=True"}
-    if format_name == COMPACT_FORMAT:
-        cfg.update(name=COMPACT_FORMAT,
-                   prefix=f"<|im_start|>system\n{EVIDENCE} Answer yes or no.<|im_end|>\n<|im_start|>user\n",
-                   question=("Question: ", "\nAnswer:"), suffix="<|im_end|>")
-    elif format_name != FORMAT:
+    if format_name != FORMAT:
         raise ValueError(f"Unknown tree format: {format_name}")
     return cfg | {"sha": hashlib.sha256(json.dumps(cfg, sort_keys=True).encode()).hexdigest()[:12]}
 
@@ -203,7 +198,7 @@ class TreeModel:
 
 
 class TreeScorer:
-    """Scorer for classify / evaluate / calibrate / bench / serve (via score_requests), like CustomScorer."""
+    """Scorer for classify / evaluate / calibrate / bench / serve (via score_requests)."""
 
     def __init__(self, model_id=RERANKER_4B[0], revision=RERANKER_4B[1], adapter=None, device=None, dtype="bfloat16",
                  max_length=MAX_CONTEXT, max_batch_tokens=32768, max_batch_size=64, lm=None, merge=False, format_name=None):

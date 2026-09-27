@@ -58,13 +58,11 @@ def datasets():
 
 # left out of all.jsonl.gz on purpose: path, what it is
 DERIVED = [
-    ("data/hardcases_nb.jsonl", "round 2 with `none`-correct capped at 10% (round 2b; a subset of hardcases)"),
-    ("data/ova/*.jsonl", "every option listed in the question (the transform the best models train and serve with); `scripts/options_in_question.py`"),
-    ("data/ptr/*.jsonl", "option pointers (\"option k\"), a dead end; `scripts/options_in_question.py`"),
-    ("data/curve/boolq_{100,300,1000,3000}.jsonl", "BoolQ train-split questions for the learning-curve runs only: BoolQ is a held-out family "
-     "of the dev benchmark, so these never enter the combined file"),
-    ("data/distill.jsonl", "teacher labels from the 0.6B reranker (not ground truth), custom-model distillation"),
-    ("data/teacher/", "Qwen3.8-27B soft scores on the training split (distillation experiments)"),
+    ("data/hardcases_nb.jsonl", "round 2 with `none`-correct capped at 10% (round 2b; a subset of hardcases). Not tracked: "
+     "`scripts/rebalance_nota.py` rebuilds it byte for byte (docs/reproduce.md, Older recipes)"),
+    ("data/ova/*.jsonl", "every option listed in the question (the transform the best models train and serve with); eval2, eval_llm, "
+     "hf and eval are tracked, the training copies are rebuilt by `scripts/options_in_question.py`"),
+    ("data/val_sample_1200.txt", "the 1,200 validation ids of qwen35_4b_tree / selfjev-4b (`scripts/jev_soft_targets.py`)"),
     ("data/dev.jsonl", "14-text fixtures for unit tests"),
     ("data/*/raw/, data/*/review/", "per-writer source files, judge answers, agreement reports (inputs of the builds above)"),
 ]

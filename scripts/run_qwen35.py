@@ -1,6 +1,6 @@
 """Qwen3.5 (hybrid Gated DeltaNet + full attention) shared-document scorer: LoRA training and evals on one CUDA GPU.
 
-Ported from the Codex challenger worktree (scripts/run_challenger.py) and pointed at the round-2 recipe of
+Ported from the Codex challenger worktree (its run_challenger.py) and pointed at the round-2 recipe of
 tree_4b_instruct_r2x64: hf + synthetic + hardcases_nb, r2_* families exempt from the 1,600 cap, LoRA r64 / alpha 128.
 Differences from that tree run, on purpose and recorded in train_meta.json:
 - training scores every candidate as its own full sequence (the Qwen3.5 cache mutates recurrent state in place, so the
@@ -96,7 +96,7 @@ def validate_tree(sc, data, roots, budget):
 def train(sc, args, out):
     from peft import LoraConfig, get_peft_model
     torch.manual_seed(13); rng = random.Random(13)
-    d = args.data_dir  # data/ova: every option listed in the question (scripts/options_in_question.py)
+    d = args.data_dir  # data/ova: options in the question; rebuild the untracked training copies first (docs/reproduce.md)
     r3 = [f"{d}/hardcases_r3.jsonl"] if args.r3 else []
     cfg = DEFAULTS | dict(train_files=[f"{d}/hf.jsonl", f"{d}/synthetic.jsonl", f"{d}/hardcases_nb.jsonl"] + r3,
                           val_files=[f"{d}/hf.jsonl", f"{d}/synthetic.jsonl", f"{d}/eval.jsonl", f"{d}/hardcases.jsonl"] + r3,

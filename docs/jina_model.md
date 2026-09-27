@@ -1,8 +1,10 @@
 # jina-reranker-v3.5 backend: a 0.6B listwise scorer trained the tree-r2b way
 
-Written 2026-09-24. Code: [src/personal_jev/jina.py](../src/personal_jev/jina.py) (scorer), [train_jina.py](../src/personal_jev/train_jina.py)
-(trainer), [tests/test_jina.py](../tests/test_jina.py); config [configs/jina_r2b.json](../configs/jina_r2b.json); GPU pipeline
-[scripts/run_jina_gpu.sh](../scripts/run_jina_gpu.sh) via [scripts/aws_jina.sh](../scripts/aws_jina.sh). Weights `runs/jina_r2b/adapter`
+Written 2026-09-24. A dead end: the code was removed on 2026-09-27 and is at tag
+[`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27): [src/personal_jev/jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/jina.py) (scorer),
+[train_jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/src/personal_jev/train_jina.py) (trainer), [tests/test_jina.py](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/tests/test_jina.py); config
+[configs/jina_r2b.json](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/configs/jina_r2b.json); GPU pipeline [scripts/run_jina_gpu.sh](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/scripts/run_jina_gpu.sh) via
+[scripts/aws_jina.sh](https://github.com/Jwuthri/SelfJev/blob/archive/pre-cleanup-2026-09-27/scripts/aws_jina.sh). Weights `runs/jina_r2b/adapter`
 (LoRA + projector + `jina_head.json`), reports `reports/jina_zeroshot/`, `reports/jina_r2b/`.
 
 ## Bottom line
@@ -64,7 +66,7 @@ logit = scale · cos(proj(query), proj(passage)) + bias
   The tree 4B r2b: 74.4 → 80.6 → 84.9 → 85.4 → 85.8 → 86.1. Jina's late-epoch gains (+0.8 to +1.7 per 50 steps) are the
   same size as the 4B's, so it converges more slowly from a lower start rather than more steeply.
 
-## What could still move it (unclaimed)
+## What could still move it (closed 2026-09-27: not pursued)
 
 - Second epoch, or higher LoRA capacity (r=64 + MLP targets): configs `jina_r2b_e2.json`, `jina_r2b_r64.json`, runner
   `scripts/run_jina_followups.sh`. The 4B gained nothing from a second epoch; a 0.6B backbone with a 5M-parameter adapter
@@ -73,6 +75,8 @@ logit = scale · cos(proj(query), proj(passage)) + bias
 - Round-3 data (40K questions, in flight elsewhere).
 
 ## Reproduce
+
+From a checkout of tag [`archive/pre-cleanup-2026-09-27`](https://github.com/Jwuthri/SelfJev/tree/archive/pre-cleanup-2026-09-27):
 
 ```bash
 uv run pjev classify examples/request.json --jina --dtype bfloat16 --adapter runs/jina_r2b/adapter
