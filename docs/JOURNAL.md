@@ -60,6 +60,19 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
 
 ## Log
 
+### 2026-09-28 13:10 PDT: a 75-second video of the end-to-end run, made from its record (fork, user request)
+
+- **What:** `scripts/docs/e2e_video.py` turns `reports/e2e/<date>/` into `selfjev_e2e.mp4` (1920×1080, 30 fps, 75 s,
+  3.0 MB, Git LFS) and `poster.png`: a page in the site's style (DM Sans, JetBrains Mono, charcoal and orange) animated
+  by a JS timeline, captured frame by frame by headless Chromium (Playwright) and encoded by ffmpeg. Every answer, number
+  and name on screen comes from `transcript.jsonl` and `report.md`: healthy 5:24 after launch, the six answers,
+  identical answers on Jev's path, the error codes, both fine-tuning jobs in their queue order (8:07, then 5:05), the new
+  models in `/v1/models`, 14 / 14, ≈ $0.81. Renders in about 3 minutes locally; no model, no paid API.
+- **Left out on purpose:** concurrency timings (an open issue) and the jobs' validation numbers: the supervised job's
+  validation fell from 1.00 to 0.88 (41 questions), so the default lr 2e-4 is probably too high when continuing from
+  `selfjev-4b` on a small file; RLCD at 5e-5 kept 1.00. Worth a lower default for jobs that start from an adapter.
+- **Cost:** $0.
+
 ### 2026-09-28 12:40 PDT: the product works end to end on a GPU: deploy, SDK, fine-tuning over HTTP (fork, user request)
 
 - **What:** `scripts/aws/e2e.py` (new): `selfjev deploy aws up --fine-tuning` of commit `0a146ba` on a g6e.xlarge (L40S),
