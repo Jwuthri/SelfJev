@@ -8,6 +8,8 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
+| Publish adapter under newly signed-in Jwuthrich account | Codex HF upload | original checkout; HF only | 2026-09-28 | this session |
+| Add self-hosting hardware latency comparison to marketing site | Codex website | local, no model jobs | 2026-09-28 | this session |
 
 ## Spend so far (real cost, BYOK upstream included)
 
@@ -56,6 +58,79 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-28 09:59 PDT: SelfJev-4B adapter and card published to Hugging Face (Codex HF upload, explicit user request)
+
+- Uploaded the existing adapter, PEFT config, unchanged model manifest, and finalized model card to [https://huggingface.co/JulienHeysam/selfjev-4b](https://huggingface.co/JulienHeysam/selfjev-4b).
+  The user explicitly instructed publication after the contractual concern was reported; this records that decision,
+  not a finding that contractual permission was obtained.
+- Hub commit `104f569298a621e65785ba7f52e7fe077aabd894`. Anonymous Hub API confirms public visibility and all four files.
+  Remote adapter is 230,073,800 bytes; SHA-256 matches the local manifest:
+  `dfbf2834d883987893ec305a6093a345fd79c77f903f60f2f914cbe3b6058d1b`.
+- Card source: `weights/selfjev_4b/README.md`; scores drawn from `reports/selfjev_4b_treeserver/`.
+  No new training, eval, paid services, or local git commit. Cost $0. Verdict: publication completed.
+- User subsequently asked how to sign in with another Hugging Face account. No repository was deleted or moved.
+
+### 2026-09-28 09:56 PDT: theme-colored website code examples (Codex syntax, user request)
+
+- Added Prism token rendering for shell, Python and JSON examples, including valid JSON request bodies inside single-quoted shell strings. CSS syntax variables match the existing dark/olive palette; keys, values, commands, numbers and comments have distinct colors. The homepage Python example uses the same renderer.
+- Copy still receives the original source string; unknown/plain-text languages remain readable, and token text is escaped by React.
+- Validation: `npm --prefix website run check` passed (production build, TypeScript, 15 exported pages / 417 links); all 20 fenced examples across ten docs pages match their source text exactly after HTML rendering. Browser confirmed shell/JSON key colors, Python tokens, Copy success feedback, and no API-page console errors. Browser clipboard readback returned an empty value, so byte-for-byte clipboard verification was unavailable.
+- Cost $0; no model jobs, reports or score changes. Verdict: ready in the local website; no commit or deployment.
+
+### 2026-09-28 09:54 PDT: clarify self-hosted API key; hold Hugging Face adapter release pending rights clearance (Codex API/HF)
+
+- Traced authentication to `src/selfjev/server/app.py` and `src/selfjev/client.py`: the operator chooses
+  `SELFJEV_API_KEYS` on the server; the client sends the same value as `api_key` / `SELFJEV_API_KEY` in a Bearer header.
+  With no server keys, there is no auth. The AWS helper generates a key by default and saves it in its deployment record.
+  Clarified the website's code example, quickstart and API reference, plus `docs/api.md` and `docs/deploy.md`.
+- Audited the current adapter's manifest and hash: 230,073,800-byte LoRA, SHA-256
+  `dfbf2834d883987893ec305a6093a345fd79c77f903f60f2f914cbe3b6058d1b`, trained with 0.5 × checked
+  labels + 0.5 × stored Jev output probabilities. TypeSafe's published [Master Customer Agreement §2.3(b)]
+  (https://typesafe.ai/legal/mca) restricts using Service outputs for model distillation, training an imitator, or
+  developing a similar product. No documented exception was found. Drafted `weights/selfjev_4b/HF_CARD_DRAFT.md`
+  with exact provenance, usage and limitations; did **not** upload weights or create a Hugging Face repository.
+  Public release awaits documented permission or a newly trained and reviewed adapter without Jev outputs.
+- Validation: `npm run check` passed (15 HTML pages, 417 internal/source links); `git diff --check` passed;
+  local docs route returned HTTP 200. No model jobs or paid services. Cost $0. Verdict: API-key question resolved;
+  current weight publication not cleared.
+
+### 2026-09-28 00:49 PDT: visitor-focused website language and live local refresh (Codex website, user request)
+
+- Reframed the marketing and research pages around text decisions, AI response review, and broader text tasks;
+  explained what accuracy measures before showing results. Simplified the architecture/demo and speed labels,
+  curated the homepage comparison, and moved dataset IDs, technical methodology, and the full experiment
+  archive into expandable sections. The experiment trail now explains lessons in plain language.
+- Evidence remains read from the same report files in `website/lib/evidence.ts`; no scores, model reports,
+  training data, or research conclusions changed. AI-label limitations and historical/current speed distinction remain visible.
+- Fixed the non-refreshing local website: replaced this session's static `serve out` process with `npm run dev`
+  at `http://127.0.0.1:3000`. Browser verification observed a source edit appear without reloading and Fast Refresh
+  completion. Documented development versus static preview commands in `website/README.md`.
+- Validation: TypeScript and production build passed; export audit passed for 15 HTML pages and 416 links.
+  Browser checked task tabs and source links, expandable methodology, archive search, and desktop/mobile layouts
+  (1440 / 390 / 320 px, no page overflow); no browser console errors. Development server left running.
+- Cost $0; no model jobs or paid services. Verdict: ready for review, same visual direction with clearer explanations.
+
+### 2026-09-27 23:51 PDT: Next.js marketing, evidence explorer, and practical docs (Codex website, user request)
+
+- **What / why:** added `website/`, a static Next.js 16 site with an original dark/orange instrument design, interactive
+  decision examples, shared-prefix architecture, a searchable 56-run benchmark explorer, historical H100 latency controls,
+  and ten practical guides (quickstart, hardware, API, architecture, fine-tuning, Docker, AWS, Runpod, GCP, operations).
+  The existing Zensical research notebook and deployment workflow remain intact. README links the new local site.
+- **Evidence:** benchmark values read from report JSON at build time; per-test source links. Current engine headlines:
+  95.7 eval2 / 93.1 eval_llm (`reports/selfjev_4b_treeserver/`), separately labeled original engine 95.8
+  (`reports/qwen35_4b_tree_scratch_jevall_/eval2/report.json`). Historical latency comes from
+  `reports/latency/requests_h100.jsonl`, medians over reps 1–10 with warm-up excluded; explicitly archived Qwen3/H100,
+  never attributed to current TreeServer. No new model results.
+- **Hardware finding:** current serving CLI is CUDA-only (no CPU flag); no validated full-model CPU minimum or timing.
+  24 GB VRAM / 4 vCPU / 16–32 GB host RAM is planning guidance; 16 GB VRAM is a documented, unproven workload-dependent
+  floor. CPU 32 GB is only an experimental memory budget, not support. Runpod/GCP guides are manual and not GPU-tested.
+- **Validation:** `npm --prefix website run check` passes: production build + TypeScript, 15 HTML outputs and 415
+  links (internal routes/anchors and linked repository source existence). Browser checked at 1440, 390 and 320 px:
+  example changes, benchmark tabs and source URLs, search and empty state, latency controls, mobile navigation,
+  active docs links and code copying. No page-level horizontal overflow on the checked mobile routes. `git diff --check` clean.
+- **Cost:** $0 cloud/API; no training, evals, or model loads on the laptop. **Verdict:** ready for local review at
+  `http://127.0.0.1:3000` (static preview); public hosting unchanged, no commit. Build/run details: `website/README.md`.
 
 ### 2026-09-27 22:25 PDT: rerunning `selfjev-4b`'s exact recipe moves the scores by about a point: single runs cannot settle ±1-point questions (fork, user request)
 

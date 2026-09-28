@@ -1,0 +1,10 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.env*
+!.env.example
+
+# The user-level ignore file ignores research/ directories; this route is source.
+!app/research/
+!app/research/**
