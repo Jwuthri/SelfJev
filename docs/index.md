@@ -18,7 +18,7 @@ New to the shorthand (eval2, round 2b, r64, stock pairs…)? Hover any dotted-un
 <div class="stat"><strong>97.2%</strong><span>Jev on eval2: we are 1.4 points behind</span></div>
 <div class="stat"><strong>93.1%</strong><span>on eval_llm, the LLM-evaluation test set, level with Jev's 92.5%</span></div>
 <div class="stat"><strong>37×</strong><span>speed-up from reading the text once (shared-prefix tree)</span></div>
-<div class="stat"><strong>~$808</strong><span>logged spend: data, judges, GPUs, Jev calls</span></div>
+<div class="stat"><strong>~$829</strong><span>logged spend: data, judges, GPUs, Jev calls</span></div>
 </div>
 
 **The best model**, `selfjev-4b` ([weights/selfjev_4b](../weights/README.md)), is Qwen3.5-4B with a rank-64 LoRA adapter

@@ -11,7 +11,7 @@ table in the [experiment ledger](experiments.md#dead-ends-do-not-redo).
 
 | tried | result | measured on |
 |---|---|---|
-| Retraining `selfjev-4b` with a targeted batch (3,645 several-correct / distractor / number questions) | eval2 95.4 vs 95.8 (p = 0.42), eval_llm 90.5 vs 93.1 (p = 0.0002); one seed | eval2, eval_llm |
+| Retraining `selfjev-4b` with a targeted batch (3,645 several-correct / distractor / number questions) | eval2 95.4 vs 95.8 (p = 0.42), eval_llm 90.5 vs 93.1 (p = 0.0002); against a same-code rerun without the batch, eval_llm 90.5 vs 92.0 (p = 0.07): no gain | eval2, eval_llm |
 | A second epoch (stock 4B) | 79.8 vs 80.3; the best validation checkpoint is always inside epoch 1 | dev benchmark |
 | 8B instead of 4B (stock + LoRA) | 80.7 vs 80.3, p = 0.52, and about 1.5× slower | dev benchmark |
 | More of the same data mix | ~1.5 points per doubling | dev benchmark |

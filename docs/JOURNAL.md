@@ -13,6 +13,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | item | cost | who |
 |---|---|---|
+| AWS: `selfjev_4b_repro` (selfjev-4b's data, new code) g6e.2xlarge `i-0e8a08bdbdfd8cb10` us-east-2, 20:11 UTC 2026-09-27 – 05:18 UTC 09-28 (547 min, 9 min of it after the job), terminated; SG and key pair deleted by the driver | ≈ $20.44 | fork |
 | AWS: engine check g5.xlarge `i-088a7878b0264f417` us-east-1, 18:22–18:53 UTC 2026-09-27 (≈ 31 min), terminated; SG and key pair deleted by the driver | ≈ $0.52 | fork |
 | AWS: `selfjev_4b_v2` retrain (selfjev-4b recipe + batch 2) g6e.2xlarge `i-0700e0bcadbf72ad6` us-east-2, 08:35–18:10 UTC 2026-09-27 (9.6 h, of which 23 min idle after the job), terminated; SG and key pair deleted | ≈ $21.46 | fork |
 | `mpos_distr_num_v1` batch: Luna $1.87 (OpenAI API) + Astra batch judge $17.80 (3.05M in / 0.10M out tokens) + Jev $0.14 | $19.81 (quoted ≈ $19) | fork |
@@ -55,6 +56,22 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-27 22:25 PDT: rerunning `selfjev-4b`'s exact recipe moves the scores by about a point: single runs cannot settle ±1-point questions (fork, user request)
+
+- **What:** `selfjev_4b_repro`, `selfjev-4b`'s exact training data (80,093 rows, content-identical, same order and seed
+  13) trained with the restructured code (`scripts/train/selfjev_4b.sh`); 79,943 questions, 1,803 steps, best step 1,800
+  as before. Question: was `selfjev_4b_v2`'s eval_llm drop the new code or batch 2?
+- **Result** (`reports/selfjev_4b_repro/`), vs `selfjev-4b`: eval2 95.08 vs 95.78 (28 / 42, p = 0.12), dev benchmark 83.81 vs 83.75 (p = 0.92), eval_llm 91.97 vs 93.13 (16 / 27, p = 0.13); final validation 92.7 vs 93.7. vs v2 (same code,
+  + batch 2): eval2 95.08 vs 95.38 (p = 0.55), dev benchmark 83.81 vs 83.55 (p = 0.49), eval_llm 91.97 vs 90.49
+  (33 / 19, p = 0.07).
+- **Verdict:** by the rule set before the results: no significant loss (p = 0.13), but eval_llm is 0.03 under the 92.0
+  bar (one question). Read: no evidence that the new training code differs; the same recipe run twice differs by about
+  a point on eval2, eval_llm and validation, so `selfjev-4b` was a good draw. v2's eval_llm drop is part noise, part
+  (not significant, p = 0.07) batch 2; batch 2 showed no gain anywhere. `selfjev-4b` stays the default (swapping to a
+  rerun picked on test would be selection on test). Decisions on differences of about one point need two or more runs
+  per arm (≈ $20 each). The adapter was not kept (moved to the Trash).
+- **Cost:** ≈ $20.44 (547 min; the self-terminating driver pulled and terminated 9 min after the job ended).
 
 ### 2026-09-27 11:55 PDT: the new engine gives `selfjev-4b`'s scores; v2's eval_llm drop is the model, not the engine (fork, user request)
 

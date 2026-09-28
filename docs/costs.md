@@ -1,8 +1,8 @@
 # Spend
 
 Real costs logged in the [journal](JOURNAL.md#spend-so-far-real-cost-byok-upstream-included), BYOK upstream charges
-included. About **$808 logged as of 2026-09-27**: the sum of every row of the journal's spend table (values marked ≈
-counted as written), of which data ≈ $563, evaluation ≈ $24 and AWS GPU ≈ $221. Not in it: a few GPU boxes that were
+included. About **$829 logged as of 2026-09-27**: the sum of every row of the journal's spend table (values marked ≈
+counted as written), of which data ≈ $563, evaluation ≈ $24 and AWS GPU ≈ $241. Not in it: a few GPU boxes that were
 never reconciled (the early tree and custom-model runs, the jina box ≈ $1.60, the latency/compact and T5Gemma L40S
 boxes).
 
@@ -28,6 +28,7 @@ boxes).
 | `selfjev-4b`: retrain from scratch on everything with Jev targets, texts to 16K (L40S, 9.3 h) | ≈ $20.80 |
 | `selfjev_4b_v2`: the same recipe + batch `mpos_distr_num_v1`, worse, not kept (L40S, 9.6 h incl. 23 min idle) | ≈ $21.46 |
 | Engine check: `selfjev-4b` re-scored by `TreeServer` on the three test sets (A10G, 31 min) | ≈ $0.52 |
+| `selfjev_4b_repro`: `selfjev-4b`'s exact data rerun with the new code (L40S, 9.1 h) | ≈ $20.44 |
 | Jev soft targets, C: RLCD with a confident-mistake cost from B (L40S, 7.1 h) | ≈ $15.90 |
 | `qwen35_4b_combo`: Qwen3.5 + option lists + round 3, full sequences (L40S, 7.0 h) | ≈ $15.80 |
 | All-options, 27B teacher and distillation boxes | ≈ $12.00 |

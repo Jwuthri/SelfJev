@@ -131,6 +131,17 @@ evidence file.
 
     Evidence: [review 2026-09-23](../reports/review_2026-09-23.md).
 
+!!! warning "5b. One run is not a measurement: the same recipe, run again, moves by about a point"
+    - `selfjev-4b`'s exact recipe, rerun on the same data in the same order with the same seed (`selfjev_4b_repro`,
+      2026-09-27), scored eval2 95.08 vs 95.78, eval_llm 91.97 vs 93.13 and dev benchmark 83.81 vs 83.75; none of the
+      differences is significant (p = 0.12, 0.13, 0.92), and its final validation was 92.7 vs 93.7.
+    - So a single-run difference of about a point says little either way: `selfjev-4b` was a good draw, and a change
+      that "wins" or "loses" by a point needs two or more runs per arm (≈ $20 each) before it counts.
+    - The batch-2 retrain (`selfjev_4b_v2`, eval_llm 90.49) read as a big loss against `selfjev-4b`; against the rerun
+      it is 90.49 vs 91.97 (p = 0.07).
+
+    Evidence: `reports/selfjev_4b_repro/`, `reports/selfjev_4b_v2/`, [JOURNAL 2026-09-27 22:25](JOURNAL.md).
+
 ## Data
 
 !!! success "6. Verified target-task data is the biggest lever: +5.5 on eval2"
@@ -381,7 +392,8 @@ evidence file.
     - Counted in wrong questions against Jev: multi-positive 29 vs 13, distractor 29 vs 14, numeric 28 vs 18 (JOURNAL
       2026-09-26 21:25). Batch `mpos_distr_num_v1` (3,645 questions) targets these three; it was motivated by a test
       diagnosis. The retrain with it (`selfjev_4b_v2`, 2026-09-27) came out worse: eval2 95.4 vs 95.8 (p = 0.42), eval_llm
-      90.5 vs 93.1 (p = 0.0002), so more targeted data did not close these gaps.
+      90.5 vs 93.1 (p = 0.0002); against a rerun of the recipe without it, 90.5 vs 92.0 (p = 0.07, box 5b). Either way,
+      more targeted data did not close these gaps.
     - The previous default (`qwen35_4b_tree`) also had double negation (94.4 vs 99.2), hypothetical (94.5 vs 98.4),
       temporal (85.7 vs 89.2), paraphrase (92.2 vs 95.4), long state (95.8 vs 99.0), the very hard tier (93.4 vs 96.5)
       and multilabel exact match (90.1 vs 94.2) on this list; `selfjev-4b` brought each under 3 points. Multi-turn is

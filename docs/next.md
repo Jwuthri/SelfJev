@@ -37,7 +37,7 @@ vLLM the same architecture is fast for one question and slow for many ([speed](s
 | idea | why | cost |
 |---|---|---|
 | **Fresh final test set** (new authors, templates, documents) | eval2 and the dev benchmark have informed decisions, and eval_llm now informs promotions | ≈ $40 API |
-| **Second seeds** for the best runs | every result is one run; several wins are p ≈ 0.03–0.07, and `selfjev-4b` vs its predecessor is p = 0.70 on eval2 | ≈ $21 each (one L40S, ≈ 9 h) |
+| **Second seeds** for the best runs | measured once: rerunning `selfjev-4b`'s exact recipe moved eval2 by −0.7 and eval_llm by −1.2 (not significant; [findings 5b](findings.md)), so wins of about a point need two or more runs per arm | ≈ $20 each (one L40S, ≈ 9 h) |
 | **Public JevBench items** for our best model; Laya, open-jev-deberta and kev-4b on eval2 | the only shared yardstick across open Jev-like models | no API cost; GPU time (never on the laptop) |
 | **Calibration policy**: temperatures separate from thresholds, thresholds for accuracy on a separate split | the F1 thresholds fitted for `tree_4b` cost accuracy (81.6 → 79.3); Jev's soft targets moved calibration, RLCD did not | code |
 
