@@ -336,8 +336,8 @@ evidence file.
     - Jev's marginal cost per token is still ≈ 6× lower (2.2–2.6 vs ≈ 15 ms per 1,000 tokens), so it is a smaller model
       or more GPUs per request; up to 4K tokens the fixed costs decide.
     - These are the Qwen3 tree's numbers (`tree_4b_combo`, weights at tag `archive/pre-cleanup-2026-09-27`). The
-      default `selfjev-4b` (Qwen3.5) is served by `TreeServer` (finding 20), whose latency has not been measured on a
-      GPU yet.
+      default `selfjev-4b` (Qwen3.5) is served by `TreeServer` (finding 20), whose latency has not been measured on an
+      NVIDIA GPU yet. A separate M5 Pro experiment measures the current model on MPS and is not directly comparable.
 
     Evidence: [speed](speed.md#the-same-model-on-an-h100-2026-09-26), [latency summary](../reports/latency/summary.md),
     [JOURNAL 2026-09-26](JOURNAL.md).
@@ -357,7 +357,9 @@ evidence file.
     - So `selfjev serve` serves `selfjev-4b` with the Qwen3.5 training tree run forward only (`TreeServer`,
       `src/selfjev/engine/tree.py`, the default engine; vLLM stays an option): the text once, each question once, then
       each candidate, the same work as the Qwen3 tree. It matches standalone sequences in a CPU test; its latency on a
-      GPU has not been measured yet.
+      NVIDIA GPU has not been measured yet. On an M5 Pro using PyTorch MPS, the current model's 10-run median is
+      688 ms for one question and 6,786 ms for 16 questions at 8 text tokens; the unsupported Mac CLI and slower
+      reference recurrent operation limit this result to an experiment ([raw report](../reports/latency/mac_m5_pro_selfjev4b.json)).
 
     Evidence: [latency optimization](../reports/latency_optimization_2026-09-24/conclusions.md),
     [JOURNAL 2026-09-25 18:05](JOURNAL.md).

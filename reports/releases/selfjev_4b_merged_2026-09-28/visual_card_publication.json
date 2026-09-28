@@ -1,0 +1,25 @@
+{
+  "repo": "Jwuthrich/selfjev-4b-merged",
+  "commit": "8588c5198d3697527ecbc74809bd718212810080",
+  "verified_files": [
+    "README.md",
+    "SHA256SUMS",
+    "assets/accuracy-size.png",
+    "assets/accuracy-size.svg",
+    "assets/chart-data.json",
+    "assets/hero.png",
+    "assets/hero.svg",
+    "assets/overview.png",
+    "assets/overview.svg",
+    "assets/public-datasets.csv",
+    "assets/public-datasets.png",
+    "assets/public-datasets.svg",
+    "assets/research-path.png",
+    "assets/research-path.svg",
+    "reproduce/build_merged_model_card.py",
+    "reproduce/build_model_card.py",
+    "reproduce/model_card.template.md"
+  ],
+  "model_artifacts_unchanged": true,
+  "hub_updated_gitattributes": true
+}

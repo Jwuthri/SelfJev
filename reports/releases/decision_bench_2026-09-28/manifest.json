@@ -1,0 +1,72 @@
+{
+  "version": "1.0",
+  "source": "data/all.jsonl.gz",
+  "source_sha256": "cc1db4b3c8c72832c128600c1213486cb01d6880df8cfdd8eda3710ca6712b20",
+  "excluded_fields": [
+    "jev"
+  ],
+  "suites": {
+    "text-decisions": {
+      "original_dataset": "eval2",
+      "questions": 1991,
+      "texts": 647,
+      "types": {
+        "binary": 1016,
+        "multiclass": 593,
+        "multilabel": 382
+      },
+      "families": {
+        "e2_hard": 673,
+        "e2_simple": 664,
+        "e2_very_hard": 654
+      },
+      "source_file_sha256": "2fa954592d0a31248b25810a2faeec653b4c5ef5e454ea5e1349afbb2379076a",
+      "exact_text_matches_in_non_test_training_rows": 0
+    },
+    "ai-response-review": {
+      "original_dataset": "eval_llm",
+      "questions": 946,
+      "texts": 317,
+      "types": {
+        "binary": 488,
+        "multiclass": 276,
+        "multilabel": 182
+      },
+      "families": {
+        "tllm_guardrail_hard": 60,
+        "tllm_guardrail_simple": 67,
+        "tllm_guardrail_very_hard": 43,
+        "tllm_jailbreak_hard": 59,
+        "tllm_jailbreak_simple": 70,
+        "tllm_jailbreak_very_hard": 60,
+        "tllm_judge_hard": 86,
+        "tllm_judge_simple": 72,
+        "tllm_judge_very_hard": 64,
+        "tllm_score_hard": 62,
+        "tllm_score_simple": 62,
+        "tllm_score_very_hard": 76,
+        "tllm_verify_hard": 50,
+        "tllm_verify_simple": 60,
+        "tllm_verify_very_hard": 55
+      },
+      "source_file_sha256": "6cfc3e1646ead76f85b59f7ccef0ca442a9a66c92c4025bfe3411ebe9ce8d811",
+      "exact_text_matches_in_non_test_training_rows": 0
+    },
+    "record-reasoning": {
+      "original_dataset": "compact_challenge_v1",
+      "questions": 720,
+      "texts": 120,
+      "types": {
+        "binary": 360,
+        "multiclass": 240,
+        "multilabel": 120
+      },
+      "families": {
+        "compact_fresh_rules": 720
+      },
+      "source_file_sha256": "62e8496880e6577436ffd58bd079a3cb7b7870b29a55bb2af760550c43fec20e",
+      "exact_text_matches_in_non_test_training_rows": 0
+    }
+  },
+  "overlap_check": "Exact state SHA-256 against all non-test rows of training datasets; not a new fuzzy-overlap audit."
+}

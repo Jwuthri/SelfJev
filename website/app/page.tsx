@@ -1,18 +1,20 @@
+import { ReleaseLinks } from "@/components/release-links";
+import { HF_RELEASES } from "@/lib/releases";
 import Link from "next/link";
+import { ArchitectureTree } from "@/components/architecture-tree";
 import {
   ArrowRight,
   ArrowUpRight,
   GitBranch,
   Fingerprint,
   Braces,
-  Layers,
   Terminal,
 } from "lucide-react";
 import { DecisionTree } from "@/components/decision-tree";
 import { Benchmarks } from "@/components/explorers";
 import { HardwareExplorer } from "@/components/hardware-explorer";
 import { CodeBlock } from "@/components/code-block";
-import { headlines, leaderboard, hardwareLatencyData, JOURNAL } from "@/lib/evidence";
+import { headlines, leaderboard, hardwareLatencyData, macLatencyData, JOURNAL } from "@/lib/evidence";
 const sdk = `from selfjev import SelfJev, Noul, Choice
 
 # Use the secret you set as SELFJEV_API_KEYS on your server.
@@ -36,14 +38,8 @@ export default function Home() {
   const h = headlines();
   const rows = leaderboard();
   const hardware = hardwareLatencyData();
-  const featured = rows.filter(
-    (r) =>
-      r.current ||
-      [
-        "~typesafe/jev-latest",
-        "lora_4b",
-      ].includes(r.id),
-  );
+  const mac = macLatencyData();
+  const featured = rows.filter((r) => r.current || r.id === "~typesafe/jev-latest");
   return (
     <main id="main">
       <section className="hero wrap">
@@ -71,6 +67,9 @@ export default function Home() {
               Explore the research <ArrowRight size={16} />
             </Link>
           </div>
+          <a className="hero-release-link" href={HF_RELEASES.merged}>
+            Weights available on Hugging Face <ArrowUpRight size={14} />
+          </a>
           <div className="hero-footnote">
             <span>Runs on one GPU</span>
             <i />
@@ -176,48 +175,7 @@ export default function Home() {
               message once and reuses that work for every answer.
             </p>
           </div>
-          <div className="architecture-plate">
-            <div className="arch-label">
-              ONE MESSAGE <span>SEVERAL DECISIONS</span>
-            </div>
-            <div className="arch-flow">
-              <div className="arch-root">
-                <Layers size={30} />
-                <strong>Your text</strong>
-                <span>read once</span>
-              </div>
-              <div className="arch-connector" aria-hidden="true" />
-              <div className="arch-questions">
-                {["Needs a refund?", "Which team?", "How urgent?"].map((q, i) => (
-                  <div className="arch-lane" key={q}>
-                    <div className="arch-question">
-                      <span>0{i + 1}</span>
-                      {q}
-                      <small>weigh the choices</small>
-                    </div>
-                    <div className="candidate-branches">
-                      <span>A</span>
-                      <span>B</span>
-                      <span>C</span>
-                    </div>
-                    <div className="readout">
-                      {["Yes", "Billing", "Normal"][i]}
-                      <small>answer + probability</small>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="architecture-bottom">
-              <span>
-                <i />
-                Illustrative answers. The same text informs each decision.
-              </span>
-              <Link href="/docs/architecture/">
-                Inside the engine <ArrowUpRight size={15} />
-              </Link>
-            </div>
-          </div>
+          <ArchitectureTree />
           <div className="arch-notes">
             <p>
               <b>01. Give it context</b>A message, document, or AI response,
@@ -232,6 +190,37 @@ export default function Home() {
               to route, filter, or review in your own application.
             </p>
           </div>
+        </div>
+      </section>
+      <section className="section wrap ownership-section" id="make-it-yours">
+        <div className="section-kicker">YOUR MODEL / YOUR REQUIREMENTS</div>
+        <div className="section-heading">
+          <h2>Make room.<br /><span>Make it yours.</span></h2>
+          <p>Your documents, your vocabulary, your edge cases. Control the context budget and adapt the model to the decisions that matter to you.</p>
+        </div>
+        <div className="ownership-grid">
+          <article className="context-card">
+            <span className="tree-overline">ROOM FOR LONGER CONTEXT</span>
+            <h3>A bigger foundation.<br />A limit you control.</h3>
+            <p>Jev allows 32K tokens for your text plus the longest question. SelfJev has a configurable limit, built on a model with a 262,144-token native context window.</p>
+            <div className="context-scale" aria-label="Context specifications, not measured SelfJev capacity">
+              <div><span>Jev · text + longest question</span><b>32K</b><i style={{width: "12.5%"}} /></div>
+              <div><span>SelfJev · base-model capacity</span><b>262K</b><i style={{width: "100%"}} /></div>
+            </div>
+            <p className="ownership-detail">SelfJev defaults to 32,768 tokens; larger windows need sufficient memory and validation. The full base-model window has not been validated in our engine. Jev also allows 64K across a whole request.</p>
+            <Link className="text-link" href="/docs/hardware/#context-length-and-concurrency-matter">Context & sizing <ArrowUpRight size={15}/></Link>
+          </article>
+          <article className="finetune-card">
+            <span className="tree-overline">BUILT TO ADAPT</span>
+            <h3>Your use case.<br />Your fine-tune.</h3>
+            <p>Not getting the decisions you need? Fine-tune SelfJev on examples from your own workflow: your labels, your policies, your definition of a good answer.</p>
+            <ol className="adapt-steps">
+              <li><span>01</span><div><b>Show it what good looks like.</b><small>Pair real inputs with verified answers.</small></div></li>
+              <li><span>02</span><div><b>Train a lightweight adapter.</b><small>Use the included supervised fine-tuning tools.</small></div></li>
+              <li><span>03</span><div><b>Evaluate. Then deploy.</b><small>Check held-out examples and serve your model.</small></div></li>
+            </ol>
+            <Link className="text-link" href="/docs/finetuning/">Fine-tune for your use case <ArrowUpRight size={15}/></Link>
+          </article>
         </div>
       </section>
       <section className="section wrap" id="benchmarks">
@@ -284,9 +273,8 @@ export default function Home() {
               <span>More decisions.</span>
             </h2>
             <p className="section-description">
-              See how an earlier shared-text model ran on three self-hosting
-              GPUs. Choose your input size and question count to compare the
-              measured processing times.
+              From a local Mac to a dedicated GPU. Explore measured response
+              times, adjust your workload, and see what fits your infrastructure.
             </p>
             <div className="speed-callout">
               <strong>
@@ -294,7 +282,7 @@ export default function Home() {
                 <span>ms</span>
               </strong>
               <p>
-                Earlier Qwen3 tree · H100
+                H100 · measured processing time
                 <br />
                 Very short input · one question
               </p>
@@ -303,9 +291,10 @@ export default function Home() {
               How we measured speed <ArrowUpRight size={16} />
             </a>
           </div>
-          <HardwareExplorer data={hardware} />
+          <HardwareExplorer data={hardware} mac={mac} />
         </div>
       </section>
+      <div className="wrap" id="downloads"><ReleaseLinks /></div>
       <section className="section wrap build-section">
         <div>
           <div className="section-kicker">05 / YOUR INFRASTRUCTURE</div>

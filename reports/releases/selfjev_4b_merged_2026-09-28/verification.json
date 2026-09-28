@@ -1,0 +1,16 @@
+{
+  "kind": "artifact integrity and two synthetic GPU smoke cases, not a benchmark",
+  "tensors_checked": 738,
+  "tensors_changed": 152,
+  "logit_margins": {
+    "adapter": [
+      4.5625,
+      -4.3125
+    ],
+    "merged": [
+      4.5625,
+      -4.3125
+    ]
+  },
+  "max_margin_delta": 0.0
+}

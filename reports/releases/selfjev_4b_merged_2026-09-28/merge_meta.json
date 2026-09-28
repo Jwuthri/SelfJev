@@ -1,0 +1,7 @@
+{
+  "model_id": "Qwen/Qwen3.5-4B",
+  "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+  "dtype": "bfloat16",
+  "adapter_sha256": "dfbf2834d883987893ec305a6093a345fd79c77f903f60f2f914cbe3b6058d1b",
+  "changed_tensors": 152
+}

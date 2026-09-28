@@ -1,5 +1,12 @@
 # Weights
 
+Download the current adapter and model card from [Jwuthrich/selfjev-4b](https://huggingface.co/Jwuthrich/selfjev-4b).
+
+The **full merged checkpoint** (9.32 GB of weights, plus tokenizer and configuration) is available at
+[Jwuthrich/selfjev-4b-merged](https://huggingface.co/Jwuthrich/selfjev-4b-merged). It includes the base weights and needs
+no separate adapter download. Use the SelfJev vLLM backend; see the model card for setup. The default TreeServer
+continues to use the adapter release.
+
 The adapters worth keeping, tracked with Git LFS (`weights/**/*.safetensors`, see `.gitattributes`). Each folder is a
 PEFT LoRA adapter plus a `model.json`: base model and pinned revision, recipe, prompt format, scores, sha256 and the
 commands to serve it. Training runs write to `runs/`, which is not in git; the training logs of past runs are in

@@ -1,0 +1,14 @@
+[
+  {
+    "repo": "Jwuthrich/selfjev-4b",
+    "commit": "5126b220cde8c8f31f85eaaefa27592e880377b2",
+    "verified_files": 24,
+    "model_artifacts_unchanged": true
+  },
+  {
+    "repo": "Jwuthrich/selfjev-4b-merged",
+    "commit": "f053919b6f498eb8b8667b97c0784adddef9e608",
+    "verified_files": 26,
+    "model_artifacts_unchanged": true
+  }
+]

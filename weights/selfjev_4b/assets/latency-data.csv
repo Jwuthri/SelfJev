@@ -1,0 +1,29 @@
+hardware,model,engine,text_tokens,questions,candidates_per_question,timed_calls,metric,median_ms,wall_median_ms,source,endpoint
+A10G,tree_4b_combo (archived Qwen3-4B),vLLM bf16,8,1,3,10,server_ms,55.28760100060026,124.98704150038975,reports/latency/requests_combo.jsonl,combo_vllm
+A10G,tree_4b_combo (archived Qwen3-4B),vLLM bf16,512,1,3,10,server_ms,136.1421874998996,203.85035450090072,reports/latency/requests_combo.jsonl,combo_vllm
+A10G,tree_4b_combo (archived Qwen3-4B),vLLM bf16,2048,1,3,10,server_ms,360.9746049996829,429.1081245000896,reports/latency/requests_combo.jsonl,combo_vllm
+A10G,tree_4b_combo (archived Qwen3-4B),vLLM bf16,4096,1,3,10,server_ms,698.2241815003363,770.4885834991728,reports/latency/requests_combo.jsonl,combo_vllm
+A10G,tree_4b_combo (archived Qwen3-4B),vLLM bf16,8,16,3,10,server_ms,400.7618610003192,470.83658299925446,reports/latency/requests_combo.jsonl,combo_vllm
+A10G,tree_4b_combo (archived Qwen3-4B),vLLM bf16,512,16,3,10,server_ms,496.0031340006026,565.5848959995637,reports/latency/requests_combo.jsonl,combo_vllm
+A10G,tree_4b_combo (archived Qwen3-4B),vLLM bf16,2048,16,3,10,server_ms,808.3618930004377,881.7444380001689,reports/latency/requests_combo.jsonl,combo_vllm
+A10G,tree_4b_combo (archived Qwen3-4B),vLLM bf16,4096,16,3,10,server_ms,1263.495414999852,1335.7231039999533,reports/latency/requests_combo.jsonl,combo_vllm
+L40S,tree_4b_combo (archived Qwen3-4B),vLLM bf16,8,1,3,10,server_ms,36.45959900006801,158.34560450457502,reports/latency/requests_qwen35.jsonl,combo_vllm_l40s
+L40S,tree_4b_combo (archived Qwen3-4B),vLLM bf16,512,1,3,10,server_ms,54.91692000009607,177.25756250001723,reports/latency/requests_qwen35.jsonl,combo_vllm_l40s
+L40S,tree_4b_combo (archived Qwen3-4B),vLLM bf16,2048,1,3,10,server_ms,121.32292549995327,243.57995799800847,reports/latency/requests_qwen35.jsonl,combo_vllm_l40s
+L40S,tree_4b_combo (archived Qwen3-4B),vLLM bf16,4096,1,3,10,server_ms,227.5202175001141,356.2396874986007,reports/latency/requests_qwen35.jsonl,combo_vllm_l40s
+L40S,tree_4b_combo (archived Qwen3-4B),vLLM bf16,8,16,3,10,server_ms,134.8911009998801,199.10460399842123,reports/latency/requests_qwen35.jsonl,combo_vllm_l40s
+L40S,tree_4b_combo (archived Qwen3-4B),vLLM bf16,512,16,3,10,server_ms,162.7876434999962,279.2183749988908,reports/latency/requests_qwen35.jsonl,combo_vllm_l40s
+L40S,tree_4b_combo (archived Qwen3-4B),vLLM bf16,2048,16,3,10,server_ms,267.89673350003795,342.3541664960794,reports/latency/requests_qwen35.jsonl,combo_vllm_l40s
+L40S,tree_4b_combo (archived Qwen3-4B),vLLM bf16,4096,16,3,10,server_ms,423.97226049990877,504.6778749965597,reports/latency/requests_qwen35.jsonl,combo_vllm_l40s
+H100,tree_4b_combo (archived Qwen3-4B),vLLM bf16,8,1,3,10,server_ms,21.56023199995616,139.68993749585934,reports/latency/requests_h100.jsonl,h100_bf16
+H100,tree_4b_combo (archived Qwen3-4B),vLLM bf16,512,1,3,10,server_ms,29.72500900000341,149.15822900366038,reports/latency/requests_h100.jsonl,h100_bf16
+H100,tree_4b_combo (archived Qwen3-4B),vLLM bf16,2048,1,3,10,server_ms,47.23783000008552,163.87020850379486,reports/latency/requests_h100.jsonl,h100_bf16
+H100,tree_4b_combo (archived Qwen3-4B),vLLM bf16,4096,1,3,10,server_ms,81.86599299995123,200.37400000728667,reports/latency/requests_h100.jsonl,h100_bf16
+H100,tree_4b_combo (archived Qwen3-4B),vLLM bf16,8,16,3,10,server_ms,58.08685649998324,178.56795899569988,reports/latency/requests_h100.jsonl,h100_bf16
+H100,tree_4b_combo (archived Qwen3-4B),vLLM bf16,512,16,3,10,server_ms,75.51745949996302,165.61064551933669,reports/latency/requests_h100.jsonl,h100_bf16
+H100,tree_4b_combo (archived Qwen3-4B),vLLM bf16,2048,16,3,10,server_ms,119.95621649998611,185.84285449469462,reports/latency/requests_h100.jsonl,h100_bf16
+H100,tree_4b_combo (archived Qwen3-4B),vLLM bf16,4096,16,3,10,server_ms,189.33901899998773,250.28441649919841,reports/latency/requests_h100.jsonl,h100_bf16
+Apple M5 Pro / 48 GB,SelfJev-4B (current adapter),TreeServer / MPS bf16,8,1,3,10,local_call_ms,688.325,,reports/latency/mac_m5_pro_selfjev4b.json,TreeServer.score_requests
+Apple M5 Pro / 48 GB,SelfJev-4B (current adapter),TreeServer / MPS bf16,8,16,3,10,local_call_ms,6786.2605,,reports/latency/mac_m5_pro_selfjev4b.json,TreeServer.score_requests
+Apple M5 Pro / 48 GB,SelfJev-4B (current adapter),TreeServer / MPS bf16,512,1,3,10,local_call_ms,2018.3355000000001,,reports/latency/mac_m5_pro_selfjev4b.json,TreeServer.score_requests
+Apple M5 Pro / 48 GB,SelfJev-4B (current adapter),TreeServer / MPS bf16,512,16,3,10,local_call_ms,8598.7065,,reports/latency/mac_m5_pro_selfjev4b.json,TreeServer.score_requests

@@ -8,13 +8,12 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| Publish adapter under newly signed-in Jwuthrich account | Codex HF upload | original checkout; HF only | 2026-09-28 | this session |
-| Add self-hosting hardware latency comparison to marketing site | Codex website | local, no model jobs | 2026-09-28 | this session |
 
 ## Spend so far (real cost, BYOK upstream included)
 
 | item | cost | who |
 |---|---|---|
+| AWS: merged HF release g5.2xlarge `i-0d2a8155413fe9cd5`, us-east-1, 17:18:50–17:27:04 UTC 2026-09-28 (termination request); terminated, SG/key deleted | compute ≈ $0.17; conservative total ≈ $1.10 including full outbound transfer, final bill pending (approved $3) | Codex HF merge |
 | AWS: `selfjev_4b_repro` (selfjev-4b's data, new code) g6e.2xlarge `i-0e8a08bdbdfd8cb10` us-east-2, 20:11 UTC 2026-09-27 – 05:18 UTC 09-28 (547 min, 9 min of it after the job), terminated; SG and key pair deleted by the driver | ≈ $20.44 | fork |
 | AWS: engine check g5.xlarge `i-088a7878b0264f417` us-east-1, 18:22–18:53 UTC 2026-09-27 (≈ 31 min), terminated; SG and key pair deleted by the driver | ≈ $0.52 | fork |
 | AWS: `selfjev_4b_v2` retrain (selfjev-4b recipe + batch 2) g6e.2xlarge `i-0700e0bcadbf72ad6` us-east-2, 08:35–18:10 UTC 2026-09-27 (9.6 h, of which 23 min idle after the job), terminated; SG and key pair deleted | ≈ $21.46 | fork |
@@ -58,6 +57,99 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-28 11:32 PDT: current-model comparison and missing Jev score (Codex website benchmarks)
+
+- Homepage and primary research chart now compare only current SelfJev and Jev. Earlier SelfJev and reranker runs remain in the expandable experiment archive. Removed the outdated two-SelfJev-versions caption.
+- Fixed Jev AI-review source lookup: its recorded result lives in the canonical dataset and the audited `weights/selfjev_4b/assets/chart-data.json` export, not the report path previously assumed by the website. The site reads 92.49471458773785% from that export and checks question count/current-model score agreement before using it. UI shows SelfJev 93.1%, Jev 92.5%; raw source is linked, no inference/report mutation.
+- `npm run check` passes (15 HTML pages, 473 links). Browser interaction verified both rows on AI response review. Cost $0; no model run or git commit. Verdict: complete.
+
+### 2026-09-28 11:30 PDT: website links to published Hugging Face releases (Codex website HF links)
+
+- Verified public HF API metadata for `Jwuthrich/selfjev-4b`, `Jwuthrich/selfjev-4b-merged`, and `Jwuthrich/selfjev-decision-bench`; read the published dataset card. Added shared release cards to the homepage/research page, a hero weights link, footer profile/dataset links, and quickstart download links. Fine-tuning docs now link the published adapter and its provenance/terms instead of stale pre-publication wording.
+- Dataset copy correctly lists 3,657 questions across Text Decisions, AI Response Review and Record Reasoning; research clarifies that the 3,471-question development benchmark is separate. No score changes or new reports.
+- `npm run check` passes (15 HTML pages, 476 links). Browser confirmed release targets and layout, 390px viewport has no horizontal overflow. Cost $0; read-only HF access, no publication or model run, no git commit. Verdict: complete.
+
+### 2026-09-28 11:27 PDT: concrete typed decisions in the animated tree (Codex website examples)
+
+- Replaced anonymous Question 01 / A-B-C nodes with one customer message about a duplicate charge. Binary refund question has one Yes candidate and yes/no readout; multiclass team routing has Billing/Support; multilabel topics has Payments/Refund/Login with two selections. Highlighted illustrative selections and displayed typed example values at the output. No invented probabilities or live inference claims.
+- Branch paths now derive from the candidate lists, preserving animation for different branch counts. Updated accessible description, legend, and mobile root sizing. Files: `website/components/architecture-tree.tsx`, `website/app/globals.css`.
+- Validation: production build and 432 link checks pass; desktop/mobile layout and pause/play checked, no horizontal page overflow. Cost $0, no model run, no report/score changes, no commit. Verdict: complete.
+
+### 2026-09-28 11:20 PDT: three authored evaluation suites published as SelfJev Decision Bench (Codex dataset release)
+
+- User selected all three authored suites. Published [SelfJev Decision Bench](https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench), commit `459c0ab641ab2cd7faa3dcf86daf05c5ff33cf6e`: Text Decisions 1,991 questions / 647 texts; AI Response Review 946 / 317; Record Reasoning 720 / 120. Exported exclusively from canonical `data/all.jsonl.gz`, with original IDs, questions, targets and metadata preserved; omitted the `jev` prediction field. No third-party public benchmark data or training rows included.
+- Added `scripts/data/export_decision_bench.py`, dependency-free `scripts/data/score_decision_bench.py`, and `docs/decision_bench_card.md`. Release has three HF Parquet configurations, original-schema gzipped JSONL, scorer/exporter, provenance manifest and SHA256SUMS. Data card documents AI agreement limitations, development exposure, exact scoring, metadata/notes answer leakage, and separate reporting of the narrow programmatic challenge. Linked from `docs/data.md`.
+- Validated every row against original frozen files, all Parquet/native round trips, all retained labels against both saved judge outputs, and zero exact text matches with non-test training rows. Scorer reproduces saved TreeServer predictions: 1,905/1,991 and 881/946; negative checks reject missing/duplicate IDs, wrong binary types and duplicate labels. No new inference or headline scores. Ruff and HF card validation pass.
+- All 11 uploaded files fetched anonymously and byte-matched. Evidence: `reports/releases/decision_bench_2026-09-28/` (publication, validation, manifest and hashes). Reuse license remains unset pending the user's CC BY 4.0 versus CC0 choice; the public card explicitly says so, and no license was assigned on the user's behalf.
+- Cost $0; no paid calls, AWS resources, model jobs or git commit. Verdict: public evaluation release complete; license choice pending.
+
+### 2026-09-28 11:19 PDT: animated architecture, context capacity and fine-tuning copy (Codex website animation)
+
+- Rebuilt the homepage tree as a React/SVG component (`website/components/architecture-tree.tsx`): staged light travels document → questions → isolated candidates → readouts → typed answers; pause/play, reduced-motion CSS, accessible description, and a centered horizontal viewport on mobile. Original PNG remains available from the architecture guide.
+- Added a homepage section about configurable context and adapting SelfJev to a use case, with fine-tuning workflow and documentation links. Verified TypeSafe's primary model docs on 2026-09-28: Jev allows 32K for state plus longest question, 64K for the complete request. Qwen3.5-4B's official config specifies 262,144 native positions. Website distinguishes this base capacity from SelfJev's 32,768 default and unvalidated full-window inference; it makes no tested long-context superiority claim. Sources: https://docs.typesafe.ai/models and https://huggingface.co/Qwen/Qwen3.5-4B/blob/main/config.json .
+- Updated architecture, hardware and fine-tuning guides. Validation: `npm run check` passes (15 HTML pages, 432 links), desktop/mobile screenshots inspected, pause/play verified, no horizontal page overflow or browser errors. No model runs, new reports, or benchmark changes. Cost $0; no paid API/cloud resource, no commit. Verdict: complete.
+
+### 2026-09-28 10:43 PDT: latency evidence and prefix-tree diagram on both HF cards (Codex HF visuals)
+
+- Added a dedicated vector/raster architecture diagram: document → independent questions → candidate branches → probabilities, with attention ancestor visibility and inherited DeltaNet state. Describes TreeServer; vLLM execution is explicitly separate. Original header artwork remains.
+- Added two latency figures and tables generated from raw samples: archived `tree_4b_combo` Qwen3/vLLM on A10G, L40S and H100 (24 cells, 10 warmed requests each, server-side time), and current SelfJev/TreeServer on M5 Pro MPS (4 cells, 10 synchronized local calls after two warmups, synthetic repeated text). Files: `reports/latency/requests_combo.jsonl`, `requests_qwen35.jsonl`, `requests_h100.jsonl`, `mac_m5_pro_selfjev4b.json`. NVIDIA/current-model gap and different timing boundaries are explicit; no direct Mac-vs-NVIDIA claim.
+- New plotting module: `scripts/docs/model_card_figures.py`. Main generator now produces eight PNG/SVG figures, latency CSV/JSON with samples and configuration, and a chart-data manifest hashing 22 inputs. Reused on merged card with refreshed SHA256SUMS. Website files/artwork belong to the concurrent website session and were not edited here.
+- Published adapter commit `5126b220cde8c8f31f85eaaefa27592e880377b2`, merged commit `f053919b6f498eb8b8667b97c0784adddef9e608`. Ruff, metadata, example syntax, image/link checks and median recomputation passed. Visually inspected all three new figures, corrected one label overlap. Verified all 24 adapter-card and 26 merged-card files anonymously byte-for-byte; model artifacts unchanged. Evidence: `reports/releases/selfjev_4b_merged_2026-09-28/latency_architecture_cards.json`.
+- Cost $0; no model jobs, new benchmark reports, cloud resources or git commits. Verdict: requested latency and architecture additions live on both model cards.
+
+### 2026-09-28 10:40 PDT: simpler hardware copy and architecture illustration (Codex website architecture)
+
+- Removed repeated Qwen-generation caveats from homepage hardware copy and website guides at the user's request. Raw timings are unchanged; the hardware methodology links the original model/runtime configurations and identifies the vLLM versus MPS measurement paths.
+- Created `website/public/images/selfjev-architecture.png` with built-in image generation, showing shared document and question computation, isolated candidate paths, yes/no readout, and typed outputs. Integrated the picture into the homepage with descriptive alt text and a full-size link; linked it from the architecture guide. Prompt: `website/design/selfjev-architecture-prompt.md`.
+- Validation: production build and export check pass (15 HTML pages, 428 links); browser confirmed loaded image and updated copy; 390px mobile viewport has no horizontal overflow. No model results changed and no inference run. Cost: no AWS/BYOK resources; built-in image generation, no separately reported price. Verdict: complete; no git commit.
+
+### 2026-09-28 10:36 PDT: visual model card reused on the merged HF release (Codex HF card)
+
+- Published the same five figures, benchmark tables and chart data to [Jwuthrich/selfjev-4b-merged](https://huggingface.co/Jwuthrich/selfjev-4b-merged), commit `8588c5198d3697527ecbc74809bd718212810080`. Updated full-checkpoint description, vLLM download/serving commands, model file table and source-adapter provenance. Reference scores remain explicitly attributed to TreeServer, not a new vLLM evaluation.
+- Reusable converter: `scripts/docs/build_merged_model_card.py`; staging: `runs/hf-merged-card/`. Refreshed SHA256SUMS for README and new assets/reproduction files while retaining all original artifact hashes.
+- Ruff, frontmatter, example syntax, local/remote file links and checksums validated. All 17 uploaded files fetched anonymously and byte-matched; model weights/config/tokenizer/provenance blobs unchanged. Hugging Face updated its generated `.gitattributes`. Publication evidence: `reports/releases/selfjev_4b_merged_2026-09-28/visual_card_publication.json`.
+- Cost $0; no model inference, cloud resources or git commit. Verdict: merged model now has the shared visual card.
+
+### 2026-09-28 10:33 PDT: hardware latency explorer and local M5 Pro measurement (Codex website)
+
+- Added an interactive self-hosting comparison to the Next.js homepage for 8/512/2,048/4,096 text tokens and 1/16 questions. A10G, L40S and H100 values are medians from the existing `tree_4b_combo` Qwen3-4B vLLM sweeps (`reports/latency/requests_combo.jsonl`, `requests_qwen35.jsonl`, `requests_h100.jsonl`); the site labels their archived model and links the raw rows. Current-model NVIDIA latency remains unmeasured.
+- With the user's explicit local-Mac authorization, measured the current `selfjev-4b` adapter through `TreeServer` on an Apple M5 Pro (20-core GPU, 48 GB unified memory, PyTorch MPS, bf16 merged adapter). One request, synthetic repeated text, three answer options, exact 8/512 text tokens, 1/16 questions, two warm-ups and 10 timed repetitions per cell, with MPS synchronization; local call time includes tokenization, excludes HTTP/network. Medians: 8 tokens 688/6,786 ms and 512 tokens 2,018/8,599 ms for 1/16 questions. Full samples/config: `reports/latency/mac_m5_pro_selfjev4b.json`; reproduction: `scripts/bench_local_mps.py`. PyTorch's reference gated-recurrence path on MPS is slower than the unavailable optimized kernel, so these Mac numbers do not isolate hardware differences from the earlier NVIDIA model/engine.
+- Updated the hardware guide and `docs/speed.md`/`docs/findings.md` with scope and limitations. `npm run build`, `uv run pytest -q tests/engine/test_tree.py` (3 passed), and ruff checks passed; browser controls, Mac values, source and sizing links verified. Cost $0; no cloud resources or API calls. Verdict: site has a measured but clearly separated Mac row; Mac CLI serving and current-model NVIDIA latency still need work.
+
+### 2026-09-28 10:31 PDT: full merged SelfJev-4B weights published (Codex HF merge)
+
+- User approved the proposed $3 AWS job and refreshed SSO. Published [Jwuthrich/selfjev-4b-merged](https://huggingface.co/Jwuthrich/selfjev-4b-merged), commit `aed18d68e951f3cbbb84495c931f321fd5e03f10`: 9,319,828,160 bytes of full merged weights, tokenizer/configuration, model card, source manifest, base LICENSE, merge provenance and file checksums.
+- Existing merge command combined the pinned Qwen base with adapter `dfbf2834d883987893ec305a6093a345fd79c77f903f60f2f914cbe3b6058d1b`. Checked all 738 tensors for shape/dtype/finiteness; exactly 152 expected tensors changed. Two synthetic GPU smoke cases produced identical adapter/merged decision margins (4.5625 and -4.3125), not a benchmark or proof of general equality. No headline score changes.
+- All checksummed Hub files verified anonymously from AWS and independently from the laptop. Evidence: [release record](../reports/releases/selfjev_4b_merged_2026-09-28/README.md), `verification.json`, `merge_meta.json`, `SHA256SUMS`, `publication.json` and `MODEL_CARD.md` in that directory. Updated `weights/README.md` and `docs/deploy.md` with the merged download link. The adapter card was left to the concurrent card-redesign session.
+- AWS g5.2xlarge `i-0d2a8155413fe9cd5`, us-east-1, launched 17:18:50 UTC; termination requested 17:27:04 UTC. Verified automatic one-hour termination cap. A delayed shutdown required a force/skip-OS-shutdown request; instance now confirmed terminated. Security group `sg-0001aea61abb2fb73`, cloud key pair and local private key were deleted successfully.
+- Compute estimate ~$0.17 at the live quoted $1.212/hour, plus storage/IP and outbound transfer (conservative total allowance ~$1.10, before free transfer/deduplication; final bill unavailable). No model jobs on the laptop, new benchmark evaluation or git commit. Verdict: full merged release is public and verified.
+
+### 2026-09-28 10:25 PDT: visual HF model card published with audited comparisons (Codex HF card)
+
+- Used Lev's public model card as a structural reference; created original dark/orange/olive figures and plain-language task descriptions. Published README, five PNG/SVG figures, CSV/JSON data, and reproduction source to [Jwuthrich/selfjev-4b](https://huggingface.co/Jwuthrich/selfjev-4b), commit `742f98f0cad6eae5399e34562e47c53bf8fbfe8f`.
+- Generator: `scripts/docs/build_model_card.py`; prose: `scripts/docs/model_card.template.md`. Reads canonical `data/all.jsonl.gz` plus saved predictions, hashes 18 inputs and checks matched question IDs, targets, types and candidate sets for report comparisons. Scores are generated from report correctness, never retyped from the ledger.
+- Figures: shared-prefix architecture; current SelfJev/Jev on three suites; all 11 public-source slices; accuracy vs nominal backbone size for seven systems; six historical research checkpoints. Public-source-only result is 83.4% vs Jev 82.1% on 3,300 questions (not the full 3,471-question dev benchmark). Earlier 8B LoRA is 81.0% on those same questions. Evidence: `reports/selfjev_4b_treeserver/test/report.json`, `reports/external/full/typesafe_jev-latest/report.json`, `reports/lora_8b/test/report.json`; exact values in `weights/selfjev_4b/assets/chart-data.json`.
+- Card labels adapted tasks, sampled options, training-source exposure, known overlap, AI labels, different training recipes and current-vs-historical engines. No S1Bench/Lev ranking or current-model latency claim. Follow-up protocol: `docs/model_card_evaluation_plan.md`; no new benchmark campaign launched.
+- Validation: Ruff passes; all five figures visually inspected (fixed a footer overlap); frontmatter, local links and Python example syntax checked. All 15 published files downloaded anonymously at the commit and matched local bytes. Remote adapter SHA-256 unchanged. Cost $0, no inference, no git commit. Verdict: redesigned card live; independent external evaluation remains future work. Merged-weight release remains pending separately.
+
+### 2026-09-28 10:14 PDT: merged Hugging Face release prepared, awaiting AWS access and budget (Codex HF merge)
+
+- User requested a full merged model. Confirmed no merged checkpoint remains in `runs/`; existing `selfjev merge` preserves the pinned Qwen checkpoint layout and checks every LoRA target is replaced.
+- Prepared `runs/hf-merged-release/README.md` and `PLAN.md` for `Jwuthrich/selfjev-4b-merged`. Card distinguishes source-adapter TreeServer scores from unmeasured merged-backend performance. Current HF account is `Jwuthrich`.
+- Planned one g5.2xlarge (32 GiB host RAM), 1-hour automatic termination, proposed $3 budget including transfer/storage. AWS public published price is $1.212/h; live pricing verification failed because the `connectly` SSO session expired. Requires refreshed login and explicit priced approval under AGENTS.md before launch.
+- No model computation, cloud resources or HF writes for this merged release. Cost $0 so far; no new benchmark report or git commit. Verdict: preparation complete; upload pending.
+
+### 2026-09-28 10:03 PDT: publish SelfJev-4B under the user's new Hugging Face account (Codex HF upload)
+
+- Verified the active account is `Jwuthrich` and uploaded adapter weights, PEFT config, manifest, and model card to
+  [https://huggingface.co/Jwuthrich/selfjev-4b](https://huggingface.co/Jwuthrich/selfjev-4b), commit `2d2292461452bda3be49dc554e1a8e9dd1510072`.
+  Updated the card's download instructions to `Jwuthrich/selfjev-4b`.
+- Anonymous Hub access verified public visibility and all four files. The three small files match local bytes;
+  the 230,073,800-byte adapter's remote SHA-256 matches the local manifest:
+  `dfbf2834d883987893ec305a6093a345fd79c77f903f60f2f914cbe3b6058d1b`.
+- The earlier `JulienHeysam/selfjev-4b` repository was not deleted. No model jobs, paid services or local git commit.
+  Cost $0. Verdict: requested weights and card published under the newly signed-in account.
 
 ### 2026-09-28 09:59 PDT: SelfJev-4B adapter and card published to Hugging Face (Codex HF upload, explicit user request)
 

@@ -12,12 +12,12 @@
       shorter "compact" tree format did not pay off.
     - **Cost:** a fully busy A10G is cheaper per request than Jev (up to 3×, less with many questions); an idle one is
       not. On an L40S the Qwen3 tree on vLLM is cheaper than Jev in every cell measured.
-    - **The default model, `selfjev-4b` (Qwen3.5), has no GPU latency yet.** The numbers above are the Qwen3 tree's
+    - **The default model, `selfjev-4b` (Qwen3.5), has no NVIDIA GPU latency yet.** The numbers above are the Qwen3 tree's
       (`tree_4b_combo`, weights at tag `archive/pre-cleanup-2026-09-27`). The same Qwen3.5 architecture on vLLM keeps
       its accuracy and is fast for one question (87–131 ms server side up to 2K tokens on an L40S), but slow for many:
       vLLM reuses a hybrid model's recurrent state only every 528 tokens, so each candidate recomputes part of the
       text. `selfjev serve` therefore serves it with its own tree (`TreeServer`, the default engine), which does the
-      Qwen3 tree's work; that engine has not been timed on a GPU.
+      Qwen3 tree's work. A separate Apple M5 Pro MPS experiment is reported below; it is not comparable to the earlier NVIDIA sweep.
 
 ## Tree vs stock pairs (same A10G, bf16, unmerged LoRA)
 
@@ -156,10 +156,27 @@ in git).
 work as the Qwen3 tree. Since the 2026-09-27 cleanup it is the default engine of `selfjev serve`, `eval` and `bench`
 (vLLM stays available with `--engine vllm`). It matches standalone sequences in a CPU test
 (`tests/engine/test_tree.py`) and, on GPU, the forked-cache engine's answers: the same `selfjev-4b` weights score the same on both engines: eval2 95.68 vs 95.78, dev benchmark 83.78 vs 83.75, eval_llm 93.13 vs 93.13 (99.8%, 99.8% and 100% of decisions identical)
-([JOURNAL 2026-09-27 11:55](JOURNAL.md)). But **its latency has not been measured on a GPU**, on any GPU class, including the L4
+([JOURNAL 2026-09-27 11:55](JOURNAL.md)). But **its latency has not been measured on an NVIDIA GPU**, including the L4
 (g6.xlarge) that `selfjev deploy aws` picks by default: there are no numbers for it yet. `selfjev bench` on a GPU box
 is the first step. For reference, the forked-cache engine it replaced took 156 and 252 ms for one question at 512 and
 2,048 tokens, and 341 and 508 ms for 16 questions (in-process p50 on the L40S, `reports/qwen35_4b_tree/bench.json`).
+
+## Current model on Apple Silicon (2026-09-28)
+
+The current `selfjev-4b` adapter merged into Qwen3.5-4B runs through `TreeServer` on a local Apple M5 Pro (20-core GPU,
+48 GB unified memory) with PyTorch MPS in bf16. The CLI still defaults to CUDA; this is a lower-level engine experiment,
+not a validated Mac server. Each cell uses one request with synthetic repeated text and three options per question. Times include
+tokenization and scoring but exclude HTTP/network. Median of 10 timed calls after two warm-ups, with MPS synchronized at
+both ends. [Raw samples](../reports/latency/mac_m5_pro_selfjev4b.json) · [reproduction script](../scripts/bench_local_mps.py).
+
+| Text tokens | 1 question | 16 questions |
+|---|---:|---:|
+| 8 | 688 ms | 6,786 ms |
+| 512 | 2,018 ms | 8,599 ms |
+
+`flash-linear-attention` is not installed for MPS, so the gated recurrent operation uses the correct but slower PyTorch
+reference path. The NVIDIA figures above belong to an older Qwen3 model on vLLM; their difference from these Mac times
+does **not** isolate the hardware effect. No controlled NVIDIA latency measurement exists for the current model.
 
 ## Cost vs Jev
 

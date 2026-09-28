@@ -1,0 +1,28 @@
+{
+  "original_rows_unchanged": {
+    "text-decisions": 1991,
+    "ai-response-review": 946,
+    "record-reasoning": 720
+  },
+  "parquet_native_round_trip": "passed for every row",
+  "saved_judge_agreement": "all retained eval2 and eval_llm targets match both saved judges",
+  "exact_text_overlap_non_test_training": 0,
+  "scorer_saved_prediction_checks": {
+    "eval2": {
+      "correct": 1905,
+      "questions": 1991
+    },
+    "eval_llm": {
+      "correct": 881,
+      "questions": 946
+    }
+  },
+  "scorer_negative_checks": [
+    "missing predictions",
+    "duplicate IDs",
+    "string instead of boolean",
+    "duplicate multilabel IDs"
+  ],
+  "no_model_inference": true,
+  "cost_usd": 0
+}

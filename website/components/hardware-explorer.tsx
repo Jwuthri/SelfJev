@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ArrowUpRight, Cpu } from "lucide-react";
-import type { HardwareLatencyPoint } from "@/lib/evidence";
+import type { HardwareLatencyPoint, MacLatencyPoint } from "@/lib/evidence";
 
 const inputSizes = [
   { tokens: 8, label: "Very short" },
@@ -17,10 +17,11 @@ const hardware = [
   { key: "h100", name: "H100", memory: "80 GB", className: "h100", source: "requests_h100.jsonl" },
 ] as const;
 
-export function HardwareExplorer({ data }: { data: HardwareLatencyPoint[] }) {
+export function HardwareExplorer({ data, mac }: { data: HardwareLatencyPoint[]; mac: MacLatencyPoint[] }) {
   const [tokens, setTokens] = useState(512);
   const [questions, setQuestions] = useState(1);
   const row = data.find((point) => point.tokens === tokens && point.questions === questions);
+  const macRow = mac.find((point) => point.tokens === tokens && point.questions === questions);
   if (!row) return null;
   const maximum = Math.max(row.a10g, row.l40s, row.h100);
 
@@ -28,11 +29,11 @@ export function HardwareExplorer({ data }: { data: HardwareLatencyPoint[] }) {
     <div className="hardware-panel">
       <div className="hardware-header">
         <div>
-          <span className="eyebrow">SELF-HOSTED / MEASURED GPU RUNS</span>
+          <span className="eyebrow">SELF-HOSTING / HARDWARE LATENCY</span>
           <h3>Choose the machine.</h3>
           <p>Typical processing time for one request. Lower is faster.</p>
         </div>
-        <span className="hardware-model-tag">EARLIER QWEN3 TREE MODEL</span>
+        <span className="hardware-model-tag">MEASURED LATENCY</span>
       </div>
       <div className="hardware-controls">
         <fieldset>
@@ -69,14 +70,15 @@ export function HardwareExplorer({ data }: { data: HardwareLatencyPoint[] }) {
           );
         })}
         <div className="hardware-result mac">
-          <div className="hardware-name"><strong><Cpu size={16} /> Apple Silicon</strong><span>Local Mac</span></div>
-          <p>Not measured. Current server requires NVIDIA CUDA.</p>
-          <Link href="/docs/hardware/" aria-label="Apple Silicon hardware support details" title="Hardware support details"><ArrowUpRight size={15} /></Link>
+          <div className="hardware-name"><strong><Cpu size={16} /> M5 Pro</strong><span>48 GB unified · MPS</span></div>
+          <p>Local Apple Silicon</p>
+          <strong className="hardware-time">{macRow ? Math.round(macRow.ms).toLocaleString() : "—"}<small>{macRow ? "ms" : ""}</small></strong>
+          <a href="https://github.com/Jwuthri/SelfJev/blob/master/reports/latency/mac_m5_pro_selfjev4b.json" aria-label="M5 Pro raw latency measurements" title="Mac benchmark report"><ArrowUpRight size={15} /></a>
         </div>
       </div>
       <div className="hardware-footer">
-        <p><strong>Scope:</strong> These are separate 2026 sweeps of an earlier Qwen3-4B model on vLLM, with three answer options per question. Each number is the median of 10 timed requests after warm-up, measured inside the server. The current SelfJev-4B / TreeServer has not been timed on any of these GPUs.</p>
-        <Link href="/docs/hardware/">Sizing guide <ArrowUpRight size={14} /></Link>
+        <p>Median of 10 warmed runs. Three answer options per question. Network time excluded. A dash means that workload has not been measured.</p>
+        <Link href="/docs/hardware/#compare-measured-gpu-response-times">How we measured <ArrowUpRight size={14} /></Link>
       </div>
     </div>
   );

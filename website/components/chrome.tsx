@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { HF_RELEASES } from "@/lib/releases";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { ArrowUpRight, GitBranch, Github, Menu, X } from "lucide-react";
@@ -68,6 +69,8 @@ export function Footer() {
       <div className="footer-links">
         <Link href="/docs/">Documentation</Link>
         <Link href="/research/">Evidence</Link>
+        <a href={HF_RELEASES.profile}>Hugging Face ↗</a>
+        <a href={HF_RELEASES.dataset}>Evaluation dataset ↗</a>
         <a href="https://jwuthri.github.io/SelfJev/">Lab notebook ↗</a>
         <a href="https://github.com/Jwuthri/SelfJev">GitHub ↗</a>
       </div>

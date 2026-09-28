@@ -1,0 +1,27 @@
+{
+  "repo": "Jwuthrich/selfjev-4b-merged",
+  "commit": "aed18d68e951f3cbbb84495c931f321fd5e03f10",
+  "url": "https://huggingface.co/Jwuthrich/selfjev-4b-merged",
+  "public": true,
+  "files": {
+    ".gitattributes": 1570,
+    "LICENSE": 11544,
+    "README.md": 6004,
+    "SHA256SUMS": 1385,
+    "chat_template.jinja": 7756,
+    "config.json": 3161,
+    "merge_meta.json": 230,
+    "merges.txt": 3353259,
+    "model.json": 1590,
+    "model.safetensors-00001-of-00002.safetensors": 5329398720,
+    "model.safetensors-00002-of-00002.safetensors": 3990429440,
+    "model.safetensors.index.json": 76196,
+    "preprocessor_config.json": 390,
+    "tokenizer.json": 12807982,
+    "tokenizer_config.json": 16710,
+    "verification.json": 293,
+    "video_preprocessor_config.json": 385,
+    "vocab.json": 6722759
+  },
+  "verified": "All release files checked against local SHA256SUMS using anonymous Hub access"
+}

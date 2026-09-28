@@ -1,5 +1,13 @@
 SelfJev turns a state (your text) and a set of questions into typed answers with probabilities. You run the model on your own GPU; your application calls it over HTTP.
 
+## Get the model
+
+The releases are public on Hugging Face:
+
+- [SelfJev-4B adapter](https://huggingface.co/Jwuthrich/selfjev-4b): the trained LoRA adapter for the native tree engine. The quickstart below uses this adapter from the repository.
+- [SelfJev-4B full merged model](https://huggingface.co/Jwuthrich/selfjev-4b-merged): the complete weights, tokenizer and configuration. Its model card includes download and vLLM serving instructions.
+- [SelfJev Decision Bench](https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench): the evaluation questions, expected answers and scoring tools.
+
 ## 1. Start a GPU server
 
 Use a Linux machine with an NVIDIA GPU. Start with **24 GB VRAM, 4 vCPUs, 16–32 GB system RAM, and 50 GB free disk**. These are planning recommendations, not a tested minimum. See [hardware and sizing](/docs/hardware/) for the evidence and limits.

@@ -1,0 +1,26 @@
+{
+  "repo": "Jwuthrich/selfjev-decision-bench",
+  "commit": "459c0ab641ab2cd7faa3dcf86daf05c5ff33cf6e",
+  "url": "https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench",
+  "public": true,
+  "files_verified": [
+    "README.md",
+    "SHA256SUMS",
+    "data/ai-response-review.parquet",
+    "data/record-reasoning.parquet",
+    "data/text-decisions.parquet",
+    "manifest.json",
+    "selfjev/ai-response-review.jsonl.gz",
+    "selfjev/record-reasoning.jsonl.gz",
+    "selfjev/text-decisions.jsonl.gz",
+    "tools/export_from_selfjev.py",
+    "tools/score.py"
+  ],
+  "license": "not yet selected",
+  "questions": 3657,
+  "public_load_dataset_verified": {
+    "text-decisions": 1991,
+    "ai-response-review": 946,
+    "record-reasoning": 720
+  }
+}

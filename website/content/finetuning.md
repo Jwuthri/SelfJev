@@ -1,3 +1,5 @@
+If the default model misses the distinctions your workflow needs, fine-tune it on your own examples. Teach it your routing labels, policy boundaries, or quality criteria using verified inputs and expected answers. You keep the same decisions API and serve your adapted model.
+
 Adapt SelfJev to your own decisions with supervised fine-tuning, or optimize probability reports using the RLCD objective. A 48 GB GPU is the established training class. Keep a held-out validation set and a separate final test set.
 
 ## Prepare training requests
@@ -43,6 +45,6 @@ A successful job registers its adapter under a new model name. Pass that name as
 
 Start with supervised training. In this project, RLCD did not reliably improve accuracy over fine-tuning on the same soft targets. An explicit cost for confident mistakes reduced those mistakes, with other probability-quality tradeoffs. Choose an objective based on what your application needs and evaluate it on held-out data.
 
-The default model’s training included stored Jev probabilities as an additional teacher signal. [TypeSafe’s customer agreement, §2.3(b)](https://typesafe.ai/legal/mca) restricts using its outputs for model distillation, training an imitator, or developing a similar product. We have not established an exception that would permit publishing this adapter on Hugging Face.
+The [published SelfJev-4B adapter](https://huggingface.co/Jwuthrich/selfjev-4b) is the starting point for adapting the model. Its model card records the training provenance and release terms, including the use of stored Jev probabilities as a teacher signal. Use your own verified examples for fine-tuning; keep the [published evaluation suites](https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench) out of training and tuning.
 
 For the full CLI training schema, reward settings, and recorded experiments, read [fine-tuning and RLCD](https://jwuthri.github.io/SelfJev/finetune/) and the [API job contract](https://github.com/Jwuthri/SelfJev/blob/master/docs/api.md#fine-tuning). HTTP training orchestration has not been exercised end to end in the recorded GPU runs.

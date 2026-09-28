@@ -36,6 +36,18 @@ export type EvidenceRow = {
   current: boolean;
 };
 export function leaderboard(): EvidenceRow[] {
+  // Jev's AI-review result is derived from stored predictions in the canonical
+  // dataset, not an external report.json. Reuse the published audited export.
+  const jevReviewFile = "weights/selfjev_4b/assets/chart-data.json";
+  const chartData = JSON.parse(fs.readFileSync(path.join(root, jevReviewFile), "utf8"));
+  const currentReview = score("reports/selfjev_4b_treeserver/eval_llm/report.json");
+  const jevReview = chartData.overview.find((entry: { source: string }) =>
+    entry.source === "reports/selfjev_4b_treeserver/eval_llm/report.json");
+  if (!jevReview || jevReview.n !== currentReview.n ||
+      Math.abs(jevReview.ours - currentReview.value) > 0.000001 ||
+      !Number.isFinite(jevReview.jev) || jevReview.jev < 0 || jevReview.jev > 100) {
+    throw new Error("Jev AI-review export does not match the current evaluation suite");
+  }
   const ledger = fs
     .readFileSync(path.join(root, "docs/experiments.md"), "utf8")
     .split("<!-- ledger:start -->")[1]
@@ -57,6 +69,7 @@ export function leaderboard(): EvidenceRow[] {
           : `reports/${c[0]}/eval2/report.json`;
       const llm = `reports/${c[0]}/eval_llm/report.json`;
       const current = c[0] === "selfjev_4b_treeserver";
+      const isJev = c[0] === "external" && c[1] === "~typesafe/jev-latest";
       return {
         id: c[0] === "external" ? c[1] : c[0],
         name: current
@@ -70,61 +83,12 @@ export function leaderboard(): EvidenceRow[] {
         architecture: c[2],
         eval2: fs.existsSync(path.join(root, e2)) ? score(e2).value : null,
         dev,
-        llm: fs.existsSync(path.join(root, llm)) ? score(llm).value : null,
-        urls: { dev: source(file), eval2: source(e2), llm: source(llm) },
+        llm: isJev ? jevReview.jev : fs.existsSync(path.join(root, llm)) ? score(llm).value : null,
+        urls: { dev: source(file), eval2: source(e2), llm: source(isJev ? jevReviewFile : llm) },
         current,
       };
     });
 }
-export type SpeedPoint = {
-  tokens: number;
-  questions: number;
-  ours: number;
-  jev: number;
-  wallOurs: number;
-  wallJev: number;
-};
-export function speedData(): SpeedPoint[] {
-  const rows = fs
-    .readFileSync(
-      path.join(root, "reports/latency/requests_h100.jsonl"),
-      "utf8",
-    )
-    .trim()
-    .split("\n")
-    .map((s) => JSON.parse(s));
-  const median = (values: number[]) => {
-    values.sort((a, b) => a - b);
-    const m = Math.floor(values.length / 2);
-    return values.length % 2 ? values[m] : (values[m - 1] + values[m]) / 2;
-  };
-  return [1, 16].flatMap((questions) =>
-    [8, 512, 2048, 4096].map((tokens) => {
-      const samples = (endpoint: string, key: string) =>
-        median(
-          rows
-            .filter(
-              (r) =>
-                r.status === 200 &&
-                r.rep > 0 &&
-                r.endpoint === endpoint &&
-                r.questions === questions &&
-                r.text_tokens === tokens,
-            )
-            .map((r) => r[key]),
-        );
-      return {
-        tokens,
-        questions,
-        ours: samples("h100_bf16", "server_ms"),
-        jev: samples("jev", "server_ms"),
-        wallOurs: samples("h100_bf16", "wall_ms"),
-        wallJev: samples("jev", "wall_ms"),
-      };
-    }),
-  );
-}
-
 export type HardwareLatencyPoint = {
   tokens: number;
   questions: number;
@@ -132,6 +96,21 @@ export type HardwareLatencyPoint = {
   l40s: number;
   h100: number;
 };
+export type MacLatencyPoint = { tokens: number; questions: number; ms: number };
+
+export function macLatencyData(): MacLatencyPoint[] {
+  const report = JSON.parse(fs.readFileSync(path.join(root, "reports/latency/mac_m5_pro_selfjev4b.json"), "utf8"));
+  if (report.meta.model.device !== "mps" || report.meta.model.model !== "Qwen/Qwen3.5-4B") {
+    throw new Error("Unexpected local Mac benchmark model");
+  }
+  return report.cells.map((cell: { text_tokens: number; questions: number; median_ms: number; samples_ms: number[] }) => {
+    if (cell.samples_ms.length !== 10) throw new Error("Mac benchmark needs 10 timed samples per cell");
+    const sorted = [...cell.samples_ms].sort((a, b) => a - b);
+    const median = (sorted[4] + sorted[5]) / 2;
+    if (Math.abs(median - cell.median_ms) > 0.01) throw new Error("Mac benchmark median does not match its samples");
+    return { tokens: cell.text_tokens, questions: cell.questions, ms: median };
+  });
+}
 
 // The three files use the same archived tree_4b_combo model and request shapes.
 // They were measured in separate sweeps; values are server-side medians, not network RTTs.

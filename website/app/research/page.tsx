@@ -1,3 +1,5 @@
+import { ReleaseLinks } from "@/components/release-links";
+import { HF_RELEASES } from "@/lib/releases";
 import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
 import { Benchmarks } from "@/components/explorers";
@@ -13,7 +15,7 @@ const experiments = [
 ];
 export default function Research() {
   const rows = leaderboard();
-  const selected = rows.filter((r) => r.current || ["~typesafe/jev-latest", "qwen35_4b_tree", "lora_4b"].includes(r.id));
+  const selected = rows.filter((r) => r.current || r.id === "~typesafe/jev-latest");
   return (
     <main id="main" className="wrap research-page">
       <div className="page-intro">
@@ -35,6 +37,11 @@ export default function Research() {
           <article><span className="eyebrow">03 / BROADER TEXT TASKS</span><h3>Go beyond one use case.</h3><p>Can it recognize intent, topics, sentiment, and other text patterns? These tasks helped guide development.</p><small>3,471 questions · development progress only</small></article>
         </div>
       </section>
+      <div className="research-dataset-note">
+        <p><b>Run the evaluation yourself.</b> Decision Bench publishes Text Decisions, AI Response Review, and a separate 720-question Record Reasoning suite. The broader development benchmark above is not included.</p>
+        <a className="text-link" href={HF_RELEASES.dataset}>Dataset, scoring tools & methodology <ArrowUpRight size={15}/></a>
+      </div>
+      <ReleaseLinks />
       <Benchmarks rows={selected} />
       <div className="methodology">
         <h3>A useful signal, with a clear scope.</h3>

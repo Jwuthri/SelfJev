@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { ArrowUpRight, Search } from "lucide-react";
-import type { EvidenceRow, SpeedPoint } from "@/lib/evidence";
+import type { EvidenceRow } from "@/lib/evidence";
 
 const modelLabels: Record<string, [string, string]> = {
   selfjev_4b_treeserver: ["SelfJev", "Our current model · self-hosted"],
@@ -57,52 +57,9 @@ export function Benchmarks({ rows, compact = false, archive = false }: {
         {filtered.length === 0 && <p className="empty-state">No scored runs match “{query}”. Try another model name.</p>}
       </div>
       <p className="chart-note">
-        {metric === "llm" && !archive ? "This view compares two versions of SelfJev; it does not rank competing services. " : ""}
+        {metric === "llm" && !archive ? "Small differences on this test do not establish superiority. " : ""}
         Scores are the share of answers matching the expected result; for “select all,” every choice must match. Only models with a recorded result are shown. Click a row for its report.
       </p>
-    </div>
-  );
-}
-export function SpeedExplorer({ data }: { data: SpeedPoint[] }) {
-  const [q, setQ] = useState(1);
-  const [wall, setWall] = useState(false);
-  return (
-    <div className="speed-panel">
-      <div className="panel-toolbar">
-        <div className="segmented" aria-label="Question count">
-          {[1, 16].map((n) => <button key={n} aria-pressed={q === n} onClick={() => setQ(n)}>{n} question{n > 1 ? "s" : ""}</button>)}
-        </div>
-        <div className="segmented" aria-label="Timing scope">
-          <button aria-pressed={!wall} onClick={() => setWall(false)}>Processing</button>
-          <button aria-pressed={wall} onClick={() => setWall(true)}>With network</button>
-        </div>
-      </div>
-      <div className="speed-legend">
-        <span><i />Earlier prototype · H100</span>
-        <span><i />Jev · hosted</span>
-        <span>Typical time / milliseconds</span>
-      </div>
-      <div className="speed-chart">
-        {data.filter((r) => r.questions === q).map((r) => (
-          <div className="speed-group" key={r.tokens}>
-            <span>{({8: "Very short", 512: "Short", 2048: "Medium", 4096: "Long"} as Record<number, string>)[r.tokens]} <small>input</small></span>
-            <div>
-              {[["ours", wall ? r.wallOurs : r.ours], ["jev", wall ? r.wallJev : r.jev]].map(([key, v]) => (
-                <div className={`speed-bar ${key}`} key={key}>
-                  <span style={{ width: `${(Number(v) / 300) * 100}%` }} />
-                  <strong>{Math.round(Number(v))} <small>ms</small></strong>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-      <p className="chart-note"><b>These measurements are from an earlier prototype. The current SelfJev model has not yet been timed.</b></p>
-      <details className="evidence-details speed-methodology">
-        <summary>Measurement details</summary>
-        <p>Median of 10 timed rounds per setting, after warm-up. Input lengths: 8, 512, 2,048, and 4,096 tokens. The prototype used Qwen3-4B with vLLM on an H100 in bf16. Jev was accessed through OpenRouter. Processing excludes network travel; “with network” includes it, with different distances to each server.</p>
-        <a href="https://github.com/Jwuthri/SelfJev/blob/master/reports/latency/requests_h100.jsonl">Raw measurements ↗</a>
-      </details>
     </div>
   );
 }

@@ -2,6 +2,8 @@ SelfJev is a decision scorer built from **Qwen3.5-4B + LoRA r64**. The model eva
 
 ## Read once, branch many
 
+[Explore the animated shared-prefix tree](/#architecture), or [open the static illustration](/images/selfjev-architecture.png).
+
 The document is the shared root. Each question branches from it; each candidate branches from its question. A candidate can attend to its ancestors and itself, never to sibling branches. Positions continue from the parent.
 
 For Qwen3.5’s recurrent layers, the engine executes the tree level by level, copying parent states for the children. Attention layers use the tree mask. This preserves deep interaction between context and the proposed answer while sharing the document work.
@@ -30,6 +32,6 @@ LLM verification is not human ground truth. Public training data may also overla
 
 vLLM is available for merged weights and can be effective for one question. In the measured Qwen3.5 configuration, recurrent-state cache boundaries caused repeated work for many candidate prompts. The native tree shares the document at the branch point explicitly.
 
-Current TreeServer latency still needs a controlled GPU measurement. Do not transfer the archived Qwen3 H100 speed figures to this model.
+Explore the [measured hardware configurations and response times](/docs/hardware/#compare-measured-gpu-response-times).
 
 Read the [full architecture](https://jwuthri.github.io/SelfJev/tree_model/), [engine source](https://github.com/Jwuthri/SelfJev/blob/master/src/selfjev/engine/tree.py), and [model manifest](https://github.com/Jwuthri/SelfJev/blob/master/weights/selfjev_4b/model.json).

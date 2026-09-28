@@ -1,5 +1,7 @@
 # Datasets and labels
 
+The three authored evaluation suites are published as **[SelfJev Decision Bench](https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench)**: Text Decisions (`eval2`), AI Response Review (`eval_llm`), and Record Reasoning (`compact_challenge_v1`). The release contains 3,657 unchanged questions, expected answers, provenance, Parquet/JSONL files and a strict prediction scorer. See its data card for construction, prior development use, and evaluation limitations.
+
 All data is one JSONL line per (text, question, target), with `id`, `source_id`, `family`, `split`, `provenance`,
 `state`, `question` (`type`, `instruction`, `candidates`), `target`, `hard_cases` and optional `paraphrase_group` and
 `notes`. Authored files use a compact form (one text, several questions) that `selfjev.data.load` expands. Check any
