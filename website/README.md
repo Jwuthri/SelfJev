@@ -34,6 +34,7 @@ The site can be hosted on any static host. No Node process, GPU, database, or pa
 - `content/*.md`: ten task-oriented user guides.
 - `lib/evidence.ts`: reads real JSON reports; latency medians exclude warm-up (`rep=0`). Each benchmark tab links to its own source report.
 - `components/decision-tree.tsx`: illustrative examples, explicitly not live inference.
+- `components/demo-video.tsx` and `public/video/`: the homepage video of a recorded end-to-end run, made from its record by `scripts/docs/e2e_video.py`; the web copy is a plain file (Vercel does not fetch LFS), re-encoded with `ffmpeg -c:v libx264 -preset veryslow -crf 26 -movflags +faststart`.
 - `app/globals.css`: typography, dark instrument palette, responsive layouts, reduced-motion handling.
 
 The homepage describes tasks in visitor language: text decisions and AI response review. Scores still come from the current TreeServer reports (95.7% and 93.1%). Dataset names, original-engine results, and raw run IDs live in the research page’s expandable methodology and experiment archive. Historic H100 speed belongs to archived Qwen3 and must not become a current-model claim. Hardware recommendations are estimates where no minimum was measured. CPU-only is not a supported server CLI mode.

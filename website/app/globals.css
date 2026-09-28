@@ -3066,3 +3066,29 @@ a:hover {
   .release-grid > a { padding:24px; }
   .release-grid > a + a { border-left:0; border-top:1px solid var(--line); }
 }
+/* The recorded end-to-end run (homepage "Watch" section). */
+.demo-section .section-heading p {
+  max-width: 440px;
+}
+.demo-video {
+  margin: 0;
+}
+.demo-player {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: var(--bg);
+  border: 1px solid #373d32;
+  border-radius: 14px;
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.45);
+}
+.demo-video figcaption {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.demo-video figcaption a {
+  color: var(--text);
+  white-space: nowrap;
+}

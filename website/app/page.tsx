@@ -14,7 +14,9 @@ import { DecisionTree } from "@/components/decision-tree";
 import { Benchmarks } from "@/components/explorers";
 import { HardwareExplorer } from "@/components/hardware-explorer";
 import { CodeBlock } from "@/components/code-block";
-import { headlines, leaderboard, hardwareLatencyData, macLatencyData, JOURNAL } from "@/lib/evidence";
+import { DemoVideo } from "@/components/demo-video";
+import { headlines, leaderboard, hardwareLatencyData, macLatencyData, JOURNAL, REPO } from "@/lib/evidence";
+const BASE = process.env.NEXT_PUBLIC_BASE_PATH || "";
 const sdk = `from selfjev import SelfJev, Noul, Choice
 
 # Use the secret you set as SELFJEV_API_KEYS on your server.
@@ -119,6 +121,33 @@ export default function Home() {
         </Link>
       </div>
       <p className="metric-context wrap">Accuracy on our project’s test questions, not a guarantee for every use case. <Link href="/research/#test-guide">What did we test? ↗</Link></p>
+      <section className="section wrap demo-section" id="watch">
+        <div className="section-kicker">WATCH / ONE RECORDED RUN</div>
+        <div className="section-heading">
+          <h2>
+            One command to a live API.
+            <br />
+            <span>Recorded end to end.</span>
+          </h2>
+          <p>
+            A real run on one NVIDIA L40S: deploy, six answers from one read of the text, Jev’s API, clear errors,
+            and two fine-tuning jobs over HTTP. 14 of 14 checks passed.
+          </p>
+        </div>
+        <figure className="demo-video">
+          <DemoVideo
+            src={`${BASE}/video/selfjev-e2e.mp4`}
+            poster={`${BASE}/video/selfjev-e2e-poster.jpg`}
+            label="A recorded run of SelfJev: one-command deploy, typed answers, Jev compatibility, errors and fine-tuning over HTTP"
+          />
+          <figcaption>
+            Every answer and number on screen comes from the run’s record; minutes-long steps are time-lapsed.{" "}
+            <a href={`${REPO}/blob/master/reports/e2e/2026-09-28/report.md`}>
+              Read the run’s report <ArrowUpRight size={13} />
+            </a>
+          </figcaption>
+        </figure>
+      </section>
       <section className="section wrap intro">
         <div className="section-kicker">01 / BUILT TO DECIDE</div>
         <div>
