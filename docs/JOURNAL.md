@@ -73,6 +73,12 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
   `selfjev-4b` on a small file; RLCD at 5e-5 kept 1.00. Worth a lower default for jobs that start from an adapter.
 - **Cost:** $0.
 
+### 2026-09-28 13:08 PDT: fixed Hugging Face adapter configuration warning (Codex HF config)
+
+- HF's page parser rejected `task_type: null` in the published adapter config, although PEFT supports it. Removed the optional null field from `weights/selfjev_4b/adapter_config.json` and published only that file to `Jwuthrich/selfjev-4b`, commit `ce0b0388d66ac3ee94f42a45a7c3109e7ccb79d9`, using parent-commit protection. Omitting it preserves PEFT's default None and generic PeftModel wrapper; assigning a task enum would change the wrapper.
+- Verified original/omitted-field configs deserialize identically. Tiny random 4-layer Qwen3.5 CPU fixture with nonzero LoRA weights loaded both variants into PeftModel with identical state tensors and bit-identical logits. Initial 2-layer test fixture had no attention q/v modules and was corrected to the hybrid 4-layer fixture; no full model run. All remote files except adapter_config.json retain their original blob IDs, including the weights.
+- Read back the pinned published config; fresh HF page HTML no longer contains configError or the task_type warning. Evidence: `reports/releases/selfjev_4b_config_2026-09-28/publication.json`. Cost $0. No local git commit; verdict: published and verified.
+
 ### 2026-09-28 12:40 PDT: the product works end to end on a GPU: deploy, SDK, fine-tuning over HTTP (fork, user request)
 
 - **What:** `scripts/aws/e2e.py` (new): `selfjev deploy aws up --fine-tuning` of commit `0a146ba` on a g6e.xlarge (L40S),

@@ -1,0 +1,18 @@
+{
+  "repo": "Jwuthrich/selfjev-4b",
+  "before": "5126b220cde8c8f31f85eaaefa27592e880377b2",
+  "commit": "ce0b0388d66ac3ee94f42a45a7c3109e7ccb79d9",
+  "url": "https://huggingface.co/Jwuthrich/selfjev-4b/commit/ce0b0388d66ac3ee94f42a45a7c3109e7ccb79d9",
+  "changed_files": [
+    "adapter_config.json"
+  ],
+  "change": "Omit optional task_type: null; PEFT still defaults to None",
+  "validation": {
+    "config_equivalent": true,
+    "tiny_qwen_loader_class": "PeftModel",
+    "tiny_qwen_logits_identical": true,
+    "other_hub_files_unchanged": true,
+    "published_config_verified": true,
+    "hub_page_config_error_absent": true
+  }
+}

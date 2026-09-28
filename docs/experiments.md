@@ -317,6 +317,8 @@ Revived by eval2 (dead on the dev benchmark only): the Instruct base (+3.0), LoR
 
 ## Open ideas: claim before starting (edit the status cell)
 
+- **Done — Codex HF config, 2026-09-28:** omitted optional null task_type in local and published adapter config. PEFT configuration/class/state/logits remain identical in a tiny CPU check; weight blobs unchanged. HF page warning cleared. Publication evidence: `reports/releases/selfjev_4b_config_2026-09-28/publication.json`. No benchmark changes.
+
 - **Prepared — Codex README, 2026-09-28:** root README redesigned with website branding, generated SVG banner, current report-backed results, public releases and quickstart. GitHub rendering, browser layout, 32 local links and mocked SDK checks pass. Awaiting user choice on commit/push; no benchmark changes.
 
 - **Done — Codex website benchmarks, 2026-09-28:** main charts compare current SelfJev and Jev; historical runs stay in archive. Fixed missing Jev AI-review result using the audited model-card data (92.5%, vs SelfJev 93.1%). Build/link checks and browser tab verification pass; no benchmark results changed.

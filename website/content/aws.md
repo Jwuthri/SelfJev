@@ -11,7 +11,7 @@ Use the [AWS instance specifications](https://aws.amazon.com/ec2/instance-types/
 Configure AWS credentials with EC2 permissions, then install the deploy extra:
 
 ```bash
-pip install "selfjev[deploy] @ git+https://github.com/Jwuthri/SelfJev"
+pip install "selfjev[deploy]"
 selfjev deploy aws machines
 selfjev deploy aws up --name selfjev-trial \
   --instance g6.xlarge \

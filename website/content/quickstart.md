@@ -4,7 +4,7 @@ SelfJev turns a state (your text) and a set of questions into typed answers with
 
 The releases are public on Hugging Face:
 
-- [SelfJev-4B adapter](https://huggingface.co/Jwuthrich/selfjev-4b): the trained LoRA adapter for the native tree engine. The quickstart below uses this adapter from the repository.
+- [SelfJev-4B adapter](https://huggingface.co/Jwuthrich/selfjev-4b): the trained LoRA adapter for the native tree engine. `selfjev serve` downloads it on first start.
 - [SelfJev-4B full merged model](https://huggingface.co/Jwuthrich/selfjev-4b-merged): the complete weights, tokenizer and configuration. Its model card includes download and vLLM serving instructions.
 - [SelfJev Decision Bench](https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench): the evaluation questions, expected answers and scoring tools.
 
@@ -12,21 +12,17 @@ The releases are public on Hugging Face:
 
 Use a Linux machine with an NVIDIA GPU. Start with **24 GB VRAM, 4 vCPUs, 16–32 GB system RAM, and 50 GB free disk**. These are planning recommendations, not a tested minimum. See [hardware and sizing](/docs/hardware/) for the evidence and limits.
 
-Install Git, Git LFS, and [uv](https://docs.astral.sh/uv/getting-started/installation/). Verify that `nvidia-smi` sees your GPU. Then:
+Use Python 3.12+ and verify that `nvidia-smi` sees your GPU. Then:
 
 ```bash
-git clone https://github.com/Jwuthri/SelfJev.git
-cd SelfJev
-git lfs install
-git lfs pull --include "weights/selfjev_4b/*"
-uv sync --frozen --no-dev --extra serve --extra gpu
+pip install "selfjev[serve,gpu]"
 export SELFJEV_API_KEYS="replace-with-a-long-random-key"
-uv run --no-sync selfjev serve --host 0.0.0.0 --port 8000
+selfjev serve --host 0.0.0.0 --port 8000
 ```
 
 You choose this key; no external provider issues it. Generate a long random value, for example with `python -c 'import secrets; print(secrets.token_urlsafe(32))'`, and keep it private. Copy the **same value** into the client’s `api_key` below. The server checks that the two match. If you leave `SELFJEV_API_KEYS` unset, the server accepts requests without a key, which is suitable only on a trusted local network.
 
-The pinned base model downloads on first start (about 9 GB). Keep the terminal running. Model loading can take several minutes. Check readiness in another terminal:
+The adapter (230 MB) and the pinned base model (about 9 GB) download on first start. Keep the terminal running. Model loading can take several minutes. Check readiness in another terminal:
 
 ```bash
 curl --fail http://localhost:8000/health
@@ -39,8 +35,10 @@ Prefer a private network or SSH tunnel during setup. Configure HTTPS before send
 On the machine running your application, no GPU or model download is needed:
 
 ```bash
-pip install "selfjev @ git+https://github.com/Jwuthri/SelfJev"
+pip install selfjev
 ```
+
+Already using TypeSafe's Python SDK? Keep it: set `TYPESAFE_BASE_URL` to your server and `TYPESAFE_API_KEY` to the same key, and your existing code runs against SelfJev unchanged.
 
 ## 3. Ask your first questions
 
