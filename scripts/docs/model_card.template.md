@@ -123,10 +123,13 @@ result = client.system_one(
     state="I was charged twice. Please refund the duplicate payment.",
     questions={
         "refund": Noul("Does the customer want a refund?"),
-        "team": Choice("Which team should handle this?", {
-            "billing": "payments and refunds",
-            "support": "technical issues",
-        }),
+        "team": Choice(
+            "Which team should handle this?",
+            {
+                "billing": "payments and refunds",
+                "support": "technical issues",
+            },
+        ),
     },
 )
 print(result.nouls["refund"].noul)
