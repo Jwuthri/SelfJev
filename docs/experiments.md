@@ -263,6 +263,14 @@ Revived by eval2 (dead on the dev benchmark only): the Instruct base (+3.0), LoR
 
 ## Known issues and gotchas
 
+- **Concurrent requests wait for the whole batch.** In the end-to-end test (2026-09-28, L40S, [report](../reports/e2e/2026-09-28/report.md)) 16
+  concurrent requests came back together after 18.6 s cold and 4.4–6.4 s warm with a fine-tuning job on the same GPU
+  (one request: 0.2–0.3 s). Not measured without the training job; if it holds, cap `max_batch_requests` or split
+  batches by size. The first request after start took 39 s: `selfjev serve` now warms up before `/health` answers.
+- **Long jobs and `uv run`.** A plain `uv run` re-syncs the environment to the default groups; during the end-to-end
+  test that removed `boto3` from under the running deploy and its teardown failed (box up 6 extra minutes). The dev
+  group now includes the `deploy` extra.
+
 - **Every report in `reports/` was scored by an engine master no longer has.** The Qwen3.5 reports (`selfjev-4b`
   included) came from the forked-cache engine; master serves and evaluates with `TreeServer`, exact against standalone sequences in a
   CPU test. `scripts/train/selfjev_4b.sh` starts with a GPU preflight: `selfjev-4b` on 400 eval2 questions must agree

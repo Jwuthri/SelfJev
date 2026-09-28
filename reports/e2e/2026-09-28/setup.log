@@ -1,0 +1,406 @@
++ shutdown -h +120
+Shutdown scheduled for Mon 2026-09-28 21:02:36 UTC, use 'shutdown -c' to cancel.
++ apt-get update -q
+Get:1 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy InRelease [270 kB]
+Get:2 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+Get:3 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+Get:4 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+Get:5 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease [1578 B]
+Get:6 https://apt.corretto.aws stable InRelease [10.7 kB]
+Get:7 https://download.docker.com/linux/ubuntu jammy InRelease [48.5 kB]
+Hit:8 https://fsx-lustre-client-repo.s3.amazonaws.com/ubuntu jammy InRelease
+Get:9 https://nvidia.github.io/libnvidia-container/stable/deb/amd64  InRelease [1477 B]
+Get:10 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 Packages [1395 kB]
+Get:11 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/main Translation-en [510 kB]
+Get:12 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 c-n-f Metadata [30.3 kB]
+Get:13 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/restricted amd64 Packages [129 kB]
+Get:14 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/restricted Translation-en [18.6 kB]
+Get:15 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/restricted amd64 c-n-f Metadata [488 B]
+Get:16 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [14.1 MB]
+Get:17 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/universe Translation-en [5652 kB]
+Get:18 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/universe amd64 c-n-f Metadata [286 kB]
+Get:19 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [217 kB]
+Get:20 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/multiverse Translation-en [112 kB]
+Get:21 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy/multiverse amd64 c-n-f Metadata [8372 B]
+Get:22 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3858 kB]
+Get:23 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/main Translation-en [570 kB]
+Get:24 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 c-n-f Metadata [20.1 kB]
+Get:25 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [6639 kB]
+Get:26 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/restricted Translation-en [1274 kB]
+Get:27 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3583 kB]
+Get:28 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 c-n-f Metadata [584 B]
+Get:29 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1285 kB]
+Get:30 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe Translation-en [324 kB]
+Get:31 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 c-n-f Metadata [30.8 kB]
+Get:32 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [76.8 kB]
+Get:33 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/multiverse Translation-en [15.9 kB]
+Get:34 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 c-n-f Metadata [756 B]
+Get:35 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [70.2 kB]
+Get:36 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-backports/main Translation-en [11.4 kB]
+Get:37 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-backports/main amd64 c-n-f Metadata [412 B]
+Get:38 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-backports/restricted amd64 c-n-f Metadata [116 B]
+Get:39 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [30.8 kB]
+Get:40 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-backports/universe Translation-en [16.9 kB]
+Get:41 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-backports/universe amd64 c-n-f Metadata [676 B]
+Get:42 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-backports/multiverse amd64 c-n-f Metadata [116 B]
+Get:43 http://security.ubuntu.com/ubuntu jammy-security/main Translation-en [502 kB]
+Get:44 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [6399 kB]
+Get:45 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  Packages [3038 kB]
+Get:46 http://security.ubuntu.com/ubuntu jammy-security/restricted Translation-en [1231 kB]
+Get:47 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1052 kB]
+Get:48 https://apt.corretto.aws stable/main amd64 Packages [29.4 kB]
+Get:49 https://download.docker.com/linux/ubuntu jammy/stable amd64 Packages [87.7 kB]
+Fetched 53.3 MB in 5s (11.4 MB/s)
+Reading package lists...
+W: Target Packages (Packages) is configured multiple times in /etc/apt/sources.list.d/archive_uri-https_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
+W: Target Translations (en) is configured multiple times in /etc/apt/sources.list.d/archive_uri-https_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
+W: Target Packages (Packages) is configured multiple times in /etc/apt/sources.list.d/archive_uri-https_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
+W: Target Translations (en) is configured multiple times in /etc/apt/sources.list.d/archive_uri-https_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
++ apt-get install -yq git-lfs
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following packages were automatically installed and are no longer required:
+  isc-dhcp-common libntfs-3g89
+Use 'apt autoremove' to remove them.
+The following NEW packages will be installed:
+  git-lfs
+0 upgraded, 1 newly installed, 0 to remove and 8 not upgraded.
+Need to get 3544 kB of archives.
+After this operation, 10.5 MB of additional disk space will be used.
+Get:1 http://us-east-2.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 git-lfs amd64 3.0.2-1ubuntu0.3 [3544 kB]
+dpkg-preconfigure: unable to re-open stdin: No such file or directory
+Fetched 3544 kB in 0s (67.8 MB/s)
+Selecting previously unselected package git-lfs.
+(Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 127569 files and directories currently installed.)
+Preparing to unpack .../git-lfs_3.0.2-1ubuntu0.3_amd64.deb ...
+Unpacking git-lfs (3.0.2-1ubuntu0.3) ...
+Setting up git-lfs (3.0.2-1ubuntu0.3) ...
+Processing triggers for man-db (2.10.2-1) ...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
++ cat
++ sudo -iu ubuntu bash /tmp/selfjev-setup.sh
++ curl -LsSf https://astral.sh/uv/install.sh
++ sh
+downloading uv 0.12.19 x86_64-unknown-linux-gnu
+installing to /home/ubuntu/.local/bin
+  uv
+  uvx
+everything's installed!
+
+To add $HOME/.local/bin to your PATH, either restart your shell or run:
+
+    source $HOME/.local/bin/env (sh, bash, zsh)
+    source $HOME/.local/bin/env.fish (fish)
++ GIT_LFS_SKIP_SMUDGE=1
++ git clone --filter=blob:none https://github.com/Jwuthri/SelfJev.git /home/ubuntu/selfjev
+Cloning into '/home/ubuntu/selfjev'...
+Updating files:   0% (2/1354)
+Updating files:   1% (14/1354)
+Updating files:   2% (28/1354)
+Updating files:   3% (41/1354)
+Updating files:   4% (55/1354)
+Updating files:   5% (68/1354)
+Updating files:   6% (82/1354)
+Updating files:   7% (95/1354)
+Updating files:   8% (109/1354)
+Updating files:   9% (122/1354)
+Updating files:  10% (136/1354)
+Updating files:  11% (149/1354)
+Updating files:  12% (163/1354)
+Updating files:  13% (177/1354)
+Updating files:  14% (190/1354)
+Updating files:  15% (204/1354)
+Updating files:  16% (217/1354)
+Updating files:  17% (231/1354)
+Updating files:  18% (244/1354)
+Updating files:  19% (258/1354)
+Updating files:  20% (271/1354)
+Updating files:  21% (285/1354)
+Updating files:  22% (298/1354)
+Updating files:  23% (312/1354)
+Updating files:  24% (325/1354)
+Updating files:  25% (339/1354)
+Updating files:  26% (353/1354)
+Updating files:  27% (366/1354)
+Updating files:  28% (380/1354)
+Updating files:  29% (393/1354)
+Updating files:  30% (407/1354)
+Updating files:  31% (420/1354)
+Updating files:  32% (434/1354)
+Updating files:  33% (447/1354)
+Updating files:  34% (461/1354)
+Updating files:  35% (474/1354)
+Updating files:  36% (488/1354)
+Updating files:  37% (501/1354)
+Updating files:  38% (515/1354)
+Updating files:  39% (529/1354)
+Updating files:  40% (542/1354)
+Updating files:  41% (556/1354)
+Updating files:  42% (569/1354)
+Updating files:  43% (583/1354)
+Updating files:  44% (596/1354)
+Updating files:  45% (610/1354)
+Updating files:  46% (623/1354)
+Updating files:  47% (637/1354)
+Updating files:  48% (650/1354)
+Updating files:  49% (664/1354)
+Updating files:  50% (677/1354)
+Updating files:  51% (691/1354)
+Updating files:  52% (705/1354)
+Updating files:  53% (718/1354)
+Updating files:  54% (732/1354)
+Updating files:  55% (745/1354)
+Updating files:  56% (759/1354)
+Updating files:  57% (772/1354)
+Updating files:  58% (786/1354)
+Updating files:  59% (799/1354)
+Updating files:  60% (813/1354)
+Updating files:  61% (826/1354)
+Updating files:  62% (840/1354)
+Updating files:  63% (854/1354)
+Updating files:  64% (867/1354)
+Updating files:  65% (881/1354)
+Updating files:  66% (894/1354)
+Updating files:  67% (908/1354)
+Updating files:  68% (921/1354)
+Updating files:  69% (935/1354)
+Updating files:  70% (948/1354)
+Updating files:  71% (962/1354)
+Updating files:  72% (975/1354)
+Updating files:  73% (989/1354)
+Updating files:  74% (1002/1354)
+Updating files:  75% (1016/1354)
+Updating files:  76% (1030/1354)
+Updating files:  77% (1043/1354)
+Updating files:  78% (1057/1354)
+Updating files:  79% (1070/1354)
+Updating files:  80% (1084/1354)
+Updating files:  81% (1097/1354)
+Updating files:  82% (1111/1354)
+Updating files:  83% (1124/1354)
+Updating files:  84% (1138/1354)
+Updating files:  85% (1151/1354)
+Updating files:  86% (1165/1354)
+Updating files:  87% (1178/1354)
+Updating files:  88% (1192/1354)
+Updating files:  89% (1206/1354)
+Updating files:  90% (1219/1354)
+Updating files:  91% (1233/1354)
+Updating files:  92% (1246/1354)
+Updating files:  93% (1260/1354)
+Updating files:  94% (1273/1354)
+Updating files:  95% (1287/1354)
+Updating files:  96% (1300/1354)
+Updating files:  97% (1314/1354)
+Updating files:  98% (1327/1354)
+Updating files:  99% (1341/1354)
+Updating files: 100% (1354/1354)
+Updating files: 100% (1354/1354), done.
+Encountered 4 file(s) that should have been pointers, but weren't:
+	data/batches/llm_multilabel_v1/review/batch_results/batch_6ab7e73dd5448190b069bf37a0ab9401.jsonl
+	data/batches/llm_multilabel_v1/review/batch_results/batch_6ab7eced7b048190b9d16f711416bf3f.jsonl
+	data/batches/numdate_neg_v1/review/answers_astra.jsonl
+	data/batches/numdate_neg_v1/review/batch_results/batch_6ab814bce54881909f69cadc50d3f3d3.jsonl
++ cd /home/ubuntu/selfjev
++ git checkout 0a146ba2b2bf0492ba55c35c34174e9a01e5172f
+Note: switching to '0a146ba2b2bf0492ba55c35c34174e9a01e5172f'.
+
+You are in 'detached HEAD' state. You can look around, make experimental
+changes and commit them, and you can discard any commits you make in this
+state without impacting any branches by switching back to a branch.
+
+If you want to create a new branch to retain commits you create, you may
+do so (now or later) by using -c with the switch command. Example:
+
+  git switch -c <new-branch-name>
+
+Or undo this operation with:
+
+  git switch -
+
+Turn off this advice by setting config variable advice.detachedHead to false
+
+HEAD is now at 0a146ba Format the python example in the model card template (ruff 0.16.9 formats markdown code blocks)
++ git lfs install --local
+Updated git hooks.
+Git LFS initialized.
++ git lfs pull --include 'weights/selfjev_4b/*'
++ /home/ubuntu/.local/bin/uv sync --frozen --no-dev --extra serve --extra gpu
+Downloading cpython-3.12.14-linux-x86_64-gnu (download) (32.7MiB)
+ Downloaded cpython-3.12.14-linux-x86_64-gnu (download)
+Using CPython 3.12.14
+Creating virtual environment at: .venv
+   Building selfjev @ file:///home/ubuntu/selfjev
+warning: `build_system.requires = ["uv-build>=0.11.13,<0.12.0"]` does not contain the current uv version 0.12.19
+      Built selfjev @ file:///home/ubuntu/selfjev
+Downloading tokenizers (3.2MiB)
+Downloading uvloop (4.2MiB)
+Downloading nvidia-curand (56.8MiB)
+Downloading nvidia-nvjitlink (40.5MiB)
+Downloading nvidia-cuda-runtime (2.1MiB)
+Downloading nvidia-nvshmem-cu13 (57.6MiB)
+Downloading pydantic-core (2.0MiB)
+Downloading pygments (1.2MiB)
+Downloading numpy (15.9MiB)
+Downloading nvidia-cublas (403.5MiB)
+Downloading sympy (6.0MiB)
+Downloading nvidia-cudnn-cu13 (527.5MiB)
+Downloading torch (528.9MiB)
+Downloading hf-xet (4.3MiB)
+Downloading nvidia-cuda-nvrtc (86.0MiB)
+Downloading nvidia-cuda-cupti (10.2MiB)
+Downloading networkx (2.0MiB)
+Downloading nvidia-cusparse (139.2MiB)
+Downloading nvidia-cufile (1.2MiB)
+Downloading transformers (11.7MiB)
+Downloading nvidia-cusolver (191.6MiB)
+Downloading nvidia-cusparselt-cu13 (162.3MiB)
+Downloading triton (236.5MiB)
+Downloading cuda-bindings (6.8MiB)
+Downloading nvidia-cufft (204.2MiB)
+Downloading nvidia-nccl-cu13 (206.0MiB)
+ Downloaded pygments
+ Downloaded nvidia-cufile
+ Downloaded pydantic-core
+ Downloaded nvidia-cuda-runtime
+ Downloaded networkx
+ Downloaded tokenizers
+ Downloaded uvloop
+ Downloaded hf-xet
+ Downloaded sympy
+ Downloaded cuda-bindings
+ Downloaded nvidia-cuda-cupti
+ Downloaded transformers
+ Downloaded numpy
+ Downloaded nvidia-nvjitlink
+ Downloaded nvidia-curand
+ Downloaded nvidia-nvshmem-cu13
+ Downloaded nvidia-cuda-nvrtc
+ Downloaded nvidia-cusparse
+ Downloaded nvidia-cusparselt-cu13
+ Downloaded nvidia-cusolver
+ Downloaded nvidia-cufft
+ Downloaded nvidia-nccl-cu13
+ Downloaded triton
+ Downloaded nvidia-cublas
+ Downloaded torch
+ Downloaded nvidia-cudnn-cu13
+Prepared 73 packages in 10.10s
+Installed 73 packages in 666ms
+ + accelerate==1.15.0
+ + annotated-doc==0.0.5
+ + annotated-types==0.8.0
+ + anyio==4.15.1
+ + certifi==2026.7.22
+ + click==8.5.0
+ + cuda-bindings==13.4.3
+ + cuda-pathfinder==1.8.2
+ + cuda-toolkit==13.0.3.0
+ + einops==0.8.2
+ + fastapi==0.141.1
+ + filelock==4.0.1
+ + fla-core==0.5.2
+ + flash-linear-attention==0.5.2
+ + fsspec==2026.6.0
+ + h11==0.16.0
+ + hf-xet==1.6.0
+ + httpcore==1.0.9
+ + httptools==0.8.0
+ + httpx==0.28.1
+ + huggingface-hub==1.32.0
+ + idna==3.20
+ + jinja2==3.1.6
+ + markdown-it-py==4.2.0
+ + markupsafe==3.0.3
+ + mdurl==0.1.2
+ + mpmath==1.3.0
+ + networkx==3.7
+ + numpy==2.5.3
+ + nvidia-cublas==13.1.1.3
+ + nvidia-cuda-cupti==13.0.85
+ + nvidia-cuda-nvrtc==13.0.88
+ + nvidia-cuda-runtime==13.0.96
+ + nvidia-cudnn-cu13==9.24.0.43
+ + nvidia-cufft==12.0.0.61
+ + nvidia-cufile==1.15.1.6
+ + nvidia-curand==10.4.0.35
+ + nvidia-cusolver==12.0.4.66
+ + nvidia-cusparse==12.6.3.3
+ + nvidia-cusparselt-cu13==0.8.1
+ + nvidia-nccl-cu13==2.30.7
+ + nvidia-nvjitlink==13.4.92
+ + nvidia-nvshmem-cu13==3.4.5
+ + nvidia-nvtx==13.0.85
+ + packaging==26.3
+ + peft==0.21.0
+ + psutil==7.2.2
+ + pydantic==2.13.5
+ + pydantic-core==2.46.5
+ + pygments==2.21.0
+ + python-dotenv==1.2.3
+ + python-multipart==0.0.32
+ + pyyaml==6.0.3
+ + regex==2026.9.10
+ + rich==15.0.0
+ + safetensors==0.8.0
+ + selfjev==0.2.0 (from file:///home/ubuntu/selfjev)
+ + setuptools==84.0.0
+ + shellingham==1.5.4
+ + starlette==1.7.0
+ + sympy==1.14.0
+ + tokenizers==0.23.2
+ + torch==2.14.0
+ + tqdm==4.70.1
+ + transformers==5.17.0
+ + triton==3.8.0
+ + typer==0.27.2
+ + typing-extensions==4.16.0
+ + typing-inspection==0.4.4
+ + uvicorn==0.54.0
+ + uvloop==0.22.1
+ + watchfiles==1.3.0
+ + websockets==17.1
++ /home/ubuntu/.local/bin/uv run --no-sync python -c 'from huggingface_hub import snapshot_download; snapshot_download('\''Qwen/Qwen3.5-4B'\'', revision='\''851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a'\'')'
+
+Fetching 14 files:   0%|          | 0/14 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+Fetching 14 files:  57%|█████▋    | 8/14 [00:00<00:00, 78.33it/s]
+Fetching 14 files:  86%|████████▌ | 12/14 [00:20<00:00, 78.33it/s]
+Fetching 14 files:  93%|█████████▎| 13/14 [01:34<00:08,  8.89s/it]
+Fetching 14 files: 100%|██████████| 14/14 [01:50<00:00,  9.73s/it]
+Fetching 14 files: 100%|██████████| 14/14 [01:50<00:00,  7.87s/it]
++ cat
++ systemctl daemon-reload
++ systemctl enable --now selfjev
+Created symlink /etc/systemd/system/multi-user.target.wants/selfjev.service → /etc/systemd/system/selfjev.service.

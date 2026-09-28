@@ -157,8 +157,11 @@ work as the Qwen3 tree. Since the 2026-09-27 cleanup it is the default engine of
 (vLLM stays available with `--engine vllm`). It matches standalone sequences in a CPU test
 (`tests/engine/test_tree.py`) and, on GPU, the forked-cache engine's answers: the same `selfjev-4b` weights score the same on both engines: eval2 95.68 vs 95.78, dev benchmark 83.78 vs 83.75, eval_llm 93.13 vs 93.13 (99.8%, 99.8% and 100% of decisions identical)
 ([JOURNAL 2026-09-27 11:55](JOURNAL.md)). But **its latency has not been measured on an NVIDIA GPU**, including the L4
-(g6.xlarge) that `selfjev deploy aws` picks by default: there are no numbers for it yet. `selfjev bench` on a GPU box
-is the first step. For reference, the forked-cache engine it replaced took 156 and 252 ms for one question at 512 and
+(g6.xlarge) that `selfjev deploy aws` picks by default: there are no benchmark numbers for it yet. The end-to-end test
+([2026-09-28](../reports/e2e/2026-09-28/report.md): an L40S, the adapter unmerged for fine-tuning, round trips including ~70 ms of network) saw 0.2–0.3 s
+for one warm request with six questions, 39 s for the very first request (kernel compilation, now done at startup),
+and 16 concurrent requests, batched together, returning after 18.6 s cold and 4.4–6.4 s warm while a fine-tuning job
+shared the GPU: requests in one batch all wait for it. `selfjev bench` on a GPU box is the first step. For reference, the forked-cache engine it replaced took 156 and 252 ms for one question at 512 and
 2,048 tokens, and 341 and 508 ms for 16 questions (in-process p50 on the L40S, `reports/qwen35_4b_tree/bench.json`).
 
 ## Current model on Apple Silicon (2026-09-28)

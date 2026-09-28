@@ -258,7 +258,7 @@ def main():
         rec.check("deploy: the server answers /health", ready)
         if d["ready"]:
             run_checks(d["endpoint"], d["api_key"], out, rec, not a.no_fine_tuning)
-    finally:
+    finally:  # teardown first and on its own: nothing below may skip it
         rec_path = aws.STATE / f"{name}.json"
         if rec_path.exists():
             d = json.loads(rec_path.read_text())
@@ -266,10 +266,14 @@ def main():
                 opts = ["-o", "StrictHostKeyChecking=accept-new", "-o", "ConnectTimeout=15"]
                 cmd = [*d["ssh"].split(), *opts, "sudo cat /var/log/selfjev-setup.log"]
                 (out / "setup.log").write_text(subprocess.run(cmd, capture_output=True, text=True).stdout[-200_000:])
-            st = aws.status(name)
-            env["cost"] = f"≈ ${st.get('cost_so_far_usd')} ({a.instance}, {st.get('uptime_h')} h)"
-            aws.down(name)
-            env["teardown"] = "terminated; security group and key pair deleted"
+            try:
+                aws.down(name)
+                env["teardown"] = "terminated; security group and key pair deleted"
+            except Exception as e:
+                env["teardown"] = f"FAILED ({e!r}): terminate {d['instance_id']} in {d['region']} by hand"
+                print(env["teardown"])
+            hours = (time.time() - t0) / 3600
+            env["cost"] = f"≈ ${hours * aws.MACHINES.get(a.instance, ('', 0))[1]:.2f} ({a.instance}, {hours:.2f} h)"
         else:  # up() failed before it recorded the box: say where to look instead of leaving it silently
             env["teardown"] = f"NO RECORD: check EC2 in {a.region} for Name=selfjev-{name} and terminate it by hand"
             print(env["teardown"])

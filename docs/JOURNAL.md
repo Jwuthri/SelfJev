@@ -8,13 +8,13 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| **End-to-end test of the product** (`scripts/aws/e2e.py`: `selfjev deploy aws up --fine-tuning` of master, SDK checks, a supervised and an RLCD job over HTTP, recorded in `reports/e2e/`; user OK ≈ $3) | fork | g6e.xlarge us-east-2 (the product's own deploy: tags `Project=selfjev`, 2 h cap, torn down by the script) | 12:00 PDT 2026-09-28 | ≈ +1.5 h |
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
 
 ## Spend so far (real cost, BYOK upstream included)
 
 | item | cost | who |
 |---|---|---|
+| AWS: end-to-end test g6e.xlarge `i-05b52371c5eeb4d8c` us-east-2, 19:01–19:27 UTC 2026-09-28 (26 min), terminated by hand after the script's teardown crashed; SG and key pair deleted | ≈ $0.81 | fork |
 | AWS: merged HF release g5.2xlarge `i-0d2a8155413fe9cd5`, us-east-1, 17:18:50–17:27:04 UTC 2026-09-28 (termination request); terminated, SG/key deleted | compute ≈ $0.17; conservative total ≈ $1.10 including full outbound transfer, final bill pending (approved $3) | Codex HF merge |
 | AWS: `selfjev_4b_repro` (selfjev-4b's data, new code) g6e.2xlarge `i-0e8a08bdbdfd8cb10` us-east-2, 20:11 UTC 2026-09-27 – 05:18 UTC 09-28 (547 min, 9 min of it after the job), terminated; SG and key pair deleted by the driver | ≈ $20.44 | fork |
 | AWS: engine check g5.xlarge `i-088a7878b0264f417` us-east-1, 18:22–18:53 UTC 2026-09-27 (≈ 31 min), terminated; SG and key pair deleted by the driver | ≈ $0.52 | fork |
@@ -59,6 +59,23 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-28 12:40 PDT: the product works end to end on a GPU: deploy, SDK, fine-tuning over HTTP (fork, user request)
+
+- **What:** `scripts/aws/e2e.py` (new): `selfjev deploy aws up --fine-tuning` of commit `0a146ba` on a g6e.xlarge (L40S),
+  then through the SDK: health, auth, errors, models, every question type on a ticket with obvious answers, Jev's paths
+  and names, 16 concurrent requests, a supervised and an RLCD job over HTTP (batch `numdate_neg_v1` training rows,
+  508 questions) and their models. Every HTTP call recorded: [report](../reports/e2e/2026-09-28/report.md), `transcript.jsonl`,
+  `setup.log`.
+- **Result:** 14 of 14 checks passed. Healthy 5.4 min after launch; `selfjev-4b` answered the ticket right (refund 0.99,
+  spam 0.02, team billing, urgency 1.98 of 2, topics [invoice]), identically through Jev's path; the supervised job took
+  8.4 min, the RLCD job 5.4 min, and both models were served at once and still answered right.
+- **Found and fixed:** the first request took 39 s (kernel compilation): `selfjev serve` now warms up before `/health`
+  answers. 16 concurrent requests all waited for one batch (18.6 s cold; 4.4–6.4 s warm with a training job on the GPU):
+  open, see known issues. The script's teardown crashed because a plain `uv run` in the same checkout had removed
+  `boto3` mid-run; the box was terminated by hand 6 minutes later (SG and key pair deleted); the dev group now includes
+  the `deploy` extra (pyproject change still uncommitted, next to the PyPI session's) and the script tears down first.
+- **Cost:** ≈ $0.81 (26 min). A first attempt failed before creating anything (no AWS profile in the environment, $0).
 
 ### 2026-09-28 11:55 PDT: website-styled GitHub README prepared (Codex README)
 
