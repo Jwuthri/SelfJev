@@ -8,6 +8,8 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
+| **End-to-end test of the product** (`scripts/aws/e2e.py`: `selfjev deploy aws up --fine-tuning` of master, SDK checks, a supervised and an RLCD job over HTTP, recorded in `reports/e2e/`; user OK ≈ $3) | fork | g6e.xlarge us-east-2 (the product's own deploy: tags `Project=selfjev`, 2 h cap, torn down by the script) | 12:00 PDT 2026-09-28 | ≈ +1.5 h |
+| Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
 
 ## Spend so far (real cost, BYOK upstream included)
 
@@ -57,6 +59,13 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-28 11:55 PDT: website-styled GitHub README prepared (Codex README)
+
+- Rebuilt the root README around the site's charcoal/orange/olive palette, “Intelligence, decided” headline, concrete decision examples, and product-first navigation. New vector banner: `docs/assets/readme/hero.svg`; generator `scripts/docs/build_readme_assets.py` reads current TreeServer report scores. Reused the existing prefix-tree illustration.
+- Added server-first quickstart with explicit adapter download and user-chosen server key, a typed SDK example, current TreeServer comparisons (95.7 / 93.1 / 83.8), links to both weight releases and Decision Bench, deployment-guide navigation, and a collapsed contributor section. Kept evaluation limitations and source links; moved the old run history to linked research pages.
+- Validation: GitHub Markdown API render, browser visual check, loaded images and anchor navigation (no page overflow at the current 614px viewport); all 32 local link/image targets exist; report counts and headline values match source files; SDK snippet passes real schema validation with a mocked transport and no inference; Ruff check/format and git diff whitespace checks pass. CLI download arguments checked against installed HF help.
+- Cost $0; no model jobs, cloud resources or benchmark reports. Changes are local; commit/push choice requested under the repository's no-commits-without-request rule. Verdict: ready to publish.
 
 ### 2026-09-28 11:32 PDT: current-model comparison and missing Jev score (Codex website benchmarks)
 
