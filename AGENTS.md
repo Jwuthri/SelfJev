@@ -13,6 +13,9 @@ Several AI sessions work on this repo at the same time. To avoid redoing work or
    - add a dated entry at the top of the JOURNAL log: what, why, data/config, numbers with report paths, cost, verdict;
    - update experiments.md (conclusions, dead ends, idea status);
    - re-run `scripts/eval/ledger.py` if you wrote a test report, and `scripts/eval/eval2_summary.py` if you scored eval2;
+   - run `cd website && node scripts/build-scores.mjs` and commit `website/data/scores.json` if you wrote or changed any
+     `reports/**/report.json` (the website reads scores from that snapshot, because report.json files are Git LFS and Vercel
+     does not pull LFS; without this step the site shows stale numbers);
    - if a headline result changed, update the docs site pages too: [docs/findings.md](docs/findings.md) and
      [docs/leaderboard.md](docs/leaderboard.md) (the generated tables are embedded, the prose is not).
 

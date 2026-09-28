@@ -23,7 +23,7 @@ npm run preview
 
 `preview` serves the last static build and does **not** reload source changes; use `npm run dev` while editing. Both use port 3000, so stop one before starting the other.
 
-`check` builds every static page (including TypeScript validation) and checks internal export links and source-report links. `out/` is the deployable static site. The build needs the whole repository: evidence is read from sibling `reports/` and `docs/experiments.md` at build time. Visitors receive only compact scores, not datasets or full prediction reports.
+`check` builds every static page (including TypeScript validation) and checks internal export links and source-report links. `out/` is the deployable static site. The build needs the whole repository: evidence is read from sibling `docs/experiments.md`, `reports/latency/` and `data/scores.json` at build time. `data/scores.json` is a small snapshot of every `reports/**/report.json` score (those reports are Git LFS files and Vercel does not fetch LFS). After writing or changing a report, run `node scripts/build-scores.mjs` and commit the result, or the site shows stale numbers. Visitors receive only compact scores, not datasets or full prediction reports.
 
 The site can be hosted on any static host. No Node process, GPU, database, or paid API is needed at runtime. For a subpath host, build with `NEXT_PUBLIC_BASE_PATH=/your-prefix` and serve `out/` under that prefix. The current GitHub Pages research notebook remains unchanged; this project does not alter its deployment workflow.
 

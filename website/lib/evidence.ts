@@ -4,14 +4,20 @@ export const REPO = "https://github.com/Jwuthri/SelfJev";
 export const JOURNAL = "https://jwuthri.github.io/SelfJev";
 const root = path.resolve(process.cwd(), "..");
 export const source = (file: string) => `${REPO}/blob/master/${file}`;
+// reports/**/report.json are Git LFS files that Vercel does not fetch; the build reads
+// this snapshot instead (regenerate with `node scripts/build-scores.mjs`).
+const scores: Record<string, { accuracy: number; n: number }> = JSON.parse(
+  fs.readFileSync(path.join(process.cwd(), "data", "scores.json"), "utf8"));
+export const hasScore = (file: string) => file in scores;
 export function score(file: string) {
-  const report = JSON.parse(fs.readFileSync(path.join(root, file), "utf8"));
-  const accuracy = report.metrics.question_accuracy * 100;
+  const report = scores[file];
+  if (!report) throw new Error(`No score snapshot for ${file}; run node scripts/build-scores.mjs`);
+  const accuracy = report.accuracy * 100;
   if (!Number.isFinite(accuracy)) throw new Error(`Invalid accuracy: ${file}`);
   return {
     value: accuracy,
     display: accuracy.toFixed(1),
-    n: report.meta.n,
+    n: report.n,
     url: source(file),
   };
 }
@@ -81,9 +87,9 @@ export function leaderboard(): EvidenceRow[] {
               : c[0],
         base: c[1],
         architecture: c[2],
-        eval2: fs.existsSync(path.join(root, e2)) ? score(e2).value : null,
+        eval2: hasScore(e2) ? score(e2).value : null,
         dev,
-        llm: isJev ? jevReview.jev : fs.existsSync(path.join(root, llm)) ? score(llm).value : null,
+        llm: isJev ? jevReview.jev : hasScore(llm) ? score(llm).value : null,
         urls: { dev: source(file), eval2: source(e2), llm: source(isJev ? jevReviewFile : llm) },
         current,
       };
