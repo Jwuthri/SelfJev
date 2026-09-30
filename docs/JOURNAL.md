@@ -8,14 +8,13 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| Redesign architecture walkthrough UI | Codex architecture UX | local website/ | 2026-09-29 23:41 PDT | this session |
-| Images v1: mixed image + text fine-tune from selfjev-4b, image test (6 trained + 4 held-out datasets), text gate (eval2, eval_llm, dev) | Claude images | AWS g6e.xlarge `i-0c39fa20d45c4d2bf` us-east-2, `Name=selfjev-images4` | 2026-09-29 22:12 PDT | cap moved to 03:30 PDT for the full epoch (user OK ≈ $10); the driver terminates it when done |
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
 
 ## Spend so far (real cost, BYOK upstream included)
 
 | item | cost | who |
 |---|---|---|
+| AWS: images v1 g6e.xlarge `i-0c39fa20d45c4d2bf` us-east-2, 22:12 PDT 09-29 – 01:51 PDT 09-30 (≈ 3.65 h, full epoch after the user's OK, terminated by the driver); SG and key pair deleted | ≈ $6.79 | Claude images |
 | AWS: image speed + fine-tune g6e.xlarge `i-063f6ab00212d6977` us-east-2, 19:57–20:34 PDT 2026-09-29 (≈ 36 min, terminated by the driver); SG and key pair deleted | ≈ $1.12 | Claude images |
 | AWS: image eval rerun g6e.xlarge `i-0e2052bb4bfd1c824` us-east-2, 18:05–18:22 PDT 2026-09-29 (≈ 17 min running, terminated by the driver); SG and key pair deleted | ≈ $0.55 | Claude images |
 | AWS: image eval g6e.xlarge `i-02cb3bea622f94f61` us-east-2, 22:21–00:21 UTC 2026-09-29/30 (2 h, ended by its own `shutdown -h` cap: results never pulled, see log); SG and key pair deleted | ≈ $3.72 | Claude images |
@@ -64,6 +63,51 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-30 02:05 PDT: images v1: one mixed fine-tune learns 6 image tasks (70.4 -> 94.2%), text holds, no transfer to new image tasks (Claude images)
+
+- **Data** (`scripts/data/build_images_v1.py`, all gitignored): 11,344 image questions from 6 licence-safe HF datasets (pets
+  CC BY-SA, fashion-MNIST MIT, beans MIT, rice CC0, EuroSAT MIT, TrashNet MIT; ~1,000 photos each, a multiclass among up to 12
+  options + a yes/no per photo) + 11,344 text questions drawn (seed 0) from selfjev-4b's own training rows with Jev's soft
+  targets (`runs/jev_all`). Validation: 596 image + the usual 1,200 text. Frozen image test `data/ova/eval_images_v1.jsonl`
+  (sha256 `c2e44782…`): 2,002 questions over 1,063 photos, ~100 photos from each training dataset's test part and 4 HELD-OUT
+  datasets never trained on (hurricane damage CC BY 4.0, snacks CC BY 4.0, indoor scenes and painting style: research, test
+  only). No test photo is in train or validation.
+- **Run:** `selfjev finetune --init weights/selfjev_4b --lr 5e-5 --soft-weight 0.5 --max-length 16384 --batch-tokens 16384
+  --grad-accum 2`, 1 epoch, 622 steps, ≈ 3 h on one L40S (≈ 17 s per step, slower than planned: the user OK'd the full epoch).
+  Validation (mixed) accuracy 85.9 -> 92.6, loss 0.316 -> 0.166; best = step 600. Adapter: `runs/images_v1/adapter` (not in
+  git, sha256 in the reports' meta). Reports: `reports/images_v1/` (`base_selfjev_4b_images` = the zero-shot baseline).
+- **Images** (paired McNemar vs zero-shot `selfjev-4b`):
+
+  | test | zero-shot | images v1 | + / - | p |
+  |---|---|---|---|---|
+  | rice | 36.5 | 92.5 | 118 / 6 | 4e-28 |
+  | EuroSAT | 56.0 | 93.5 | 77 / 2 | 1e-20 |
+  | beans | 72.1 | 97.1 | 55 / 4 | 2e-12 |
+  | TrashNet | 85.3 | 95.6 | 22 / 1 | 6e-6 |
+  | fashion | 75.5 | 89.0 | 30 / 3 | 1e-6 |
+  | pets | 94.1 | 97.3 | 10 / 3 | 0.09 |
+  | **6 trained datasets** | **70.4** | **94.2** | 312 / 19 | 2e-69 |
+  | snacks (held out) | 92.5 | 95.5 | 7 / 1 | 0.07 |
+  | indoor scenes (held out) | 94.8 | 95.5 | 2 / 0 | 0.5 |
+  | painting style (held out) | 70.6 | 70.6 | 5 / 5 | 1 |
+  | hurricane damage (held out) | 62.0 | 60.0 | 1 / 3 | 0.6 |
+  | **4 held-out datasets** | **83.5** | **84.3** | 15 / 9 | 0.31 |
+
+  pets-100 (the earlier 100 questions): 87 (zero-shot 78, pets-only fine-tune 90).
+- **Text gate** (vs `selfjev_4b_treeserver`, same engine, paired): eval2 95.68 -> **96.13** (23 / 14, p = 0.19); eval_llm 93.13
+  -> 92.49 (10 / 16, p = 0.33; Jev 92.5); dev benchmark 83.78 -> 84.07 (49 / 39, p = 0.34). None significantly worse: the gate
+  passes. The pets-only fine-tune without text replay had cost eval2 0.4; the replay removed that.
+- **Verdict:** fixed-label image data teaches exactly its tasks (large gains) and costs no text quality with a 1:1 text
+  replay, but gives no significant transfer to unseen image tasks. Transfer probably needs varied open questions per photo
+  (LLM-written, judge-checked), not more label sets. Not adopted as the default yet: the user decides. Cost ≈ $6.79.
+
+### 2026-09-29 23:47 PDT: redesign the architecture walkthrough (Codex architecture UX)
+
+- **What / why:** replaced the oversized SVG flowchart with a compact HTML walkthrough in the site's sans-serif typography: one shared input, three question rows, answers in place and a concise output strip. Removed obsolete SVG styles. Customer-support and AI-review example buttons, selectable decision explanations, and an optional replay make the shared-context idea explorable. Updated the architecture guide's link wording.
+- **UX:** no automatic looping; replay finishes and restores its control. Reduced-motion preference bypasses replay and disables transitions. Mobile stacks the input, questions and output without horizontal scrolling; decision explanations appear below the questions. Examples and output are explicitly illustrative, not inference or new benchmark data.
+- **Validation:** `npm run build` (including TypeScript), `node scripts/check-export.mjs` (15 pages, 484 links), and `git diff --check` pass. Browser checked on desktop and at 390 × 844 (page width 390); verified example switching updates outputs, question selection updates explanations, replay disables while running and restores all answers afterward, and no browser warnings/errors.
+- **Cost / verdict:** $0; no model jobs, paid resources, report edits or score regeneration. Ready on the local dev site; this session made no git commits. In-flight row removed.
 
 ### 2026-09-29 23:35 PDT: simplify image fine-tune card (Codex image copy)
 

@@ -359,6 +359,30 @@
   "accuracy": 0.78,
   "n": 100
  },
+ "reports/images_v1/base_selfjev_4b_images/report.json": {
+  "accuracy": 0.7547452547452548,
+  "n": 2002
+ },
+ "reports/images_v1/eval2/report.json": {
+  "accuracy": 0.9613259668508287,
+  "n": 1991
+ },
+ "reports/images_v1/eval_llm/report.json": {
+  "accuracy": 0.9249471458773785,
+  "n": 946
+ },
+ "reports/images_v1/images_v1_images/report.json": {
+  "accuracy": 0.9040959040959041,
+  "n": 2002
+ },
+ "reports/images_v1/images_v1_pets100/report.json": {
+  "accuracy": 0.87,
+  "n": 100
+ },
+ "reports/images_v1/test/report.json": {
+  "accuracy": 0.8406799193316047,
+  "n": 3471
+ },
  "reports/jina_r2b/calibration/report.json": {
   "accuracy": 0.740395809080326,
   "n": 859
