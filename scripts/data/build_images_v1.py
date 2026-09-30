@@ -9,7 +9,9 @@
 
 Writes data/images_v1/{train,val}.jsonl (images only), runs/images_v1/{train,val}.jsonl.gz (the mix `selfjev finetune`
 reads) and data/eval_images_v1.jsonl + data/ova/eval_images_v1.jsonl (the test set). All gitignored (base64 images).
-usage: uv run python scripts/train/jev_soft_targets.py && uv run --group data python scripts/data/build_images_v1.py
+usage: uv run python scripts/train/jev_soft_targets.py && uv run --group data python scripts/data/build_images_v1.py [LONG_FRAC]
+LONG_FRAC (default 1, images v1): the share of replayed texts over 4K tokens kept. They are 11.5% of the text questions
+but 64% of the text tokens and ~95% of a step's compute (JOURNAL 2026-09-30 10:40); 1/3 trains ~1.7x faster.
 """
 
 import gzip
@@ -79,6 +81,8 @@ def main():
         text = [json.loads(line) for line in f]
     with gzip.open("runs/jev_all/val.jsonl.gz", "rt") as f:
         text_val = [json.loads(line) for line in f]
+    long_frac = float(sys.argv[1]) if len(sys.argv) > 1 else 1.0
+    text = [r for r in text if len(r["state"]) <= 4096 * 3.6 or rnd.random() < long_frac]  # ~3.6 characters per token
     replay = rnd.sample(text, len(img_train))
     mix = img_train + replay
     rnd.shuffle(mix)

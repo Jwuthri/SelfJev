@@ -41,6 +41,33 @@ model keeps its text skills.
 Licences decide what can ship: a model trained on "none stated" or research-only data should stay a research model.
 The cleanly licensed rows above (CC0, MIT, CC BY, Apache) are safe for the released weights.
 
+## Test sets (frozen: never train on them)
+
+| file | what | built by |
+|---|---|---|
+| `data/ova/eval_pets.jsonl` | Oxford-IIIT Pet test split: cat breed (12), all breeds (37), is it a cat; 1,853 questions | `scripts/data/build_eval_pets.py` |
+| `data/ova/eval_images_v1.jsonl` | test photos of the 6 images-v1 training datasets + 4 held-out classification sets (hurricane damage, snacks, indoor scenes, painting style); 2,002 questions | `scripts/data/build_images_v1.py` |
+| `data/ova/eval_images_heldout.jsonl` | **the generalization test**: 7 question-answering sets no mix may train on, photos and documents, human labels; 1,027 questions over 842 images (sha256 `7865bfc8…`) | `scripts/data/build_eval_images_heldout.py` |
+
+The generalization test, per dataset (150 questions sampled at random each, VizWiz 127; DocVQA and others can ask two
+questions about one image):
+
+| dataset | images | questions | licence |
+|---|---|---|---|
+| TextVQA (validation) | photos with text (Open Images) | read the text: brand, sign, number | CC BY 4.0 |
+| VizWiz (validation) | phone photos taken by blind people | everyday questions; answers >= 3 of 10 annotators agree | CC BY 4.0 |
+| DocVQA (validation) | scanned documents | find a value, date, name | mirror card: Apache-2.0; check the original's terms |
+| ChartQA (human test) | charts | read and compare values | GPL-3.0 |
+| RealWorldQA (test) | driving and street photos | spatial, counting, directions | mirror card: CC BY 4.0; check the original's terms |
+| AI2D (test) | science diagrams | diagram reasoning | not stated on the mirror; check the original's terms |
+| CV-Bench (test, no COCO images) | indoor and outdoor scenes | counting, relations, depth, distance | Apache-2.0 |
+
+Open answers become a multiple choice among the answer and 3 wrong ones of the same shape (numbers: x0.5 / x0.75 / x1.25 /
+x1.5, never within 5%, never over 100 for a percentage; text: another question's answer with digits if the answer has
+them, about as many words, that no annotator gave); yes/no answers become binary questions. Their images come from none of
+the sources a training mix uses (COCO and Visual Genome for VQAv2, A-OKVQA and GQA). UI screenshots are not covered yet
+(no loadable screen-QA set found). Test-only use: none of these reach the weights, whatever their terms.
+
 ## Beyond fixed labels
 
 A classifier set fixes one question per photo. `selfjev`'s text data works the other way: an LLM writes many typed questions

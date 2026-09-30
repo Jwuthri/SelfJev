@@ -67,6 +67,24 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
 
 ## Log
 
+### 2026-09-30 15:45 PDT: a held-out image generalization test, and where image fine-tuning time goes (Claude images)
+
+- **Generalization test** `data/ova/eval_images_heldout.jsonl` (gitignored, 160 MB, sha256 `7865bfc8…`,
+  `scripts/data/build_eval_images_heldout.py`): 1,027 questions over 842 images from 7 question-answering sets no training
+  mix may use, photos and documents, human labels: TextVQA 150, VizWiz 127, DocVQA 150, ChartQA 150, RealWorldQA 150, AI2D
+  150, CV-Bench 150 (COCO images removed). Open answers become a choice among the answer and 3 wrong ones of the same
+  shape; numbers are x0.5 / x0.75 / x1.25 / x1.5, never within 5% and never over 100 for a percentage (a first build had
+  easy distractors: a title for a date question, 166 for a percentage; rebuilt). Images up to 1,024 px (documents need
+  them). Their sources overlap none of the planned v2 training sources (COCO / Visual Genome). No UI-screenshot set yet
+  (ScreenQA is not on the Hub). Together with the 4 held-out sets of `eval_images_v1` this is the number to raise.
+- **Training speed** (measured on images v1's mix): preparing an image is ~5 ms, 0.05 s of a 17 s step; the replayed text
+  is ~95% of the tokens (26K text vs 1.2K image tokens per step), and texts over 4K tokens are 11.5% of the replayed
+  questions but 64% of their tokens. So the lever is the replay, not image code: `scripts/data/build_images_v1.py
+  LONG_FRAC` keeps that share of the long texts (1/3: ~1.7x faster). eval2 has 9.3% of its questions over 4K tokens: check
+  that slice when using it. (I had guessed image prep was the bottleneck; it is not.)
+- **v2 sources checked** (stream fine): A-OKVQA train (4 human options), VQAv2 (lmms-lab mirror, validation), GQA
+  (`train_balanced_instructions`), COCO 2017 objects (`detection-datasets/coco`). Not scored on a GPU yet; cost $0.
+
 ### 2026-09-30 10:40 PDT: survey of the open Jev-like classifiers on HF and the shared benchmarks (Claude competitors, user request)
 
 - **What:** read ≈ 50 model cards from huggingface.co/models?other=classification (by downloads, likes, trending; created
