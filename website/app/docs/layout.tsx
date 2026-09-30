@@ -9,7 +9,7 @@ export default function DocsLayout({
     <div className="docs-layout wrap">
       <aside className="docs-sidebar">
         <div className="docs-label">
-          DOCUMENTATION <span>v0.2</span>
+          DOCUMENTATION <span>v0.3</span>
         </div>
         {["GET STARTED", "BUILD", "DEPLOY"].map((group) => (
           <div className="docs-group" key={group}>

@@ -49,7 +49,7 @@ export default function Home() {
         <div className="hero-copy">
           <div className="eyebrow">
             <span className="orange-line" /> THE SELF-HOSTED DECISION MODEL{" "}
-            <span className="version">v0.2</span>
+            <span className="version">v0.3</span>
           </div>
           <h1>
             Intelligence,
@@ -73,7 +73,7 @@ export default function Home() {
           <a className="hero-image-link" href="#images">
             <span>NEW</span> Images in. Decisions out. <ArrowRight size={14} />
           </a>
-          <a className="hero-release-link" href={HF_RELEASES.merged}>
+          <a className="hero-release-link" href={HF_RELEASES.adapter}>
             Weights available on Hugging Face <ArrowUpRight size={14} />
           </a>
           <div className="hero-footnote">

@@ -11,11 +11,12 @@ const experiments = [
   ["03", "Reuse the reading", "Read once. Look at it from every angle.", "We kept the rich interaction between question and text, while sharing the work of reading the document. This became the foundation of SelfJev’s architecture.", "tree_model"],
   ["04", "Try smaller alternatives", "Smaller wasn’t always better.", "We tested compact models, including Jina and an adapted T5Gemma. In those experiments, efficiency came with lower decision accuracy. These results describe our versions and training, not every use of those models.", "challengers"],
   ["05", "Make the choices clearer", "Teach it to weigh the alternatives.", "A stronger starting model, all possible answers shown together, and training on longer texts improved the recipe. The model could learn what makes one choice fit better than another.", "tree_model"],
-  ["06", "Train for the actual work", "Better examples. Better decisions.", "The current model learns from nearly 80,000 questions, including difficult cases and AI response review. It combines checked training answers with Jev’s probability estimates to learn how to weigh the choices.", "findings"],
+  ["06", "Train for the actual work", "Better examples. Better decisions.", "The text-only foundation learned from nearly 80,000 questions, including difficult cases and AI response review. It combines checked training answers with Jev’s probability estimates to learn how to weigh the choices.", "findings"],
+  ["07", "Learn to see", "One tree. Text and images.", "The default vision release continues the text model with image examples and replayed text. Accuracy improved on the image kinds used in training, but we found no statistically significant transfer to unseen kinds. Evaluate on your own photos before relying on it.", "image_datasets"],
 ];
 export default function Research() {
   const rows = leaderboard();
-  const selected = rows.filter((r) => r.current || r.id === "~typesafe/jev-latest");
+  const selected = rows.filter((r) => r.current || r.id === "selfjev_4b_treeserver" || r.id === "~typesafe/jev-latest");
   return (
     <main id="main" className="wrap research-page">
       <div className="page-intro">
@@ -25,7 +26,7 @@ export default function Research() {
       </div>
       <div className="research-summary">
         <span><b>{rows.length}</b> recorded experiments</span>
-        <span><b>3</b> ways to test decisions</span>
+        <span><b>3</b> text evaluation suites</span>
         <span><b>1</b> current model</span>
       </div>
       <section className="test-guide" id="test-guide">
@@ -51,7 +52,7 @@ export default function Research() {
           <summary>Test sources, methodology & limitations</summary>
           <p>“Text decisions” is the project’s <code>eval2</code> test; “AI response review” is <code>eval_llm</code>. Both use fixed questions kept out of training, with expected answers checked by two AI judges. They have informed the research direction, so a fresh final test is still needed. “Broader text tasks” combines the public and authored datasets in our development benchmark, reused for many decisions.</p>
           <p>For questions with multiple correct choices, every choice must match. Results are single runs; repeating a training recipe moved scores by roughly a percentage point. Earlier experiments differ in training data, objectives, and serving software, so the table does not isolate the effect of architecture alone. Missing results are omitted, not treated as zero.</p>
-          <p>The current SelfJev uses TreeServer. Its original evaluation used different serving software with the same trained model; both are preserved in the full experiment archive.</p>
+          <p>The default SelfJev uses the vision adapter with TreeServer. The previous default is labelled “text-only release”; its original evaluation with different serving software is also preserved in the archive.</p>
           <a href={`${JOURNAL}/experiments/`}>Full methodology and paired comparisons <ArrowUpRight size={15} /></a>
         </details>
       </div>

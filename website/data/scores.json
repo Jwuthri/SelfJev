@@ -361,7 +361,19 @@
  },
  "reports/images_v1/base_selfjev_4b_images/report.json": {
   "accuracy": 0.7547452547452548,
-  "n": 2002
+  "n": 2002,
+  "groups": {
+   "trained": {
+    "accuracy": 0.7040650406504065,
+    "n": 1230,
+    "kinds": 6
+   },
+   "unseen": {
+    "accuracy": 0.8354922279792746,
+    "n": 772,
+    "kinds": 4
+   }
+  }
  },
  "reports/images_v1/eval2/report.json": {
   "accuracy": 0.9613259668508287,
@@ -373,7 +385,19 @@
  },
  "reports/images_v1/images_v1_images/report.json": {
   "accuracy": 0.9040959040959041,
-  "n": 2002
+  "n": 2002,
+  "groups": {
+   "trained": {
+    "accuracy": 0.9422764227642276,
+    "n": 1230,
+    "kinds": 6
+   },
+   "unseen": {
+    "accuracy": 0.8432642487046632,
+    "n": 772,
+    "kinds": 4
+   }
+  }
  },
  "reports/images_v1/images_v1_pets100/report.json": {
   "accuracy": 0.87,

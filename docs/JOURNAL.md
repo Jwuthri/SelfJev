@@ -8,8 +8,9 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| Update website for default vision release | Codex vision website | local website/ | 2026-09-30 09:37 PDT | this session |
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
+| `selfjev bench` question sweep (1/5/10/25/50 q × 512–32K tokens), current model on `TreeServer` | Claude qsweep | AWS `selfjev-qsweep-{a10g,l40s,h100}` (g5.xlarge us-east-1, g6e.xlarge us-east-2, p5.4xlarge spot), 3 h shutdown cap | 2026-09-30 09:58 PDT | ≈ 11:00 PDT |
+| Survey open Jev-like classifiers on HF + accuracy matrix vs selfjev-4b | Claude competitors | local (survey); GPU scoring only after the user's OK | 2026-09-30 10:00 PDT | this session |
 
 ## Spend so far (real cost, BYOK upstream included)
 
@@ -65,6 +66,31 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-30 10:40 PDT: survey of the open Jev-like classifiers on HF and the shared benchmarks (Claude competitors, user request)
+
+- **What:** read ≈ 50 model cards from huggingface.co/models?other=classification (by downloads, likes, trending; created
+  since 2026-09-15) and the benchmarks they cite. Nothing downloaded or run; $0. Matrix and conclusions:
+  [landscape.md](landscape.md#the-open-field-and-the-shared-yardsticks-survey-2026-09-30).
+- **Shared yardsticks:** JevBench public-231 (Benchmark Heaven, MIT, not TypeSafe's; live board, sealed half run by the
+  maintainers), LocalLLaMA/typed-decisions (400 cases), Decision Index 0.2.1 (38 public benchmarks), Nimble 13-subset
+  suite (3,880), DecisionBench (23,900), Image JevBench (684). We have no number on any of them yet.
+- **Overlap check:** `data/all.jsonl.gz` vs JevBench public-231: 0 exact, 0 with > 20 % 8-grams; vs typed-decisions test:
+  0 / 400. MNLI train is in `hf_nli` (Nimble suite has MNLI dev).
+- **Field:** board-run leaders are Cygnet 73.7, Winnow-12B 73.2, Jev 72.1, JevK5-4B 71.9, Plumb-4B 71.6, decider-4b 71.3
+  (JevBench v1.5.4). Images: imajev-4b leads Image JevBench (76.39), jpt-4b 69.55. Laya: JevBench #93, Decision Index 6.04.
+- **Verdict:** the shared prefix and text + images in one model are no longer unique (Mica, kev, ArseneLupin share
+  the prefix; jpt, imajev, openjev, vjev-vision, AutoJev take images). Per-candidate description scoring and native
+  multilabel are. Any "best" claim needs our numbers on the shared boards: next step is a GPU run (needs the user's OK).
+
+### 2026-09-30 09:46 PDT: website defaults to the vision release (Codex vision website, user request)
+
+- **What / why:** updated `website/` for SelfJev 0.3.0 and the image-and-text default. Primary model downloads point to `Jwuthrich/selfjev-4b-vision`; the merged vision release is linked with its text-only vLLM limitation, and the previous text-only adapter remains secondary. Verified both public HF repositories (including both merged weight shards) and the PyPI 0.3.0 release before linking.
+- **Evidence:** default text scores now read `reports/images_v1/eval2/report.json` (96.13%), `eval_llm/report.json` (92.49%), and `test/report.json` (84.07%), displayed at the site's existing one-decimal precision. Previous `reports/selfjev_4b_treeserver/*` scores are explicitly labelled text-only release. Image scores from `reports/images_v1/images_v1_images/report.json`: 90.4% across 2,002 questions, 94.2% for six trained kinds on held-out photos, 84.3% for four unseen kinds. Baseline from `reports/images_v1/base_selfjev_4b_images/report.json`: 75.5% overall, 70.4% / 83.5% respectively. Group aggregates are regenerated from predictions into `website/data/scores.json`; the site states no statistically significant transfer to unseen kinds. Timing remains 136 / 163 / 167 ms from `reports/images_2026-09-29/timing.txt`, explicitly measured before the vision fine-tune.
+- **Guides:** pinned PyPI 0.3.0 installs, `state=[Path("cat.jpg")]`, image JSONL training rows, vision model manifest, and Docker/Runpod LFS paths. Preserved the existing visual style; clarified the research timeline and release labels.
+- **Validation:** scores snapshot regenerated (212 reports); production build and TypeScript passed; export check passed (15 HTML pages, 495 links); all 93 unique external destinations returned HTTP 200. Browser checked at 390 px (homepage and seven changed guide/research routes, no document overflow), plus desktop image section; no browser console errors observed. Code blocks scroll within their panels. `git diff --check` passed. Reports unchanged, so no ledger/eval2 regeneration needed; `docs/findings.md` and `docs/leaderboard.md` already reflect the vision release.
+- **Dev preview fix:** the running server retained the old scores snapshot read with `fs` at module load and returned 500 after image groups were added. Changed the snapshot to a tracked JSON import so Next.js refreshes it; localhost:3001 now returns HTTP 200 with the vision links and all image scores. Rebuilt and rechecked the export successfully.
+- **Cost / verdict:** $0; local website work only, no model jobs or paid resources. Complete; no commit made by this session.
 
 ### 2026-09-30 09:45 PDT: selfjev 0.3.0 on PyPI, the vision merged checkpoint on Hugging Face (Claude images, user request)
 

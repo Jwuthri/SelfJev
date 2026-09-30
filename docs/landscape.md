@@ -43,6 +43,71 @@ machine in every cell but 4,096 tokens × 16 questions (2026-09-26, [speed](spee
 Jev's per-token cost is still ≈ 6× lower than ours, so a smaller model or more GPUs per request, and the end-to-end
 difference is network distance. `selfjev-4b`'s own serving engine is not timed on a GPU yet.
 
+## The open field and the shared yardsticks (survey 2026-09-30)
+
+About 50 model cards read from [HF `other=classification`](https://huggingface.co/models?other=classification)
+(sorted by downloads, likes and trending, created since 2026-09-15), plus the benchmarks they cite. Nothing was run for
+the survey. Session: Claude competitors, JOURNAL 2026-09-30.
+
+**Shared yardsticks.** These are the only places where our numbers and theirs can meet:
+
+| benchmark | what | size | who runs it | cited by |
+|---|---|---|---|---|
+| [JevBench](https://github.com/fstandhartinger/jevbench) (Benchmark Heaven, MIT, not TypeSafe's) | public easy/original/hard items; live board [benchmarkheaven.com/jev-models](https://benchmarkheaven.com/jev-models) | public 231 (48/72/111); board v1.5.4 scores 1,624 per system, 720 sealed | board: maintainers only; public-231: anyone, `typesafe` adapter on `/v1/systemone` | ≈ 15 cards |
+| [LocalLLaMA/typed-decisions](https://huggingface.co/datasets/LocalLLaMA/typed-decisions) | 4 synthetic workflows, one request per case; gold = a ≈4B teacher, ceiling 0.735 | test 400 cases / 2,000 decisions | anyone | ≈ 10 cards |
+| [Decision Index 0.2.1](https://huggingface.co/spaces/multimodalart/jev-decision-index) | 38 public benchmarks, chance-corrected `balanced_skill` | ≈ 120K requests, rebuild ≈ 7 GB | maintainer board; kit is open | ≈ 6 cards |
+| Nimble 13-subset suite ("S1Bench", [PUBLIC_BENCHMARKS.md](https://github.com/bespokelabsai/nimble/blob/main/docs/PUBLIC_BENCHMARKS.md)) | human labels: VitaminC, MASSIVE en/de, BoolQ, SQuAD2, PAWS, MNLI, Civil Comments, Aegis2, HelpSteer2, SummEval ×2, PubMedQA | 3,880 | anyone (lev's `levbench`) | lev, decider, Nimble |
+| [DecisionBench 1.0](https://huggingface.co/datasets/Hanno-Labs/decision-bench) (Hanno Labs) | 43 tasks, up to 255 candidates | 23,900 | board + open runner | imajev, Bosun, Winnow |
+| [Image JevBench](https://benchmarkheaven.com/image-jev-bench) v0.1.4 | images | 684 (228 public) | maintainers | board only |
+
+**Overlap check** (exact + 8-gram, `data/all.jsonl.gz` vs the benchmark states): JevBench public-231 0 / 231,
+typed-decisions test 0 / 400. We never trained on either. On the Nimble suite, MNLI's train split is in our `hf_nli`.
+
+**Accuracy matrix, published numbers only (%).** B = run by the board's maintainers, S = self-reported by the model's
+author, † = the author used the public items for model selection or tuning, F = fitted on the benchmark's train split.
+JevBench public-231 totals come from the per-tier numbers on each card where the card gives no total.
+
+| model | params | images | JevBench public-231 | JevBench hard-111 | JevBench board v1.5.4 (rank) | Decision Index 0.2.1 | typed-decisions | Nimble 13 macro | DecisionBench | Image JevBench (rank / 50) |
+|---|---|---|---|---|---|---|---|---|---|---|
+| **selfjev-4b-vision (ours)** | 4B | yes | not run | not run | not submitted | not run | not run | not run | not run | not submitted |
+| Jev 1.13.0 (API) | ? | no | 86.6 B | 73.0 B | 72.1 (#3) | 57.91 B | 72.7 | 76.0 S (Nimble) | 72.0 B | — |
+| Cygnet (API) | ? | ? | 87.9 S (basal) | — | 73.7 (#1) | — | — | — | — | — |
+| Winnow-12B | 12B | ? | 85.7 S | 73.0 B | 73.2 (#2) | 50.02 B | — | — | 76.7 B | — |
+| JevK5 v0.3 | 4B | no | 87.9 S | 78.4 S | 71.9 (#4) | 38.81 B | — | — | — | — |
+| Plumb-4B (JevK5-based) | 4B | no | 89.6 S† | 80.2 S† | 71.6 (#5) | — | — | — | — | — |
+| decider-4b (v2 / v2.1) | 4B | no | 83.5 B (v2) / 82.7 S | 67.6 / 64.9 S | 71.3 (#7) | 40.70 B | — | 75.6 S | — | — |
+| decider-2b (255K dl/30 d) | 2B | sibling | 71.0 B | 49.5 B | 45.1 (#30) | — | — | 70.6 S | 61.4 B | — |
+| Wald-4B | 4B | no | 87.9 S† | 74.8 S† | not listed | 54.59 S (pending) | — | — | — | — |
+| jpt-4b (NC licence) | 4B | yes | 87.9 S | 78.4 S | not listed | 43.04 B | 79.6 S F | — | — | 69.55 (#6) |
+| jpt-9b (NC licence) | 9B | yes | 85.3 S | 73.0 S | not listed | 46.89 B | 80.6 S F | — | — | 65.82 (#12) |
+| imajev-4b | 4B | yes | — | — | #1 on v1.4.2.2 (67.37) | — | — | — | 79.7 B | 76.39 (#1) |
+| Mica-v0.1-4B | 4B | no | 83.1 S† | 64.9 S† | not listed | — | — | — | — | — |
+| kev-4b | 4B | no | 75.8 S / 66.2 B (older build) | 54.1 S / 36.9 B | 38.1 (#37) | 34.64 B | — | — | 65.2 B | — |
+| lev (interfaze-ai) | 4B | no | — | — | not listed | 38.54 B | — | 68.9 S (Jev 76.1, same harness) | — | — |
+| Eikos-4B | 4B | no | — | 72.1 S | not listed | — | — | — | — | — |
+| AutoJev-27B | 27B | yes | 87.0 S (basal) | 70.3 S (101 items) | 19.5 (#52, cost) | 56.40 B | — | — | — | 66.85 (#9) |
+| openjev (27B, NC licence) | 27B | yes | — | — | not listed | — | — | — | — | — |
+| Nimble-9B | 9B | no | 79.7 B | 62.2 B | 31.8 (#40) | — | — | 74.8 S | — | — |
+| vjev-vision (distilled from Jev) | 4B | yes | — | — | — | — | — | — | — | 47.67 (#31) |
+| Laya (the most liked, 4.6K) | 0.4B | no | 58.4 B | 35.1 B | 0.0 (#93) | 6.04 B | 36.2 S (base) / 76.6 S F | 62.5 B (6-subset) | 39.2 B | — |
+
+On our own frozen sets the only open model scored so far is Eikos-4B: eval2 92.8 (`reports/eikos_4b/eval2`), against
+selfjev-4b-vision 96.1 and Jev 97.2.
+
+**What the survey says about our claims.**
+
+- *Architecture.* The shared prefix is common now: Mica shares one prefill across questions, kev continues each
+  question from the shared state, ArseneLupin has a `shared_prefix` mode, decider and Eikos lean on vLLM prefix caching.
+  What remains ours: each candidate is scored from its own description inside one tree pass (no A–Z letter slot, no
+  26/52-option chunking) and multilabel is native. Most others read letter logits; several cap options at 16–26.
+- *Text and images in one model* is not unique: jpt-4b/9b, imajev-4b, openjev, vjev-vision, AutoJev-27B and
+  decider-2b-vision take images too. imajev-4b leads Image JevBench (76.39). Our image test is mostly in distribution
+  (JOURNAL 2026-09-30 02:05: no transfer to new image tasks), so a public image board is where this claim gets tested.
+- *Real data.* Most cards report on their own sets or on public items they tuned against (†). Maintainer-run numbers
+  (B) are rare and worth more: sealed accuracy on JevBench is far below public for everyone (Jev 36.7 sealed vs
+  86.6 public on v1.4.2.2).
+- Laya is the most liked but the weakest here: JevBench board #93, Decision Index 6.04, a ≈ 320-token state window.
+
 ## Open "Jev-like" models (survey of Hugging Face model cards, 2026-09-24)
 
 Nothing was downloaded or run for the survey (Eikos-4B was scored later, below); claims are each model's own, on its

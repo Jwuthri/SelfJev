@@ -15,7 +15,7 @@ cd /workspace
 git clone https://github.com/Jwuthri/SelfJev.git
 cd SelfJev
 git lfs install
-git lfs pull --include "weights/selfjev_4b/*"
+git lfs pull --include "weights/selfjev_4b_vision/*"
 export HF_HOME=/workspace/huggingface
 uv sync --frozen --no-dev --extra serve --extra gpu
 export SELFJEV_API_KEYS="replace-with-a-long-random-key"

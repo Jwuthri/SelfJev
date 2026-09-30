@@ -2,6 +2,27 @@ Send a state and named questions to `POST /v1/systemone`. The aliases `/api/alph
 
 Images work with the default tree engine: send an image data URL or mixed text/image parts as `state`; the SDK also accepts `Path`, bytes, and PIL images. See the [image request reference](https://github.com/Jwuthri/SelfJev/blob/master/docs/api.md#request).
 
+## Images with the Python SDK
+
+Install the image-capable 0.3.0 release on your server with `pip install "selfjev[serve,gpu]==0.3.0"`; client-only machines need `pip install selfjev==0.3.0`. The model name `selfjev-4b` now selects the image-and-text vision release.
+
+```python
+from pathlib import Path
+from selfjev import SelfJev, Choice
+
+client = SelfJev(base_url="http://localhost:8000")  # Uses SELFJEV_API_KEY.
+result = client.system_one(
+    state=[Path("cat.jpg")],
+    questions={"breed": Choice("What breed is it?", {
+        "persian": "a Persian cat",
+        "siamese": "a Siamese cat",
+        "other": "another breed",
+    })},
+)
+```
+
+The native engine shares the image across questions. The vLLM backend supports text only. Image rows also work with `/v1/fine_tuning/jobs`; see [fine-tuning with images](/docs/finetuning/#prepare-image-training-rows).
+
 ## Authentication
 
 **You create the key yourself.** For example, run `python -c 'import secrets; print(secrets.token_urlsafe(32))'` and keep the result private. Set that value as `SELFJEV_API_KEYS` on the server. Set the same value as `SELFJEV_API_KEY` in your client environment, or pass it as `api_key` in the Python SDK. The client sends it in the `Authorization: Bearer ...` header and the server checks for an exact match. `SELFJEV_API_KEYS` can contain several comma-separated keys; any one is accepted. If you do not configure server keys, requests require no authentication.

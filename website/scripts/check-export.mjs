@@ -73,7 +73,7 @@ const home = fs.readFileSync(path.join(output, "index.html"), "utf8");
 for (const set of ["eval2", "eval_llm"]) {
   const r = JSON.parse(
     fs.readFileSync(
-      path.join(repo, `reports/selfjev_4b_treeserver/${set}/report.json`),
+      path.join(repo, `reports/images_v1/${set}/report.json`),
       "utf8",
     ),
   );

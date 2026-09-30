@@ -1,11 +1,12 @@
-SelfJev turns a state (your text) and a set of questions into typed answers with probabilities. You run the model on your own GPU; your application calls it over HTTP.
+SelfJev turns a state (text, images, or both) and a set of questions into typed answers with probabilities. You run the model on your own GPU; your application calls it over HTTP.
 
 ## Get the model
 
 The releases are public on Hugging Face:
 
-- [SelfJev-4B adapter](https://huggingface.co/Jwuthrich/selfjev-4b): the trained LoRA adapter for the native tree engine. `selfjev serve` downloads it on first start.
-- [SelfJev-4B full merged model](https://huggingface.co/Jwuthrich/selfjev-4b-merged): the complete weights, tokenizer and configuration. Its model card includes download and vLLM serving instructions.
+- [SelfJev-4B vision adapter](https://huggingface.co/Jwuthrich/selfjev-4b-vision): the default LoRA adapter, fine-tuned on images and text, for the native tree engine. `selfjev serve` downloads it on first start.
+- [SelfJev-4B full merged model](https://huggingface.co/Jwuthrich/selfjev-4b-vision-merged): the complete weights, tokenizer and configuration. vLLM serves text only; use the default native engine for images.
+- [Text-only release](https://huggingface.co/Jwuthrich/selfjev-4b): the previous default, kept for reproducibility.
 - [SelfJev Decision Bench](https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench): the evaluation questions, expected answers and scoring tools.
 
 ## 1. Start a GPU server
@@ -15,7 +16,7 @@ Use a Linux machine with an NVIDIA GPU. Start with **24 GB VRAM, 4 vCPUs, 16–3
 Use Python 3.12+ and verify that `nvidia-smi` sees your GPU. Then:
 
 ```bash
-pip install "selfjev[serve,gpu]"
+pip install "selfjev[serve,gpu]==0.3.0"
 export SELFJEV_API_KEYS="replace-with-a-long-random-key"
 selfjev serve --host 0.0.0.0 --port 8000
 ```
@@ -35,7 +36,7 @@ Prefer a private network or SSH tunnel during setup. Configure HTTPS before send
 On the machine running your application, no GPU or model download is needed:
 
 ```bash
-pip install selfjev
+pip install selfjev==0.3.0
 ```
 
 Already using TypeSafe's Python SDK? Keep it: set `TYPESAFE_BASE_URL` to your server and `TYPESAFE_API_KEY` to the same key, and your existing code runs against SelfJev unchanged.
@@ -66,6 +67,26 @@ print(result.choices["team"].choice)
 ```
 
 `noul` is a probability, and `choice` is one of your option keys. Results depend on the model; the examples on the home page are illustrations, not live inference.
+
+## 4. Ask about an image
+
+The served name stays `selfjev-4b`; in version 0.3.0 it selects the vision release automatically.
+
+```python
+from pathlib import Path
+
+result = client.system_one(
+    state=[Path("cat.jpg")],
+    questions={"breed": Choice("What breed is it?", {
+        "persian": "a Persian cat",
+        "siamese": "a Siamese cat",
+        "other": "another breed",
+    })},
+)
+print(result.choices["breed"].choice)
+```
+
+A `Path`, image bytes, or a PIL image all work. Use the default tree engine for images. See the [image API contract](https://github.com/Jwuthri/SelfJev/blob/master/docs/api.md#request) for mixed text and image input.
 
 ## What to read next
 

@@ -4,7 +4,8 @@ import { ArrowUpRight, Search } from "lucide-react";
 import type { EvidenceRow } from "@/lib/evidence";
 
 const modelLabels: Record<string, [string, string]> = {
-  selfjev_4b_treeserver: ["SelfJev", "Our current model · self-hosted"],
+  images_v1: ["SelfJev", "Default · vision + text"],
+  selfjev_4b_treeserver: ["SelfJev · text-only release", "Previous default · text-trained"],
   "~typesafe/jev-latest": ["Jev", "TypeSafe’s hosted decision model"],
   qwen35_4b_tree: ["Earlier SelfJev", "Before training for AI response review"],
   lora_4b: ["Fine-tuned text reranker", "Our early approach · adapted from a search model"],

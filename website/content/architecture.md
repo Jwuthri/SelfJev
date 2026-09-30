@@ -26,7 +26,9 @@ These are model probabilities. A separately fitted calibration file can alter th
 
 ## What the model learned from
 
-The default adapter was trained from scratch on **79,943 non-test questions**, with texts up to 16K tokens, a new rank-64 LoRA, and one epoch. Its targets mix 50% verified labels with 50% stored Jev probabilities. Authored training targets were checked by a blind judge; Jev answers did not decide the authored labels.
+The text-only foundation was trained from scratch on **79,943 non-test questions**, with texts up to 16K tokens, a new rank-64 LoRA, and one epoch. Its targets mix 50% verified labels with 50% stored Jev probabilities. Authored training targets were checked by a blind judge; Jev answers did not decide the authored labels.
+
+The default vision adapter continues that foundation with mixed image training and replayed text. The vision encoder stays frozen; the shared-prefix tree and answer interface stay the same.
 
 LLM verification is not human ground truth. Public training data may also overlap base-model pretraining. The research pages preserve these limitations.
 
@@ -36,4 +38,4 @@ vLLM is available for merged weights and can be effective for one question. In t
 
 Explore the [measured hardware configurations and response times](/docs/hardware/#compare-measured-gpu-response-times).
 
-Read the [full architecture](https://jwuthri.github.io/SelfJev/tree_model/), [engine source](https://github.com/Jwuthri/SelfJev/blob/master/src/selfjev/engine/tree.py), and [model manifest](https://github.com/Jwuthri/SelfJev/blob/master/weights/selfjev_4b/model.json).
+Read the [full architecture](https://jwuthri.github.io/SelfJev/tree_model/), [engine source](https://github.com/Jwuthri/SelfJev/blob/master/src/selfjev/engine/tree.py), and [model manifest](https://github.com/Jwuthri/SelfJev/blob/master/weights/selfjev_4b_vision/model.json).

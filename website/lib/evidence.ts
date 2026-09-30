@@ -1,13 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
+import scoreSnapshot from "@/data/scores.json";
 export const REPO = "https://github.com/Jwuthri/SelfJev";
 export const JOURNAL = "https://jwuthri.github.io/SelfJev";
 const root = path.resolve(process.cwd(), "..");
 export const source = (file: string) => `${REPO}/blob/master/${file}`;
 // reports/**/report.json are Git LFS files that Vercel does not fetch; the build reads
 // this snapshot instead (regenerate with `node scripts/build-scores.mjs`).
-const scores: Record<string, { accuracy: number; n: number }> = JSON.parse(
-  fs.readFileSync(path.join(process.cwd(), "data", "scores.json"), "utf8"));
+type ImageGroup = { accuracy: number; n: number; kinds: number };
+const scores: Record<string, { accuracy: number; n: number; groups?: Record<"trained" | "unseen", ImageGroup> }> = scoreSnapshot;
 export const hasScore = (file: string) => file in scores;
 export function score(file: string) {
   const report = scores[file];
@@ -23,12 +24,25 @@ export function score(file: string) {
 }
 export function headlines() {
   return {
-    eval2: score("reports/selfjev_4b_treeserver/eval2/report.json"),
-    llm: score("reports/selfjev_4b_treeserver/eval_llm/report.json"),
-    dev: score("reports/selfjev_4b_treeserver/test/report.json"),
+    eval2: score("reports/images_v1/eval2/report.json"),
+    llm: score("reports/images_v1/eval_llm/report.json"),
+    dev: score("reports/images_v1/test/report.json"),
     original: score("reports/qwen35_4b_tree_scratch_jevall_/eval2/report.json"),
     jev: score("reports/external/eval2/typesafe_jev-latest/report.json"),
   };
+}
+export function imageResults() {
+  const file = "reports/images_v1/images_v1_images/report.json";
+  const baselineFile = "reports/images_v1/base_selfjev_4b_images/report.json";
+  const groups = scores[file]?.groups;
+  const baselineGroups = scores[baselineFile]?.groups;
+  if (!groups || !baselineGroups) throw new Error("Missing image groups; regenerate scores.json");
+  const group = (key: "trained" | "unseen") => ({
+    ...groups[key],
+    display: (groups[key].accuracy * 100).toFixed(1),
+    baseline: (baselineGroups[key].accuracy * 100).toFixed(1),
+  });
+  return { overall: score(file), baseline: score(baselineFile), trained: group("trained"), unseen: group("unseen") };
 }
 export type EvidenceRow = {
   id: string;
@@ -46,11 +60,11 @@ export function leaderboard(): EvidenceRow[] {
   // dataset, not an external report.json. Reuse the published audited export.
   const jevReviewFile = "weights/selfjev_4b/assets/chart-data.json";
   const chartData = JSON.parse(fs.readFileSync(path.join(root, jevReviewFile), "utf8"));
-  const currentReview = score("reports/selfjev_4b_treeserver/eval_llm/report.json");
+  const textOnlyReview = score("reports/selfjev_4b_treeserver/eval_llm/report.json");
   const jevReview = chartData.overview.find((entry: { source: string }) =>
     entry.source === "reports/selfjev_4b_treeserver/eval_llm/report.json");
-  if (!jevReview || jevReview.n !== currentReview.n ||
-      Math.abs(jevReview.ours - currentReview.value) > 0.000001 ||
+  if (!jevReview || jevReview.n !== textOnlyReview.n ||
+      Math.abs(jevReview.ours - textOnlyReview.value) > 0.000001 ||
       !Number.isFinite(jevReview.jev) || jevReview.jev < 0 || jevReview.jev > 100) {
     throw new Error("Jev AI-review export does not match the current evaluation suite");
   }
@@ -74,14 +88,16 @@ export function leaderboard(): EvidenceRow[] {
           ? `reports/external/eval2/${file.split("/")[3]}/report.json`
           : `reports/${c[0]}/eval2/report.json`;
       const llm = `reports/${c[0]}/eval_llm/report.json`;
-      const current = c[0] === "selfjev_4b_treeserver";
+      const current = c[0] === "images_v1";
       const isJev = c[0] === "external" && c[1] === "~typesafe/jev-latest";
       return {
         id: c[0] === "external" ? c[1] : c[0],
         name: current
-          ? "SelfJev-4B · current engine"
+          ? "SelfJev-4B · vision release"
+          : c[0] === "selfjev_4b_treeserver"
+            ? "SelfJev-4B · text-only release"
           : c[0] === "qwen35_4b_tree_scratch_jevall_"
-            ? "SelfJev-4B · original evaluation"
+            ? "SelfJev-4B · text-only original evaluation"
             : c[0] === "external"
               ? c[1].replace("~typesafe/", "").replace("openai/", "")
               : c[0],

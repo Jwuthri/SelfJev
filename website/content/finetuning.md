@@ -14,10 +14,35 @@ For the HTTP API, use JSONL with one decisions request and its expected answers 
 
 Answers are booleans for `noul`, an option key for `choice`, a zero-based level index for `score`, and an array of keys for `multi`. The expected answers should come from your verified targets.
 
+## Prepare image training rows
+
+Encode the image as a data URL in `state`. Here is one illustrative row; build a varied training set with verified answers, and keep validation and test photos separate.
+
+```python
+import base64
+import json
+from pathlib import Path
+
+image = base64.b64encode(Path("cat.jpg").read_bytes()).decode("ascii")
+row = {
+    "state": "data:image/jpeg;base64," + image,
+    "questions": {"breed": {
+        "type": "choice",
+        "instructions": "What breed is it?",
+        "criteria": {"persian": "a Persian cat", "other": "another breed"},
+    }},
+    "answers": {"breed": "persian"},  # Replace with the verified label.
+}
+Path("train.jsonl").write_text(json.dumps(row) + "\n")
+```
+
+Upload this JSONL through the same job flow below. Text and image rows can share a file. After training succeeds, request predictions with `state=[Path("cat.jpg")]` and the new model name. For CLI training with `selfjev finetune`, use the [native row schema](https://github.com/Jwuthri/SelfJev/blob/master/docs/finetune.md).
+
 ## Enable training on the server
 
 ```bash
-uv run --no-sync selfjev serve --fine-tuning
+pip install "selfjev[serve,gpu,train]==0.3.0"
+selfjev serve --fine-tuning
 ```
 
 This keeps the LoRA unmerged and enables uploads and jobs. Training shares the serving GPU and runs one job at a time. A 24 GB GPU alongside serving is untested and likely too small.
@@ -47,6 +72,6 @@ A successful job registers its adapter under a new model name. Pass that name as
 
 Start with supervised training. In this project, RLCD did not reliably improve accuracy over fine-tuning on the same soft targets. An explicit cost for confident mistakes reduced those mistakes, with other probability-quality tradeoffs. Choose an objective based on what your application needs and evaluate it on held-out data.
 
-The [published SelfJev-4B adapter](https://huggingface.co/Jwuthrich/selfjev-4b) is the starting point for adapting the model. Its model card records the training provenance and release terms, including the use of stored Jev probabilities as a teacher signal. Use your own verified examples for fine-tuning; keep the [published evaluation suites](https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench) out of training and tuning.
+The [default vision adapter](https://huggingface.co/Jwuthrich/selfjev-4b-vision) is the starting point for adapting the model. The [text-only release](https://huggingface.co/Jwuthrich/selfjev-4b) remains available separately. Its model card records the training provenance and release terms, including the use of stored Jev probabilities as a teacher signal. Use your own verified examples for fine-tuning; keep the [published evaluation suites](https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench) out of training and tuning.
 
-For the full CLI training schema, reward settings, and recorded experiments, read [fine-tuning and RLCD](https://jwuthri.github.io/SelfJev/finetune/) and the [API job contract](https://github.com/Jwuthri/SelfJev/blob/master/docs/api.md#fine-tuning). HTTP training orchestration has not been exercised end to end in the recorded GPU runs.
+For the full CLI training schema, reward settings, and recorded experiments, read [fine-tuning and RLCD](https://jwuthri.github.io/SelfJev/finetune/) and the [API job contract](https://github.com/Jwuthri/SelfJev/blob/master/docs/api.md#fine-tuning).

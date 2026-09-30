@@ -8,7 +8,7 @@ Clone the repository and fetch the real adapter files. Git LFS pointers cannot b
 git clone https://github.com/Jwuthri/SelfJev.git
 cd SelfJev
 git lfs install
-git lfs pull --include "weights/selfjev_4b/*"
+git lfs pull --include "weights/selfjev_4b_vision/*"
 docker build -f deploy/Dockerfile -t selfjev .
 ```
 
