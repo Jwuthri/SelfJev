@@ -1,5 +1,7 @@
 SelfJev is a decision scorer built from **Qwen3.5-4B + LoRA r64**. The model evaluates whether a proposed answer is supported by the supplied document. It reads the difference between its yes and no logits, rather than generating a response.
 
+Images use the same shared root: Qwen3.5’s frozen vision encoder processes the photo once, then every question and option branches from it. Use the default tree engine (not vLLM); see [image inputs in the API](https://github.com/Jwuthri/SelfJev/blob/master/docs/api.md#request).
+
 ## Read once, branch many
 
 [Explore the animated shared-prefix tree](/#architecture), or [open the static illustration](/images/selfjev-architecture.png).

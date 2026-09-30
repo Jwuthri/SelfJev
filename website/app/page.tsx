@@ -1,3 +1,4 @@
+import { ImageFeature } from "@/components/image-feature";
 import { ReleaseLinks } from "@/components/release-links";
 import { HF_RELEASES } from "@/lib/releases";
 import Link from "next/link";
@@ -69,6 +70,9 @@ export default function Home() {
               Explore the research <ArrowRight size={16} />
             </Link>
           </div>
+          <a className="hero-image-link" href="#images">
+            <span>NEW</span> Images in. Decisions out. <ArrowRight size={14} />
+          </a>
           <a className="hero-release-link" href={HF_RELEASES.merged}>
             Weights available on Hugging Face <ArrowUpRight size={14} />
           </a>
@@ -158,7 +162,7 @@ export default function Home() {
           </h2>
           <p className="section-description">
             Route a request. Check an agent’s work. Apply a policy. SelfJev
-            turns your text and questions into structured decisions with
+            turns your text, images, and questions into structured decisions with
             probabilities—without waiting for a generated response.
           </p>
           <div className="feature-row">
@@ -174,7 +178,7 @@ export default function Home() {
               <Fingerprint />
               <h3>Your data stays yours.</h3>
               <p>
-                Run the model on your own GPU. Process sensitive text
+                Run the model on your own GPU. Process sensitive inputs
                 without sending it to an external model API.
               </p>
             </article>
@@ -221,6 +225,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <ImageFeature />
       <section className="section wrap ownership-section" id="make-it-yours">
         <div className="section-kicker">YOUR MODEL / YOUR REQUIREMENTS</div>
         <div className="section-heading">

@@ -8,6 +8,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
+| Images v1: mixed image + text fine-tune from selfjev-4b, image test (6 trained + 4 held-out datasets), text gate (eval2, eval_llm, dev) | Claude images | AWS g6e.xlarge `i-0c39fa20d45c4d2bf` us-east-2, `Name=selfjev-images4` | 2026-09-29 22:12 PDT | cap moved to 03:30 PDT for the full epoch (user OK ≈ $10); the driver terminates it when done |
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
 
 ## Spend so far (real cost, BYOK upstream included)
@@ -62,6 +63,19 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-29 23:35 PDT: simplify image fine-tune card (Codex image copy)
+
+- **What / why:** changed the result label to “SelfJev + image fine-tune” and replaced the photo count with “Fine-tuned on images”, as requested. Preserved 90% and the Oxford-IIIT Pet test scope from `reports/images_2026-09-29/pets_ft_pets100/report.json`.
+- **Evidence boundary:** the 25-dataset figure describes the discovery catalog (JOURNAL 2026-09-29 19:55; `docs/image_datasets.md`), not this model's completed training. The separate in-flight `images_v1` recipe uses six training datasets (`scripts/data/build_images_v1.py`). Did not describe the 90% model as trained on 25 datasets.
+- **Validation / cost / verdict:** fetched the running Next.js homepage on port 3001 and verified both new strings and removal of both old strings; `git diff --check` passes. $0, no inference, reports unchanged, no commit. Done.
+
+### 2026-09-29 23:18 PDT: announce image input on the website (Codex website images)
+
+- **What / why:** added a homepage announcement and Images section in the existing dark/olive/orange style: copyable Python `Path("cat.jpg")` example, mixed text/image input explanation, shared frozen vision root, and image fine-tuning. Linked the model, API and fine-tuning guides to `docs/api.md`; the homepage and training guide link `docs/image_datasets.md`.
+- **Evidence:** L40S warm medians **136 ms text / 163 ms image / 167 ms image with 5 questions**, copied from `reports/images_2026-09-29/timing.txt`. Pet-photo accuracy **73% / 78% / 90%**, checked against the 100 predictions in `reports/images_2026-09-29/base_pets100/report.json`, `selfjev_4b_pets100/report.json`, and `pets_ft_pets100/report.json`. **2,220** training photos from the 2026-09-29 20:40 entry above. Explicitly limited to Oxford-IIIT Pet and 100 test questions; the 90% fine-tune is separate from the text-trained release. No `images_v1` results cited.
+- **Validation:** `cd website && npm run build` passes (including TypeScript); `node scripts/check-export.mjs` passes: 15 HTML pages, 484 links. Built export inspected in the browser at **390 × 844**: document and section width 390 px, readable stacked cards, functioning Copy button; desktop layout checked too, no browser errors/warnings. `git diff --check` passes.
+- **Cost:** $0; local website build and UI checks only, no model inference or paid jobs. No reports changed, so no ledger or scores snapshot regeneration needed. **Verdict:** ready for review; no commit or push. In-flight row removed.
 
 ### 2026-09-29 20:40 PDT: images: 163 ms per request, and 2,220 pet photos lift the test from 78% to 90% (Claude images)
 

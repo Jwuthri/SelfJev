@@ -1,5 +1,7 @@
 Send a state and named questions to `POST /v1/systemone`. The aliases `/api/alpha/decisions` and `/v1/decisions` accept the same request. The interface follows Jev; the underlying model and probabilities are different.
 
+Images work with the default tree engine: send an image data URL or mixed text/image parts as `state`; the SDK also accepts `Path`, bytes, and PIL images. See the [image request reference](https://github.com/Jwuthri/SelfJev/blob/master/docs/api.md#request).
+
 ## Authentication
 
 **You create the key yourself.** For example, run `python -c 'import secrets; print(secrets.token_urlsafe(32))'` and keep the result private. Set that value as `SELFJEV_API_KEYS` on the server. Set the same value as `SELFJEV_API_KEY` in your client environment, or pass it as `api_key` in the Python SDK. The client sends it in the `Authorization: Bearer ...` header and the server checks for an exact match. `SELFJEV_API_KEYS` can contain several comma-separated keys; any one is accepted. If you do not configure server keys, requests require no authentication.

@@ -1,5 +1,7 @@
 If the default model misses the distinctions your workflow needs, fine-tune it on your own examples. Teach it your routing labels, policy boundaries, or quality criteria using verified inputs and expected answers. You keep the same decisions API and serve your adapted model.
 
+Training rows can also use images as `state`, through `selfjev finetune` or `/v1/fine_tuning/jobs`; the vision encoder stays frozen while the language adapter learns. See the [image training contract](https://github.com/Jwuthri/SelfJev/blob/master/docs/api.md#fine-tuning) and [image datasets](https://github.com/Jwuthri/SelfJev/blob/master/docs/image_datasets.md).
+
 Adapt SelfJev to your own decisions with supervised fine-tuning, or optimize probability reports using the RLCD objective. A 48 GB GPU is the established training class. Keep a held-out validation set and a separate final test set.
 
 ## Prepare training requests

@@ -1,0 +1,1 @@
+hard and very hard questions (binary, multiclass, multilabel) written by Claude Code agents (Sonnet 5.5 and Opus 5.5; files ccbin, ccmc, ccml) with temporal and numeric reasoning traps, blind Astra judge, strict build.
