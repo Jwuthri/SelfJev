@@ -317,6 +317,8 @@ Revived by eval2 (dead on the dev benchmark only): the Instruct base (+3.0), LoR
 
 ## Open ideas: claim before starting (edit the status cell)
 
+- **Claimed — Codex architecture UX, 2026-09-29 23:41 PDT:** replace the oversized SVG flowchart with a responsive interactive shared-context walkthrough; illustrative examples only, no new model claims.
+
 - **Done — Codex image copy, 2026-09-29 23:35 PDT:** result card now says “SelfJev + image fine-tune” / “Fine-tuned on images”; photo count removed. Live dev HTML and diff check pass. Retained the sourced 90% and test scope; no unsupported 25-dataset training claim, report changes or commit.
 
 - **Done — Codex website images, 2026-09-29 23:18 PDT:** homepage image announcement, SDK snippet, report-backed L40S timings and explicitly limited pet-photo results; model/API/fine-tuning guide links. Production build, 484-link export check, Copy button and 390 px browser layout pass. No reports, scores snapshot, model behavior or headline text benchmark results changed; no commit.

@@ -8,6 +8,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
+| Redesign architecture walkthrough UI | Codex architecture UX | local website/ | 2026-09-29 23:41 PDT | this session |
 | Images v1: mixed image + text fine-tune from selfjev-4b, image test (6 trained + 4 held-out datasets), text gate (eval2, eval_llm, dev) | Claude images | AWS g6e.xlarge `i-0c39fa20d45c4d2bf` us-east-2, `Name=selfjev-images4` | 2026-09-29 22:12 PDT | cap moved to 03:30 PDT for the full epoch (user OK ≈ $10); the driver terminates it when done |
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
 

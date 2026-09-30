@@ -1,99 +1,104 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Pause, Play } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, RotateCcw, ScanLine } from "lucide-react";
 
-// Binary scores one proposed answer against yes/no logits; choice and multi
-// score one branch per candidate. These outputs illustrate the API, not a run.
-const lanes = [
-  { x: 190, type: "BINARY · YES / NO", question: "Refund requested?", hint: "One yes / no decision", candidates: [{ dx: 0, label: "Yes", width: 150, selected: true }], result: "Yes", readout: "A boolean for your code" },
-  { x: 540, type: "MULTICLASS · PICK ONE", question: "Which team?", hint: "Billing or Support", candidates: [{ dx: -78, label: "Billing", width: 128, selected: true }, { dx: 78, label: "Support", width: 128, selected: false }], result: "Billing", readout: "One team selected" },
-  { x: 890, type: "MULTILABEL · PICK MANY", question: "Which topics?", hint: "Payments, Refund, Login", candidates: [{ dx: -104, label: "Payments", width: 98, selected: true }, { dx: 0, label: "Refund", width: 98, selected: true }, { dx: 104, label: "Login", width: 98, selected: false }], result: "Payments + Refund", readout: "Every matching topic selected" },
+// Authored examples to explain shared context. No inference or measured scores.
+const examples = [
+  {
+    name: "Customer support",
+    source: "Customer message",
+    before: "I was ",
+    highlight: "charged twice",
+    after: " for my subscription. Please refund the duplicate payment.",
+    questions: [
+      { key: "refund", type: "Yes / no", title: "Refund requested?", answer: "Yes", options: ["Yes", "No"], selected: ["Yes"], reason: "“Please refund” gives the first question a direct answer.", value: "true" },
+      { key: "team", type: "Pick one", title: "Who should handle it?", answer: "Billing", options: ["Billing", "Support"], selected: ["Billing"], reason: "The duplicate payment points to Billing. Both teams are considered against the same message.", value: '"billing"' },
+      { key: "topics", type: "Pick many", title: "Which topics apply?", answer: "2 matches", options: ["Payments", "Refund", "Login"], selected: ["Payments", "Refund"], reason: "Payments and Refund both apply. Each topic is checked independently against the shared context.", value: '["payments", "refund"]' },
+    ],
+  },
+  {
+    name: "AI response review",
+    source: "An AI response to review",
+    before: "Question: What is 2 + 2? Answer: ",
+    highlight: "2 + 2 = 5.",
+    after: " You can verify this with basic arithmetic.",
+    questions: [
+      { key: "correct", type: "Yes / no", title: "Is the answer correct?", answer: "No", options: ["Yes", "No"], selected: ["No"], reason: "The answer is 4. The stated result is incorrect, even though the response sounds confident.", value: "false" },
+      { key: "action", type: "Pick one", title: "What happens next?", answer: "Revise", options: ["Accept", "Revise"], selected: ["Revise"], reason: "An incorrect answer needs revision. The review reuses the question and response already read.", value: '"revise"' },
+      { key: "issues", type: "Pick many", title: "Which issues apply?", answer: "2 matches", options: ["Arithmetic", "Overconfidence", "Off-topic"], selected: ["Arithmetic", "Overconfidence"], reason: "The arithmetic is wrong and the verification claim is confident. The response still addresses the question.", value: '["arithmetic", "overconfidence"]' },
+    ],
+  },
 ];
 
-function Flow({ d, stage, orange = false }: { d: string; stage: number; orange?: boolean }) {
-  return <g className={orange ? "tree-edge tree-edge-orange" : "tree-edge"}>
-    <path d={d} className="tree-wire" />
-    <path d={d} pathLength={1} className="tree-light tree-light-halo" style={{ "--flow-delay": `${stage * 1.35}s` } as CSSProperties} />
-    <path d={d} pathLength={1} className="tree-light" style={{ "--flow-delay": `${stage * 1.35}s` } as CSSProperties} />
-  </g>;
-}
-
 export function ArchitectureTree() {
-  const [paused, setPaused] = useState(false);
-  const id = useId();
-  const scrollRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const center = () => { el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2; };
-    const observer = new ResizeObserver(center);
-    observer.observe(el);
-    center();
-    return () => observer.disconnect();
-  }, []);
-  return <figure className={`living-tree${paused ? " is-paused" : ""}`}>
-    <div className="living-tree-header">
-      <div><p className="tree-overline">SELFJEV / SHARED-PREFIX TREE</p><h3>Read once. Decide many.</h3></div>
-      <button type="button" onClick={() => setPaused(!paused)} aria-label={paused ? "Play architecture animation" : "Pause architecture animation"} aria-pressed={paused}>
-        {paused ? <Play size={14} /> : <Pause size={14} />}<span>{paused ? "Play" : "Pause"}</span>
-      </button>
-    </div>
-    <div ref={scrollRef} className="living-tree-scroll" tabIndex={0} role="region" aria-label="Architecture diagram; scroll horizontally on small screens">
-      <svg className="living-tree-svg" viewBox="0 0 1080 700" role="img" aria-labelledby={`${id}-title ${id}-desc`}>
-        <title id={`${id}-title`}>SelfJev shared-prefix tree</title>
-        <desc id={`${id}-desc`}>One customer message: I was charged twice. Please refund the duplicate payment. The shared document feeds three different question types. Binary: Refund requested? One Yes candidate is scored with a yes/no readout, returning true. Multiclass: Which team? Billing and Support compete; Billing is selected. Multilabel: Which topics? Payments, Refund and Login are scored independently; Payments and Refund are selected. These are illustrative answers, not live model predictions. Moving light illustrates shared computation and isolated candidate paths.</desc>
-        <defs>
-          <pattern id={`${id}-grid`} width="36" height="36" patternUnits="userSpaceOnUse"><path d="M36 0H0V36" fill="none" stroke="#b6ca91" strokeOpacity=".035" /></pattern>
-          <linearGradient id={`${id}-panel`} x2="0" y2="1"><stop stopColor="#242b20"/><stop offset="1" stopColor="#171c16"/></linearGradient>
-        </defs>
-        <rect width="1080" height="700" fill={`url(#${id}-grid)`}/>
-        {lanes.map(({x, candidates}) => <g key={`paths-${x}`}>
-          <Flow d={`M540 144 C540 175 ${x} 160 ${x} 202`} stage={0} orange />
-          {candidates.map(({dx}) => <g key={dx}>
-            <Flow d={`M${x} 278 C${x} 308 ${x+dx} 294 ${x+dx} 328`} stage={1} />
-            <Flow d={`M${x+dx} 378 C${x+dx} 410 ${x} 396 ${x} 428`} stage={2} />
-          </g>)}
-          <Flow d={`M${x} 496 C${x} 548 540 515 540 560`} stage={3}/>
-        </g>)}
-        <g className="tree-node tree-document">
-          <rect x="300" y="16" width="480" height="128" rx="13" fill={`url(#${id}-panel)`}/>
-          <g transform="translate(324 48)" className="tree-icon"><path d="M0 0H27L40 13V58H0ZM27 0V13H40M10 25H30M10 35H30M10 45H24"/></g>
-          <text x="386" y="48" className="tree-node-title">One customer message</text>
-          <text x="386" y="75" className="tree-example-quote">“I was charged twice. Please refund</text>
-          <text x="386" y="96" className="tree-example-quote">the duplicate payment.”</text>
-          <text x="386" y="125" className="tree-node-sub">Read once. Reused by all three questions.</text>
-        </g>
-        {lanes.map(({x,type,question,hint,candidates,result,readout})=><g key={x}>
-          <g className="tree-node">
-            <rect x={x-150} y="202" width="300" height="76" rx="11" fill={`url(#${id}-panel)`}/>
-            <text x={x-126} y="222" className="tree-example-type">{type}</text>
-            <text x={x-126} y="247" className="tree-node-title">{question}</text>
-            <text x={x-126} y="267" className="tree-node-sub">{hint}</text>
-          </g>
-          {candidates.map(({dx,label,width,selected})=><g className={`tree-node tree-candidate tree-example-candidate${selected ? " is-selected" : ""}`} key={label}>
-            <rect x={x+dx-width/2} y="328" width={width} height="50" rx="8"/>
-            <text x={x+dx} y="350" textAnchor="middle">{label}</text>
-            <text x={x+dx} y="367" textAnchor="middle" className="tree-candidate-status">{candidates.length === 1 ? "yes / no readout" : selected ? "✓ selected" : "not selected"}</text>
-          </g>)}
-          <g className="tree-node tree-example-result">
-            <rect x={x-145} y="428" width="290" height="68" rx="10" fill={`url(#${id}-panel)`}/>
-            <text x={x} y="457" className="tree-score-title" textAnchor="middle">{result}</text>
-            <text x={x} y="479" className="tree-node-sub" textAnchor="middle">{readout}</text>
-          </g>
-        </g>)}
-        <g className="tree-node tree-output">
-          <rect x="285" y="560" width="510" height="124" rx="12" fill={`url(#${id}-panel)`}/>
-          <text x="540" y="591" className="tree-node-title" textAnchor="middle">Three answers. Ready for your code.</text>
-          <text x="323" y="619" className="tree-example-code">refund: <tspan className="tree-code-value">true</tspan></text>
-          <text x="323" y="642" className="tree-example-code">team: <tspan className="tree-code-value">"billing"</tspan></text>
-          <text x="323" y="665" className="tree-example-code">topics: <tspan className="tree-code-value">["payments", "refund"]</tspan></text>
-        </g>
-        <text x="40" y="610" className="tree-note">One shared message.</text><text x="40" y="631" className="tree-note">Different answer types.</text>
-        <text x="830" y="610" className="tree-note">Probabilities also</text><text x="830" y="631" className="tree-note">returned by the API.</text>
-      </svg>
-    </div>
-    <figcaption className="architecture-bottom"><span><i/>Illustrative answers · not a live model run<span className="tree-swipe">Swipe to explore →</span></span><Link href="/docs/architecture/">Inside the engine <ArrowUpRight size={15}/></Link></figcaption>
-  </figure>;
+  const [exampleIndex, setExampleIndex] = useState(0);
+  const [activeQuestion, setActiveQuestion] = useState(0);
+  const [revealed, setRevealed] = useState(3);
+  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  const example = examples[exampleIndex];
+  const running = revealed < 3;
+
+  function clearTimers() {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  }
+  useEffect(() => () => timers.current.forEach(clearTimeout), []);
+
+  function replay() {
+    clearTimers();
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setRevealed(3);
+      return;
+    }
+    setRevealed(0);
+    timers.current = [1, 2, 3].map((step) => setTimeout(() => setRevealed(step), 450 + step * 350));
+  }
+  function chooseExample(index: number) {
+    clearTimers();
+    setExampleIndex(index);
+    setActiveQuestion(0);
+    setRevealed(3);
+  }
+
+  return (
+    <figure className={`context-demo${running ? " is-running" : ""}`} aria-label="Interactive shared-context example">
+      <div className="context-demo-toolbar">
+        <div className="context-demo-tabs" role="group" aria-label="Choose an example">
+          {examples.map(({ name }, index) => <button type="button" key={name} aria-pressed={exampleIndex === index} onClick={() => chooseExample(index)}>{name}</button>)}
+        </div>
+        <button type="button" className="context-replay" onClick={replay} disabled={running}><RotateCcw size={13} /> Replay flow</button>
+      </div>
+      <div className="context-demo-body">
+        <div className="context-source">
+          <div className="context-demo-label"><span>01</span> ONE SHARED INPUT</div>
+          <div className="context-source-caption"><ScanLine size={16} />{example.source}</div>
+          <blockquote>{example.before}<mark>{example.highlight}</mark>{example.after}</blockquote>
+          <div className="context-read-status"><span className="context-status-dot" />{running ? "Reading once, sharing the context…" : "Read once. Available to every question."}</div>
+          <div className="context-reason" aria-live="polite"><span>FOLLOW THE DECISION</span><p key={`${exampleIndex}-${activeQuestion}`}>{example.questions[activeQuestion].reason}</p></div>
+        </div>
+        <div className="context-questions">
+          <div className="context-demo-label"><span>02</span> ASK FROM EVERY ANGLE</div>
+          <div className="context-question-list">
+            {example.questions.map((question, index) => (
+              <button type="button" className={`context-question${activeQuestion === index ? " is-active" : ""}${index < revealed ? " is-revealed" : ""}`} aria-pressed={activeQuestion === index} key={question.key} onClick={() => setActiveQuestion(index)}>
+                <span className="context-question-top"><span className="context-question-type">{question.type}</span><span className="context-answer">{index < revealed ? <><Check size={12} />{question.answer}</> : "···"}</span></span>
+                <span className="context-question-title">{question.title}<ArrowUpRight size={15} /></span>
+                <span className="context-options">{question.options.map((option) => <span key={option} className={question.selected.includes(option) && index < revealed ? "is-selected" : ""}>{option}</span>)}</span>
+              </button>
+            ))}
+          </div>
+          <div className="context-reason context-reason-mobile" aria-live="polite"><span>FOLLOW THE DECISION</span><p key={`${exampleIndex}-${activeQuestion}`}>{example.questions[activeQuestion].reason}</p></div>
+        </div>
+      </div>
+      <div className="context-output">
+        <div className="context-demo-label"><span>03</span> READY FOR YOUR CODE <ArrowRight size={14} /></div>
+        <div className="context-output-values" aria-label="Illustrative output, not the full API response">
+          {example.questions.map((question, index) => <code key={question.key}><span>{question.key}</span><b>{index < revealed ? question.value : "…"}</b></code>)}
+        </div>
+      </div>
+      <figcaption className="context-demo-footer"><span>Interactive illustration · no live inference. The API also returns probabilities.</span><Link href="/docs/architecture/">Inside the engine <ArrowUpRight size={14} /></Link></figcaption>
+    </figure>
+  );
 }

@@ -4,7 +4,7 @@ Images use the same shared root: Qwen3.5’s frozen vision encoder processes the
 
 ## Read once, branch many
 
-[Explore the animated shared-prefix tree](/#architecture), or [open the static illustration](/images/selfjev-architecture.png).
+[Explore the interactive shared-context walkthrough](/#architecture), or [open the static illustration](/images/selfjev-architecture.png).
 
 The document is the shared root. Each question branches from it; each candidate branches from its question. A candidate can attend to its ancestors and itself, never to sibling branches. Positions continue from the parent.
 

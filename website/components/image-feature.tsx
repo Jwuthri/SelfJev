@@ -73,7 +73,7 @@ export function ImageFeature() {
       </div>
       <div className="image-study">
         <div className="image-study-heading">
-          <div><span className="tree-overline">EARLY RESULTS / PET PHOTOS</span><h3>Teach it what to look for.</h3></div>
+          <div><span className="tree-overline">EARLY RESULTS / WIP </span><h3>Teach it what to look for.</h3></div>
           <p>Fine-tune on your own photos with <code>selfjev finetune</code> or <code>/v1/fine_tuning/jobs</code>. Training rows accept images as <code>state</code>, too.</p>
         </div>
         <div className="image-results">
@@ -85,7 +85,7 @@ export function ImageFeature() {
           ))}
         </div>
         <div className="image-study-note">
-          <p>Accuracy on just 100 test questions from one dataset, Oxford-IIIT Pet. The released selfjev-4b is text-trained; 90% belongs to a separate pet-photo fine-tune. This shows the potential of adapting to your photos, not a general image benchmark. A broader evaluation is still in progress.</p>
+          <p>Training and evaluation are ongoing on broader data.</p>
           <a className="text-link" href={`${REPO}/blob/master/docs/image_datasets.md`}>Find image training data <ArrowUpRight size={15} /></a>
         </div>
       </div>
