@@ -117,6 +117,7 @@ export type HardwareLatencyPoint = {
   a10g: number;
   l40s: number;
   h100: number;
+  memoryGb: number;
 };
 export type MacLatencyPoint = { tokens: number; questions: number; ms: number };
 
@@ -134,32 +135,30 @@ export function macLatencyData(): MacLatencyPoint[] {
   });
 }
 
-// The three files use the same archived tree_4b_combo model and request shapes.
-// They were measured in separate sweeps; values are server-side medians, not network RTTs.
+export const HARDWARE_TOKENS = [512, 2048, 8192, 16384, 32000];
+export const HARDWARE_QUESTIONS = [1, 5, 10, 25, 50];
+
+// selfjev-4b on TreeServer, `selfjev bench`, one run per GPU on 2026-09-30 (reports/bench/selfjev4b_qsweep_summary.md).
+// Values are in-process p50s (no network); memoryGb is peak reserved GPU memory, the same on all three GPUs.
 export function hardwareLatencyData(): HardwareLatencyPoint[] {
-  const sources = [
-    ["a10g", "reports/latency/requests_combo.jsonl", "combo_vllm"],
-    ["l40s", "reports/latency/requests_qwen35.jsonl", "combo_vllm_l40s"],
-    ["h100", "reports/latency/requests_h100.jsonl", "h100_bf16"],
-  ] as const;
-  const loaded = sources.map(([key, file, endpoint]) => ({
+  type Row = { state_tokens: number; questions: number; candidates: number; type: string; e2e_ms_p50: number; cuda_peak_reserved_mb: number };
+  const rows = Object.fromEntries((["a10g", "l40s", "h100"] as const).map((key) => [
     key,
-    endpoint,
-    rows: fs.readFileSync(path.join(root, file), "utf8").trim().split("\n").map((line) => JSON.parse(line)),
-  }));
-  return [1, 16].flatMap((questions) =>
-    [8, 512, 2048, 4096].map((tokens) => {
-      const values = Object.fromEntries(loaded.map(({ key, endpoint, rows }) => {
-        const times = rows
-          .filter((r: { status: number; rep: number; endpoint: string; questions: number; text_tokens: number }) =>
-            r.status === 200 && r.rep > 0 && r.endpoint === endpoint &&
-            r.questions === questions && r.text_tokens === tokens)
-          .map((r: { server_ms: number }) => r.server_ms)
-          .sort((a: number, b: number) => a - b);
-        if (times.length !== 10) throw new Error(`Expected 10 latency samples for ${key}, ${tokens} tokens, ${questions} questions`);
-        return [key, (times[4] + times[5]) / 2];
-      }));
-      return { tokens, questions, ...values } as HardwareLatencyPoint;
+    (JSON.parse(fs.readFileSync(path.join(root, `reports/bench/selfjev4b_qsweep_${key}/bench.json`), "utf8")).rows as Row[])
+      .filter((r) => r.candidates === 3 && r.type === "multiclass"),
+  ])) as Record<"a10g" | "l40s" | "h100", Row[]>;
+  return HARDWARE_QUESTIONS.flatMap((questions) =>
+    HARDWARE_TOKENS.map((tokens) => {
+      const cell = (key: keyof typeof rows) => {
+        const r = rows[key].find((x) => x.state_tokens === tokens && x.questions === questions);
+        if (!r) throw new Error(`No bench row for ${key}, ${tokens} tokens, ${questions} questions`);
+        return r;
+      };
+      const [a10g, l40s, h100] = [cell("a10g"), cell("l40s"), cell("h100")];
+      return {
+        tokens, questions, a10g: a10g.e2e_ms_p50, l40s: l40s.e2e_ms_p50, h100: h100.e2e_ms_p50,
+        memoryGb: Math.max(a10g.cuda_peak_reserved_mb, l40s.cuda_peak_reserved_mb, h100.cuda_peak_reserved_mb) / 1024,
+      };
     }),
   );
 }

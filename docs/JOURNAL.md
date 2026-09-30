@@ -9,13 +9,13 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
-| `selfjev bench` question sweep (1/5/10/25/50 q × 512–32K tokens), current model on `TreeServer` | Claude qsweep | AWS `selfjev-qsweep-{a10g,l40s,h100}` (g5.xlarge us-east-1, g6e.xlarge us-east-2, p5.4xlarge spot), 3 h shutdown cap | 2026-09-30 09:58 PDT | ≈ 11:00 PDT |
 | Survey open Jev-like classifiers on HF + accuracy matrix vs selfjev-4b | Claude competitors | local (survey); GPU scoring only after the user's OK | 2026-09-30 10:00 PDT | this session |
 
 ## Spend so far (real cost, BYOK upstream included)
 
 | item | cost | who |
 |---|---|---|
+| AWS: question sweep, 3 boxes in parallel 09:58–10:33 PDT 2026-09-30: g5.xlarge `i-05aa75d38f018311c` us-east-1 (≈ 32 min), g6e.xlarge `i-007faea0168e939a8` us-east-2 (≈ 23 min), p5.4xlarge **spot** us-east-2b at $2.457/h `i-0c4bf4fd234c63c1e` (≈ 6 min, cuDNN crash) + `i-071f28e6b48ea0ae6` (≈ 16 min); all terminated, SGs and key pairs deleted by the driver | ≈ $2.15 | Claude qsweep |
 | AWS: vision merged release g5.2xlarge `i-01d977d389fa24893` us-east-1, 09:30–09:36 PDT 2026-09-30 (terminate request; cleaned 09:40), SG and key pair deleted | compute ≈ $0.15, ≈ $0.95 with the 8.8 GB upload's transfer (approved ≈ $1.10, cap $2.10) | Claude images |
 | AWS: images v1 g6e.xlarge `i-0c39fa20d45c4d2bf` us-east-2, 22:12 PDT 09-29 – 01:51 PDT 09-30 (≈ 3.65 h, full epoch after the user's OK, terminated by the driver); SG and key pair deleted | ≈ $6.79 | Claude images |
 | AWS: image speed + fine-tune g6e.xlarge `i-063f6ab00212d6977` us-east-2, 19:57–20:34 PDT 2026-09-29 (≈ 36 min, terminated by the driver); SG and key pair deleted | ≈ $1.12 | Claude images |
@@ -100,6 +100,38 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
 - **Verdict:** the shared prefix and text + images in one model are no longer unique (Mica, kev, ArseneLupin share
   the prefix; jpt, imajev, openjev, vjev-vision, AutoJev take images). Per-candidate description scoring and native
   multilabel are. Any "best" claim needs our numbers on the shared boards: next step is a GPU run (needs the user's OK).
+
+### 2026-09-30 10:35 PDT: many questions on one document: `selfjev-4b` latency, memory and throughput on A10G, L40S and H100 (Claude qsweep, user request)
+
+- **Why:** a reviewer asked how latency, memory and throughput scale with the number of typed decisions on one document
+  (1, 5, 10, 25, 50 on a 24 GB GPU). The current model had no NVIDIA timing on its own engine (`TreeServer`).
+- **Run:** `selfjev bench --lengths 512,2048,8192,16384,32000 --questions 1,5,10,25,50` (3 options per question,
+  synthetic text, one request at a time, in process), `weights/selfjev_4b_vision` merged, bf16, on g5.xlarge (A10G 24 GB),
+  g6e.xlarge (L40S) and p5.4xlarge spot (H100) in parallel. Summary: `reports/bench/selfjev4b_qsweep_summary.md`;
+  raw: `reports/bench/selfjev4b_qsweep_{a10g,l40s,h100}/`.
+- **Memory is flat in questions, set by document length:** 1 → 50 questions adds ≤ 1.4 GiB allocated (weights 8 GiB);
+  32K tokens peak at 14.2–15.0 GiB allocated, 18.5–21.1 reserved. **All 25 cells fit on the 24 GB A10G** (22.5 GiB
+  usable), no OOM. Identical on the three GPUs.
+- **Latency, 1 → 50 questions (p50 ms):** 2K text: A10G 584 → 1,945, L40S 243 → 894, H100 166 → 404; 32K text: A10G
+  22,019 → 27,760, L40S 9,146 → 11,544, H100 4,033 → 5,206. 50 questions cost 1.3–6.1× one; each extra question
+  3–24 ms (H100), 10–49 (L40S), 25–117 (A10G). One 50-question request is 8–40× faster than 50 one-question requests.
+- **Throughput within one request (2K text, 1 → 50 questions):** A10G 1.7 → 25.7 decisions/s, L40S 4.1 → 55.9, H100
+  6.0 → 124.
+- **Fixes on the way:** (1) on H100, PyTorch picks cuDNN attention, which failed to load
+  (`CUDNN_STATUS_SUBLIBRARY_LOADING_FAILED`) and crashed the first request: `TreeServer` now calls
+  `torch.backends.cuda.enable_cudnn_sdp(False)` (A10G/L40S never pick it). `selfjev serve` on an H100 would have hit this.
+  (2) `selfjev bench` records an OOM cell instead of crashing, adds `cuda_peak_reserved_mb`, stops filling
+  `state_encodes` / `state_tokens_encoded` with pair-count placeholders (nulled in the A10G/L40S JSON, which ran before
+  that fix) and no longer crashes writing `bench.md` (`max_batch_size` missing from `TreeServer`'s meta; the files were
+  regenerated from `bench.json`). (3) `scripts/aws/aws_launch.sh` takes `SPOT=1`.
+- **Limits:** synthetic text; one request at a time (concurrent batching not measured); 32K exceeds the 16K training
+  length (timed, accuracy not validated); A10G 32K cells have 3 samples. Cold start 17–52 s load + 39–75 s first request.
+- **Cost:** ≈ $2.15. **Verdict:** the shared-prefix tree makes extra questions on one document nearly free in memory
+  and cheap in time; a 24 GB card serves 32K-token texts with 50 questions. **Next:** concurrent-request throughput.
+- **Docs and website:** `docs/speed.md` gets a section and loses its "no NVIDIA timing for the current model" claims; the
+  homepage hardware explorer (`website/lib/evidence.ts`, `components/hardware-explorer.tsx`) now reads these three
+  `bench.json` files (512–32K tokens × 1–50 questions, plus peak memory) instead of the archived Qwen3 tree's vLLM logs;
+  `website/content/hardware.md` has the A10G table, `aws.md` the A10G line.
 
 ### 2026-09-30 09:46 PDT: website defaults to the vision release (Codex vision website, user request)
 

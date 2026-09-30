@@ -4,7 +4,7 @@
 
 | Workload | GPU / VRAM | System RAM | CPU | Status |
 |---|---|---|---|---|
-| Light inference | NVIDIA, 24 GB | 16–32 GB | 4 vCPUs | Planning recommendation; A10G engine correctness checked |
+| Light inference | NVIDIA, 24 GB | 16–32 GB | 4 vCPUs | Measured on an A10G: texts up to 32K tokens with 50 questions fit (21.1 GB peak) |
 | Smaller-memory experiment | NVIDIA, 16 GB | 16–32 GB | 4+ vCPUs | Documented floor; workload-dependent, not a measured minimum |
 | Long inputs or more concurrency | NVIDIA, 48 GB | 32 GB+ | 8 vCPUs | Conservative starting point; measure your workload |
 | Fine-tuning | L40S, 48 GB | 64 GB used on g6e.2xlarge | 8 vCPUs | Training recipe run on this class of machine |
@@ -15,7 +15,25 @@ System RAM and GPU VRAM are separate resources. Extra system RAM does not automa
 
 ## Compare measured GPU response times
 
-The [interactive hardware comparison](/#hardware) shows server-side median request times on A10G, L40S, and H100 for short through long inputs and either 1 or 16 questions about the same text. Each result is the median of 10 warmed requests, with three answer options per question and network time excluded. The GPU runs use vLLM; the Mac run uses the native tree engine on MPS. These are measured configurations, not a hardware-only comparison. The chart links each GPU to its raw request log; full model and runtime configurations are recorded in the [benchmark methodology](https://jwuthri.github.io/SelfJev/speed/).
+The [interactive hardware comparison](/#hardware) shows how long one request takes with the current **SelfJev-4B** on A10G, L40S, and H100: texts from 512 to 32,000 tokens, with 1 to 50 questions about the same text. It runs the native tree engine that `selfjev serve` uses, measured on September 30, 2026. Each value is the median of up to 20 warmed requests (at least 3), with three answer options per question. The times are measured inside the process, without HTTP or network time. The chart links each GPU to its raw benchmark; the [full tables](https://github.com/Jwuthri/SelfJev/blob/master/reports/bench/selfjev4b_qsweep_summary.md) add decisions per second and the cost of each extra question.
+
+## Many questions about one text
+
+The shared-prefix tree reads the text once. Each question then adds only its own short branch. On a **24 GB A10G**:
+
+| Text tokens | 1 question | 5 | 10 | 25 | 50 | Peak GPU memory, 1 → 50 questions |
+|---|---:|---:|---:|---:|---:|---|
+| 512 | 241 ms | 319 | 401 | 735 | 1,470 | 8.1 → 9.6 GB |
+| 2,048 | 584 ms | 653 | 741 | 1,165 | 1,945 | 8.5 → 9.6 GB |
+| 8,192 | 2,558 ms | 2,678 | 2,825 | 3,436 | 4,576 | 9.7 → 11.3 GB |
+| 16,384 | 7,157 ms | 6,991 | 7,404 | 7,545 | 9,607 | 13.2 → 13.9 GB |
+| 32,000 | 22,019 ms | 22,434 | 22,978 | 24,643 | 27,760 | 18.5–21.1 GB |
+
+- **Memory follows the text, not the questions.** The weights take about 8 GB, and 50 questions add at most 1.4 GB. Every workload above fits on the 24 GB card.
+- **Latency grows far more slowly than the number of questions.** Fifty questions take 1.3–6.1× as long as one. One request with 50 questions is 8–40× faster than 50 requests with one question each.
+- **Faster GPUs cut the time, not the memory.** Fifty questions about a 2,048-token text take 1,945 ms on the A10G, 894 ms on an L40S and 404 ms on an H100. Memory use is the same on all three.
+
+These requests use synthetic text and are sent one at a time; concurrent requests batched together are not measured. The 32K rows measure time and memory only: the model was trained on texts up to 16K tokens.
 
 ## Apple Silicon experiment
 
@@ -42,7 +60,7 @@ The underlying [Qwen3.5-4B configuration](https://huggingface.co/Qwen/Qwen3.5-4B
 
 For comparison, [Jev's published limits](https://docs.typesafe.ai/models) are **32K tokens for state plus the longest question**, and **64K tokens for state plus all questions combined** (checked September 28, 2026). Self-hosting lets you experiment with a larger budget, subject to memory and validation on your documents.
 
-Memory use grows with document length, the number of question/candidate branches, and batching. The current tree builds a dense attention mask; long packed sequences can be expensive even when the weights fit.
+Memory use grows mainly with document length, [as measured above](#many-questions-about-one-text); question and candidate branches add little, and batching adds more. The current tree builds a dense attention mask, so long packed sequences can be expensive even when the weights fit.
 
 Start with short inputs and conservative batching. The controls are:
 
@@ -60,6 +78,6 @@ Budget **50 GB of free disk** for the checkout, Python/CUDA dependencies, adapte
 
 ## What has actually been measured?
 
-The hardware explorer includes latency runs on A10G, L40S, H100, and M5 Pro. The native tree engine also has an A10G correctness check, and the training recipe ran on an L40S. Mac serving and full-model CPU inference remain unvalidated. See the linked reports for the configuration and scope of each measurement.
+The current model's latency and memory are measured on A10G, L40S and H100, and a smaller experiment ran on an M5 Pro. The native tree engine also has an A10G correctness check, and the training recipe ran on an L40S. L4 latency, Mac serving and full-model CPU inference remain unvalidated. See the linked reports for the configuration and scope of each measurement.
 
-Sources: [deployment notes](https://github.com/Jwuthri/SelfJev/blob/master/docs/deploy.md), [engine loader](https://github.com/Jwuthri/SelfJev/blob/master/src/selfjev/engine/qwen35.py), [tree packing](https://github.com/Jwuthri/SelfJev/blob/master/src/selfjev/engine/tree.py), [GPU engine check](https://github.com/Jwuthri/SelfJev/tree/master/reports/selfjev_4b_treeserver), and [latency methodology](https://jwuthri.github.io/SelfJev/speed/).
+Sources: [question sweep](https://github.com/Jwuthri/SelfJev/blob/master/reports/bench/selfjev4b_qsweep_summary.md), [deployment notes](https://github.com/Jwuthri/SelfJev/blob/master/docs/deploy.md), [engine loader](https://github.com/Jwuthri/SelfJev/blob/master/src/selfjev/engine/qwen35.py), [tree packing](https://github.com/Jwuthri/SelfJev/blob/master/src/selfjev/engine/tree.py), [GPU engine check](https://github.com/Jwuthri/SelfJev/tree/master/reports/selfjev_4b_treeserver), and [latency methodology](https://jwuthri.github.io/SelfJev/speed/).

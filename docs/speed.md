@@ -12,12 +12,39 @@
       shorter "compact" tree format did not pay off.
     - **Cost:** a fully busy A10G is cheaper per request than Jev (up to 3×, less with many questions); an idle one is
       not. On an L40S the Qwen3 tree on vLLM is cheaper than Jev in every cell measured.
-    - **The default model, `selfjev-4b` (Qwen3.5), has no NVIDIA GPU latency yet.** The numbers above are the Qwen3 tree's
-      (`tree_4b_combo`, weights at tag `archive/pre-cleanup-2026-09-27`). The same Qwen3.5 architecture on vLLM keeps
-      its accuracy and is fast for one question (87–131 ms server side up to 2K tokens on an L40S), but slow for many:
-      vLLM reuses a hybrid model's recurrent state only every 528 tokens, so each candidate recomputes part of the
-      text. `selfjev serve` therefore serves it with its own tree (`TreeServer`, the default engine), which does the
-      Qwen3 tree's work. A separate Apple M5 Pro MPS experiment is reported below; it is not comparable to the earlier NVIDIA sweep.
+    - **The default model, `selfjev-4b`, on its own engine (`TreeServer`, 2026-09-30): extra questions on one text are
+      nearly free.** From 1 to 50 questions, memory grows by at most 1.4 GiB and latency by 1.3–6.1×; a 24 GB A10G holds
+      a 32K-token text with 50 questions ([below](#many-questions-on-one-text-2026-09-30)). The Jev comparisons above
+      are the older Qwen3 tree's (`tree_4b_combo`, weights at tag `archive/pre-cleanup-2026-09-27`); the current model
+      has not been timed against Jev. On vLLM the Qwen3.5 architecture is fast for one question but slow for many
+      (it reuses the recurrent state only every 528 tokens), which is why `selfjev serve` uses `TreeServer`. A separate
+      Apple M5 Pro MPS experiment is reported below.
+
+## Many questions on one text (2026-09-30)
+
+`selfjev-4b` (`weights/selfjev_4b_vision`, merged, bf16) on `TreeServer`, `selfjev bench`: one synthetic text, 1 to 50
+questions with 3 options each, one request at a time, in process (no network), p50. Same run on three AWS GPUs in
+parallel. Full tables (every length, decisions/s, per-question cost) and limits:
+[reports/bench/selfjev4b_qsweep_summary.md](../reports/bench/selfjev4b_qsweep_summary.md).
+
+| GPU | text tokens | 1 q | 5 q | 10 q | 25 q | 50 q |
+|---|---|---|---|---|---|---|
+| A10G 24 GB | 2,048 | 584 ms | 653 | 741 | 1,165 | 1,945 |
+| A10G 24 GB | 32,000 | 22,019 ms | 22,434 | 22,978 | 24,643 | 27,760 |
+| L40S 48 GB | 2,048 | 243 ms | 269 | 300 | 484 | 894 |
+| L40S 48 GB | 32,000 | 9,146 ms | 9,335 | 9,478 | 10,337 | 11,544 |
+| H100 80 GB | 2,048 | 166 ms | 176 | 189 | 252 | 404 |
+| H100 80 GB | 32,000 | 4,033 ms | 4,122 | 4,200 | 4,574 | 5,206 |
+| peak memory, allocated / reserved (all GPUs) | 2,048 | 8.3 / 8.5 GiB | 8.3 / 8.5 | 8.3 / 8.5 | 8.7 / 9.0 | 9.5 / 9.6 |
+| peak memory, allocated / reserved (all GPUs) | 32,000 | 14.2 / 20.2 GiB | 14.3 / 20.3 | 14.1 / 18.5 | 15.0 / 21.1 | 14.4 / 19.5 |
+
+- **Memory follows the text, not the questions.** The weights take 8 GiB; 50 questions add at most 1.4 GiB. Every cell
+  fits on the 24 GB A10G (22.5 GiB usable); the tightest, 32K × 25 questions, reserved 21.1 GiB.
+- **Each extra question costs** 3–24 ms on the H100, 10–49 ms on the L40S and 25–117 ms on the A10G (more for longer
+  texts). One 50-question request is 8–40× faster than 50 one-question requests.
+- **Throughput inside one request** rises with questions: on a 2K text 1.7 → 25.7 decisions/s (A10G), 4.1 → 55.9
+  (L40S), 6.0 → 124 (H100). Concurrent requests batched together are not measured.
+- The H100 needed a fix: PyTorch picks cuDNN attention there and it failed to load; `TreeServer` now turns it off.
 
 ## Tree vs stock pairs (same A10G, bf16, unmerged LoRA)
 
@@ -156,12 +183,12 @@ in git).
 work as the Qwen3 tree. Since the 2026-09-27 cleanup it is the default engine of `selfjev serve`, `eval` and `bench`
 (vLLM stays available with `--engine vllm`). It matches standalone sequences in a CPU test
 (`tests/engine/test_tree.py`) and, on GPU, the forked-cache engine's answers: the same `selfjev-4b` weights score the same on both engines: eval2 95.68 vs 95.78, dev benchmark 83.78 vs 83.75, eval_llm 93.13 vs 93.13 (99.8%, 99.8% and 100% of decisions identical)
-([JOURNAL 2026-09-27 11:55](JOURNAL.md)). But **its latency has not been measured on an NVIDIA GPU**, including the L4
-(g6.xlarge) that `selfjev deploy aws` picks by default: there are no benchmark numbers for it yet. The end-to-end test
+([JOURNAL 2026-09-27 11:55](JOURNAL.md)). Its latency on A10G, L40S and H100 is [above](#many-questions-on-one-text-2026-09-30);
+the L4 (g6.xlarge) that `selfjev deploy aws` picks by default is still untimed. The end-to-end test
 ([2026-09-28](../reports/e2e/2026-09-28/report.md): an L40S, the adapter unmerged for fine-tuning, round trips including ~70 ms of network) saw 0.2–0.3 s
 for one warm request with six questions, 39 s for the very first request (kernel compilation, now done at startup),
 and 16 concurrent requests, batched together, returning after 18.6 s cold and 4.4–6.4 s warm while a fine-tuning job
-shared the GPU: requests in one batch all wait for it. `selfjev bench` on a GPU box is the first step. For reference, the forked-cache engine it replaced took 156 and 252 ms for one question at 512 and
+shared the GPU: requests in one batch all wait for it. For reference, the forked-cache engine it replaced took 156 and 252 ms for one question at 512 and
 2,048 tokens, and 341 and 508 ms for 16 questions (in-process p50 on the L40S, `reports/qwen35_4b_tree/bench.json`).
 
 ## Current model on Apple Silicon (2026-09-28)
@@ -179,7 +206,8 @@ both ends. [Raw samples](../reports/latency/mac_m5_pro_selfjev4b.json) · [repro
 
 `flash-linear-attention` is not installed for MPS, so the gated recurrent operation uses the correct but slower PyTorch
 reference path. The NVIDIA figures above belong to an older Qwen3 model on vLLM; their difference from these Mac times
-does **not** isolate the hardware effect. No controlled NVIDIA latency measurement exists for the current model.
+does **not** isolate the hardware effect. The same engine and model on NVIDIA GPUs: [above](#many-questions-on-one-text-2026-09-30)
+(512 tokens × 1 question: 241 ms on an A10G).
 
 ## Cost vs Jev
 

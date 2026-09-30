@@ -2,7 +2,7 @@ The repository includes an AWS lifecycle command: provision a GPU instance, inst
 
 ## Choose a machine
 
-Start with `g6.xlarge` (L4, 24 GB VRAM) for light serving, or `g5.xlarge` (A10G, 24 GB). The native engine’s correctness was checked on an A10G. L4 serving latency has not been measured. An L40S with 48 GB gives more memory for training and larger workloads.
+Start with `g6.xlarge` (L4, 24 GB VRAM) for light serving, or `g5.xlarge` (A10G, 24 GB). On an A10G the current model serves texts up to 32K tokens with 50 questions ([measured](/docs/hardware/#many-questions-about-one-text)). L4 serving latency has not been measured. An L40S with 48 GB gives more memory for training and larger workloads.
 
 Use the [AWS instance specifications](https://aws.amazon.com/ec2/instance-types/) and your region’s live pricing. The CLI’s preset prices are estimates, not a billing quote.
 

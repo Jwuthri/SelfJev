@@ -312,13 +312,13 @@ export default function Home() {
             </p>
             <div className="speed-callout">
               <strong>
-                {Math.round(hardware.find((point) => point.tokens === 8 && point.questions === 1)!.h100)}
+                {Math.round(hardware.find((point) => point.tokens === 2048 && point.questions === 50)!.h100)}
                 <span>ms</span>
               </strong>
               <p>
                 H100 · measured processing time
                 <br />
-                Very short input · one question
+                50 questions about one 2K-token text
               </p>
             </div>
             <a className="text-link" href={`${JOURNAL}/speed/`}>
