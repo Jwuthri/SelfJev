@@ -8,12 +8,14 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
+| Update website for default vision release | Codex vision website | local website/ | 2026-09-30 09:37 PDT | this session |
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
 
 ## Spend so far (real cost, BYOK upstream included)
 
 | item | cost | who |
 |---|---|---|
+| AWS: vision merged release g5.2xlarge `i-01d977d389fa24893` us-east-1, 09:30–09:36 PDT 2026-09-30 (terminate request; cleaned 09:40), SG and key pair deleted | compute ≈ $0.15, ≈ $0.95 with the 8.8 GB upload's transfer (approved ≈ $1.10, cap $2.10) | Claude images |
 | AWS: images v1 g6e.xlarge `i-0c39fa20d45c4d2bf` us-east-2, 22:12 PDT 09-29 – 01:51 PDT 09-30 (≈ 3.65 h, full epoch after the user's OK, terminated by the driver); SG and key pair deleted | ≈ $6.79 | Claude images |
 | AWS: image speed + fine-tune g6e.xlarge `i-063f6ab00212d6977` us-east-2, 19:57–20:34 PDT 2026-09-29 (≈ 36 min, terminated by the driver); SG and key pair deleted | ≈ $1.12 | Claude images |
 | AWS: image eval rerun g6e.xlarge `i-0e2052bb4bfd1c824` us-east-2, 18:05–18:22 PDT 2026-09-29 (≈ 17 min running, terminated by the driver); SG and key pair deleted | ≈ $0.55 | Claude images |
@@ -63,6 +65,22 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-30 09:45 PDT: selfjev 0.3.0 on PyPI, the vision merged checkpoint on Hugging Face (Claude images, user request)
+
+- **PyPI:** `selfjev` **0.3.0** (image states, image fine-tuning, the vision adapter by default) published by
+  `.github/workflows/release.yml` on tag `v0.3.0` (commit `6299e0d`, run 36744769159: build, smoke test and trusted-publishing
+  upload all green); wheel and sdist on pypi.org. Local checks first: `twine check --strict` passed; a clean venv imports it
+  without torch, turns image bytes into a data URL and the CLI starts. PyPI README gained an images section and the vision
+  release's numbers.
+- **Hugging Face:** [Jwuthrich/selfjev-4b-vision-merged](https://huggingface.co/Jwuthrich/selfjev-4b-vision-merged), commit
+  `8c2cd74356f857b1e8903eef825ad9445f066993`: `selfjev merge --adapter Jwuthrich/selfjev-4b-vision` on a g5.2xlarge, the
+  original multimodal checkpoint with the 152 LoRA-target tensors replaced (`merge_meta.json`: adapter sha256 `5b619930…`);
+  both shards' sha256 on the box (`036f8c81…`, `cfcfdc09…`) equal the Hub's LFS hashes; the page shows no config error. The
+  card says which release to use: the adapter + default engine for images, this one on the vLLM backend for text. The HF
+  token went to the upload process over ssh stdin only (never written on the box). Not benchmarked through vLLM.
+- The adapter card (`Jwuthrich/selfjev-4b-vision`, commit `55fb32c`, and `weights/selfjev_4b_vision/README.md`) now installs
+  from PyPI 0.3.0 instead of GitHub.
 
 ### 2026-09-30 08:30 PDT: images v1 is the default, published as Jwuthrich/selfjev-4b-vision (Claude images, user request)
 

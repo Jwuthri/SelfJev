@@ -32,10 +32,10 @@ separately.
 
 ## Quickstart
 
-Image support is on GitHub `master`; the PyPI release (0.2.0) predates it.
+Image support needs `selfjev` 0.3.0 or later.
 
 ```bash
-pip install "selfjev[serve] @ git+https://github.com/Jwuthri/SelfJev"
+pip install "selfjev[serve,gpu]"
 selfjev serve --adapter Jwuthrich/selfjev-4b-vision      # one CUDA GPU; an L40S was used below
 ```
 
