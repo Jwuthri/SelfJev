@@ -339,6 +339,26 @@
   "accuracy": 0.8271391529818496,
   "n": 3471
  },
+ "reports/images_2026-09-29/base_pets100/report.json": {
+  "accuracy": 0.73,
+  "n": 100
+ },
+ "reports/images_2026-09-29/pets_ft_eval2/report.json": {
+  "accuracy": 0.952787543947765,
+  "n": 1991
+ },
+ "reports/images_2026-09-29/pets_ft_pets100/report.json": {
+  "accuracy": 0.9,
+  "n": 100
+ },
+ "reports/images_2026-09-29/selfjev_4b_eval2/report.json": {
+  "accuracy": 0.9568056253139126,
+  "n": 1991
+ },
+ "reports/images_2026-09-29/selfjev_4b_pets100/report.json": {
+  "accuracy": 0.78,
+  "n": 100
+ },
  "reports/jina_r2b/calibration/report.json": {
   "accuracy": 0.740395809080326,
   "n": 859

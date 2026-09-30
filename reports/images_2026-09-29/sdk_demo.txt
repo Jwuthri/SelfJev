@@ -1,0 +1,5 @@
+persian.jpg: breed=persian {'persian': 0.996, 'siamese': 0.002, 'bengal': 0.001, 'sphynx': 0.002} cat=0.989 (4214 ms)
+persian.jpg: breed=persian {'persian': 0.996, 'siamese': 0.002, 'bengal': 0.001, 'sphynx': 0.002} cat=0.989 (284 ms)
+siamese.jpg: breed=siamese {'persian': 0.044, 'siamese': 0.95, 'bengal': 0.004, 'sphynx': 0.002} cat=0.989 (293 ms)
+bengal.jpg: breed=bengal {'persian': 0.002, 'siamese': 0.003, 'bengal': 0.994, 'sphynx': 0.001} cat=0.991 (355 ms)
+text-only request: 272 ms

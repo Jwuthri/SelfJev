@@ -30,6 +30,7 @@ nav = [
     { "Datasets and labels" = "data.md" },
     { "Round-2 hard cases" = "hardcases_round2.md" },
     { "LLM-evaluation data" = "llm_eval_data.md" },
+    { "Image datasets" = "image_datasets.md" },
   ] },
   { "Context" = [
     { "Jev and open alternatives" = "landscape.md" },

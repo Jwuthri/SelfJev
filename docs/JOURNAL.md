@@ -14,6 +14,9 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | item | cost | who |
 |---|---|---|
+| AWS: image speed + fine-tune g6e.xlarge `i-063f6ab00212d6977` us-east-2, 19:57–20:34 PDT 2026-09-29 (≈ 36 min, terminated by the driver); SG and key pair deleted | ≈ $1.12 | Claude images |
+| AWS: image eval rerun g6e.xlarge `i-0e2052bb4bfd1c824` us-east-2, 18:05–18:22 PDT 2026-09-29 (≈ 17 min running, terminated by the driver); SG and key pair deleted | ≈ $0.55 | Claude images |
+| AWS: image eval g6e.xlarge `i-02cb3bea622f94f61` us-east-2, 22:21–00:21 UTC 2026-09-29/30 (2 h, ended by its own `shutdown -h` cap: results never pulled, see log); SG and key pair deleted | ≈ $3.72 | Claude images |
 | AWS: end-to-end test g6e.xlarge `i-05b52371c5eeb4d8c` us-east-2, 19:01–19:27 UTC 2026-09-28 (26 min), terminated by hand after the script's teardown crashed; SG and key pair deleted | ≈ $0.81 | fork |
 | AWS: merged HF release g5.2xlarge `i-0d2a8155413fe9cd5`, us-east-1, 17:18:50–17:27:04 UTC 2026-09-28 (termination request); terminated, SG/key deleted | compute ≈ $0.17; conservative total ≈ $1.10 including full outbound transfer, final bill pending (approved $3) | Codex HF merge |
 | AWS: `selfjev_4b_repro` (selfjev-4b's data, new code) g6e.2xlarge `i-0e8a08bdbdfd8cb10` us-east-2, 20:11 UTC 2026-09-27 – 05:18 UTC 09-28 (547 min, 9 min of it after the job), terminated; SG and key pair deleted by the driver | ≈ $20.44 | fork |
@@ -59,6 +62,95 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-09-29 20:40 PDT: images: 163 ms per request, and 2,220 pet photos lift the test from 78% to 90% (Claude images)
+
+- **Speed** (L40S, `scripts/eval/time_images.py`, 20 photos, warm, `reports/images_2026-09-29/timing.txt`): text 1 question 136 ms;
+  image 1 yes/no 163 ms (10 ms CPU resize, 153 ms model); image 12-way 165 ms; image with 5 questions 167 ms. The photo is
+  encoded once, so more questions on it are nearly free. The first image request loads the vision tower: 4.1 s. Before the
+  fix the same 100 questions took 411 s (fp32 tower, non-cuDNN Conv3d), after it 16 s. Through the SDK from the Mac (ssh
+  tunnel, 2 questions): 284-355 ms, text 272 ms.
+- **Fine-tune on images** (`selfjev finetune --init weights/selfjev_4b --lr 5e-5 --epochs 1`, `data/pets_train.jsonl`: 4,218
+  train / 222 validation questions from 2,220 Oxford-IIIT Pet train photos, description style "persian", not the test's "a Persian
+  cat"): 35 steps, ≈ 15 min, no memory problem. Validation accuracy 90.5 -> 94.1, loss 0.296 -> 0.171.
+- **Test** (`eval_pets100`, test-split photos, no overlap with training), `reports/images_2026-09-29/`:
+
+  | model | all | cat breed (12) | all breeds (37) | is it a cat |
+  |---|---|---|---|---|
+  | bare Qwen3.5-4B | 73% | 38 / 61 | 14 / 18 | 21 / 21 |
+  | `selfjev-4b` zero-shot | 78% | 42 / 61 | 15 / 18 | 21 / 21 |
+  | **fine-tuned on pet photos** | **90%** | **54 / 61** | 15 / 18 | 21 / 21 |
+
+  Fine-tuned vs zero-shot: 13 only-fine-tuned / 1 only-zero-shot, McNemar p = 0.0018; vs base p = 0.0002.
+- **Text after image training** (eval2, no text rows mixed in): 95.68 -> 95.28 (10 / 18, p = 0.19, not significant); binary 96.7
+  -> 96.7, multiclass 96.8 -> 96.5, multilabel 91.4 -> 89.8. Mixing text rows into the image file is the obvious guard.
+- **SDK demo** (`state=[Path(...)]`, plain `selfjev-4b` server): Persian 0.996, Siamese 0.950, Bengal 0.994 on their own photos,
+  "is there a cat" 0.989-0.991: `reports/images_2026-09-29/sdk_demo.txt`.
+- **Caveats:** 100 questions (61 / 18 / 21 by family) is small; the 37-breed part has 18. One dataset, one run, one lr.
+  `data/eval_pets.jsonl` is only the pets test split: no other visual task is measured.
+- **After the run:** `selfjev serve`'s warm-up also sends one image (a 1 × 1 PNG, 64 tokens), so the vision tower loads before
+  `/health` answers instead of on the first image request (the 4.1 s); an engine that refuses images still starts
+  (`tests/server/test_app.py`). Not timed on a GPU.
+- **Cost:** ≈ $1.12. **Verdict:** image input and image fine-tuning work end to end and are fast; text cost of image
+  training is within noise here. **Next:** more datasets (docs/image_datasets.md) mixed with text rows, full 1,853 pets questions.
+
+### 2026-09-29 19:55 PDT: fine-tuning on images: code, datasets, GPU run waiting for the user's OK (Claude images)
+
+- **Fine-tuning takes images:** `encode_items` keeps an image as a data URL in the shared root (`tree.Root`), `score()` makes
+  its pixels per batch (a corpus of pixel tensors does not fit in memory), the tower stays frozen (no grad), so `selfjev
+  finetune`, `rlcd` and the fine-tuning endpoint (upload rows with an image or a list of parts as `state`) train the language
+  LoRA on photos. `tests/engine/test_tree_image.py::test_training_on_images_matches_full_forward_gradients`: every
+  language-model gradient through the tree equals HF's full multimodal forward (tiny random model, CPU);
+  `tests/server/test_finetuning.py::test_image_rows_upload_as_parts`. 98 tests pass. Not yet run on a GPU.
+- **Datasets:** [image_datasets.md](image_datasets.md): 25 HF classification sets checked (rows, classes, licence).
+  `scripts/data/hf_images_to_rows.py <hf id>` turns any of them into rows (multiclass among 12 options + yes/no per photo);
+  `data/pets_train.jsonl` (gitignored): 2,220 photos (60 per breed, Oxford-IIIT Pet train split) -> 4,440 questions.
+- **Not measured yet:** the image latency after the bf16 tower + matmul patch embed fix (`scripts/eval/time_images.py`),
+  and any image fine-tune. Driver ready; waiting for the user's price OK.
+
+### 2026-09-29 18:35 PDT: first image scores, 100 random pets questions, zero-shot (Claude images)
+
+- **Data:** 100 questions sampled (seed 0) from `data/ova/eval_pets.jsonl` (`eval_pets100`, sha256 `e6eee7d0…`; 61 cat breed
+  12-way, 18 all breeds 37-way, 21 "is it a cat"), one photo each. Human labels (Oxford-IIIT Pet). L40S, TreeServer path.
+- **Results** (`reports/images_2026-09-29/{selfjev_4b,base}_pets100`):
+
+  | model | all | cat breed (12) | all breeds (37) | is it a cat |
+  |---|---|---|---|---|
+  | `selfjev-4b` (never trained on images) | **78%** | 42 / 61 | 15 / 18 | 21 / 21 |
+  | bare Qwen3.5-4B, same prompt and readout | 73% | 38 / 61 | 14 / 18 | 21 / 21 |
+
+  Paired: 10 only `selfjev-4b`, 5 only base, exact McNemar p = 0.30: no significant difference at n = 100. The LoRA
+  trained on text does not hurt the vision path; cat-breed identification is the weak spot (69%).
+- **Speed problem, found and fixed in code, not re-timed on a GPU:** 411 s for 100 questions (~4 s per image, vs
+  0.23 s per text question on eval2), which is also why the full run of 18:10 was still running at its 2 h cap. Cause:
+  the vision tower was loaded in fp32 (`_from_config` default) and its patch-embed Conv3d ran without cuDNN (slow
+  path). Fix: tower in the model dtype (bf16, rotary buffers stay fp32, as HF), and the patch embed as the exact matmul it
+  is (kernel = stride = patch; `qwen35.linear_patch_embed`, test `test_linear_patch_embed_equals_conv3d`), so cuDNN is
+  no longer needed. The 100-question scores above were made before this fix (fp32 tower).
+- **SDK demo not run:** OrbStack listens on port 8000 on the Mac, so the ssh tunnel to the box's server failed (404 from
+  OrbStack). The SDK and server image paths are unit-tested (`tests/client`, `tests/server/test_compat.py`), not end to end.
+- **Cost:** ≈ $0.55. **Next:** time the fixed tower; full 1,853 questions; image training data if cat breeds matter.
+
+### 2026-09-29 18:10 PDT: images as the state: engine and API work, image scores lost with the box (Claude images)
+
+- **What:** `state` may now be an image (a base64 `data:image/...` URL, Prem's Jev-compatible convention) or a list of
+  text and image parts; the SDK turns a `Path`, bytes or a PIL image into one (`state=[Path("cat.jpg")]`). Jev takes no
+  images (TypeSafe docs: text / JSON only). The tree is kept: the image is the root, encoded once by the checkpoint's own
+  vision tower (334M, frozen, loaded on the first image; `Qwen35Scorer.visual`), root positions are Qwen3.5's 3D M-RoPE
+  (`tree.root_rope`), questions and options branch as for text. `tests/engine/test_tree_image.py`: tree = HF's own
+  multimodal forward for every leaf (tiny random model, CPU). Training on images and `--engine vllm` refuse image states.
+- **Test set:** `scripts/data/build_eval_pets.py` -> `data/{,ova/}eval_pets.jsonl` (gitignored, 114 MB each, rebuilt
+  byte-identical on the box: sha256 `803190c4…`): Oxford-IIIT Pet test split (`timm/oxford-iiit-pet@089695c`, human labels,
+  CC BY-SA 4.0), 1,853 questions / 1,567 photos: cat breed 12-way (1,183), all breeds 37-way (370), "is it a cat" (300).
+- **eval2 regression with the new code** (L40S): 95.68, identical to `selfjev_4b_treeserver` (2 of 1,991 decisions differ,
+  max score difference 0.43): `reports/images_2026-09-29/selfjev_4b_eval2`. A 5-question image smoke test: 5 / 5.
+- **Lost:** the two full image runs (selfjev-4b, bare base) started 22:37 UTC; my completion poll waited for a marker
+  that never came (the job likely died without a traceback) and I did not pull by hand, so the 2 h `shutdown -h` cap
+  terminated the box with the reports. Lesson: pull each report as it lands and bound every wait.
+- **Box fixes found on the way:** `AutoImageProcessor` needs torchvision even with `backend="pil"` (use
+  `Qwen2VLImageProcessorPil`); cuDNN 9.24 cannot load `libcudnn_engines_runtime_compiled` on the DLAMI CUDA 13 box, so
+  every cuDNN Conv3d fails: the vision tower runs with cuDNN off (its only conv is the patch embed).
+- **Cost:** ≈ $3.72 (2 h g6e.xlarge). **Verdict:** image input works end to end; accuracy not measured yet.
 
 ### 2026-09-28 13:10 PDT: a 75-second video of the end-to-end run, made from its record (fork, user request)
 

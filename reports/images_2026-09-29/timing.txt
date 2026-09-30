@@ -1,0 +1,6 @@
+first image request (loads the vision tower): 4079 ms
+request                                   median ms   p90 ms  cpu prep   model  tokens
+text, 1 question                                136      138         0     136     132
+image, 1 yes/no                                 163      167        10     153     239
+image, 12-way choice                            165      170        12     154     472
+image, 1 yes/no + 12-way + 3 more               167      172        12     154     568
