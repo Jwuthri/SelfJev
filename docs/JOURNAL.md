@@ -64,6 +64,22 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
 
 ## Log
 
+### 2026-09-30 08:30 PDT: images v1 is the default, published as Jwuthrich/selfjev-4b-vision (Claude images, user request)
+
+- **Hugging Face:** new public repo [Jwuthrich/selfjev-4b-vision](https://huggingface.co/Jwuthrich/selfjev-4b-vision), commit
+  `10ff7de14dc9e1fcf0bf949fefed1553e6ea8543`: `adapter_model.safetensors` (sha256 `5b619930…`, the adapter every
+  `reports/images_v1/` number was scored with; LFS hash checked after upload), `adapter_config.json` (the run's, minus the
+  null `task_type` HF's page parser rejects: JOURNAL 2026-09-28 13:08), `model.json` and a model card with the text,
+  image and speed numbers from their report files. The page shows no config error. The text-only repo `Jwuthrich/selfjev-4b`
+  and the merged checkpoint are untouched (the merged one stays text-only).
+- **Default switch:** `weights/selfjev_4b_vision/` (same four files) is `DEFAULT_ADAPTER`; `HUB_ADAPTER` is the new repo (a
+  pip install with no checkout downloads it); the Dockerfile and `selfjev deploy aws` pull that folder. The served model is
+  still named `selfjev-4b`. `weights/selfjev_4b` stays (text release; its `assets/` feed the README, website and card).
+  AGENTS.md, README(s), weights/README.md, docs/api.md, findings (headline), leaderboard updated. vs Jev: eval2 25 / 47
+  (p = 0.013), dev benchmark 168 / 121 (p = 0.007).
+- **Not done:** the website (another session's) and the PyPI release (0.2.0 predates image support); the merged
+  checkpoint for vLLM (needs a GPU box, and vLLM does not take images yet).
+
 ### 2026-09-30 02:05 PDT: images v1: one mixed fine-tune learns 6 image tasks (70.4 -> 94.2%), text holds, no transfer to new image tasks (Claude images)
 
 - **Data** (`scripts/data/build_images_v1.py`, all gitignored): 11,344 image questions from 6 licence-safe HF datasets (pets

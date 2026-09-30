@@ -20,8 +20,15 @@ evidence file.
 
 ## The headline
 
-!!! success "1. Best model: `selfjev-4b`, 95.8% on eval2 and 93.1% on eval_llm (Jev 97.2% and 92.5%)"
-    **`selfjev-4b`** (2026-09-26, the default, `weights/selfjev_4b`): Qwen3.5-4B + LoRA r64 trained with the
+!!! success "1. Best model: `selfjev-4b` vision, 96.1% on eval2 and 92.5% on eval_llm (Jev 97.2% and 92.5%), and it reads images"
+    **The default since 2026-09-30 is the vision release** (`weights/selfjev_4b_vision`, HF `Jwuthrich/selfjev-4b-vision`):
+    the text release below plus one epoch on 11.3K image questions (6 licence-safe datasets) and 11.3K replayed text
+    questions (lr 5e-5). eval2 **96.13%** (vs Jev 97.24%: 25 / 47, p = 0.013), eval_llm 92.49%, dev benchmark 84.07% (vs Jev
+    82.71%: 168 / 121, p = 0.007); none differs significantly from the text release on the same engine (eval2 95.68, eval_llm
+    93.13, dev 83.78). Image test (`data/ova/eval_images_v1.jsonl`, 2,002 questions): 90.4% (trained kinds of images 94.2%,
+    unseen kinds 84.3%, no transfer: conclusion 16 in [experiments.md](experiments.md); `reports/images_v1/`).
+
+    **The text release** (`selfjev-4b` 2026-09-26 to 09-30, `weights/selfjev_4b`): Qwen3.5-4B + LoRA r64 trained with the
     shared-prefix tree, every option listed in the question, from scratch on 79.9K non-test questions of
     `data/all.jsonl.gz` (texts up to 16K tokens, the LLM-evaluation data and two new verified batches; the later batch
     `mpos_distr_num_v1` is not in it), with half-weight Jev probabilities as soft targets.

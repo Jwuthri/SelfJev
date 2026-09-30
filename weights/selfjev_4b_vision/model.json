@@ -1,0 +1,39 @@
+{
+  "name": "selfjev-4b",
+  "release": "vision (images v1), 2026-09-30: the default since then; the text-only release is Jwuthrich/selfjev-4b",
+  "hub": "Jwuthrich/selfjev-4b-vision",
+  "base": "Qwen/Qwen3.5-4B",
+  "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+  "recipe": "selfjev-4b (Jwuthrich/selfjev-4b) + selfjev finetune --lr 5e-5 --soft-weight 0.5 --max-length 16384, 1 epoch, 622 steps: 11,344 image questions from 6 licence-safe Hugging Face datasets (scripts/data/build_images_v1.py) + 11,344 text questions replayed from selfjev-4b's own training rows with Jev's probabilities as half-weight soft targets. The Qwen3.5 vision tower is frozen and unchanged; the LoRA (r64, attention + DeltaNet projections) is the only trained part.",
+  "prompt": "challenger-state-first-v1 (selfjev.engine.qwen35.Qwen35Scorer.entry)",
+  "options_in_question": true,
+  "inputs": "text, JSON, an image (base64 data URL) or a list of text and image parts",
+  "eval2": 96.1,
+  "dev_benchmark": 84.1,
+  "eval_llm": 92.5,
+  "eval2_by_type": {
+    "binary": 97.4,
+    "multiclass": 97.3,
+    "multilabel": 90.8
+  },
+  "eval_images_v1": {
+    "all": 90.4,
+    "trained_datasets": 94.2,
+    "held_out_datasets": 84.3
+  },
+  "serve": [
+    "selfjev serve --adapter Jwuthrich/selfjev-4b-vision"
+  ],
+  "adapter_sha256": "5b619930d54ef041e4424d63b9a5078eb7b0a2d0b0535efec3a335ea33750179",
+  "source_run": "runs/images_v1/adapter",
+  "train_meta": "reports/train_meta/images_v1.json",
+  "reports": "reports/images_v1/",
+  "training_data_licences": {
+    "timm/oxford-iiit-pet": "CC BY-SA 4.0",
+    "zalando-datasets/fashion_mnist": "MIT",
+    "AI-Lab-Makerere/beans": "MIT",
+    "nateraw/rice-image-dataset": "CC0 1.0",
+    "timm/eurosat-rgb": "MIT",
+    "garythung/trashnet": "MIT"
+  }
+}
