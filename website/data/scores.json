@@ -639,6 +639,46 @@
   "accuracy": 0.7338709677419355,
   "n": 868
  },
+ "reports/quant/4bit/compact_challenge_v1/report.json": {
+  "accuracy": 1,
+  "n": 720
+ },
+ "reports/quant/4bit/eval2/report.json": {
+  "accuracy": 0.9467604218985435,
+  "n": 1991
+ },
+ "reports/quant/4bit/eval_llm/report.json": {
+  "accuracy": 0.919661733615222,
+  "n": 946
+ },
+ "reports/quant/8bit/compact_challenge_v1/report.json": {
+  "accuracy": 1,
+  "n": 720
+ },
+ "reports/quant/8bit/eval2_nocap/report.json": {
+  "accuracy": 0.951783023606228,
+  "n": 1991
+ },
+ "reports/quant/8bit/eval_llm/report.json": {
+  "accuracy": 0.919661733615222,
+  "n": 946
+ },
+ "reports/quant/bf16_compact_challenge_v1/report.json": {
+  "accuracy": 1,
+  "n": 720
+ },
+ "reports/quant/prequantized/verify_4bit_compact/report.json": {
+  "accuracy": 1,
+  "n": 720
+ },
+ "reports/quant/prequantized/verify_4bit_eval_llm/report.json": {
+  "accuracy": 0.919661733615222,
+  "n": 946
+ },
+ "reports/quant/prequantized/verify_8bit_compact/report.json": {
+  "accuracy": 1,
+  "n": 720
+ },
  "reports/qwen35_4b_combo/eval2/report.json": {
   "accuracy": 0.945253641386238,
   "n": 1991

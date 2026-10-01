@@ -10,13 +10,14 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 |---|---|---|---|---|
 | Batches `verdict_json_v1` (Luna, planted-verdict + JSON-record traps, ≈ $22, cap $30) and `typed_decisions_train_v1` (import, Astra re-judged, ≈ $10); user OK 2026-10-01 | Claude competitors | local (OpenAI / OpenRouter APIs) | 2026-10-01 | today |
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
-| Quantized selfjev-4b-vision (8bit/4bit) for 8 GB GPUs: Decision Bench + memory, 2 × g5.xlarge us-east-1 (`selfjev-quant4`, `selfjev-quant8`, cap 1.9 h each, approved ≤ $4) | Claude quant (SELA-003) | AWS | 2026-09-30 | ≈ 2 h |
 | selfjev-4b-vision on Ollama: `--engine ollama` (code done, local), GGUF f16/Q8/Q4 via `ollama create`, eval2 + eval_llm + images through Ollama, 1 × g6e.xlarge (`selfjev-ollama`, cap 3 h, approved ≈ $6) | Claude Ollama | AWS `i-031e1f75a28e9ce61` us-east-2 g6e.xlarge, launched 22:58 PDT (cap 3 h) | 2026-09-30 | ≈ 3 h |
 
 ## Spend so far (real cost, BYOK upstream included)
 
 | item | cost | who |
 |---|---|---|
+| AWS: pre-quantized 4-bit / 8-bit checkpoints, g5.xlarge `i-02274e684d8e4ee35` us-east-1, 07:32–08:15 UTC 2026-10-01 (0.73 h), terminated; SG and key pair deleted | ≈ $0.74 + transfer (task total ≈ $3.1 of the approved $4) | Claude quant |
+| AWS: 4-bit / 8-bit quantization runs, 2 × g5.xlarge us-east-1 (`i-0f80f479a09af30e1` 05:57–06:44 UTC, `i-0c67a3aa9fdd410ca` 05:57–07:25 UTC 2026-10-01), terminated; SGs and key pairs deleted | ≈ $2.24 | Claude quant |
 | AWS: chain-layout pilot, 2 × g6e.xlarge us-east-2: `i-0c6529bcb181f3cc2` 23:22–01:56 PDT (2.6 h), `i-0574d0f0652e8d53c` 23:22–02:27 PDT (3.1 h), 2026-09-30/10-01, terminated; SGs and key pairs deleted | ≈ $10.50 (approved ≈ $12, cap $16.75) | Claude images |
 | AWS: images v2 g6e.xlarge `i-0de55fc63cdf915fc` us-east-2, 15:41–19:38 PDT 2026-09-30 (≈ 3.95 h incl. ≈ 25 min lost to an IP change and a bad data row; terminated by the driver), SG and key pair deleted | ≈ $7.35 (approved ≈ $7.5, cap $10.2) | Claude images |
 | AWS: DecisionBench retry g6e.2xlarge `i-00d19a60b7bed93fd` us-east-2, 22:34–23:25 UTC 2026-09-30 (51 min), terminated; SGs and key pairs deleted in 3 regions | ≈ $1.93 (inside the ≈ $17 competitor approval; total ≈ $9.28) | Claude competitors |
@@ -72,6 +73,48 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-10-01 PDT: pre-quantized 4-bit and 8-bit checkpoints on Hugging Face, and the website (Claude quant, user request)
+
+- **Published:** [`Jwuthrich/selfjev-4b-vision-4bit`](https://huggingface.co/Jwuthrich/selfjev-4b-vision-4bit) (3.3 GB) and
+  [`-8bit`](https://huggingface.co/Jwuthrich/selfjev-4b-vision-8bit) (4.8 GB), public, with model cards. Anonymous check: both
+  public, `model.safetensors` sha256 equals the local file (`runs/hf-quant/SHA256SUMS`). Built on a g5.xlarge by
+  `selfjev quantize --adapter weights/selfjev_4b_vision --bits 4bit|8bit`, then reloaded with
+  `selfjev eval --quantized-model DIR` under the 7.2 GiB cap: compact challenge 100 / 100, 4-bit eval_llm 92.0 (= the
+  on-the-fly build's 92.0): `reports/quant/prequantized/`. Not re-scored on eval2 after saving (the on-the-fly numbers stand).
+- **Code:** `selfjev quantize`, `--quantized-model REPO_OR_DIR` on serve / classify / eval / bench (no bf16 base download, no
+  merge). Not on PyPI yet (0.3.0 has no `--quantize`): the cards say to install from GitHub master until the next release.
+- **Website:** the hardware page has an 8 GB section with the quality and memory tables (the old "Why not an 8 GB machine?"
+  section is replaced), and the Hugging Face panel lists both builds with Decision Bench scores. Peak memory is in GiB
+  (MiB / 1024); the first journal entry's 4.6 / 6.2 were MiB / 1000.
+- **Process:** my first CLI edit lost `quantized_model` in `TreeServer(...)` (the call had been reformatted), so the first two
+  verification runs loaded bf16 and failed; `merge_and_unload` and a `None` revision in the report header failed next. Fixed,
+  re-verified. The 8 GB claim for 4-bit rests on the allocator cap, not on a physical 4060.
+- **Cost:** g5.xlarge 07:32–08:15 UTC (0.73 h) ≈ $0.74 + transfer; this task's total with the first runs ≈ $3.1 of the $4.
+
+### 2026-10-01 PDT: 8-bit and 4-bit selfjev-4b-vision for an 8 GB GPU (Claude quant, user request SELA-003)
+
+- **Why:** a user with an RTX 4060 (8 GB) asked for a quantized build and its accuracy next to the full model. The bf16 merged
+  weights are ≈ 9 GB, so they cannot load on 8 GB.
+- **What:** `--quantize 8bit|4bit` on `selfjev eval|serve|bench` (`engine/qwen35.py`: `merged_checkpoint` + `load_quantized`,
+  bitsandbytes LLM.int8 / NF4; extra `quant`). The adapter is merged in bf16 first (merging into quantized weights is lossy),
+  written once to `~/.selfjev/quantized` and reloaded quantized. 8 GB simulated on an A10G by capping the allocator at 7.2 GiB.
+  Summary table: `reports/quant/summary.md`; raw reports `reports/quant/{4bit,8bit,bf16_compact_challenge_v1}`.
+- **Accuracy (Decision Bench, 3,657 questions):** bf16 95.9 pooled, 8-bit 95.3, 4-bit 95.0. eval2 96.1 / 95.2 / 94.7,
+  eval_llm 92.5 / 92.0 / 92.0, compact challenge 100 / 100 / 100 (bf16 compact rerun on the A10G). 4-bit costs 1.4 points on
+  eval2, mostly multilabel exact match (90.8 bf16 → 86.1).
+- **Memory:** the 4-bit model peaks at 3.5 GiB (2K-token text), 4.5 (8K), 6.0 (16K): fits 8 GB. The 8-bit model peaks at
+  4.9 / 5.9 GiB and **runs out of memory at 16K tokens and on a long eval2 text under the 7.2 GiB cap**; its 95.2 on eval2 comes
+  from a rerun with the cap lifted. Latency (A10G, 2K text, 1 question, p50): 4-bit 604 ms (bf16 584), 8-bit 824 ms.
+- **Verdict:** 4-bit (NF4) is the build for an 8 GB card: ≈ 1 point below bf16 pooled, same speed on an A10G, texts up to
+  16K tokens. 8-bit is 0.3 points better but needs ≈ 10 GB for long texts. Not yet published to Hugging Face; the first start
+  needs the 8 GB bf16 download plus a CPU-side merge and 16 GB host RAM. A pre-quantized checkpoint repo would remove both
+  (open idea).
+- **Process notes:** `aws_launch.sh` rejects fractional hours (user data arithmetic), so the shutdown cap was set by hand
+  over SSH (`shutdown -h +113`); the first loads thrashed a 16 GB host because the bf16 CPU copy stayed alive during the
+  quantized load (fixed: freed first); two relaunch races duplicated runs on the 8-bit box and cost ≈ 25 min.
+- **Cost:** g5.xlarge × 2: 4-bit box 05:57–06:44 UTC (0.8 h), 8-bit box 05:57–07:25 UTC (1.5 h) ≈ $2.3 (approved ≤ $4). Boxes
+  terminated, SGs and key pairs deleted.
 
 ### 2026-10-01 02:40 PDT: chain layout (a verdict line per option, one branch per question): no gain, dead end (Claude images)
 

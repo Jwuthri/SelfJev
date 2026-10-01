@@ -5,6 +5,7 @@
 | Workload | GPU / VRAM | System RAM | CPU | Status |
 |---|---|---|---|---|
 | Light inference | NVIDIA, 24 GB | 16–32 GB | 4 vCPUs | Measured on an A10G: texts up to 32K tokens with 50 questions fit (21.1 GB peak) |
+| 8 GB card (RTX 4060 class) | NVIDIA, 8 GB | 16 GB | 4 vCPUs | 4-bit build measured: texts up to 16K tokens fit (6.0 GiB peak); see below |
 | Smaller-memory experiment | NVIDIA, 16 GB | 16–32 GB | 4+ vCPUs | Documented floor; workload-dependent, not a measured minimum |
 | Long inputs or more concurrency | NVIDIA, 48 GB | 32 GB+ | 8 vCPUs | Conservative starting point; measure your workload |
 | Fine-tuning | L40S, 48 GB | 64 GB used on g6e.2xlarge | 8 vCPUs | Training recipe run on this class of machine |
@@ -46,11 +47,37 @@ We also ran the **current SelfJev-4B** on a local **M5 Pro with a 20-core GPU an
 
 The MPS path uses PyTorch's slower reference implementation for the model's gated recurrent operation. The [raw samples](https://github.com/Jwuthri/SelfJev/blob/master/reports/latency/mac_m5_pro_selfjev4b.json) and [benchmark script](https://github.com/Jwuthri/SelfJev/blob/master/scripts/bench_local_mps.py) make this small experiment reproducible. The supported CLI still requires CUDA.
 
-## Why not an 8 GB machine?
+## An 8 GB GPU: 4-bit and 8-bit builds
 
-A nominal 4-billion-parameter model needs approximately **8 GB for bf16 weights alone**, or **16 GB for float32**. That excludes the adapter, temporary loading copies, activations, attention masks, recurrent state, and the Python runtime. The downloaded base checkpoint is about 9 GB.
+The full model needs about **9 GB for bf16 weights alone**, so it does not load on an 8 GB card such as an RTX 4060. Two pre-quantized builds do: [4-bit (NF4)](https://huggingface.co/Jwuthrich/selfjev-4b-vision-4bit) and [8-bit](https://huggingface.co/Jwuthrich/selfjev-4b-vision-8bit), both made with bitsandbytes from the same merged weights.
 
-A **16 GB RAM CPU machine is not a supported minimum**. A 32 GB budget gives more room for experimentation, but long inputs can still exceed it and the CPU speed is unknown. No quantized CPU artifact or llama.cpp/GGUF serving path is provided. Supporting one is engineering work, not a configuration switch.
+```bash
+pip install "selfjev[serve,gpu,quant]"
+selfjev serve --quantized-model Jwuthrich/selfjev-4b-vision-4bit
+```
+
+We scored them on all 3,657 [Decision Bench](https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench) questions on an A10G whose memory we capped at 7.2 GiB, the usable memory of an 8 GB card.
+
+| Build | Decision Bench (3,657) | eval2 (1,991) | eval_llm (946) | compact (720) |
+|---|---:|---:|---:|---:|
+| bf16 (full model) | 95.9% | 96.1% | 92.5% | 100% |
+| 8-bit | 95.3% | 95.2% | 92.0% | 100% |
+| 4-bit (NF4) | 95.0% | 94.7% | 92.0% | 100% |
+
+Peak GPU memory for one question, in GiB (the weights alone are 8 for bf16 and about 3 for 4-bit):
+
+| Text length | bf16 | 8-bit | 4-bit |
+|---|---:|---:|---:|
+| 2,048 tokens | 8.3 | 4.9 | 3.5 |
+| 8,192 tokens | 9.7 | 5.9 | 4.5 |
+| 16,384 tokens | 13.2 | out of memory at 7.2 GiB | 6.0 |
+
+- **Use 4-bit on an 8 GB card.** It costs about one point against bf16, reads texts up to 16K tokens, and one 2K-token request takes 604 ms on the A10G (bf16: 584 ms). Most of its eval2 loss is in multi-select questions, where the exact set of answers must match.
+- **8-bit is slightly more accurate but needs about 10 GB for long texts.** It also runs slower (824 ms for the same request).
+- **Measured on text.** Images use the same vision tower as the full model (loaded from the Qwen3.5-4B base on the first image); the quantized path was not scored on images.
+- **bitsandbytes needs an NVIDIA GPU with CUDA** (Linux or Windows). The raw reports are in the [repository](https://github.com/Jwuthri/SelfJev/blob/master/reports/quant/summary.md).
+
+A **16 GB RAM CPU machine is not a supported minimum**. No CPU artifact or llama.cpp/GGUF serving path is provided on this page.
 
 ## Context length and concurrency matter
 
