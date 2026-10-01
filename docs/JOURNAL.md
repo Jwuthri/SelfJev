@@ -15,6 +15,8 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | item | cost | who |
 |---|---|---|
+| AWS: e2e of `6b43d94`, g6e.2xlarge `i-05fd0d6595bc17de6` us-east-2, 15:19–15:45 PDT 2026-10-01 (0.43 h), terminated by the script; SG and key pair deleted | ≈ $0.97 | Claude images |
+| AWS: profiling batched requests, g5.2xlarge `i-0d275c2c3d9ebec41` us-east-2, 14:56–≈ 15:25 PDT 2026-10-01 (no g6e capacity), terminated; SGs and key pairs deleted in 3 regions | ≈ $0.60 | Claude images |
 | AWS: end-to-end product tests, 2 × g6e.2xlarge us-east-2 (no g6e.xlarge capacity in us-east-1/2, us-west-2): `i-00b273f778aef5f83` 12:48–13:16 PDT and `i-0cb58ea7afdd6fb9e` 13:31–14:00 PDT 2026-10-01 (0.47 h each), terminated by the script; SGs and key pairs deleted (also those of 3 launches refused for capacity) | ≈ $2.11 (approved ≈ $2.15) | Claude images |
 | AWS: retrain `verdict_json_only_v1` g5.2xlarge `i-0ce518fd80566ccab` us-east-1, 11:22–15:10 PDT 2026-10-01 (≈ 3.8 h; no g6e capacity in 3 regions; first try OOM at step ~12, rerun with expandable segments), terminated; SG and key pair deleted | ≈ $4.60 (approved ≈ $5) | Claude competitors |
 | AWS: pre-quantized 4-bit / 8-bit checkpoints, g5.xlarge `i-02274e684d8e4ee35` us-east-1, 07:32–08:15 UTC 2026-10-01 (0.73 h), terminated; SG and key pair deleted | ≈ $0.74 + transfer (task total ≈ $3.1 of the approved $4) | Claude quant |
@@ -77,6 +79,24 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-10-01 15:50 PDT: batched requests no longer stall; e2e 21 / 21; selfjev 0.4.0 on PyPI (Claude images, user request)
+
+- **Cause** (profiled on a g5.2xlarge, replaying the e2e's 20 bursts in process from a cold Triton cache): fla's
+  in-kernel q / k l2norm autotunes per input size (constexpr `NB` = rows / 65,536, rows = sequences × length × heads),
+  so a batch whose texts add up to a new row count waits for a new tuning. 32-request bursts: 19–29 s with the kernel,
+  10–11 s (their compute) with the norm in torch; smaller bursts within 5 %; `warm_kernels` 80 -> 42 s. One request
+  never stalled (its rows stay under one block). Fix `6b43d94`: `engine.tree.l2norm` (same math: fp32, eps 1e-6).
+  Gotcha: fla stores autotune results in Triton's disk cache (`cache_results`), so a probe in a process that already
+  served traffic finds them tuned: my first l2norm probe on the e2e box (14:10 entry) wrongly cleared it.
+- **e2e of `6b43d94`** ([report](../reports/e2e/2026-10-01c/report.md), g6e.2xlarge): **21 / 21**. 16 concurrent
+  requests 1.4 s (9.5 s, 19 s before); bursts over 4K tokens 214 ms per 1K tokens, slowest 261 (the check: < 3× the
+  median); 8 photos at once 1.0 s (2.3 s); jobs supervised 5.4 min, RLCD 5.4, photos 2.3; the photo job on a random
+  150 beans photos (3 classes) + 50 text rows: held-out beans 30 / 32 -> 31 / 32.
+- **Release:** `selfjev` **0.4.0** on PyPI (tag `v0.4.0`, `f2cc778`, release workflow: build, smoke test, trusted
+  publishing): everything since 0.3.0 (Ollama engine, quantized serving, row uploads, `wait_fine_tuning_job`, the image
+  fixes) but not this stall fix, which is on master (`6b43d94`) for the next release.
+- **Cost:** ≈ $1.57 (profiling ≈ $0.60, e2e ≈ $0.97); the whole task ≈ $3.68 of the ≈ $4.75 approved.
 
 ### 2026-10-01 14:10 PDT: SDK, server and fine-tuning end to end on a GPU, text and images: 40 of 41 checks; one open stall (Claude images, user request)
 

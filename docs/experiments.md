@@ -288,11 +288,11 @@ Revived by eval2 (dead on the dev benchmark only): the Instruct base (+3.0), LoR
   questions but 64% of the text tokens. `scripts/data/build_images_v1.py LONG_FRAC` keeps that share of the long ones
   (1/3: ~1.7x faster); check eval2's > 4K slice (9.3% of eval2) when using it.
 
-- **Batched requests are slow (open).** One request takes ≈ 0.2 s on the server, but concurrent requests share one
-  batch that runs far longer than the sum of its parts: 16 at once 9.5 s, bursts of 8 ≈ 1–1.7 s, one burst 13.9 s
-  ([e2e 2026-10-01b](../reports/e2e/2026-10-01b/report.md), L40S, LoRA unmerged by `--fine-tuning`). Per-batch-size
-  kernel autotuning was part of it (fixed: `engine.tree.bucketed_rule`); fla's l2norm, depthwise conv1d, masked SDPA
-  and packing are fast at batch shapes. Next: profile `TreeServer.score_requests` (JOURNAL 2026-10-01 14:10).
+- **fla kernels tune per input size; Triton keeps the tunings on disk.** A new batch size (DeltaNet `N`) or a new q / k
+  row count (the in-kernel l2norm's `NB`) costs 0.4–1.1 s, or tens of seconds for a big batch, the first time: batched
+  requests stalled 9.5–29 s until `engine.tree` padded `N` to powers of 2 (`bucketed_rule`, tuned at start by
+  `warm_kernels`) and normalized q / k in torch (`l2norm`) (JOURNAL 2026-10-01 15:50; e2e 16 concurrent requests 9.5 ->
+  1.4 s). Probe kernels in a fresh process with an empty `~/.triton/cache`: a process that served traffic has them tuned.
 - **Long jobs and `uv run`.** A plain `uv run` re-syncs the environment to the default groups; during the end-to-end
   test that removed `boto3` from under the running deploy and its teardown failed (box up 6 extra minutes). The dev
   group now includes the `deploy` extra.
