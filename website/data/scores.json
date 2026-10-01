@@ -91,6 +91,34 @@
   "accuracy": 0.5794930875576036,
   "n": 868
  },
+ "reports/chain_pilot/chain/eval2/report.json": {
+  "accuracy": 0.9482672024108488,
+  "n": 1991
+ },
+ "reports/chain_pilot/chain/eval2_rev/report.json": {
+  "accuracy": 0.9457559015570065,
+  "n": 1991
+ },
+ "reports/chain_pilot/chain/eval_llm/report.json": {
+  "accuracy": 0.912262156448203,
+  "n": 946
+ },
+ "reports/chain_pilot/chain/test/report.json": {
+  "accuracy": 0.8352059925093633,
+  "n": 3471
+ },
+ "reports/chain_pilot/leaves/eval2/report.json": {
+  "accuracy": 0.9547965846308388,
+  "n": 1991
+ },
+ "reports/chain_pilot/leaves/eval_llm/report.json": {
+  "accuracy": 0.9143763213530656,
+  "n": 946
+ },
+ "reports/chain_pilot/leaves/test/report.json": {
+  "accuracy": 0.8340535868625756,
+  "n": 3471
+ },
  "reports/competitors/eval2/decider-4b/report.json": {
   "accuracy": 0.9075841285786037,
   "n": 1991
@@ -133,6 +161,10 @@
  },
  "reports/competitors/eval2/selfjev-4b-vision-api/report.json": {
   "accuracy": 0.9472626820693119,
+  "n": 1991
+ },
+ "reports/competitors/eval2/selfjev-verdict-json-api/report.json": {
+  "accuracy": 0.939728779507785,
   "n": 1991
  },
  "reports/competitors/eval_images_v1/imajev-4b/report.json": {
@@ -189,6 +221,10 @@
  },
  "reports/competitors/eval_llm/selfjev-4b-vision-api/report.json": {
   "accuracy": 0.9069767441860465,
+  "n": 946
+ },
+ "reports/competitors/eval_llm/selfjev-verdict-json-api/report.json": {
+  "accuracy": 0.8847780126849895,
   "n": 946
  },
  "reports/curve/boolq_100/test/report.json": {
@@ -639,6 +675,58 @@
   "accuracy": 0.7338709677419355,
   "n": 868
  },
+ "reports/ollama/img-q8_0/report.json": {
+  "accuracy": 0.8941058941058941,
+  "n": 2002
+ },
+ "reports/ollama/ova-bf16/eval2/report.json": {
+  "accuracy": 0.9563033651431442,
+  "n": 1991
+ },
+ "reports/ollama/ova-bf16/eval_llm/report.json": {
+  "accuracy": 0.927061310782241,
+  "n": 946
+ },
+ "reports/ollama/ova-q4_k_m/eval2/report.json": {
+  "accuracy": 0.9568056253139126,
+  "n": 1991
+ },
+ "reports/ollama/ova-q4_k_m/eval_llm/report.json": {
+  "accuracy": 0.9186046511627907,
+  "n": 946
+ },
+ "reports/ollama/ova-q8_0/eval2/report.json": {
+  "accuracy": 0.957307885484681,
+  "n": 1991
+ },
+ "reports/ollama/ova-q8_0/eval_llm/report.json": {
+  "accuracy": 0.927061310782241,
+  "n": 946
+ },
+ "reports/ollama/raw-bf16/eval2/report.json": {
+  "accuracy": 0.9507785032646912,
+  "n": 1991
+ },
+ "reports/ollama/raw-bf16/eval_llm/report.json": {
+  "accuracy": 0.919661733615222,
+  "n": 946
+ },
+ "reports/ollama/raw-q4_k_m/eval2/report.json": {
+  "accuracy": 0.9522852837769965,
+  "n": 1991
+ },
+ "reports/ollama/raw-q4_k_m/eval_llm/report.json": {
+  "accuracy": 0.9186046511627907,
+  "n": 946
+ },
+ "reports/ollama/raw-q8_0/eval2/report.json": {
+  "accuracy": 0.9532898041185334,
+  "n": 1991
+ },
+ "reports/ollama/raw-q8_0/eval_llm/report.json": {
+  "accuracy": 0.9175475687103594,
+  "n": 946
+ },
  "reports/quant/4bit/compact_challenge_v1/report.json": {
   "accuracy": 1,
   "n": 720
@@ -1038,5 +1126,21 @@
  "reports/tree_4b_r2b_gpu/eval2_timing/report.json": {
   "accuracy": 0.9040683073832245,
   "n": 1991
+ },
+ "reports/verdict_json_v1/eval2/report.json": {
+  "accuracy": 0.9558011049723757,
+  "n": 1991
+ },
+ "reports/verdict_json_v1/eval_llm/report.json": {
+  "accuracy": 0.9154334038054969,
+  "n": 946
+ },
+ "reports/verdict_json_v1/images/report.json": {
+  "accuracy": 0.9035964035964036,
+  "n": 2002
+ },
+ "reports/verdict_json_v1/test/report.json": {
+  "accuracy": 0.836358398156151,
+  "n": 3471
  }
 }

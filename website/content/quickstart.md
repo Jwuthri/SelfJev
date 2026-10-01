@@ -29,6 +29,8 @@ The adapter (230 MB) and the pinned base model (about 9 GB) download on first st
 curl --fail http://localhost:8000/health
 ```
 
+No GPU? Run it on a laptop through [Ollama](/docs/ollama/) instead.
+
 Prefer a private network or SSH tunnel during setup. Configure HTTPS before sending credentials or private text over a public network. [Docker](/docs/docker/), [AWS](/docs/aws/), [Runpod](/docs/runpod/), and [Google Cloud](/docs/gcp/) have separate deployment guides.
 
 ## 2. Install the lightweight client

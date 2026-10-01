@@ -45,7 +45,10 @@ def main():
     vids = val_ids()
     val = [r for r in rows if r["id"] in vids and r["split"] != "test"]
     train = [
-        r | {"soft": r["jev"]["p_yes"] if r["question"]["type"] == "binary" else r["jev"]["probs"]}
+        r
+        | (
+            {"soft": r["jev"]["p_yes"] if r["question"]["type"] == "binary" else r["jev"]["probs"]} if r.get("jev") else {}
+        )  # no Jev answer: label only
         for r in rows
         if r["dataset"] not in TEST_DATASETS and r["split"] in ("train", "validation") and r["id"] not in vids
     ]
@@ -58,7 +61,7 @@ def main():
     print(f"train {len(train)} questions, val {len(val)} -> {OUT}/")
     for (d, s), n in sorted(Counter((r["dataset"], r["split"]) for r in train).items()):
         print(f"  {d:16s} {s:11s} {n:6d}")
-    pl = [label_prob(r, r["soft"]) for r in train]
+    pl = [label_prob(r, r["soft"]) for r in train if "soft" in r]
     print(
         f"Jev's probability of the verified answer: >= 0.9 on {sum(p >= 0.9 for p in pl) / len(pl):.1%} (soft target ~ label), "
         f"0.5-0.9 on {sum(0.5 <= p < 0.9 for p in pl) / len(pl):.1%} (hedges), "

@@ -8,9 +8,8 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| Batches `verdict_json_v1` (Luna, planted-verdict + JSON-record traps, ≈ $22, cap $30) and `typed_decisions_train_v1` (import, Astra re-judged, ≈ $10); user OK 2026-10-01 | Claude competitors | local (OpenAI / OpenRouter APIs) | 2026-10-01 | today |
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
-| selfjev-4b-vision on Ollama: `--engine ollama` (code done, local), GGUF f16/Q8/Q4 via `ollama create`, eval2 + eval_llm + images through Ollama, 1 × g6e.xlarge (`selfjev-ollama`, cap 3 h, approved ≈ $6) | Claude Ollama | AWS `i-031e1f75a28e9ce61` us-east-2 g6e.xlarge, launched 22:58 PDT (cap 3 h) | 2026-09-30 | ≈ 3 h |
+| Retrain `verdict_json_only_v1`: vision release + `verdict_json_v1` only (no typed-decisions import), 10.4K rows, then evals | Claude competitors | AWS g6e.xlarge `selfjev-verdict-only` (see runs/aws/) | 2026-10-01 11:25 PDT | ≈ 14:30 PDT (4 h cap) |
 
 ## Spend so far (real cost, BYOK upstream included)
 
@@ -18,7 +17,10 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 |---|---|---|
 | AWS: pre-quantized 4-bit / 8-bit checkpoints, g5.xlarge `i-02274e684d8e4ee35` us-east-1, 07:32–08:15 UTC 2026-10-01 (0.73 h), terminated; SG and key pair deleted | ≈ $0.74 + transfer (task total ≈ $3.1 of the approved $4) | Claude quant |
 | AWS: 4-bit / 8-bit quantization runs, 2 × g5.xlarge us-east-1 (`i-0f80f479a09af30e1` 05:57–06:44 UTC, `i-0c67a3aa9fdd410ca` 05:57–07:25 UTC 2026-10-01), terminated; SGs and key pairs deleted | ≈ $2.24 | Claude quant |
+| AWS: retrain `verdict_json_v1` g6e.xlarge `i-0f437a0e8372b82b4` us-east-2, 04:04–06:55 PDT 2026-10-01 (2 h 51 min), terminated; SG and key pair deleted | ≈ $5.40 (approved ≈ $21) | Claude competitors |
+| `verdict_json_v1` batch: Luna $2.34 (OpenAI API) + Astra batch judge $18.20 + Jev $0.14; `typed_decisions_train_v1` import: Astra $9.99 + Jev $0.05 | $30.72 (quoted ≈ $32) | Claude competitors |
 | AWS: chain-layout pilot, 2 × g6e.xlarge us-east-2: `i-0c6529bcb181f3cc2` 23:22–01:56 PDT (2.6 h), `i-0574d0f0652e8d53c` 23:22–02:27 PDT (3.1 h), 2026-09-30/10-01, terminated; SGs and key pairs deleted | ≈ $10.50 (approved ≈ $12, cap $16.75) | Claude images |
+| AWS: Ollama GGUF + eval g6e.xlarge `i-031e1f75a28e9ce61` us-east-2, 05:58–≈08:22 UTC 2026-10-01 (≈ 2.4 h, one SSH hang and reboot), terminated; SG and key pair deleted | ≈ $4.5 (approved ≈ $6) | Claude Ollama |
 | AWS: images v2 g6e.xlarge `i-0de55fc63cdf915fc` us-east-2, 15:41–19:38 PDT 2026-09-30 (≈ 3.95 h incl. ≈ 25 min lost to an IP change and a bad data row; terminated by the driver), SG and key pair deleted | ≈ $7.35 (approved ≈ $7.5, cap $10.2) | Claude images |
 | AWS: DecisionBench retry g6e.2xlarge `i-00d19a60b7bed93fd` us-east-2, 22:34–23:25 UTC 2026-09-30 (51 min), terminated; SGs and key pairs deleted in 3 regions | ≈ $1.93 (inside the ≈ $17 competitor approval; total ≈ $9.28) | Claude competitors |
 | AWS: competitor head-to-head g6e.xlarge `i-0d7e62883fb38d56a` us-east-2, 17:18–21:10 UTC 2026-09-30 (3 h 53 min), terminated; SGs and key pairs deleted in us-east-1/us-east-2/us-west-2 | ≈ $7.35 (approved ≈ $17) | Claude competitors |
@@ -74,6 +76,96 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
 
 ## Log
 
+### 2026-10-01 07:00 PDT: retrain on the verdict / JSON + typed-decisions batches: not better, not promoted (Claude competitors, user request)
+
+- **Run:** `selfjev finetune --init weights/selfjev_4b_vision --lr 5e-5 --soft-weight 0.5 --max-length 16384 --batch-tokens
+  16384 --grad-accum 2`, 1 epoch, 426 steps (17 s/step) on one L40S, mix `runs/verdict_json_v1` (7,802 new + 7,802 text
+  replay + 3,000 images; `scripts/train/verdict_json_box.sh`). Validation 89.2 -> 93.0 (best, step 300) -> 92.85 (last);
+  confidently wrong 54 -> 29. Adapter `runs/verdict_json_v1/run/adapter` (not in git). Reports `reports/verdict_json_v1/`.
+- **Paired vs the vision release (McNemar):** eval2 95.58 vs 96.13 (14 / 25, p = 0.11); eval_llm 91.54 vs 92.49 (9 / 18,
+  p = 0.12); dev benchmark 83.64 vs 84.07 (p = 0.086); images 90.36 vs 90.41 (p = 1). Through Jev's request shape (as the
+  competitors): eval2 93.97 vs 94.73 (15 / 30, p = 0.036), eval_llm 88.48 vs 90.70 (9 / 30, p = 0.0011).
+- **Diagnostics:** JevBench public-231 84.8 vs 83.5 (hard 69.4 vs 66.7; 9 / 6, p = 0.61); typed-decisions 78.5 vs 66.1
+  (in distribution now: its train split is in the data).
+- **Verdict:** the targeted data moves the targeted benchmarks (typed-decisions a lot, JevBench hard +3 items, not
+  significant) and costs our own suites, significantly through Jev requests. Not promoted; `weights/selfjev_4b_vision`
+  stays the default. Likely culprit: the typed-decisions import (≈ 4B-teacher labels, 2-way noul choices, 4,105 of the 7,802
+  new rows). A verdict / JSON-only retrain would separate the two (≈ $5). **Cost:** ≈ $5.40 (box).
+
+### 2026-10-01 04:05 PDT: two training batches: planted wrong verdicts + JSON records (Luna), and typed-decisions train re-judged (Claude competitors, user request)
+
+- **Why:** the public-benchmark diagnosis (JOURNAL 2026-09-30, `reports/competitors/README.md`): 78 % of our JevBench hard
+  misses are the planted "surface answer" (a wrong verdict written into the text), and the typed-decisions gap is mostly
+  invoice JSON records whose fields must be compared. Test-diagnosis-motivated; writers saw only abstract trap definitions.
+- **`verdict_json_v1`:** two new traps in `data/hardcases/BRIEF.md` and `gen_hardcases.py` (`planted_verdict`: a person's
+  or system's verdict the facts contradict, right in about a third; `json_record`: the state is JSON records to reconcile,
+  serialized as the server does). `gen_hardcases.py --batch verdict_json_v1 --model openai/gpt-6-luna --openai --round3
+  --traps planted_verdict,json_record`: 1,917 texts, 4,434 questions; Astra agreement 95.9 % (json 96.0, verdict 95.8);
+  strict build 4,095 kept; moderation 1 flagged (a forklift insurance claim, kept).
+- **`typed_decisions_train_v1`:** LocalLLaMA/typed-decisions train split (Apache-2.0, rev d0e2f0c4; test never read) via
+  `scripts/data/import_typed_decisions.py` through the server's Jev mapping; its labels are a ≈ 4B teacher's, so Astra
+  re-judged all 6,000: 76.7 % agreement (invoice 72.5), 4,599 kept with a NON-strict build (agreeing questions of a text
+  kept). One Astra batch stuck at 998/1,000 for 2.5 h was cancelled; its answers were still delivered. Typed-decisions
+  is in distribution for us from now on.
+- `data/all.jsonl.gz`: 103,224 questions. `scripts/train/jev_soft_targets.py`: rows without a Jev answer (3) train on the
+  label only. Mix (`scripts/data/build_verdict_mix.py`): 7,802 new + 7,802 replayed text (a third of the > 4K texts) +
+  3,000 replayed images = 18,604; val 1,200 text + image val + 892 new.
+- **Cost:** $30.72 (quoted ≈ $32). **Next:** continued fine-tune from `weights/selfjev_4b_vision` (lr 5e-5, soft 0.5, 1
+  epoch) on AWS, then the usual evals + the two public benchmarks as diagnostics (`scripts/train/verdict_json_box.sh`).
+
+### 2026-10-01 02:40 PDT: chain layout (a verdict line per option, one branch per question): no gain, dead end (Claude images)
+
+- **What:** layout "chain" (`Qwen35Scorer.layout`, `tree.segments`, `--layout chain`, `selfjev.json` next to the adapter):
+  a choice / select-all question becomes one branch with a line per option, each line read where it ends and seeing the
+  lines before it (one forward pass, as today; binary questions unchanged). Motivated by a test-set diagnosis
+  (`scripts/eval/jev_gap.py` -> `reports/audit_2026-09-30/jev_gap.md`: vs Jev, multi_positive 4 / 21, p = 0.0009, most
+  of the eval2 gap). Exactness: `tests/engine/test_tree.py::test_chain_layout_matches_full_sequences`.
+- **Pilot (paired):** both arms from the text release on the same 15,000 questions (`scripts/train/sample_text_mix.py
+  15000 0.333`, sha256 `2fc73d91…`), lr 1e-4, 1 epoch, same seed; only the layout differs. Leaves' best-by-validation was
+  step 0 (the release itself), so both arms are compared at their trained checkpoints (leaves step 464, `2609f99d…`;
+  chain best = step 450/457, `e3f9dd0d…`). Reports: `reports/chain_pilot/{leaves,chain}/`.
+
+  | | release | leaves (trained) | chain | chain vs leaves |
+  |---|---|---|---|---|
+  | eval2 | 95.68 | 95.48 | 94.83 | 25 / 38, p = 0.13 |
+  | eval2 select-all (multilabel EM) | 91.1 | 89.3 | 89.8 | 13 / 11, p = 0.84 |
+  | eval2 multi_positive (Jev 96.0) | 91.0 | 89.8 | 91.0 | 11 / 7, p = 0.48 |
+  | eval2 binary (same format in both) | 96.7 | 97.0 | 96.0 | 9 / 20, p = 0.06 |
+  | eval_llm | 93.13 | 91.44 | 91.23 | 24 / 26, p = 0.89 |
+  | dev benchmark | 83.78 | 83.41 | 83.52 | 44 / 40, p = 0.74 (multilabel 50.3 vs 53.8, 3 / 15, p = 0.0075) |
+
+  Order: reversing the options changes the chain's answer on 2.6% of eval2's choice / select-all questions. Training:
+  6% slower per step despite fewer tokens (the DeltaNet state goes line by line).
+- **Verdict: dead end.** No gain on select-all (the target), slightly worse elsewhere, order-sensitive. Also: continuing the
+  release at lr 1e-4 on a 15K slice lowers it (both arms below the release; leaves' best checkpoint was step 0).
+- **Incidents:** the leaves box's driver evaluated step 0 (best-by-validation); I swapped it to step 464 on the box, a
+  `pkill` pattern matched my own ssh command and killed one eval, and the box was terminated before its rerun finished, so
+  its eval2 / eval_llm were rescored on the chain box (same adapter, sha checked). Cost ≈ $10.50.
+- **Code removed** (user request, 2026-10-01): the layout was dropped from the engine, CLI and tests; it remains in git history.
+
+### 2026-10-01 01:25 PDT: selfjev-4b-vision on Ollama: GGUF release + `--engine ollama` (Claude Ollama, user request)
+
+- **What:** a user asked for an Ollama model or plugin. Built `selfjev serve --engine ollama` (`src/selfjev/engine/ollama.py`, no
+  torch, `pip install "selfjev[ollama]"`): the challenger-state-first-v1 prompt as a raw `/api/generate` call per option, one token,
+  top-20 logprobs, z = logprob(yes) - logprob(no); Ollama's prefix cache shares the state. Images go as `[img-N]` + `images`.
+  Server verified end to end (text and image requests) on the box. Docs: `docs/ollama.md`.
+- **Model:** merged `selfjev-4b-vision-merged` -> llama.cpp `convert_hf_to_gguf.py` (bf16, plus `--mmproj`) -> `llama-quantize`.
+  Published [Jwuthrich/selfjev-4b-vision-GGUF](https://huggingface.co/Jwuthrich/selfjev-4b-vision-GGUF): Q8_0 4.6 GB, Q4_K_M
+  2.8 GB, mmproj. `ollama pull hf.co/Jwuthrich/selfjev-4b-vision-GGUF:Q4_K_M` shows `vision`. Ollama 0.35's own safetensors import
+  needs MLX and failed on Linux, so the GGUFs come from llama.cpp. Two `FROM` lines (model + mmproj) in a Modelfile give the projector.
+- **Numbers** (`selfjev eval --engine ollama`, `data/ova/` files, `reports/ollama/`): eval2 bf16 95.63 / Q8_0 95.73 / Q4_K_M 95.68
+  (tree engine 96.13); eval_llm 92.71 / 92.71 / 91.86 (tree 92.49); images Q8_0 89.41 (tree 90.41). Quantization costs ≈ 0
+  (Q4 -0.8 on eval_llm); the ≈ -0.5 to -1.0 vs the tree engine is there at bf16 too: the path, not the quantization. Cause not
+  isolated; one known difference: the trained prompt tokenizes the space after "Question:" alone, Ollama merges it into the next word.
+- **Mistake caught:** the first sweep used `data/eval2.jsonl` and `data/eval_llm.jsonl` (no option list in the question), not the
+  `data/ova/` files the reference scores use. Kept as `reports/ollama/raw-*` (95.1-95.3, 91.8-92.0); the table uses `ova-*`.
+- **Incident:** five parallel Python evals on the 4 vCPU / 30 GB box made sshd stop answering (TCP up, no banner) for 20+ min,
+  rebooted from AWS, which dropped the image eval and the `shutdown` cap (re-armed by hand); re-ran with three, then one process.
+  Keep a 4-vCPU box to <= 3 client processes.
+- **Not done:** bf16 and Q4 on images; speed against the tree engine (one smoke run: 0.2 s per question); the ollama.com library
+  push (needs the user's Ollama account key: `ollama create` from the two GGUFs, then `ollama push`).
+- **Token:** a failed upload printed the HF token into this session's tool output once; not written anywhere in the repo.
+
 ### 2026-10-01 PDT: pre-quantized 4-bit and 8-bit checkpoints on Hugging Face, and the website (Claude quant, user request)
 
 - **Published:** [`Jwuthrich/selfjev-4b-vision-4bit`](https://huggingface.co/Jwuthrich/selfjev-4b-vision-4bit) (3.3 GB) and
@@ -115,36 +207,6 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
   quantized load (fixed: freed first); two relaunch races duplicated runs on the 8-bit box and cost ≈ 25 min.
 - **Cost:** g5.xlarge × 2: 4-bit box 05:57–06:44 UTC (0.8 h), 8-bit box 05:57–07:25 UTC (1.5 h) ≈ $2.3 (approved ≤ $4). Boxes
   terminated, SGs and key pairs deleted.
-
-### 2026-10-01 02:40 PDT: chain layout (a verdict line per option, one branch per question): no gain, dead end (Claude images)
-
-- **What:** layout "chain" (`Qwen35Scorer.layout`, `tree.segments`, `--layout chain`, `selfjev.json` next to the adapter):
-  a choice / select-all question becomes one branch with a line per option, each line read where it ends and seeing the
-  lines before it (one forward pass, as today; binary questions unchanged). Motivated by a test-set diagnosis
-  (`scripts/eval/jev_gap.py` -> `reports/audit_2026-09-30/jev_gap.md`: vs Jev, multi_positive 4 / 21, p = 0.0009, most
-  of the eval2 gap). Exactness: `tests/engine/test_tree.py::test_chain_layout_matches_full_sequences`.
-- **Pilot (paired):** both arms from the text release on the same 15,000 questions (`scripts/train/sample_text_mix.py
-  15000 0.333`, sha256 `2fc73d91…`), lr 1e-4, 1 epoch, same seed; only the layout differs. Leaves' best-by-validation was
-  step 0 (the release itself), so both arms are compared at their trained checkpoints (leaves step 464, `2609f99d…`;
-  chain best = step 450/457, `e3f9dd0d…`). Reports: `reports/chain_pilot/{leaves,chain}/`.
-
-  | | release | leaves (trained) | chain | chain vs leaves |
-  |---|---|---|---|---|
-  | eval2 | 95.68 | 95.48 | 94.83 | 25 / 38, p = 0.13 |
-  | eval2 select-all (multilabel EM) | 91.1 | 89.3 | 89.8 | 13 / 11, p = 0.84 |
-  | eval2 multi_positive (Jev 96.0) | 91.0 | 89.8 | 91.0 | 11 / 7, p = 0.48 |
-  | eval2 binary (same format in both) | 96.7 | 97.0 | 96.0 | 9 / 20, p = 0.06 |
-  | eval_llm | 93.13 | 91.44 | 91.23 | 24 / 26, p = 0.89 |
-  | dev benchmark | 83.78 | 83.41 | 83.52 | 44 / 40, p = 0.74 (multilabel 50.3 vs 53.8, 3 / 15, p = 0.0075) |
-
-  Order: reversing the options changes the chain's answer on 2.6% of eval2's choice / select-all questions. Training:
-  6% slower per step despite fewer tokens (the DeltaNet state goes line by line).
-- **Verdict: dead end.** No gain on select-all (the target), slightly worse elsewhere, order-sensitive. Also: continuing the
-  release at lr 1e-4 on a 15K slice lowers it (both arms below the release; leaves' best checkpoint was step 0).
-- **Incidents:** the leaves box's driver evaluated step 0 (best-by-validation); I swapped it to step 464 on the box, a
-  `pkill` pattern matched my own ssh command and killed one eval, and the box was terminated before its rerun finished, so
-  its eval2 / eval_llm were rescored on the chain box (same adapter, sha checked). Cost ≈ $10.50.
-- **Code removed** (user request, 2026-10-01): the layout was dropped from the engine, CLI and tests; it remains in git history.
 
 ### 2026-10-01 PDT: 200 × t4g.nano download both HF repos, round 2 (Claude, user request)
 200 `t4g.nano` (us-east-1) each downloaded every file of `Jwuthrich/selfjev-4b` and `Jwuthrich/selfjev-4b-vision` (33 files, 461 MB) over HTTPS. Final batch `hf-dl-test4`: 192 of 200 OK in 5.8 to 9.0 s each; 5 failed with `Connection reset by peer` (no retry in the script); 3 had no console line when read. Two earlier batches (`hf-dl-test2`, `hf-dl-test3`, 200 each) failed with `No space left on device` because `/tmp` is RAM-backed on AL2023; fixed by using `/var/tmp`. Tested HF's handling of about 200 parallel clients: fine apart from the resets. Cost about $0.0042/h × 800 box-runs × under 7 min, under $0.40. All 700 instances (including the first 100) are terminated; no SG or key pair created.

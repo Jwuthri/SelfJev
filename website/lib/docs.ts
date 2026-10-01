@@ -44,6 +44,12 @@ export const docPages = [
     description: "Run the service on a GPU machine you control.",
   },
   {
+    slug: "ollama",
+    title: "Ollama",
+    group: "DEPLOY",
+    description: "Run the decisions API on a laptop or CPU box, no GPU.",
+  },
+  {
     slug: "aws",
     title: "AWS",
     group: "DEPLOY",

@@ -1,0 +1,4 @@
+easy      n=48/48 acc=1.0000 macro_family_acc=1.0000 ece=0.0009 brier=0.0000
+original  n=72/72 acc=0.9861 macro_family_acc=0.9861 ece=0.0443 brier=0.0324
+hard      n=111/111 acc=0.6937 macro_family_acc=0.7594 ece=0.0919 brier=0.4027
+ALL231    n=231/231 acc=0.8485 macro_family_acc=0.8617 ece=0.0438 brier=0.2036
