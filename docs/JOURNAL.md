@@ -15,6 +15,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | item | cost | who |
 |---|---|---|
+| AWS: end-to-end product tests, 2 × g6e.2xlarge us-east-2 (no g6e.xlarge capacity in us-east-1/2, us-west-2): `i-00b273f778aef5f83` 12:48–13:16 PDT and `i-0cb58ea7afdd6fb9e` 13:31–14:00 PDT 2026-10-01 (0.47 h each), terminated by the script; SGs and key pairs deleted (also those of 3 launches refused for capacity) | ≈ $2.11 (approved ≈ $2.15) | Claude images |
 | AWS: pre-quantized 4-bit / 8-bit checkpoints, g5.xlarge `i-02274e684d8e4ee35` us-east-1, 07:32–08:15 UTC 2026-10-01 (0.73 h), terminated; SG and key pair deleted | ≈ $0.74 + transfer (task total ≈ $3.1 of the approved $4) | Claude quant |
 | AWS: 4-bit / 8-bit quantization runs, 2 × g5.xlarge us-east-1 (`i-0f80f479a09af30e1` 05:57–06:44 UTC, `i-0c67a3aa9fdd410ca` 05:57–07:25 UTC 2026-10-01), terminated; SGs and key pairs deleted | ≈ $2.24 | Claude quant |
 | AWS: retrain `verdict_json_v1` g6e.xlarge `i-0f437a0e8372b82b4` us-east-2, 04:04–06:55 PDT 2026-10-01 (2 h 51 min), terminated; SG and key pair deleted | ≈ $5.40 (approved ≈ $21) | Claude competitors |
@@ -75,6 +76,33 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-10-01 14:10 PDT: SDK, server and fine-tuning end to end on a GPU, text and images: 40 of 41 checks; one open stall (Claude images, user request)
+
+- **Why:** the user asked to make sure the SDK, the endpoint and fine-tuning work well on text and images.
+- **Fixed** (`92ba607`, `49075ef`, `a666743`): `upload_file` takes rows, images as `Path` / bytes / PIL, each row checked
+  before sending; `wait_fine_tuning_job` (sync, async); photos read upright (EXIF orientation: phone photos reached the
+  model sideways); an image the processor refuses is a 422, not a 500; a training file with an unreadable image is a 422
+  naming the line at upload (it failed an hour into the job), checked off the event loop; `selfjev deploy aws` leaked
+  the key pair when a launch had no capacity; fine-tunes from `--init` (every job) default to lr 5e-5 (continuing the
+  release at 1e-4 lowered it in the chain pilot; images v1 used 5e-5). Docs: `docs/api.md`, `README.pypi.md`.
+- **`scripts/aws/e2e.py`** now also checks images (photos sent as files, text + image parts, a bad image, 8 concurrent,
+  the async client), a fine-tune on a folder of photos plus text rows, and bursts of mixed traffic (each must end < 5 s).
+- **Run 1** (`49075ef`, [report](../reports/e2e/2026-10-01/report.md)): 20 / 20. Ticket answered right (refund 0.993,
+  spam 0.011, team billing); photos 45 / 48 right on 24 held-out images v1 photos, 305 ms per request through the SDK
+  from California; 8 photos at once 2.3 s; jobs: supervised 8.1 min, RLCD 5.0 min, photos 2.6 min.
+- **Run 2** (`a666743`, [report](../reports/e2e/2026-10-01b/report.md)): 20 / 21; the new burst check failed (below).
+  The photo job's 32 / 32 -> 29 / 32 on held-out beans (both runs) was the test's data, not training: the first 150
+  beans photos of the file are one class, so the model learnt "always angular leaf spot" (it did: validation loss 0.078
+  -> 0.018). The script now samples photos at random.
+- **Open: batched requests are slow.** One request ≈ 0.2 s on the server; 16 at once 9.5 s (19 s in run 1), bursts of
+  8 ≈ 1–1.7 s, one burst 13.9 s. Not GPU kernels: fla autotunes per batch size (0.4–1.1 s per new size, measured), now
+  padded to powers of 2 and tuned at start (`bucketed_rule`, `warm_kernels`: a first single request 1.5 s -> 0.3 s,
+  start-up +≈ 25 s), but bursts stayed slow; fla's l2norm, depthwise conv1d and masked SDPA at batch shapes all run in
+  ms on the box, and packing 32 trees takes 13 ms (CPU). Next: profile `TreeServer.score_requests` on a GPU
+  (merged and unmerged LoRA; the e2e server is unmerged because of `--fine-tuning`).
+- **Cost:** ≈ $2.11 (two g6e.2xlarge runs). **Verdict:** SDK, server, images and fine-tuning over HTTP work end to end;
+  concurrency is the one gap.
 
 ### 2026-10-01 07:00 PDT: retrain on the verdict / JSON + typed-decisions batches: not better, not promoted (Claude competitors, user request)
 

@@ -287,10 +287,11 @@ Revived by eval2 (dead on the dev benchmark only): the Instruct base (+3.0), LoR
   questions but 64% of the text tokens. `scripts/data/build_images_v1.py LONG_FRAC` keeps that share of the long ones
   (1/3: ~1.7x faster); check eval2's > 4K slice (9.3% of eval2) when using it.
 
-- **Concurrent requests wait for the whole batch.** In the end-to-end test (2026-09-28, L40S, [report](../reports/e2e/2026-09-28/report.md)) 16
-  concurrent requests came back together after 18.6 s cold and 4.4–6.4 s warm with a fine-tuning job on the same GPU
-  (one request: 0.2–0.3 s). Not measured without the training job; if it holds, cap `max_batch_requests` or split
-  batches by size. The first request after start took 39 s: `selfjev serve` now warms up before `/health` answers.
+- **Batched requests are slow (open).** One request takes ≈ 0.2 s on the server, but concurrent requests share one
+  batch that runs far longer than the sum of its parts: 16 at once 9.5 s, bursts of 8 ≈ 1–1.7 s, one burst 13.9 s
+  ([e2e 2026-10-01b](../reports/e2e/2026-10-01b/report.md), L40S, LoRA unmerged by `--fine-tuning`). Per-batch-size
+  kernel autotuning was part of it (fixed: `engine.tree.bucketed_rule`); fla's l2norm, depthwise conv1d, masked SDPA
+  and packing are fast at batch shapes. Next: profile `TreeServer.score_requests` (JOURNAL 2026-10-01 14:10).
 - **Long jobs and `uv run`.** A plain `uv run` re-syncs the environment to the default groups; during the end-to-end
   test that removed `boto3` from under the running deploy and its teardown failed (box up 6 extra minutes). The dev
   group now includes the `deploy` extra.

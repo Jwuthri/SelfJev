@@ -94,21 +94,22 @@ def jev_question(q: dict) -> tuple[dict, dict]:
 
 
 def photo_rows(path: str, n: int, family: str | None = None, per_family: int | None = None) -> list[dict]:
-    """Up to n photos of an images v1 file (all families, or one) as fine-tuning rows: the photo, its questions, their answers."""
-    rows, count = {}, {}
+    """n photos at random (seed 0; the files are sorted by class) of an images v1 file, all families or one, as
+    fine-tuning rows: the photo, its questions, their answers. per_family: that many of each family instead."""
+    rows = {}
     with open(path) as f:
         for r in map(json.loads, f):
-            fam, sid = r["family"], r["source_id"]
-            if (family and fam != family) or (sid not in rows and (len(rows) >= n or count.get(fam, 0) >= (per_family or n))):
+            if family and r["family"] != family:
                 continue
-            if sid not in rows:
-                count[fam] = count.get(fam, 0) + 1
-            row = rows.setdefault(sid, {"state": r["state"], "questions": {}, "answers": {}})
+            row = rows.setdefault(r["source_id"], {"family": r["family"], "state": r["state"], "questions": {}, "answers": {}})
             q, keys = jev_question(r["question"])
             qid = f"q{len(row['questions'])}"
             row["questions"][qid] = q
             row["answers"][qid] = keys.get(r["target"], r["target"]) if keys else r["target"]
-    return list(rows.values())
+    rnd, fams = random.Random(0), sorted({r["family"] for r in rows.values()})
+    groups = [[r for r in rows.values() if r["family"] == f] for f in fams] if per_family else [list(rows.values())]
+    picked = [r for g in groups for r in rnd.sample(g, min(per_family or n, len(g)))][:n]
+    return [{k: v for k, v in r.items() if k != "family"} for r in picked]
 
 
 def right(res, row) -> list[bool]:
