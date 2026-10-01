@@ -8,7 +8,8 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
-| Chain-layout pilot: leaves vs chain from the text release on the same 15K questions (`runs/chain_pilot`), eval2 / eval_llm / dev + reversed-order eval2 | Claude images | AWS 2 × g6e.xlarge us-east-2: `i-0c6529bcb181f3cc2` (`selfjev-pilotL`), `i-0574d0f0652e8d53c` (`selfjev-pilotC`) | 2026-09-30 23:22 PDT | cap 03:22 PDT (4 h each); the drivers terminate them |
+| Batches `verdict_json_v1` (Luna, planted-verdict + JSON-record traps, ≈ $22, cap $30) and `typed_decisions_train_v1` (import, Astra re-judged, ≈ $10); user OK 2026-10-01 | Claude competitors | local (OpenAI / OpenRouter APIs) | 2026-10-01 | today |
+| Chain-layout pilot: leaves vs chain from the text release on the same 15K questions (`runs/chain_pilot`), eval2 / eval_llm / dev + reversed-order eval2 | Claude images | AWS 2 × g6e.xlarge us-east-2: `i-0c6529bcb181f3cc2` (`selfjev-pilotL`), `i-0574d0f0652e8d53c` (`selfjev-pilotC`) | 2026-09-30 23:22 PDT | cap moved to 03:52 PDT (4.5 h each, the approved cap); the drivers terminate them |
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
 | Quantized selfjev-4b-vision (8bit/4bit) for 8 GB GPUs: Decision Bench + memory, 2 × g5.xlarge us-east-1 (`selfjev-quant4`, `selfjev-quant8`, cap 1.9 h each, approved ≤ $4) | Claude quant (SELA-003) | AWS | 2026-09-30 | ≈ 2 h |
 | selfjev-4b-vision on Ollama: `--engine ollama` (code done, local), GGUF f16/Q8/Q4 via `ollama create`, eval2 + eval_llm + images through Ollama, 1 × g6e.xlarge (`selfjev-ollama`, cap 3 h, approved ≈ $6) | Claude Ollama | AWS `i-031e1f75a28e9ce61` us-east-2 g6e.xlarge, launched 22:58 PDT (cap 3 h) | 2026-09-30 | ≈ 3 h |

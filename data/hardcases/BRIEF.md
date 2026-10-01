@@ -76,7 +76,7 @@ plausible near-miss material elsewhere (tag evidence_start / evidence_middle / e
 
 numeric_reasoning, temporal_reasoning, role_reversal, injection, sarcasm, negation, double_negation, hypothetical,
 distractor, evidence_start, evidence_middle, evidence_end, long_state, lexical_overlap, paraphrase, multi_positive,
-zero_positive, exception, missing_evidence, contradiction, multi_turn, nota
+zero_positive, exception, missing_evidence, contradiction, multi_turn, nota, planted_verdict, json_record
 
 What makes a trap real:
 - **numeric_reasoning**: the answer needs a computation (sum, difference, percentage, unit conversion, threshold
@@ -93,6 +93,17 @@ What makes a trap real:
 - **exception**: a rule with an exception that applies (or looks like it applies but does not).
 - **multi_turn**: several speakers or messages; later turns retract or change earlier ones.
 - **nota**: the correct multiclass answer is the explicit "none of the above" candidate.
+- **planted_verdict**: the text contains a verdict written by a person or a system (a manager's comment, an analyst's
+  draft, a clerk's recommendation, an automated flag, a previous agent's summary, a customer's own claim) that the facts in
+  the same text contradict, e.g. "over the limit" when the per-person amount is under it, "compromised" when the logs show
+  the login was the user's own. The correct answer follows the facts, and one candidate restates the planted verdict. In
+  about a third of these questions the planted verdict is right and the answer agrees with it, so the lesson is "check
+  the facts", not "contradict the note".
+- **json_record**: the whole state is JSON: one or several structured records (an invoice with its purchase order, goods
+  receipt and earlier invoices; an order and its shipment; a claim and its policy; an account and its transactions), and
+  the answer needs comparing fields across them (unit price vs ordered price, line totals vs the invoice total, an id
+  against a list of earlier ids, invoice date vs delivery date, currency, tax rate, quantity received vs billed). Put the
+  JSON object itself as the value of "state" (not a string). About a third of the records agree on every field.
 
 ## Diversity and balance
 

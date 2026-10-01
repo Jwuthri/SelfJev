@@ -69,6 +69,8 @@ FOCUS = {
     "nota": 1,
     "zero_positive": 1,
     "multi_positive": 1,
+    "planted_verdict": 2,  # 2026-09-30, from a JevBench public / typed-decisions diagnosis (reports/competitors/README.md)
+    "json_record": 2,
 }
 DOMAINS = [
     "e-commerce customer support",
@@ -567,6 +569,8 @@ QKEYS = {"type", "instruction", "candidates", "target", "hard_cases", "notes", "
 
 def sanitize(src, tier, traps, model, sid, tokens, fam="r2", tag="hard r2"):
     """Keep only known fields, fill ours, validate. Returns (source, None) or (None, reason)."""
+    if isinstance(src, dict) and isinstance(src.get("state"), (dict, list)):  # json_record: serialized as the server does
+        src["state"] = json.dumps(src["state"], ensure_ascii=False)
     if not isinstance(src, dict) or not isinstance(src.get("state"), str) or not isinstance(src.get("questions"), list):
         return None, "shape"
     if len(re.findall(r"\w+", src["state"])) < 3:
