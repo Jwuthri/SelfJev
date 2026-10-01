@@ -167,6 +167,10 @@
   "accuracy": 0.939728779507785,
   "n": 1991
  },
+ "reports/competitors/eval2/selfjev-verdict-json-only-v1-api/report.json": {
+  "accuracy": 0.940733299849322,
+  "n": 1991
+ },
  "reports/competitors/eval_images_v1/imajev-4b/report.json": {
   "accuracy": 0.7592407592407593,
   "n": 2002
@@ -225,6 +229,10 @@
  },
  "reports/competitors/eval_llm/selfjev-verdict-json-api/report.json": {
   "accuracy": 0.8847780126849895,
+  "n": 946
+ },
+ "reports/competitors/eval_llm/selfjev-verdict-json-only-v1-api/report.json": {
+  "accuracy": 0.8974630021141649,
   "n": 946
  },
  "reports/curve/boolq_100/test/report.json": {
@@ -1126,6 +1134,22 @@
  "reports/tree_4b_r2b_gpu/eval2_timing/report.json": {
   "accuracy": 0.9040683073832245,
   "n": 1991
+ },
+ "reports/verdict_json_only_v1/eval2/report.json": {
+  "accuracy": 0.958312405826218,
+  "n": 1991
+ },
+ "reports/verdict_json_only_v1/eval_llm/report.json": {
+  "accuracy": 0.9217758985200846,
+  "n": 946
+ },
+ "reports/verdict_json_only_v1/images/report.json": {
+  "accuracy": 0.8991008991008991,
+  "n": 2002
+ },
+ "reports/verdict_json_only_v1/test/report.json": {
+  "accuracy": 0.8375108038029386,
+  "n": 3471
  },
  "reports/verdict_json_v1/eval2/report.json": {
   "accuracy": 0.9558011049723757,

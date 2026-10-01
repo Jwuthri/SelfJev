@@ -9,13 +9,14 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
-| Retrain `verdict_json_only_v1`: vision release + `verdict_json_v1` only (no typed-decisions import), 10.4K rows, then evals | Claude competitors | AWS g6e.xlarge `selfjev-verdict-only` (see runs/aws/) | 2026-10-01 11:25 PDT | ≈ 14:30 PDT (4 h cap) |
+| Profile batched requests (`TreeServer.score_requests`, the open stall) | Claude images | AWS g5.2xlarge `i-0d275c2c3d9ebec41` us-east-2 (`selfjev-profile`) | 2026-10-01 14:56 PDT | ≈ 15:40 PDT, shutdown cap 15:56 PDT |
 
 ## Spend so far (real cost, BYOK upstream included)
 
 | item | cost | who |
 |---|---|---|
 | AWS: end-to-end product tests, 2 × g6e.2xlarge us-east-2 (no g6e.xlarge capacity in us-east-1/2, us-west-2): `i-00b273f778aef5f83` 12:48–13:16 PDT and `i-0cb58ea7afdd6fb9e` 13:31–14:00 PDT 2026-10-01 (0.47 h each), terminated by the script; SGs and key pairs deleted (also those of 3 launches refused for capacity) | ≈ $2.11 (approved ≈ $2.15) | Claude images |
+| AWS: retrain `verdict_json_only_v1` g5.2xlarge `i-0ce518fd80566ccab` us-east-1, 11:22–15:10 PDT 2026-10-01 (≈ 3.8 h; no g6e capacity in 3 regions; first try OOM at step ~12, rerun with expandable segments), terminated; SG and key pair deleted | ≈ $4.60 (approved ≈ $5) | Claude competitors |
 | AWS: pre-quantized 4-bit / 8-bit checkpoints, g5.xlarge `i-02274e684d8e4ee35` us-east-1, 07:32–08:15 UTC 2026-10-01 (0.73 h), terminated; SG and key pair deleted | ≈ $0.74 + transfer (task total ≈ $3.1 of the approved $4) | Claude quant |
 | AWS: 4-bit / 8-bit quantization runs, 2 × g5.xlarge us-east-1 (`i-0f80f479a09af30e1` 05:57–06:44 UTC, `i-0c67a3aa9fdd410ca` 05:57–07:25 UTC 2026-10-01), terminated; SGs and key pairs deleted | ≈ $2.24 | Claude quant |
 | AWS: retrain `verdict_json_v1` g6e.xlarge `i-0f437a0e8372b82b4` us-east-2, 04:04–06:55 PDT 2026-10-01 (2 h 51 min), terminated; SG and key pair deleted | ≈ $5.40 (approved ≈ $21) | Claude competitors |
@@ -103,6 +104,34 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
   (merged and unmerged LoRA; the e2e server is unmerged because of `--fine-tuning`).
 - **Cost:** ≈ $2.11 (two g6e.2xlarge runs). **Verdict:** SDK, server, images and fine-tuning over HTTP work end to end;
   concurrency is the one gap.
+
+### 2026-10-01 15:15 PDT: verdict / JSON-only retrain: the public benchmarks move, our suites dip slightly (n.s.); not promoted yet (Claude competitors, user request)
+
+- **Why:** separate the two batches of the 07:00 retrain: same recipe, but only `verdict_json_v1` (no typed-decisions import).
+- **Run:** `scripts/data/build_verdict_mix.py verdict_json_only_v1 verdict_json_v1` (3,697 new + 3,697 text replay + 3,000
+  images = 10,384 q); `scripts/train/verdict_json_box.sh verdict_json_only_v1`, 257 steps on one A10G (g5.2xlarge, ≈ 31 s/step;
+  no g6e capacity). The first try ran out of memory at 16K tokens in the backward pass (24 GB; 1.4 GB reserved but
+  fragmented); `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True` fixed it. Validation 92.9 -> 93.0 -> 93.2 (confidently
+  wrong 28 -> 35). Adapter `runs/verdict_json_only_v1/run/adapter` (not in git). Reports `reports/verdict_json_only_v1/`,
+  logs in `reports/verdict_json_only_v1/logs/`.
+- **Paired vs the vision release (McNemar; only-new-right minus only-old-right):**
+
+  | set | vision release | + verdict/JSON + typed (07:00) | + verdict/JSON only |
+  |---|---|---|---|
+  | eval2 | 96.13 | 95.58 (−11, p 0.11) | 95.83 (−6, p 0.43) |
+  | eval_llm | 92.49 | 91.54 (−9, p 0.12) | 92.18 (−3, p 0.71) |
+  | dev benchmark | 84.07 | 83.64 (−15, p 0.086) | 83.75 (−11, p 0.18) |
+  | images | 90.41 | 90.36 (−1, p 1) | 89.91 (−10, p 0.18) |
+  | eval2 via Jev requests | 94.73 | 93.97 (−15, p 0.036) | 94.07 (−13, p 0.06) |
+  | eval_llm via Jev requests | 90.70 | 88.48 (−21, p 0.0011) | 89.75 (−9, p 0.14) |
+  | JevBench public-231 (diagnostic) | 83.55 | 84.85 (+3, p 0.61) | 86.58 (+7, p 0.092); hard 72.1 vs 66.7 |
+  | typed-decisions (diagnostic) | 66.10 | 78.45 (in distribution) | 70.70 (+92, p 7e-5; never trained on it) |
+
+  Jev on the same sets: eval2 97.2, eval_llm 92.5, JevBench 86.6 (hard 73.0), typed-decisions 72.7.
+- **Verdict:** the typed import was the main cost (via Jev requests −21 -> −9 on eval_llm). The verdict / JSON data alone
+  transfers to both public benchmarks (JevBench ties Jev's 86.6; typed-decisions +4.6 out of distribution), but every one
+  of our six sets still moves down 0.3 to 1.0 point (none significant alone). Not promoted; `weights/selfjev_4b_vision`
+  stays the default; the trade-off is the user's call. **Cost:** ≈ $4.60 (box).
 
 ### 2026-10-01 07:00 PDT: retrain on the verdict / JSON + typed-decisions batches: not better, not promoted (Claude competitors, user request)
 

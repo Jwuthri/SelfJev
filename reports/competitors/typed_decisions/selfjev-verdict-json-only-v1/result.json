@@ -1,0 +1,15 @@
+{
+ "name": "selfjev-verdict-json-only-v1",
+ "n": 2000,
+ "accuracy": 70.7,
+ "failed": 0,
+ "slices": {
+  "type:choice": 68.7,
+  "type:noul": 77.0,
+  "type:score": 67.5,
+  "workflow:agent_trace_observability": 66.8,
+  "workflow:customer_service": 77.6,
+  "workflow:invoice_processing": 72.2,
+  "workflow:security_incidents": 66.2
+ }
+}
