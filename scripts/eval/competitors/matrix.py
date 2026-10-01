@@ -162,23 +162,37 @@ def public_table():
             e2, el = e2 + " ²", el + " ²"
         rows.append((links[n], *meta[n], e2, el, held or "—", td, jevbench(n) or "—", wall(n)))
     rows[1:] = sorted(rows[1:], key=lambda r: -float(r[4].split()[0]))
-    head = [
-        "model",
-        "size",
-        "images",
-        "licence",
-        "Text Decisions",
-        "AI Response Review",
-        "held-out images",
-        "typed-decisions",
-        "JevBench public / hard",
-        "Text Decisions time (s)",
-    ]
-    out = ["| " + " | ".join(head) + " |", "|---" * len(head) + "|"] + ["| " + " | ".join(r) + " |" for r in rows]
-    return "\n".join(out)
+    # What each card says about these public items (2026-09-30 survey); SelfJev: measured, 0 exact / 8-gram overlap.
+    used = {
+        "Jev 1.13 (TypeSafe API, reference)": "not disclosed",
+        "plumb-4b": "**JevBench: its public scores shaped the recipe**",
+        "mica-4b": "**JevBench: half the hard items used to pick the recipe**",
+        "jpt-4b": "**typed-decisions: trained on its train split**",
+        "selfjev-4b-vision": "none (0 overlap with both, checked)",
+        "imajev-4b": "states JevBench was decontaminated",
+        "kev-4b": "JevBench reported only",
+    }
+    key = {v: k for k, v in links.items()}
+    tables = []
+    for cols, head in (
+        (
+            (0, 1, 2, 3, 4, 5, 6, 9),
+            ["model", "size", "images", "licence", "Text Decisions", "AI Response Review", "held-out images", "Text Decisions time (s)"],
+        ),
+        ((0, 1, 8, 7), ["model", "size", "JevBench public / hard", "typed-decisions"]),
+    ):
+        h = head + ([] if len(cols) > 4 else ["trained or tuned on these public items? (its card)"])
+        body = []
+        for r in rows if len(cols) > 4 else sorted(rows, key=lambda r: r[0] != rows[0][0]):
+            cells = [r[c] for c in cols]
+            if len(cols) == 4:
+                cells.append(used.get(key.get(r[0], r[0]), "not stated"))
+            body.append("| " + " | ".join(cells) + " |")
+        tables.append("\n".join(["| " + " | ".join(h) + " |", "|---" * len(h) + "|", *body]))
+    return tables
 
 
 if __name__ == "__main__":
     import sys
 
-    print(public_table()) if "--public" in sys.argv else full_matrix()
+    print("\n\n".join(public_table())) if "--public" in sys.argv else full_matrix()

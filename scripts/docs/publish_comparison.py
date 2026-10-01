@@ -24,28 +24,26 @@ BODY = """*Measured 2026-09-30.* Eight open "Jev-like" decision models from Hugg
 their card's recommended setup on the same GPU (one NVIDIA L40S) and asked exactly the requests TypeSafe's Jev receives.
 A request a model cannot answer counts as wrong. Jev is shown for reference.
 
-{table}
+**SelfJev's test suites.** Text Decisions (1,991 questions) and AI Response Review (946), published as
+[selfjev-decision-bench](https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench), and photos:
 
-- **Text Decisions** (1,991 questions) and **AI Response Review** (946) are SelfJev's frozen test suites, published as
-  [selfjev-decision-bench](https://huggingface.co/datasets/Jwuthrich/selfjev-decision-bench). Every model gets the same
-  Jev-shaped questions; select-all questions become one yes/no per option, which costs SelfJev 1.4–1.8 points against
-  its native evaluation (96.1 and 92.5). **Held-out images**: the 4 image datasets of the SelfJev image test that none
-  of these models trained on (772 questions). **typed-decisions**: [LocalLLaMA/typed-decisions](https://huggingface.co/datasets/LocalLLaMA/typed-decisions)
-  test, 2,000 decisions. **JevBench**: the 231 public items of [JevBench](https://github.com/fstandhartinger/jevbench)
-  through its official runner; hard = its 111-item tier. **Time**: Text Decisions end to end, 4 requests in flight.
-- ¹ Trained on the typed-decisions train split (its card), so not zero-shot. ² Refuses inputs over 8,192 tokens (2 % of
-  Text Decisions, 1 % of AI Response Review), counted wrong. Jev's row: our earlier API runs and the public leaderboards.
-- Where we re-measured a card's own number, it matched (JevBench: decider-4b, kev-4b, Mica, Plumb-4B, jpt-4b).
-- **Reading.** SelfJev is the most accurate open model at 4.5B parameters or less on both of its suites (paired tests,
-  p ≤ 0.023) and ties imajev-4b on held-out images; the 27B openjev beats it on Text Decisions. On the public JevBench
-  items and typed-decisions it is mid-pack: it never saw them (0 overlap with its training data), while several of
-  these models report tuning on them. It is slower than most 4B models on this workload.
+{table1}
+
+- Every model gets the same Jev-shaped questions; select-all questions become one yes/no per option, which costs SelfJev
+  1.4–1.8 points against its native evaluation (96.1 and 92.5). **Held-out images**: the 4 image datasets of the SelfJev
+  image test that none of these models trained on (772 questions). **Time**: Text Decisions end to end, 4 requests in
+  flight. ² Refuses inputs over 8,192 tokens (2 % and 1 % of the questions), counted wrong.
+- No other model trained on these suites, but they come from the same authors and judges as SelfJev's training data,
+  so they favour SelfJev.
+- SelfJev is the most accurate open model at 4.5B parameters or less on both suites (paired tests, p ≤ 0.023) and ties
+  imajev-4b on held-out images; the 27B openjev is higher on Text Decisions. It is slower than most 4B models here.
+
 
 Protocol, per-model setups, paired tests and raw reports: [reports/competitors]({gh}reports/competitors/README.md)."""
 
 
 def block(title="## Compared with open Jev-like models", note=""):
-    text = BODY.format(table=public_table(), gh=GH)
+    text = BODY.format(table1=public_table()[0], gh=GH)
     return "\n".join(x for x in (START, title, "", note + "\n" if note else "", text, END) if x is not None).replace("\n\n\n", "\n\n")
 
 
@@ -93,7 +91,7 @@ def main():
     a = ap.parse_args()
     (ROOT / "reports/competitors/card_section.md").write_text(block(note=TEXT_NOTE) + "\n")  # {{COMPARISON}} of the text card
     (ROOT / "docs/comparison.md").write_text(block("# Compared with open Jev-like models") + "\n")
-    (ROOT / "website/content/comparison.md").write_text(BODY.format(table=public_table(), gh=GH) + "\n")  # no HTML markers
+    (ROOT / "website/content/comparison.md").write_text(BODY.format(table1=public_table()[0], gh=GH) + "\n")  # no HTML markers
     for path, before in (("README.md", "## Get the weights"), ("weights/selfjev_4b_vision/README.md", "## Training")):
         p = ROOT / path
         p.write_text(put(p.read_text(), block(), before))
