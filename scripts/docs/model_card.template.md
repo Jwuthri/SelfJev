@@ -45,7 +45,9 @@ These are recorded results from the current **TreeServer** engine and matched Je
 
 On the same 1,991 text-decision questions, the recorded **Eikos-4B** run scored **{{EIKOS}}%** using our task adapter and its letter-based readout. This is a comparison under this project's protocol, not a general ranking of open models. [Eikos report](https://github.com/Jwuthri/SelfJev/blob/master/reports/eikos_4b/eval2/report.json)
 
-There is **no SelfJev S1Bench result yet**. Lev's published S1Bench scores cannot be compared with our authored-test scores. Comparing SelfJev, Lev, Reflex and other decision models requires the same dataset revision, item IDs, candidate sets, scoring rules and coverage.
+**S1Bench** (the 13 public subsets pinned by Nimble, 3,880 items, run through lev's harness on 2026-09-30): SelfJev-4B Vision **74.8** macro accuracy; lev's card reports 68.9 for lev and 76.1 for Jev through the same harness. The other shared benchmarks: [Compared with open Jev-like models](#compared-with-open-jev-like-models).
+
+{{COMPARISON}}
 
 ## Public datasets
 
@@ -205,7 +207,7 @@ The MPS run uses the slower PyTorch recurrent fallback. It is a lower-level engi
 
 - **Probability is not a guarantee.** The reported current-engine runs have no fitted calibration attached. Validate thresholds on application data before acting on confidence.
 - **Some tasks remain weak.** Emotion labeling, fine-grained sentiment and selecting an exact set of labels are visibly harder than topic and intent classification.
-- **Benchmarks have a scope.** AI-authored tests, reused development sets, sampled options and known overlap issues limit the conclusions. We make no S1Bench or general state-of-the-art claim.
+- **Benchmarks have a scope.** AI-authored tests, reused development sets, sampled options and known overlap issues limit the conclusions. We make no general state-of-the-art claim.
 - **Engine versions matter.** These accuracy results refer to the recorded current TreeServer runs. A merged checkpoint, quantization or another serving backend needs its own verification.
 
 Every plotted value is regenerated from saved predictions or raw timing samples. The generator checks matched IDs, targets, question types and candidate sets for report-to-report comparisons, and recomputes latency medians from ten timed samples per cell. [Chart data and source SHA-256 hashes](assets/chart-data.json) · [Generator](reproduce/build_model_card.py) · [Architecture and latency plotting module](reproduce/model_card_figures.py) · [Card template](reproduce/model_card.template.md)

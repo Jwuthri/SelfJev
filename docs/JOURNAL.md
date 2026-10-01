@@ -9,6 +9,8 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
+| Quantized selfjev-4b-vision (8bit/4bit) for 8 GB GPUs: Decision Bench + memory, 2 × g5.xlarge us-east-1 (`selfjev-quant4`, `selfjev-quant8`, cap 1.9 h each, approved ≤ $4) | Claude quant (SELA-003) | AWS | 2026-09-30 | ≈ 2 h |
+| selfjev-4b-vision on Ollama: `--engine ollama` (code done, local), GGUF f16/Q8/Q4 via `ollama create`, eval2 + eval_llm + images through Ollama, 1 × g6e.xlarge (`selfjev-ollama`, cap 3 h, approved ≈ $6) | Claude Ollama | AWS `i-031e1f75a28e9ce61` us-east-2 g6e.xlarge, launched 22:58 PDT (cap 3 h) | 2026-09-30 | ≈ 3 h |
 
 ## Spend so far (real cost, BYOK upstream included)
 
@@ -69,6 +71,9 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
 
 ## Log
 
+### 2026-09-30 PDT: 100 × t4g.nano HF download smoke test (Claude, user request)
+100 `t4g.nano` (us-east-1, tag `Name=hf-dl-test`) each `curl`-downloaded the 4 files of `Jwuthrich/selfjev-4b-vision` (adapter, about 230 MB) and shut themselves down (terminate-on-shutdown). All 100 were `terminated` within 100 s of launch. Console output was empty, so per-box download success is unverified. Cost about $0.42/h × under 2 min, under $0.05. No SG or key pair created; nothing left running.
+
 ### 2026-09-30 19:50 PDT: images v2 (diverse VQA data): +0.8 on unseen image tasks (not significant), costs text: not adopted (Claude images)
 
 - **Run:** from the vision release (images v1), lr 5e-5, 1 epoch, 575 steps (≈ 3 h, one L40S), on `runs/images_v2`
@@ -105,6 +110,7 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
   leaf). Partial rows kept for a resume; per-task numbers in `reports/competitors/README.md`.
 - **Verdict:** tokenization is no longer the bottleneck; the tree engine's GPU speed on 60–120-option questions is. A
   full DecisionBench needs ≈ 7 h L40S (≈ $16) or a faster engine/GPU: the user's call.
+- **Dropped** (user, 2026-09-30 16:45 PDT): no further DecisionBench runs.
 
 ### 2026-09-30 15:45 PDT: a held-out image generalization test, and where image fine-tuning time goes (Claude images)
 

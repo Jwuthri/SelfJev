@@ -14,6 +14,12 @@ export const docPages = [
     description: "GPU, CPU, memory, and what is actually tested.",
   },
   {
+    slug: "comparison",
+    title: "Compared with open models",
+    group: "GET STARTED",
+    description: "Nine open decision models, one GPU, the same requests.",
+  },
+  {
     slug: "api",
     title: "API reference",
     group: "BUILD",

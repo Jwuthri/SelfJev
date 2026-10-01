@@ -391,6 +391,7 @@ def main():
         "PUBLIC_SCORE": f"{accuracy(public):.1f}",
         "GPU_LATENCY": gpu_table,
         "MAC_LATENCY": mac_table,
+        "COMPARISON": (ROOT / "reports/competitors/card_section.md").read_text().strip(),  # scripts/docs/publish_comparison.py
     }.items():
         card = card.replace("{{" + key + "}}", value)
     assert "{{" not in card

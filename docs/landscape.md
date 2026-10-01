@@ -97,7 +97,7 @@ JevBench public-231 totals come from the per-tier numbers on each card where the
 
 | model | params | images | JevBench public-231 | JevBench hard-111 | JevBench board v1.5.4 (rank) | Decision Index 0.2.1 | typed-decisions | Nimble 13 macro | DecisionBench | Image JevBench (rank / 50) |
 |---|---|---|---|---|---|---|---|---|---|---|
-| **selfjev-4b-vision (ours)** | 4B | yes | 83.5 M | 66.7 M | not submitted | not run | 66.1 M | 74.8 M | stopped (too slow, see [README](../reports/competitors/README.md)) | not submitted |
+| **selfjev-4b-vision (ours)** | 4B | yes | 83.5 M | 66.7 M | not submitted | not run | 66.1 M | 74.8 M | dropped (too slow on many-option tasks, [README](../reports/competitors/README.md)) | not submitted |
 | Jev 1.13.0 (API) | ? | no | 86.6 B | 73.0 B | 72.1 (#3) | 57.91 B | 72.7 | 76.0 S (Nimble) | 72.0 B | — |
 | Cygnet (API) | ? | ? | 87.9 S (basal) | — | 73.7 (#1) | — | — | — | — | — |
 | Winnow-12B | 12B | ? | 85.7 S | 73.0 B | 73.2 (#2) | 50.02 B | — | — | 76.7 B | — |

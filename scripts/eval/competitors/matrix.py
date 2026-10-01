@@ -4,6 +4,7 @@ Rows: every model that has any result. Columns: our frozen sets through the same
 failed requests as wrong; answered share in brackets when < 100 %), typed-decisions test, JevBench public-231 (+ hard-111),
 Nimble 13-subset macro. DecisionBench was stopped unfinished (README).
 usage: uv run python scripts/eval/competitors/matrix.py > reports/competitors/matrix.md
+       uv run python scripts/eval/competitors/matrix.py --public > reports/competitors/public_table.md  (website, docs, HF cards)
 """
 
 import json
@@ -78,43 +79,106 @@ def wall(name):
     return f"{json.loads(p.read_text())['meta']['wall_s']:.0f}" if p.exists() else ""
 
 
-names = sorted(
-    {p.parent.name for p in R.glob("*/*/report.json")}
-    | {p.parent.name for p in R.glob("*/*/result.json")}
-    | {p.parent.name for p in R.glob("jevbench/*/tiers.txt")}
-    | {p.stem for p in R.glob("s1bench/*.json")}
-)
-COLS = [
-    "model",
-    "size, base, licence",
-    "eval2 s (1 L40S)",
-    "eval2",
-    "eval_llm",
-    "image test: held-out / trained-on datasets",
-    "typed-decisions",
-    "JevBench public-231 / hard-111",
-    "Nimble 13 macro",
-]
-print("| " + " | ".join(COLS) + " |\n" + "|---" * len(COLS) + "|")
-for n in names:
-    alias = "selfjev-4b-vision-api" if n == "selfjev-4b-vision" else n
-    cells = [ours_set(alias, "eval2"), ours_set(alias, "eval_llm"), image_split(alias), typed(n), jevbench(n), s1(n)]
-    if n.startswith("selfjev-4b-vision-api"):
-        continue
-    print(f"| {n} | {CARD.get(n, '')} | {wall(n) or '—'} | " + " | ".join(c or "—" for c in cells) + " |")
+def full_matrix():
+    from selfjev.evaluation.stats import mcnemar
 
-# paired exact McNemar vs our run through the same requests (failed requests count as wrong)
-from selfjev.evaluation.stats import mcnemar  # noqa: E402
-
-print("\n| model | set | ours only right | model only right | p |\n|---|---|---|---|---|")
-for f in ("eval2", "eval_llm", "eval_images_v1"):
-    base = R / f / "selfjev-4b-vision-api" / "report.json"
-    if not base.exists():
-        continue
-    ours = {r["id"]: r["correct"] for r in json.loads(base.read_text())["predictions"]}
-    for p in sorted((R / f).glob("*/report.json")):
-        if p.parent.name.startswith("selfjev-4b-vision-api"):
+    names = sorted(
+        {p.parent.name for p in R.glob("*/*/report.json")}
+        | {p.parent.name for p in R.glob("*/*/result.json")}
+        | {p.parent.name for p in R.glob("jevbench/*/tiers.txt")}
+        | {p.stem for p in R.glob("s1bench/*.json")}
+    )
+    COLS = [
+        "model",
+        "size, base, licence",
+        "eval2 s (1 L40S)",
+        "eval2",
+        "eval_llm",
+        "image test: held-out / trained-on datasets",
+        "typed-decisions",
+        "JevBench public-231 / hard-111",
+        "Nimble 13 macro",
+    ]
+    print("| " + " | ".join(COLS) + " |\n" + "|---" * len(COLS) + "|")
+    for n in names:
+        alias = "selfjev-4b-vision-api" if n == "selfjev-4b-vision" else n
+        cells = [ours_set(alias, "eval2"), ours_set(alias, "eval_llm"), image_split(alias), typed(n), jevbench(n), s1(n)]
+        if n.startswith("selfjev-4b-vision-api"):
             continue
-        got = {r["id"]: r["correct"] for r in json.loads(p.read_text())["predictions"]}
-        oa, ob, pv = mcnemar(ours, {i: got.get(i, False) for i in ours})
-        print(f"| {p.parent.name} | {f} | {oa} | {ob} | {pv:.2g} |")
+        print(f"| {n} | {CARD.get(n, '')} | {wall(n) or '—'} | " + " | ".join(c or "—" for c in cells) + " |")
+
+    # paired exact McNemar vs our run through the same requests (failed requests count as wrong)
+
+    print("\n| model | set | ours only right | model only right | p |\n|---|---|---|---|---|")
+    for f in ("eval2", "eval_llm", "eval_images_v1"):
+        base = R / f / "selfjev-4b-vision-api" / "report.json"
+        if not base.exists():
+            continue
+        ours = {r["id"]: r["correct"] for r in json.loads(base.read_text())["predictions"]}
+        for p in sorted((R / f).glob("*/report.json")):
+            if p.parent.name.startswith("selfjev-4b-vision-api"):
+                continue
+            got = {r["id"]: r["correct"] for r in json.loads(p.read_text())["predictions"]}
+            oa, ob, pv = mcnemar(ours, {i: got.get(i, False) for i in ours})
+            print(f"| {p.parent.name} | {f} | {oa} | {ob} | {pv:.2g} |")
+
+
+def public_table():
+    """The table for the website, the docs and the Hugging Face cards: one row per model, sorted by eval2, Jev as reference."""
+    jev_eval2 = json.loads((R.parent / "external/eval2/typesafe_jev-latest/report.json").read_text())["metrics"]["question_accuracy"]
+    # Jev's other cells are published numbers: eval_llm docs/llm_eval_data.md (from data/eval_llm/review/jev_answers.jsonl),
+    # typed-decisions the dataset's own leaderboard, JevBench the Benchmark Heaven board (v1.4.2.2 public accuracy, hard tier).
+    rows = [
+        ("Jev 1.13 (TypeSafe API, reference)", "?", "no", "paid API", f"{100 * jev_eval2:.1f}", "92.5", "—", "72.7", "86.6 / 73.0", "—")
+    ]
+    meta = {  # size, images, licence (model cards, 2026-09-30)
+        "selfjev-4b-vision": ("4B", "yes", "Apache-2.0 code"),
+        "openjev-27b-fp8": ("27B", "yes", "CC-BY-NC-4.0"),
+        "plumb-4b": ("4.2B", "no", "Apache-2.0"),
+        "jpt-4b": ("4.5B", "yes", "CC-BY-NC-4.0"),
+        "imajev-4b": ("4B", "yes", "Apache-2.0"),
+        "decider-4b": ("4.2B", "no", "Apache-2.0"),
+        "mica-4b": ("4.2B", "no", "Apache-2.0"),
+        "kev-4b": ("4B", "no", "Apache-2.0"),
+        "laya": ("0.4B", "no", "Apache-2.0"),
+    }
+    links = {
+        "selfjev-4b-vision": "[**SelfJev-4B Vision**](https://huggingface.co/Jwuthrich/selfjev-4b-vision)",
+        "openjev-27b-fp8": "[openjev](https://huggingface.co/openjev/openjev)",
+        "plumb-4b": "[Plumb-4B](https://huggingface.co/crh225/plumb-4b)",
+        "jpt-4b": "[jpt-4b](https://huggingface.co/kirp/jpt-4b)",
+        "imajev-4b": "[imajev-4b](https://huggingface.co/mohit67890/imajev-4b)",
+        "decider-4b": "[decider-4b](https://huggingface.co/Mapika/decider-4b)",
+        "mica-4b": "[Mica-v0.1-4B](https://huggingface.co/sky7350/Mica-v0.1-4B)",
+        "kev-4b": "[kev-4b](https://huggingface.co/jaredpalmer/kev-4b)",
+        "laya": "[Laya](https://huggingface.co/convaiinnovations/laya)",
+    }
+    acc = lambda n, f: ours_set("selfjev-4b-vision-api" if n == "selfjev-4b-vision" else n, f).split(" (")[0]
+    for n in meta:
+        held = image_split("selfjev-4b-vision-api" if n == "selfjev-4b-vision" else n).split(" / ")[0]
+        td = typed(n) + (" ¹" if n == "jpt-4b" else "")
+        e2, el = acc(n, "eval2"), acc(n, "eval_llm")
+        if n == "mica-4b":
+            e2, el = e2 + " ²", el + " ²"
+        rows.append((links[n], *meta[n], e2, el, held or "—", td, jevbench(n) or "—", wall(n)))
+    rows[1:] = sorted(rows[1:], key=lambda r: -float(r[4].split()[0]))
+    head = [
+        "model",
+        "size",
+        "images",
+        "licence",
+        "Text Decisions",
+        "AI Response Review",
+        "held-out images",
+        "typed-decisions",
+        "JevBench public / hard",
+        "Text Decisions time (s)",
+    ]
+    out = ["| " + " | ".join(head) + " |", "|---" * len(head) + "|"] + ["| " + " | ".join(r) + " |" for r in rows]
+    return "\n".join(out)
+
+
+if __name__ == "__main__":
+    import sys
+
+    print(public_table()) if "--public" in sys.argv else full_matrix()
