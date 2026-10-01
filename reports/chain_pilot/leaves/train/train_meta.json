@@ -1,0 +1,109 @@
+{
+ "mode": "finetune",
+ "base": "Qwen/Qwen3.5-4B",
+ "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+ "prompt": "challenger-state-first-v1",
+ "init": "weights/selfjev_4b",
+ "options_in_question": true,
+ "data": {
+  "runs/chain_pilot/train.jsonl.gz": "2fc73d91c9dca593d0b3a6611ca21aabf8652a92f8893571a365bb30976146de",
+  "runs/chain_pilot/val.jsonl.gz": "8093def44cd56cdf8074a5ffdcc1539b8cb7e86d4b422412320409821223912f"
+ },
+ "train_questions": 14993,
+ "val_questions": 1198,
+ "dropped_over_max_length": {
+  "train": {
+   "r3_very_hard": 4,
+   "r3_simple": 1,
+   "r3_hard": 1,
+   "r2_very_hard": 1
+  },
+  "val": {
+   "r3_hard": 1,
+   "r3_very_hard": 1
+  }
+ },
+ "max_length": 16384,
+ "epochs": 1,
+ "lr": 0.0001,
+ "lora_r": 64,
+ "batch_tokens": 16384,
+ "grad_accum": 2,
+ "steps": 464,
+ "seed": 13,
+ "select_by": "validation loss",
+ "soft_targets": 14993,
+ "soft_weight": 0.5,
+ "layout": "leaves",
+ "log": [
+  {
+   "step": 0,
+   "validation": {
+    "loss": 0.13679615111434218,
+    "accuracy": 0.9365609348914858,
+    "brier": 0.07061348064530595,
+    "ece": 0.027516266742131278,
+    "n": 1198,
+    "confidently_wrong": 10
+   },
+   "wall_s": 352.52791378399996
+  },
+  {
+   "step": 150,
+   "validation": {
+    "loss": 0.1502214077676238,
+    "accuracy": 0.9207011686143572,
+    "brier": 0.08099112804084471,
+    "ece": 0.024278770138132056,
+    "n": 1198,
+    "confidently_wrong": 10
+   },
+   "wall_s": 3165.707057984
+  },
+  {
+   "step": 300,
+   "validation": {
+    "loss": 0.13863447534371068,
+    "accuracy": 0.9290484140233722,
+    "brier": 0.074934527829796,
+    "ece": 0.020167411254273446,
+    "n": 1198,
+    "confidently_wrong": 8
+   },
+   "wall_s": 5685.766321296001
+  },
+  {
+   "step": 450,
+   "validation": {
+    "loss": 0.13868804332234264,
+    "accuracy": 0.9273789649415692,
+    "brier": 0.07318796999736592,
+    "ece": 0.02498930372084497,
+    "n": 1198,
+    "confidently_wrong": 9
+   },
+   "wall_s": 8163.160989915001
+  },
+  {
+   "step": 464,
+   "validation": {
+    "loss": 0.13856305362306057,
+    "accuracy": 0.9282136894824707,
+    "brier": 0.07323837468674377,
+    "ece": 0.022857534491894756,
+    "n": 1198,
+    "confidently_wrong": 9
+   },
+   "wall_s": 8578.876308761
+  }
+ ],
+ "best": {
+  "step": 0,
+  "loss": 0.13679615111434218,
+  "accuracy": 0.9365609348914858,
+  "brier": 0.07061348064530595,
+  "ece": 0.027516266742131278,
+  "n": 1198,
+  "confidently_wrong": 10
+ }
+}

@@ -9,7 +9,6 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
 | Batches `verdict_json_v1` (Luna, planted-verdict + JSON-record traps, ≈ $22, cap $30) and `typed_decisions_train_v1` (import, Astra re-judged, ≈ $10); user OK 2026-10-01 | Claude competitors | local (OpenAI / OpenRouter APIs) | 2026-10-01 | today |
-| Chain-layout pilot: leaves vs chain from the text release on the same 15K questions (`runs/chain_pilot`), eval2 / eval_llm / dev + reversed-order eval2 | Claude images | AWS 2 × g6e.xlarge us-east-2: `i-0c6529bcb181f3cc2` (`selfjev-pilotL`), `i-0574d0f0652e8d53c` (`selfjev-pilotC`) | 2026-09-30 23:22 PDT | cap moved to 03:52 PDT (4.5 h each, the approved cap); the drivers terminate them |
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
 | Quantized selfjev-4b-vision (8bit/4bit) for 8 GB GPUs: Decision Bench + memory, 2 × g5.xlarge us-east-1 (`selfjev-quant4`, `selfjev-quant8`, cap 1.9 h each, approved ≤ $4) | Claude quant (SELA-003) | AWS | 2026-09-30 | ≈ 2 h |
 | selfjev-4b-vision on Ollama: `--engine ollama` (code done, local), GGUF f16/Q8/Q4 via `ollama create`, eval2 + eval_llm + images through Ollama, 1 × g6e.xlarge (`selfjev-ollama`, cap 3 h, approved ≈ $6) | Claude Ollama | AWS `i-031e1f75a28e9ce61` us-east-2 g6e.xlarge, launched 22:58 PDT (cap 3 h) | 2026-09-30 | ≈ 3 h |
@@ -18,6 +17,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | item | cost | who |
 |---|---|---|
+| AWS: chain-layout pilot, 2 × g6e.xlarge us-east-2: `i-0c6529bcb181f3cc2` 23:22–01:56 PDT (2.6 h), `i-0574d0f0652e8d53c` 23:22–02:27 PDT (3.1 h), 2026-09-30/10-01, terminated; SGs and key pairs deleted | ≈ $10.50 (approved ≈ $12, cap $16.75) | Claude images |
 | AWS: images v2 g6e.xlarge `i-0de55fc63cdf915fc` us-east-2, 15:41–19:38 PDT 2026-09-30 (≈ 3.95 h incl. ≈ 25 min lost to an IP change and a bad data row; terminated by the driver), SG and key pair deleted | ≈ $7.35 (approved ≈ $7.5, cap $10.2) | Claude images |
 | AWS: DecisionBench retry g6e.2xlarge `i-00d19a60b7bed93fd` us-east-2, 22:34–23:25 UTC 2026-09-30 (51 min), terminated; SGs and key pairs deleted in 3 regions | ≈ $1.93 (inside the ≈ $17 competitor approval; total ≈ $9.28) | Claude competitors |
 | AWS: competitor head-to-head g6e.xlarge `i-0d7e62883fb38d56a` us-east-2, 17:18–21:10 UTC 2026-09-30 (3 h 53 min), terminated; SGs and key pairs deleted in us-east-1/us-east-2/us-west-2 | ≈ $7.35 (approved ≈ $17) | Claude competitors |
@@ -72,6 +72,36 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-10-01 02:40 PDT: chain layout (a verdict line per option, one branch per question): no gain, dead end (Claude images)
+
+- **What:** layout "chain" (`Qwen35Scorer.layout`, `tree.segments`, `--layout chain`, `selfjev.json` next to the adapter):
+  a choice / select-all question becomes one branch with a line per option, each line read where it ends and seeing the
+  lines before it (one forward pass, as today; binary questions unchanged). Motivated by a test-set diagnosis
+  (`scripts/eval/jev_gap.py` -> `reports/audit_2026-09-30/jev_gap.md`: vs Jev, multi_positive 4 / 21, p = 0.0009, most
+  of the eval2 gap). Exactness: `tests/engine/test_tree.py::test_chain_layout_matches_full_sequences`.
+- **Pilot (paired):** both arms from the text release on the same 15,000 questions (`scripts/train/sample_text_mix.py
+  15000 0.333`, sha256 `2fc73d91…`), lr 1e-4, 1 epoch, same seed; only the layout differs. Leaves' best-by-validation was
+  step 0 (the release itself), so both arms are compared at their trained checkpoints (leaves step 464, `2609f99d…`;
+  chain best = step 450/457, `e3f9dd0d…`). Reports: `reports/chain_pilot/{leaves,chain}/`.
+
+  | | release | leaves (trained) | chain | chain vs leaves |
+  |---|---|---|---|---|
+  | eval2 | 95.68 | 95.48 | 94.83 | 25 / 38, p = 0.13 |
+  | eval2 select-all (multilabel EM) | 91.1 | 89.3 | 89.8 | 13 / 11, p = 0.84 |
+  | eval2 multi_positive (Jev 96.0) | 91.0 | 89.8 | 91.0 | 11 / 7, p = 0.48 |
+  | eval2 binary (same format in both) | 96.7 | 97.0 | 96.0 | 9 / 20, p = 0.06 |
+  | eval_llm | 93.13 | 91.44 | 91.23 | 24 / 26, p = 0.89 |
+  | dev benchmark | 83.78 | 83.41 | 83.52 | 44 / 40, p = 0.74 (multilabel 50.3 vs 53.8, 3 / 15, p = 0.0075) |
+
+  Order: reversing the options changes the chain's answer on 2.6% of eval2's choice / select-all questions. Training:
+  6% slower per step despite fewer tokens (the DeltaNet state goes line by line).
+- **Verdict: dead end.** No gain on select-all (the target), slightly worse elsewhere, order-sensitive. Also: continuing the
+  release at lr 1e-4 on a 15K slice lowers it (both arms below the release; leaves' best checkpoint was step 0).
+- **Incidents:** the leaves box's driver evaluated step 0 (best-by-validation); I swapped it to step 464 on the box, a
+  `pkill` pattern matched my own ssh command and killed one eval, and the box was terminated before its rerun finished, so
+  its eval2 / eval_llm were rescored on the chain box (same adapter, sha checked). Cost ≈ $10.50.
+- **Code removed** (user request, 2026-10-01): the layout was dropped from the engine, CLI and tests; it remains in git history.
 
 ### 2026-10-01 PDT: 200 × t4g.nano download both HF repos, round 2 (Claude, user request)
 200 `t4g.nano` (us-east-1) each downloaded every file of `Jwuthrich/selfjev-4b` and `Jwuthrich/selfjev-4b-vision` (33 files, 461 MB) over HTTPS. Final batch `hf-dl-test4`: 192 of 200 OK in 5.8 to 9.0 s each; 5 failed with `Connection reset by peer` (no retry in the script); 3 had no console line when read. Two earlier batches (`hf-dl-test2`, `hf-dl-test3`, 200 each) failed with `No space left on device` because `/tmp` is RAM-backed on AL2023; fixed by using `/var/tmp`. Tested HF's handling of about 200 parallel clients: fine apart from the resets. Cost about $0.0042/h × 800 box-runs × under 7 min, under $0.40. All 700 instances (including the first 100) are terminated; no SG or key pair created.

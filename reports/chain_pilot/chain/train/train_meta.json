@@ -1,0 +1,109 @@
+{
+ "mode": "finetune",
+ "base": "Qwen/Qwen3.5-4B",
+ "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+ "prompt": "challenger-state-first-v1",
+ "init": "weights/selfjev_4b",
+ "options_in_question": true,
+ "data": {
+  "runs/chain_pilot/train.jsonl.gz": "2fc73d91c9dca593d0b3a6611ca21aabf8652a92f8893571a365bb30976146de",
+  "runs/chain_pilot/val.jsonl.gz": "8093def44cd56cdf8074a5ffdcc1539b8cb7e86d4b422412320409821223912f"
+ },
+ "train_questions": 14993,
+ "val_questions": 1198,
+ "dropped_over_max_length": {
+  "train": {
+   "r3_very_hard": 4,
+   "r3_simple": 1,
+   "r3_hard": 1,
+   "r2_very_hard": 1
+  },
+  "val": {
+   "r3_hard": 1,
+   "r3_very_hard": 1
+  }
+ },
+ "max_length": 16384,
+ "epochs": 1,
+ "lr": 0.0001,
+ "lora_r": 64,
+ "batch_tokens": 16384,
+ "grad_accum": 2,
+ "steps": 457,
+ "seed": 13,
+ "select_by": "validation loss",
+ "soft_targets": 14993,
+ "soft_weight": 0.5,
+ "layout": "chain",
+ "log": [
+  {
+   "step": 0,
+   "validation": {
+    "loss": 0.18095054632738444,
+    "accuracy": 0.9240400667779632,
+    "brier": 0.08792265992856559,
+    "ece": 0.071428626541836,
+    "n": 1198,
+    "confidently_wrong": 5
+   },
+   "wall_s": 361.0251123559999
+  },
+  {
+   "step": 150,
+   "validation": {
+    "loss": 0.15582433731502587,
+    "accuracy": 0.9190317195325542,
+    "brier": 0.0842701434276073,
+    "ece": 0.020037850487155156,
+    "n": 1198,
+    "confidently_wrong": 11
+   },
+   "wall_s": 3407.392300343
+  },
+  {
+   "step": 300,
+   "validation": {
+    "loss": 0.14621934886265128,
+    "accuracy": 0.9156928213689483,
+    "brier": 0.07928969159311235,
+    "ece": 0.022183201182031674,
+    "n": 1198,
+    "confidently_wrong": 14
+   },
+   "wall_s": 6227.006595606
+  },
+  {
+   "step": 450,
+   "validation": {
+    "loss": 0.13920401823427062,
+    "accuracy": 0.9232053422370617,
+    "brier": 0.07441943326495541,
+    "ece": 0.02198422045919043,
+    "n": 1198,
+    "confidently_wrong": 11
+   },
+   "wall_s": 9032.145537262
+  },
+  {
+   "step": 457,
+   "validation": {
+    "loss": 0.13922480881240235,
+    "accuracy": 0.9223706176961602,
+    "brier": 0.07437238044174145,
+    "ece": 0.023680362069595774,
+    "n": 1198,
+    "confidently_wrong": 11
+   },
+   "wall_s": 9390.784903369
+  }
+ ],
+ "best": {
+  "step": 450,
+  "loss": 0.13920401823427062,
+  "accuracy": 0.9232053422370617,
+  "brier": 0.07441943326495541,
+  "ece": 0.02198422045919043,
+  "n": 1198,
+  "confidently_wrong": 11
+ }
+}

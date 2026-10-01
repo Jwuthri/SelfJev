@@ -253,6 +253,8 @@ Measured where noted. eval2 revives anything measured only on the dev benchmark 
 
 | tried | result | evidence |
 |---|---|---|
+| Chain layout (a verdict line per option in one branch, each seeing the previous; Jev-memo proposal A, 2026-10-01) | paired pilot from the text release, same 15K questions: eval2 94.83 vs 95.48 for leaves (25 / 38, p = 0.13), select-all 89.8 vs 89.3 (n.s.), multi_positive 91.0 vs 89.8 (n.s., Jev 96.0), dev multilabel 50.3 vs 53.8 (p = 0.0075); 2.6% of answers change when options are reversed | `reports/chain_pilot/`, JOURNAL 2026-10-01 02:40 |
+| Ensembles of our own adapters (logit average of vision v1, text release, v2) on eval2 | 96.13 -> at best 96.23 (n.s.): same base and data, same mistakes | JOURNAL 2026-10-01 02:40, `scripts/eval/jev_gap.py` |
 | Batch `mpos_distr_num_v1` (3,645 several-correct / distractor / number questions) added to the `selfjev-4b` recipe | eval2 95.38 vs 95.78 (33 / 41, p = 0.42), dev benchmark 83.55 vs 83.75 (p = 0.60), eval_llm 90.49 vs 93.13 (9 / 34, p = 0.0002): worse, broadly on hard LLM-evaluation questions; not the eval engine (same weights score the same on both, JOURNAL 11:55); against a same-code rerun without the batch: eval_llm 90.49 vs 91.97 (p = 0.07), eval2 95.38 vs 95.08 (p = 0.55): no gain, part of the drop is run-to-run noise | `reports/selfjev_4b_v2`, JOURNAL 2026-09-27 11:20 |
 | Stock LoRA, 2 epochs instead of 1 | dev benchmark 79.8 vs 80.3; best validation checkpoint inside epoch 1 | `reports/curve/vol100_e2` |
 | Stock LoRA on 8B instead of 4B | dev benchmark 80.7 vs 80.3, p = 0.52; about 1.5× slower | `reports/lora_8b`, `reports/scale_comparison.md` |
