@@ -1,20 +1,25 @@
 """End-to-end test of the product on a real GPU, recorded. Deploys this commit with `selfjev deploy aws up --fine-tuning`,
 then through the SDK checks: health, auth and errors, the models list, every question type on cases the model must get
-right, Jev's names and paths, 16 concurrent requests, a supervised and an RLCD fine-tuning job over HTTP and the models
-they produce. The box is always torn down.
+right, Jev's names and paths, 16 concurrent requests, images (a Path, text + image parts, a bad image, concurrency, the
+async client), a supervised and an RLCD fine-tuning job over HTTP, a fine-tune on a folder of photos plus text rows, and
+the models they produce. The box is always torn down.
 
   uv run --extra deploy python scripts/aws/e2e.py --out reports/e2e/2026-09-28          # PAID: a g6e.xlarge for ~1 h
   uv run python scripts/aws/e2e.py --base-url http://host:8000 --api-key KEY --out DIR   # an existing server instead
 
 Writes <out>/report.md (every check, its time and detail) and <out>/transcript.jsonl (every HTTP request and response,
 truncated to 2 KB), plus <out>/setup.log (the box's first-boot log) when it deployed. Exit code 1 if any check failed.
-Fine-tuning data: batch numdate_neg_v1 from data/all.jsonl.gz (training rows only, never a test set).
+Fine-tuning data: batch numdate_neg_v1 from data/all.jsonl.gz (training rows only, never a test set); photos: images v1's
+training and validation files (data/images_v1/, scripts/data/build_images_v1.py; never data/ova/eval_images_v1.jsonl).
 """
 
 import argparse
+import asyncio
+import base64
 import gzip
 import json
 import subprocess
+import tempfile
 import time
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -22,7 +27,7 @@ from pathlib import Path
 
 import httpx
 
-from selfjev import AuthenticationError, Choice, InvalidRequestError, Multi, NotFoundError, Noul, Score, SelfJev
+from selfjev import AsyncSelfJev, AuthenticationError, Choice, InvalidRequestError, Multi, NotFoundError, Noul, Score, SelfJev
 
 STATE = (
     "Ticket 4411 from Dana (Pro plan, paying since 2023): I was charged twice for invoice INV-2291 this morning. "
@@ -76,6 +81,43 @@ class Recorder:
         print(f"{'PASS' if ok else 'FAIL'}  {name}  {self.checks[-1][3][:160]}", flush=True)
 
 
+def jev_question(q: dict) -> tuple[dict, dict]:
+    """An internal question -> Jev's, and the map from its candidate ids to the keys used (the descriptions themselves:
+    a choice shows the model "key: description", so opaque ids would add noise)."""
+    if q["type"] == "binary":
+        return {"type": "noul", "instructions": q["instruction"]}, {}
+    keys = {c["id"]: c["description"] for c in q["candidates"]}
+    kind = "choice" if q["type"] == "multiclass" else "multi"
+    return {"type": kind, "instructions": q["instruction"], "criteria": dict.fromkeys(keys.values())}, keys
+
+
+def photo_rows(path: str, n: int, family: str | None = None, per_family: int | None = None) -> list[dict]:
+    """Up to n photos of an images v1 file (all families, or one) as fine-tuning rows: the photo, its questions, their answers."""
+    rows, count = {}, {}
+    with open(path) as f:
+        for r in map(json.loads, f):
+            fam, sid = r["family"], r["source_id"]
+            if (family and fam != family) or (sid not in rows and (len(rows) >= n or count.get(fam, 0) >= (per_family or n))):
+                continue
+            if sid not in rows:
+                count[fam] = count.get(fam, 0) + 1
+            row = rows.setdefault(sid, {"state": r["state"], "questions": {}, "answers": {}})
+            q, keys = jev_question(r["question"])
+            qid = f"q{len(row['questions'])}"
+            row["questions"][qid] = q
+            row["answers"][qid] = keys.get(r["target"], r["target"]) if keys else r["target"]
+    return list(rows.values())
+
+
+def right(res, row) -> list[bool]:
+    """Per question: is the answer the expected one?"""
+    out = []
+    for qid, want in row["answers"].items():
+        a = res.answers[qid]
+        out.append(a.noul >= 0.5 if a.type == "noul" and want else a.noul < 0.5 if a.type == "noul" else a.choice == want)
+    return out
+
+
 def training_files(out: Path) -> tuple[Path, Path]:
     """numdate_neg_v1's train / validation rows as fine-tuning files: one decisions request + its answers per text."""
     rows = {"train": {}, "validation": {}}
@@ -83,16 +125,12 @@ def training_files(out: Path) -> tuple[Path, Path]:
         for r in map(json.loads, f):
             if r["dataset"] != "numdate_neg_v1" or r["split"] not in rows:
                 continue
-            q, t = r["question"], r["target"]
             row = rows[r["split"]].setdefault(r["source_id"], {"state": r["state"], "questions": {}, "answers": {}})
             qid = f"q{len(row['questions'])}"
-            if q["type"] == "binary":
-                row["questions"][qid], row["answers"][qid] = {"type": "noul", "instructions": q["instruction"]}, t
-            else:
-                kind = "choice" if q["type"] == "multiclass" else "multi"
-                criteria = {c["id"]: c["description"] for c in q["candidates"]}
-                row["questions"][qid] = {"type": kind, "instructions": q["instruction"], "criteria": criteria}
-                row["answers"][qid] = t
+            q, keys = jev_question(r["question"])
+            row["questions"][qid] = q
+            t = r["target"]
+            row["answers"][qid] = [keys[x] for x in t] if isinstance(t, list) else keys.get(t, t) if keys else t
     paths = []
     for split, name in (("train", "e2e_train.jsonl"), ("validation", "e2e_val.jsonl")):
         (out / name).write_text("".join(json.dumps(r) + "\n" for r in rows[split].values()))
@@ -165,9 +203,92 @@ def run_checks(base_url: str, api_key: str, out: Path, rec: Recorder, fine_tunin
         return f"16 requests in {time.perf_counter() - t0:.1f} s; per request p50 {ms[8]:.0f} ms, max {ms[-1]:.0f} ms"
 
     rec.check("16 concurrent requests", concurrent)
+    images(client, base_url, api_key, rec)
     if fine_tuning:
         fine_tune(client, out, rec, ok_answers)
+        image_fine_tune(client, out, rec)
     rec.check("metrics", lambda: [x for x in http.get(f"{base_url}/metrics").text.splitlines() if x.startswith("selfjev_req")][:6])
+
+
+def images(client, base_url, api_key, rec):
+    photos = photo_rows("data/images_v1/val.jsonl", 24, per_family=4)  # 4 held-out photos of each of the 6 kinds
+
+    def from_files():
+        hits, ms = [], []
+        with tempfile.TemporaryDirectory() as d:
+            for i, row in enumerate(photos):
+                path = Path(d) / f"photo{i}"  # a file as a user has it: the SDK reads it and sends a data URL
+                path.write_bytes(base64.b64decode(row["state"].split(",", 1)[1]))
+                t0 = time.perf_counter()
+                hits += right(client.system_one([path], row["questions"]), row)
+                ms.append(1e3 * (time.perf_counter() - t0))
+        assert sum(hits) >= 0.8 * len(hits), f"{sum(hits)} of {len(hits)} right"
+        return f"{sum(hits)} of {len(hits)} questions right on {len(photos)} photos; per request p50 {sorted(ms)[len(ms) // 2]:.0f} ms"
+
+    rec.check("images: photos sent as files, answered right", from_files)
+
+    def with_text():
+        row = photos[0]
+        alone, mixed = (client.system_one(s, row["questions"]) for s in ([row["state"]], ["A customer sent this photo.", row["state"]]))
+        assert right(mixed, row) == right(alone, row), "the text part changed the answer"
+        return {k: round(v.noul, 3) if v.type == "noul" else v.choice for k, v in mixed.answers.items()}
+
+    rec.check("images: text and image parts in one state", with_text)
+
+    def bad_image():
+        try:
+            client.system_one(["data:image/png;base64,iVBORw0KGgo="], {"cat": Noul("Is there a cat?")})
+        except InvalidRequestError as e:
+            return f"{e.status} {e.type}: {e.message[:120]}"
+        raise AssertionError("an unreadable image was accepted")
+
+    rec.check("images: an unreadable image is a 422", bad_image)
+
+    def concurrent():
+        t0 = time.perf_counter()
+        with ThreadPoolExecutor(8) as pool:
+            hits = sum(pool.map(lambda r: sum(right(client.system_one(r["state"], r["questions"]), r)), photos[:8]), 0)
+        return f"8 photos at once in {time.perf_counter() - t0:.1f} s; {hits} of 16 right"
+
+    rec.check("images: 8 concurrent requests", concurrent)
+
+    async def asynchronous():
+        async with AsyncSelfJev(api_key=api_key, base_url=base_url, timeout=120, max_retries=0) as c:
+            res = await asyncio.gather(*(c.system_one(r["state"], r["questions"]) for r in photos[:4]))
+        return f"{sum(sum(right(x, r)) for x, r in zip(res, photos))} of 8 right"
+
+    rec.check("images: the async client", lambda: asyncio.run(asynchronous()))
+
+
+def image_fine_tune(client, out, rec):
+    """A user's flow: a folder of labelled photos (plus some text rows in the same file) -> upload -> job -> its model."""
+    val = photo_rows("data/images_v1/val.jsonl", 16, family="img_beans")
+
+    def accuracy(model):
+        hits = [h for r in val for h in right(client.system_one(r["state"], r["questions"], model=model), r)]
+        return f"{sum(hits)}/{len(hits)}"
+
+    def job():
+        t0 = time.time()
+        with tempfile.TemporaryDirectory() as d:
+            rows = []
+            for i, r in enumerate(photo_rows("data/images_v1/train.jsonl", 150, family="img_beans")):
+                path = Path(d) / f"leaf{i}.jpg"
+                path.write_bytes(base64.b64decode(r["state"].split(",", 1)[1]))
+                rows.append(r | {"state": [path]})
+            text = [json.loads(x) for x in (out / "e2e_train.jsonl").read_text().splitlines()[:50]]
+            f = client.upload_file(rows + text)
+        before = accuracy("selfjev-4b")
+        j = client.create_fine_tuning_job(f.id, suffix="e2e-images")
+        j = client.wait_fine_tuning_job(j.id, poll=20, timeout=45 * 60)
+        events = [e.message for e in client.fine_tuning_events(j.id)]
+        assert j.status == "succeeded", f"{j.status}: {j.error or events}"
+        after = accuracy(j.fine_tuned_model)
+        upload = f"{f.rows} rows ({len(rows)} photos + {len(text)} texts, {f.questions} questions, {f.bytes / 2**20:.1f} MB)"
+        took = f"{j.fine_tuned_model} in {(time.time() - t0) / 60:.1f} min"
+        return f"{upload} -> {took}; beans held-out photos right: {before} before, {after} after"
+
+    rec.check("fine-tuning: a folder of photos + text rows -> a model that reads images", job)
 
 
 def fine_tune(client, out, rec, ok_answers):
