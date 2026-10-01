@@ -1,6 +1,7 @@
 """End-to-end test of the product on a real GPU, recorded. Deploys this commit with `selfjev deploy aws up --fine-tuning`,
 then through the SDK checks: health, auth and errors, the models list, every question type on cases the model must get
-right, Jev's names and paths, 16 concurrent requests, images (a Path, text + image parts, a bad image, concurrency, the
+right, Jev's names and paths, 16 concurrent requests, bursts of mixed traffic (new request / question / option counts
+each time: no burst may wait on kernel tuning), images (a Path, text + image parts, a bad image, concurrency, the
 async client), a supervised and an RLCD fine-tuning job over HTTP, a fine-tune on a folder of photos plus text rows, and
 the models they produce. The box is always torn down.
 
@@ -18,6 +19,7 @@ import asyncio
 import base64
 import gzip
 import json
+import random
 import subprocess
 import tempfile
 import time
@@ -203,6 +205,29 @@ def run_checks(base_url: str, api_key: str, out: Path, rec: Recorder, fine_tunin
         return f"16 requests in {time.perf_counter() - t0:.1f} s; per request p50 {ms[8]:.0f} ms, max {ms[-1]:.0f} ms"
 
     rec.check("16 concurrent requests", concurrent)
+
+    def bursts():
+        rnd, words, worst = random.Random(0), STATE.split(), []
+
+        def request():
+            qs = {}
+            for i in range(rnd.randint(1, 8)):
+                opts = {f"o{j}": " ".join(rnd.choices(words, k=3)) for j in range(rnd.randint(2, 6))}
+                qs[f"q{i}"] = rnd.choice([Noul("Is it urgent?"), Choice("Which team?", opts), Multi("Which topics?", opts)])
+            return " ".join(rnd.choices(words, k=rnd.randint(20, 400))), qs
+
+        def one(req):
+            t0 = time.perf_counter()
+            client.system_one(*req)
+            return 1e3 * (time.perf_counter() - t0)
+
+        with ThreadPoolExecutor(32) as pool:
+            for _ in range(20):
+                worst.append(max(pool.map(one, [request() for _ in range(rnd.choice([2, 4, 8, 16, 32]))])))
+        assert max(worst) < 5000, f"a burst waited {max(worst):.0f} ms"
+        return f"20 bursts of 2-32 requests; slowest request per burst: median {sorted(worst)[10]:.0f} ms, max {max(worst):.0f} ms"
+
+    rec.check("bursts of mixed traffic: no kernel-tuning stalls", bursts)
     images(client, base_url, api_key, rec)
     if fine_tuning:
         fine_tune(client, out, rec, ok_answers)
