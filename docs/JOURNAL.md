@@ -9,12 +9,14 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
-| Survey open Jev-like classifiers on HF + accuracy matrix vs selfjev-4b | Claude competitors | local (survey); GPU scoring only after the user's OK | 2026-09-30 10:00 PDT | this session |
 
 ## Spend so far (real cost, BYOK upstream included)
 
 | item | cost | who |
 |---|---|---|
+| AWS: images v2 g6e.xlarge `i-0de55fc63cdf915fc` us-east-2, 15:41–19:38 PDT 2026-09-30 (≈ 3.95 h incl. ≈ 25 min lost to an IP change and a bad data row; terminated by the driver), SG and key pair deleted | ≈ $7.35 (approved ≈ $7.5, cap $10.2) | Claude images |
+| AWS: DecisionBench retry g6e.2xlarge `i-00d19a60b7bed93fd` us-east-2, 22:34–23:25 UTC 2026-09-30 (51 min), terminated; SGs and key pairs deleted in 3 regions | ≈ $1.93 (inside the ≈ $17 competitor approval; total ≈ $9.28) | Claude competitors |
+| AWS: competitor head-to-head g6e.xlarge `i-0d7e62883fb38d56a` us-east-2, 17:18–21:10 UTC 2026-09-30 (3 h 53 min), terminated; SGs and key pairs deleted in us-east-1/us-east-2/us-west-2 | ≈ $7.35 (approved ≈ $17) | Claude competitors |
 | AWS: question sweep, 3 boxes in parallel 09:58–10:33 PDT 2026-09-30: g5.xlarge `i-05aa75d38f018311c` us-east-1 (≈ 32 min), g6e.xlarge `i-007faea0168e939a8` us-east-2 (≈ 23 min), p5.4xlarge **spot** us-east-2b at $2.457/h `i-0c4bf4fd234c63c1e` (≈ 6 min, cuDNN crash) + `i-071f28e6b48ea0ae6` (≈ 16 min); all terminated, SGs and key pairs deleted by the driver | ≈ $2.15 | Claude qsweep |
 | AWS: vision merged release g5.2xlarge `i-01d977d389fa24893` us-east-1, 09:30–09:36 PDT 2026-09-30 (terminate request; cleaned 09:40), SG and key pair deleted | compute ≈ $0.15, ≈ $0.95 with the 8.8 GB upload's transfer (approved ≈ $1.10, cap $2.10) | Claude images |
 | AWS: images v1 g6e.xlarge `i-0c39fa20d45c4d2bf` us-east-2, 22:12 PDT 09-29 – 01:51 PDT 09-30 (≈ 3.65 h, full epoch after the user's OK, terminated by the driver); SG and key pair deleted | ≈ $6.79 | Claude images |
@@ -67,6 +69,43 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
 
 ## Log
 
+### 2026-09-30 19:50 PDT: images v2 (diverse VQA data): +0.8 on unseen image tasks (not significant), costs text: not adopted (Claude images)
+
+- **Run:** from the vision release (images v1), lr 5e-5, 1 epoch, 575 steps (≈ 3 h, one L40S), on `runs/images_v2`
+  (`scripts/data/build_images_v2.py`): 15,991 new image questions (VQAv2 8,000: 3,200 yes/no + counts + typed answers;
+  A-OKVQA 4,991; COCO "which can be seen" multilabel 3,000) + 3,000 images-v1 rows + 12,000 replayed text questions with a
+  third of the texts over 4K tokens. Validation 89.2 -> 90.7% (loss 0.207 -> 0.182, best = last step). Reports:
+  `reports/images_v2/`; adapter `runs/images_v2/adapter` (not in git).
+- **Unseen image tasks:** held-out QA test (`eval_images_heldout`, 1,027 q) text-only 88.3, vision v1 88.7, **v2 89.5**
+  (vs v1 24 / 16, p = 0.27; vs text-only 26 / 14, p = 0.08): AI2D 84.0 -> 86.7, CV-Bench 88.7 -> 90.7, ChartQA, VizWiz,
+  RealWorldQA, DocVQA flat; v1's 4 held-out sets 84.3 -> 85.1 (19 / 13, p = 0.38). Pooled +43 / -29: a lean, not proof.
+  The vision default itself is no better than text-only there (88.3 -> 88.7, p = 0.59): v1 learnt no transfer.
+- **Trained tasks kept:** v1's 6 datasets 94.2 -> 94.5.
+- **Text gate fails vs the default:** eval2 96.13 -> **95.23** (11 / 29, **p = 0.006**), dev benchmark 84.07 -> 83.55
+  (29 / 47, p = 0.05), eval_llm 92.49 -> 92.39 (=). Losses are hard / very hard text questions (26 of 29), mostly binary
+  traps; eval2's > 4K-token slice is fine (97.3 vs 97.8), so the shortened long-text replay is not the cause. Likely: less
+  text than image (12K vs 18K, v1 was 1:1) and a second fine-tune stacked on v1.
+- **Not adopted;** the default stays the vision release (images v1). Also found: TextVQA and DocVQA are at ceiling in the
+  held-out test (wrong options from other images are easy to rule out): a harder version would take wrong options from text
+  in the same image. Run incidents: this Mac's public IP changed mid-upload (the driver now follows it in the SSH rule);
+  2 of 5,000 A-OKVQA rows had an empty option (the builder now skips them).
+
+### 2026-09-30 16:35 PDT: tokenizer fix (quadratic in options) and DecisionBench retry, stopped again (Claude competitors, user request)
+
+- **Fix:** `src/selfjev/engine/qwen35.py` `entry()` tokenized `instruction + "\nProposed answer: " + answer + tail` once per
+  candidate, and the instruction lists every option (server option transform): O(N^2). Now `head = tokens(instruction +
+  "\nProposed answer:")` once and `head + tokens(" " + answer + tail)` per candidate; ":" always ends a pre-token, so ids
+  are identical (0 mismatches on 54,681 real questions from eval2, eval_llm, hf, the image set and 30K training rows;
+  new test `test_entry_branches_equal_full_string_tokenization`). `tree.split_branches` uses `os.path.commonprefix`.
+  CPU per question: 64 options 82.8 -> 4.2 ms, 255 options 1,414.6 -> 28.0 ms (50x). Training ids unchanged (same path).
+- **DecisionBench retry** (g6e.2xlarge, 51 min, ≈ $1.93): GPU now at 100 % instead of idle, answers equal to the pre-fix
+  run on 2,903 / 2,906 rows (batching numerics). Stopped at 3,460 / 23,900 rows: the tree engine does ≈ 21 rows/min on
+  many-option tasks (`route` 113 options on average, `tool_route` 64, `canonical_entity` 60), ≈ 7 h more on an L40S,
+  beyond the approval. 65 / 637 `canonical_entity` rows exceed 32,768 tokens (options in the question and in every
+  leaf). Partial rows kept for a resume; per-task numbers in `reports/competitors/README.md`.
+- **Verdict:** tokenization is no longer the bottleneck; the tree engine's GPU speed on 60–120-option questions is. A
+  full DecisionBench needs ≈ 7 h L40S (≈ $16) or a faster engine/GPU: the user's call.
+
 ### 2026-09-30 15:45 PDT: a held-out image generalization test, and where image fine-tuning time goes (Claude images)
 
 - **Generalization test** `data/ova/eval_images_heldout.jsonl` (gitignored, 160 MB, sha256 `7865bfc8…`,
@@ -85,21 +124,35 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
 - **v2 sources checked** (stream fine): A-OKVQA train (4 human options), VQAv2 (lmms-lab mirror, validation), GQA
   (`train_balanced_instructions`), COCO 2017 objects (`detection-datasets/coco`). Not scored on a GPU yet; cost $0.
 
-### 2026-09-30 10:40 PDT: survey of the open Jev-like classifiers on HF and the shared benchmarks (Claude competitors, user request)
+### 2026-09-30 14:15 PDT: head-to-head vs 8 open Jev-like models on one L40S, and selfjev-4b-vision on the shared public benchmarks (Claude competitors, user request)
 
-- **What:** read ≈ 50 model cards from huggingface.co/models?other=classification (by downloads, likes, trending; created
-  since 2026-09-15) and the benchmarks they cite. Nothing downloaded or run; $0. Matrix and conclusions:
+- **What:** each competitor served with its card's recipe (pinned revisions), asked exactly Jev's requests on our frozen
+  sets (`scripts/eval/score_systemone.py`, failures count as wrong); public sets through their own harnesses (JevBench
+  runner, typed-decisions, lev's Nimble export). Protocol, recipes and caveats: `reports/competitors/README.md`; table
+  generated by `scripts/eval/competitors/matrix.py` -> `reports/competitors/matrix.md`, embedded in
   [landscape.md](landscape.md#the-open-field-and-the-shared-yardsticks-survey-2026-09-30).
-- **Shared yardsticks:** JevBench public-231 (Benchmark Heaven, MIT, not TypeSafe's; live board, sealed half run by the
-  maintainers), LocalLLaMA/typed-decisions (400 cases), Decision Index 0.2.1 (38 public benchmarks), Nimble 13-subset
-  suite (3,880), DecisionBench (23,900), Image JevBench (684). We have no number on any of them yet.
-- **Overlap check:** `data/all.jsonl.gz` vs JevBench public-231: 0 exact, 0 with > 20 % 8-grams; vs typed-decisions test:
-  0 / 400. MNLI train is in `hf_nli` (Nimble suite has MNLI dev).
-- **Field:** board-run leaders are Cygnet 73.7, Winnow-12B 73.2, Jev 72.1, JevK5-4B 71.9, Plumb-4B 71.6, decider-4b 71.3
-  (JevBench v1.5.4). Images: imajev-4b leads Image JevBench (76.39), jpt-4b 69.55. Laya: JevBench #93, Decision Index 6.04.
-- **Verdict:** the shared prefix and text + images in one model are no longer unique (Mica, kev, ArseneLupin share
-  the prefix; jpt, imajev, openjev, vjev-vision, AutoJev take images). Per-candidate description scoring and native
-  multilabel are. Any "best" claim needs our numbers on the shared boards: next step is a GPU run (needs the user's OK).
+- **Our frozen sets (same requests):** selfjev-4b-vision eval2 94.7 / eval_llm 90.7 vs the 4B field: Plumb-4B 93.4 /
+  84.1, jpt-4b 92.5 / 85.0, imajev-4b 91.5 / 84.9, decider-4b 90.8 / 82.8, Mica 89.6 / 84.1, kev-4b 88.4 / 74.7, Laya 45.4
+  / 46.4. Every paired test vs a 4B favours us (closest Plumb on eval2: 79 / 52, p = 0.023). openjev-27B (FP8,
+  non-commercial) beats us on eval2 (96.8, 30 / 72, p = 4e-5), level on eval_llm (92.6, p = 0.063). Jev: 97.2 / 92.5.
+- **Jev's request shape costs us 1.4–1.8 points** vs our native evaluation (eval2 96.1 -> 94.7): multilabel as one noul
+  per candidate (86.1 vs 90.8). Images through the API = native (90.6 vs 90.4, p = 0.73).
+- **Shared public benchmarks (zero-shot; 0 overlap with our data):** JevBench public-231 83.5 (hard 66.7) vs Plumb
+  89.6, jpt 87.9, openjev 87.4, imajev 85.7, decider 83.1, Mica 82.7, kev 75.8; Jev 86.6 (board). typed-decisions 66.1
+  vs openjev 71.1, imajev 68.5, decider / Mica 68.0, kev 67.0, Plumb 61.4, Laya 36.0; Jev 72.7 (jpt 78.8 is in
+  distribution). Nimble 13 macro 74.8 (Jev 76.0 and Nimble-9B 74.8 on their own runs). Mid-pack, not first.
+- **Images:** on the 4 held-out datasets nobody trained on, 85.1 vs imajev 85.2, jpt 83.8, openjev 82.6 (a tie); our
+  94.0 on the other 6 is in distribution.
+- **Speed:** eval2 end to end with 4 requests in flight: ours 242 s vs jpt 90, kev 109, decider 145, Mica 162, Plumb
+  471, imajev 489, openjev 753 (Laya 23).
+- **Harness checks:** every card number we re-measured matched (JevBench: decider 83.1 vs 82.7, kev 75.8 = 75.8, Mica
+  82.7 vs 83.1, Plumb 89.6 = 89.6, jpt 87.9 = 87.9; typed-decisions: Laya 36.0 vs 36.2).
+- **DecisionBench stopped, no result:** 2,925 / 23,900 rows; the server was CPU-bound tokenizing (`qwen35.py` `entry()`
+  re-tokenizes the question + full option list once per candidate: quadratic), ≈ 11 rows/min on many-candidate tasks.
+  Follow-up task suggested to fix it. Image JevBench public items are not downloadable (only its maintainers can score).
+- **Cost:** ≈ $7.35 (g6e.xlarge 3 h 53 min). **Verdict:** best open 4B on our own sets and tied on held-out images, but
+  mid-pack on the shared public benchmarks and slower than most 4B peers; the public "best" claim is not supported.
+  Next: fix the tokenization, then DecisionBench + a JevBench board request (outward: user's OK first).
 
 ### 2026-09-30 10:35 PDT: many questions on one document: `selfjev-4b` latency, memory and throughput on A10G, L40S and H100 (Claude qsweep, user request)
 
@@ -132,6 +185,22 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
   homepage hardware explorer (`website/lib/evidence.ts`, `components/hardware-explorer.tsx`) now reads these three
   `bench.json` files (512–32K tokens × 1–50 questions, plus peak memory) instead of the archived Qwen3 tree's vLLM logs;
   `website/content/hardware.md` has the A10G table, `aws.md` the A10G line.
+
+### 2026-09-30 10:10 PDT: survey of the open Jev-like classifiers on HF and the shared benchmarks (Claude competitors, user request)
+
+- **What:** read ≈ 50 model cards from huggingface.co/models?other=classification (by downloads, likes, trending; created
+  since 2026-09-15) and the benchmarks they cite. Nothing downloaded or run; $0. Matrix and conclusions:
+  [landscape.md](landscape.md#the-open-field-and-the-shared-yardsticks-survey-2026-09-30).
+- **Shared yardsticks:** JevBench public-231 (Benchmark Heaven, MIT, not TypeSafe's; live board, sealed half run by the
+  maintainers), LocalLLaMA/typed-decisions (400 cases), Decision Index 0.2.1 (38 public benchmarks), Nimble 13-subset
+  suite (3,880), DecisionBench (23,900), Image JevBench (684). We have no number on any of them yet.
+- **Overlap check:** `data/all.jsonl.gz` vs JevBench public-231: 0 exact, 0 with > 20 % 8-grams; vs typed-decisions test:
+  0 / 400. MNLI train is in `hf_nli` (Nimble suite has MNLI dev).
+- **Field:** board-run leaders are Cygnet 73.7, Winnow-12B 73.2, Jev 72.1, JevK5-4B 71.9, Plumb-4B 71.6, decider-4b 71.3
+  (JevBench v1.5.4). Images: imajev-4b leads Image JevBench (76.39), jpt-4b 69.55. Laya: JevBench #93, Decision Index 6.04.
+- **Verdict:** the shared prefix and text + images in one model are no longer unique (Mica, kev, ArseneLupin share
+  the prefix; jpt, imajev, openjev, vjev-vision, AutoJev take images). Per-candidate description scoring and native
+  multilabel are. Any "best" claim needs our numbers on the shared boards: next step is a GPU run (needs the user's OK).
 
 ### 2026-09-30 09:46 PDT: website defaults to the vision release (Codex vision website, user request)
 

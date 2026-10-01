@@ -1,0 +1,15 @@
+{
+ "name": "decider-4b",
+ "n": 2000,
+ "accuracy": 68.0,
+ "failed": 0,
+ "slices": {
+  "type:choice": 68.0,
+  "type:noul": 74.3,
+  "type:score": 63.1,
+  "workflow:agent_trace_observability": 60.0,
+  "workflow:customer_service": 73.6,
+  "workflow:invoice_processing": 67.0,
+  "workflow:security_incidents": 71.2
+ }
+}

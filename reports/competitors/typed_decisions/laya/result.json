@@ -1,0 +1,15 @@
+{
+ "name": "laya",
+ "n": 2000,
+ "accuracy": 36.0,
+ "failed": 0,
+ "slices": {
+  "type:choice": 28.7,
+  "type:noul": 48.3,
+  "type:score": 32.2,
+  "workflow:agent_trace_observability": 38.8,
+  "workflow:customer_service": 38.0,
+  "workflow:invoice_processing": 36.0,
+  "workflow:security_incidents": 31.2
+ }
+}

@@ -1,0 +1,15 @@
+{
+ "name": "jpt-4b",
+ "n": 2000,
+ "accuracy": 78.8,
+ "failed": 0,
+ "slices": {
+  "type:choice": 74.2,
+  "type:noul": 87.3,
+  "type:score": 75.8,
+  "workflow:agent_trace_observability": 70.6,
+  "workflow:customer_service": 83.0,
+  "workflow:invoice_processing": 82.8,
+  "workflow:security_incidents": 78.6
+ }
+}

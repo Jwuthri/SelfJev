@@ -1,0 +1,14 @@
+# selfjev-4b-vision on the shared public benchmarks: typed-decisions test, JevBench public-231, Nimble 13-subset suite (lev export)
+source ~/sj/scripts/eval/competitors/lib.sh
+teardown
+cd $SJ && nohup uv run selfjev serve --port 8000 > ~/logs/serve_ours_public.log 2>&1 &
+until curl -sf -o /dev/null localhost:8000/v1/models; do kill -0 $! 2>/dev/null || { echo "SETUP_FAIL ours"; exit 1; }; sleep 10; done
+(cd $SJ/scripts/eval && uv run python score_typed_decisions.py --url http://127.0.0.1:8000 --model selfjev-4b --name selfjev-4b-vision \
+   --parquet $SJ/data/td_test.parquet --out $SJ/$OUT/typed_decisions --workers 4 2>&1 | tail -2 | cut -c1-600)
+jb selfjev-4b-vision 8000 selfjev-4b
+cd ~ && { [ -d lev ] || git clone -q https://github.com/InterfazeAI/lev; } && cd lev && git checkout -q 0ea955f && uv sync -q \
+  && uv pip install -q --python .venv/bin/python datasets huggingface-hub && { [ -d data/s1bench ] || .venv/bin/lev s1bench export --out data/s1bench > ~/logs/s1_export.log 2>&1; }
+mkdir -p $SJ/$OUT/s1bench
+.venv/bin/python $SJ/scripts/eval/competitors/s1_levbench_macro.py http://127.0.0.1:8000 selfjev-4b data/s1bench 8 $SJ/$OUT/s1bench/selfjev-4b-vision.json \
+  2>&1 | grep -E "acc=|MACRO|Traceback|Error" | sed "s/^/S1 /" | cut -c1-300
+teardown

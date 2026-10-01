@@ -1,0 +1,15 @@
+# resume of 92 (same output dir: the runner resumes where it stopped), after openjev
+# selfjev-4b-vision on DecisionBench 1.0 (23,900 rows; Hanno-Labs runner, primary accuracy counts errors as misses). Last: the costliest.
+source ~/sj/scripts/eval/competitors/lib.sh
+teardown
+cd $SJ && uv pip install -q "flash-linear-attention>=0.3" && HF_HUB_OFFLINE=1 nohup uv run selfjev serve --port 8000 > ~/logs/serve_ours_db.log 2>&1 &  # offline: a Hub call hung once
+until curl -sf -o /dev/null localhost:8000/v1/models; do kill -0 $! 2>/dev/null || { echo "SETUP_FAIL ours-db"; exit 1; }; sleep 10; done
+cd ~ && { [ -d decision-bench ] || git clone -q https://github.com/Hanno-Labs/decision-bench; } && cd decision-bench && git checkout -q 9a6328ee066a3dec0ed94ea9e57ddd3f63c57aa9
+[ -d .venv ] || uv venv -q --python 3.12 .venv; uv pip install -q --python .venv/bin/python -e .
+SHA=$(sha256sum $SJ/weights/selfjev_4b_vision/adapter_model.safetensors | cut -c1-64)
+timeout 14400 .venv/bin/decision-bench run-system-one-http task_specs/decisionbench-dev.toml $SJ/$OUT/decisionbench/selfjev-4b-vision \
+  --base-url http://127.0.0.1:8000 --model selfjev-4b --model-repo Jwuthrich/selfjev-4b-vision --model-revision main \
+  --serving-bundle-sha256 $SHA --inference-image "selfjev serve (TreeServer, max-length 32768)" --adapter-name selfjev-serving-systemone-v1 \
+  --probability-source "shared-prefix tree, per-candidate description scoring" --concurrency 8 --max-candidates 255 > ~/logs/decisionbench_resume.log 2>&1
+python3 -c "import json; s=json.load(open('$SJ/$OUT/decisionbench/selfjev-4b-vision/summary.json')); print('DB primary', s.get('benchmark_accuracy_counting_unsupported_as_incorrect'), 'coverage', s.get('coverage'))"
+teardown

@@ -1,0 +1,5 @@
+easy      n=48/48 acc=1.0000 macro_family_acc=1.0000 ece=0.0062 brier=0.0002 valid=1.000 ok=1.000
+original  n=72/72 acc=0.9861 macro_family_acc=0.9861 ece=0.0686 brier=0.0339 valid=1.000 ok=1.000
+hard      n=111/111 acc=0.7117 macro_family_acc=0.7754 ece=0.0787 brier=0.3699 valid=1.000 ok=1.000
+ALL231    n=231/231 acc=0.8571 macro_family_acc=0.8706 ece=0.0428 brier=0.1883
+per_family: {'adequacy': 0.917, 'adversarial': 1.0, 'ambiguous': 0.714, 'extraction': 1.0, 'fact': 1.0, 'intent': 1.0, 'judge_hard': 0.647, 'long_policy': 0.526, 'multi_hop': 0.833, 'ordinal': 1.0, 'policy': 1.0, 'probability': 0.8, 'routing': 1.0, 'routing_hard': 1.0, 'temporal_numeric': 0.4, 'tool_selection': 1.0, 'tradeoff': 0.833, 'trap': 1.0}

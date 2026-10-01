@@ -1,0 +1,4 @@
+source ~/sj/scripts/eval/competitors/lib.sh
+teardown
+up decider 8001 && score decider-4b 8001 decider-4b 0
+teardown

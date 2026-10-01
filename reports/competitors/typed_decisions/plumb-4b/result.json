@@ -1,0 +1,15 @@
+{
+ "name": "plumb-4b",
+ "n": 2000,
+ "accuracy": 61.4,
+ "failed": 0,
+ "slices": {
+  "type:choice": 57.3,
+  "type:noul": 74.3,
+  "type:score": 54.6,
+  "workflow:agent_trace_observability": 51.0,
+  "workflow:customer_service": 65.6,
+  "workflow:invoice_processing": 64.6,
+  "workflow:security_incidents": 64.2
+ }
+}

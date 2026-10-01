@@ -1,0 +1,4 @@
+source ~/sj/scripts/eval/competitors/lib.sh
+teardown
+up imajev 8765 && score imajev-4b 8765 imajev-4b 1 "{}" 8 raw
+teardown

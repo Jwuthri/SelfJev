@@ -1,0 +1,15 @@
+{
+ "name": "openjev-27b-fp8",
+ "n": 2000,
+ "accuracy": 71.1,
+ "failed": 0,
+ "slices": {
+  "type:choice": 68.5,
+  "type:noul": 82.5,
+  "type:score": 64.5,
+  "workflow:agent_trace_observability": 62.4,
+  "workflow:customer_service": 75.4,
+  "workflow:invoice_processing": 76.4,
+  "workflow:security_incidents": 70.2
+ }
+}

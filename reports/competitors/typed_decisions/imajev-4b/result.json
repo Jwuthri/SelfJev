@@ -1,0 +1,15 @@
+{
+ "name": "imajev-4b",
+ "n": 2000,
+ "accuracy": 68.5,
+ "failed": 0,
+ "slices": {
+  "type:choice": 70.7,
+  "type:noul": 76.5,
+  "type:score": 60.8,
+  "workflow:agent_trace_observability": 61.2,
+  "workflow:customer_service": 72.6,
+  "workflow:invoice_processing": 69.4,
+  "workflow:security_incidents": 70.6
+ }
+}

@@ -1,0 +1,15 @@
+{
+ "name": "selfjev-4b-vision",
+ "n": 2000,
+ "accuracy": 66.1,
+ "failed": 0,
+ "slices": {
+  "type:choice": 66.5,
+  "type:noul": 72.7,
+  "type:score": 60.9,
+  "workflow:agent_trace_observability": 60.8,
+  "workflow:customer_service": 75.0,
+  "workflow:invoice_processing": 62.6,
+  "workflow:security_incidents": 66.0
+ }
+}

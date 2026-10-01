@@ -1,0 +1,15 @@
+{
+ "name": "kev-4b",
+ "n": 2000,
+ "accuracy": 67.0,
+ "failed": 0,
+ "slices": {
+  "type:choice": 64.5,
+  "type:noul": 76.3,
+  "type:score": 61.8,
+  "workflow:agent_trace_observability": 57.4,
+  "workflow:customer_service": 71.6,
+  "workflow:invoice_processing": 69.0,
+  "workflow:security_incidents": 69.8
+ }
+}

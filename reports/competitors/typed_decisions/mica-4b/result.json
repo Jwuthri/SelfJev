@@ -1,0 +1,15 @@
+{
+ "name": "mica-4b",
+ "n": 2000,
+ "accuracy": 68.0,
+ "failed": 0,
+ "slices": {
+  "type:choice": 62.2,
+  "type:noul": 79.3,
+  "type:score": 63.9,
+  "workflow:agent_trace_observability": 55.4,
+  "workflow:customer_service": 71.8,
+  "workflow:invoice_processing": 76.2,
+  "workflow:security_incidents": 68.6
+ }
+}

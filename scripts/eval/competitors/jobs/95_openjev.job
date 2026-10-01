@@ -1,0 +1,4 @@
+source ~/sj/scripts/eval/competitors/lib.sh
+teardown
+up openjev 3000 && score openjev-27b-fp8 3000 openjev 1 "{}" 64 dict
+teardown

@@ -1,0 +1,4 @@
+source ~/sj/scripts/eval/competitors/lib.sh
+teardown
+up jpt 8080 && score jpt-4b 8080 kirp/jpt-4b 1 "{}" 64 messages
+teardown

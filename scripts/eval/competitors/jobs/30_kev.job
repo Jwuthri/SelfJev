@@ -1,0 +1,4 @@
+source ~/sj/scripts/eval/competitors/lib.sh
+teardown
+up kev 8008 && score kev-4b 8008 kev-latest 0
+teardown

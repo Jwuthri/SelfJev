@@ -1,0 +1,4 @@
+source ~/sj/scripts/eval/competitors/lib.sh
+teardown
+up mica 8010 && score mica-4b 8010 mica-v0.1-4b 0
+teardown

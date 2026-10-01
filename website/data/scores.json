@@ -91,6 +91,106 @@
   "accuracy": 0.5794930875576036,
   "n": 868
  },
+ "reports/competitors/eval2/decider-4b/report.json": {
+  "accuracy": 0.9075841285786037,
+  "n": 1991
+ },
+ "reports/competitors/eval2/imajev-4b/report.json": {
+  "accuracy": 0.9151180311401306,
+  "n": 1991
+ },
+ "reports/competitors/eval2/jpt-4b/report.json": {
+  "accuracy": 0.9251632345554998,
+  "n": 1991
+ },
+ "reports/competitors/eval2/kev-4b/report.json": {
+  "accuracy": 0.8844801607232546,
+  "n": 1991
+ },
+ "reports/competitors/eval2/laya-long/report.json": {
+  "accuracy": 0.4691109994977398,
+  "n": 1991
+ },
+ "reports/competitors/eval2/laya/report.json": {
+  "accuracy": 0.4535409342039176,
+  "n": 1991
+ },
+ "reports/competitors/eval2/mica-4b/report.json": {
+  "accuracy": 0.9176954732510288,
+  "n": 1944
+ },
+ "reports/competitors/eval2/openjev-27b-fp8/report.json": {
+  "accuracy": 0.9683576092415871,
+  "n": 1991
+ },
+ "reports/competitors/eval2/plumb-4b/report.json": {
+  "accuracy": 0.9337016574585635,
+  "n": 1991
+ },
+ "reports/competitors/eval2/selfjev-4b-vision-api-w4/report.json": {
+  "accuracy": 0.9467604218985435,
+  "n": 1991
+ },
+ "reports/competitors/eval2/selfjev-4b-vision-api/report.json": {
+  "accuracy": 0.9472626820693119,
+  "n": 1991
+ },
+ "reports/competitors/eval_images_v1/imajev-4b/report.json": {
+  "accuracy": 0.7592407592407593,
+  "n": 2002
+ },
+ "reports/competitors/eval_images_v1/jpt-4b/report.json": {
+  "accuracy": 0.7617382617382618,
+  "n": 2002
+ },
+ "reports/competitors/eval_images_v1/openjev-27b-fp8/report.json": {
+  "accuracy": 0.7657342657342657,
+  "n": 2002
+ },
+ "reports/competitors/eval_images_v1/selfjev-4b-vision-api/report.json": {
+  "accuracy": 0.9055944055944056,
+  "n": 2002
+ },
+ "reports/competitors/eval_llm/decider-4b/report.json": {
+  "accuracy": 0.8276955602536998,
+  "n": 946
+ },
+ "reports/competitors/eval_llm/imajev-4b/report.json": {
+  "accuracy": 0.8488372093023255,
+  "n": 946
+ },
+ "reports/competitors/eval_llm/jpt-4b/report.json": {
+  "accuracy": 0.8498942917547568,
+  "n": 946
+ },
+ "reports/competitors/eval_llm/kev-4b/report.json": {
+  "accuracy": 0.7473572938689218,
+  "n": 946
+ },
+ "reports/competitors/eval_llm/laya-long/report.json": {
+  "accuracy": 0.45560253699788583,
+  "n": 946
+ },
+ "reports/competitors/eval_llm/laya/report.json": {
+  "accuracy": 0.46405919661733613,
+  "n": 946
+ },
+ "reports/competitors/eval_llm/mica-4b/report.json": {
+  "accuracy": 0.8477103301384451,
+  "n": 939
+ },
+ "reports/competitors/eval_llm/openjev-27b-fp8/report.json": {
+  "accuracy": 0.9260042283298098,
+  "n": 946
+ },
+ "reports/competitors/eval_llm/plumb-4b/report.json": {
+  "accuracy": 0.8414376321353065,
+  "n": 946
+ },
+ "reports/competitors/eval_llm/selfjev-4b-vision-api/report.json": {
+  "accuracy": 0.9069767441860465,
+  "n": 946
+ },
  "reports/curve/boolq_100/test/report.json": {
   "accuracy": 0.8003457216940363,
   "n": 3471
@@ -405,6 +505,34 @@
  },
  "reports/images_v1/test/report.json": {
   "accuracy": 0.8406799193316047,
+  "n": 3471
+ },
+ "reports/images_v2/base_text_heldout/report.json": {
+  "accuracy": 0.8831548198636806,
+  "n": 1027
+ },
+ "reports/images_v2/base_vision_heldout/report.json": {
+  "accuracy": 0.887049659201558,
+  "n": 1027
+ },
+ "reports/images_v2/eval2/report.json": {
+  "accuracy": 0.9522852837769965,
+  "n": 1991
+ },
+ "reports/images_v2/eval_llm/report.json": {
+  "accuracy": 0.9238900634249472,
+  "n": 946
+ },
+ "reports/images_v2/heldout/report.json": {
+  "accuracy": 0.8948393378773125,
+  "n": 1027
+ },
+ "reports/images_v2/images_v1_test/report.json": {
+  "accuracy": 0.9085914085914086,
+  "n": 2002
+ },
+ "reports/images_v2/test/report.json": {
+  "accuracy": 0.8354940939210602,
   "n": 3471
  },
  "reports/jina_r2b/calibration/report.json": {

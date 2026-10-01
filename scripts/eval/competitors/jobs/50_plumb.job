@@ -1,0 +1,5 @@
+source ~/sj/scripts/eval/competitors/lib.sh
+teardown
+# one question per request: Plumb has no prefix sharing, and a >16-option question fails its whole request
+up plumb 8090 && score plumb-4b 8090 plumb-4b 0 "{}" 1
+teardown

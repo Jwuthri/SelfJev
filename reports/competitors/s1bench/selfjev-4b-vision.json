@@ -1,0 +1,149 @@
+{
+ "subsets": {
+  "aegis2": {
+   "n": 250,
+   "correct": 202,
+   "acc": 0.808,
+   "ece": 0.1167,
+   "brier": 0.2912,
+   "p50_s": 0.481,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "boolq": {
+   "n": 300,
+   "correct": 255,
+   "acc": 0.85,
+   "ece": 0.0874,
+   "brier": 0.2348,
+   "p50_s": 0.444,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "civil_comments": {
+   "n": 300,
+   "correct": 234,
+   "acc": 0.78,
+   "ece": 0.0944,
+   "brier": 0.3139,
+   "p50_s": 0.364,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "helpsteer2": {
+   "n": 249,
+   "correct": 81,
+   "acc": 0.3253,
+   "ece": 0.2702,
+   "brier": 0.8515,
+   "p50_s": 1.168,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "massive-de-DE": {
+   "n": 350,
+   "correct": 290,
+   "acc": 0.8286,
+   "ece": 0.0529,
+   "brier": 0.2655,
+   "p50_s": 1.137,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "massive-en-US": {
+   "n": 350,
+   "correct": 301,
+   "acc": 0.86,
+   "ece": 0.0484,
+   "brier": 0.2221,
+   "p50_s": 1.133,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "multinli": {
+   "n": 299,
+   "correct": 258,
+   "acc": 0.8629,
+   "ece": 0.0335,
+   "brier": 0.1927,
+   "p50_s": 0.294,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "paws": {
+   "n": 250,
+   "correct": 215,
+   "acc": 0.86,
+   "ece": 0.0866,
+   "brier": 0.2276,
+   "p50_s": 0.297,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "pubmedqa": {
+   "n": 250,
+   "correct": 174,
+   "acc": 0.696,
+   "ece": 0.1131,
+   "brier": 0.422,
+   "p50_s": 0.687,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "squad2": {
+   "n": 299,
+   "correct": 247,
+   "acc": 0.8261,
+   "ece": 0.0641,
+   "brier": 0.2551,
+   "p50_s": 0.466,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "summeval-consistency": {
+   "n": 144,
+   "correct": 115,
+   "acc": 0.7986,
+   "ece": 0.1877,
+   "brier": 0.3809,
+   "p50_s": 0.791,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "summeval-relevance": {
+   "n": 240,
+   "correct": 117,
+   "acc": 0.4875,
+   "ece": 0.0612,
+   "brier": 0.6634,
+   "p50_s": 0.876,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  },
+  "vitaminc-dev": {
+   "n": 599,
+   "correct": 445,
+   "acc": 0.7429,
+   "ece": 0.1528,
+   "brier": 0.4093,
+   "p50_s": 0.351,
+   "served_by": [
+    "selfjev-4b"
+   ]
+  }
+ },
+ "macro": 0.7481461538461538,
+ "micro": 0.7561855670103093
+}
