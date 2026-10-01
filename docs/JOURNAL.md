@@ -8,6 +8,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | job | owner session | where | since | ends |
 |---|---|---|---|---|
+| Chain-layout pilot: leaves vs chain from the text release on the same 15K questions (`runs/chain_pilot`), eval2 / eval_llm / dev + reversed-order eval2 | Claude images | AWS 2 × g6e.xlarge us-east-2: `i-0c6529bcb181f3cc2` (`selfjev-pilotL`), `i-0574d0f0652e8d53c` (`selfjev-pilotC`) | 2026-09-30 23:22 PDT | cap 03:22 PDT (4 h each); the drivers terminate them |
 | Redesign project README to match website | Codex README | local changes verified | 2026-09-28 | awaiting commit/push choice |
 | Quantized selfjev-4b-vision (8bit/4bit) for 8 GB GPUs: Decision Bench + memory, 2 × g5.xlarge us-east-1 (`selfjev-quant4`, `selfjev-quant8`, cap 1.9 h each, approved ≤ $4) | Claude quant (SELA-003) | AWS | 2026-09-30 | ≈ 2 h |
 | selfjev-4b-vision on Ollama: `--engine ollama` (code done, local), GGUF f16/Q8/Q4 via `ollama create`, eval2 + eval_llm + images through Ollama, 1 × g6e.xlarge (`selfjev-ollama`, cap 3 h, approved ≈ $6) | Claude Ollama | AWS `i-031e1f75a28e9ce61` us-east-2 g6e.xlarge, launched 22:58 PDT (cap 3 h) | 2026-09-30 | ≈ 3 h |
@@ -70,6 +71,26 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-10-01 PDT: 200 × t4g.nano download both HF repos, round 2 (Claude, user request)
+200 `t4g.nano` (us-east-1) each downloaded every file of `Jwuthrich/selfjev-4b` and `Jwuthrich/selfjev-4b-vision` (33 files, 461 MB) over HTTPS. Final batch `hf-dl-test4`: 192 of 200 OK in 5.8 to 9.0 s each; 5 failed with `Connection reset by peer` (no retry in the script); 3 had no console line when read. Two earlier batches (`hf-dl-test2`, `hf-dl-test3`, 200 each) failed with `No space left on device` because `/tmp` is RAM-backed on AL2023; fixed by using `/var/tmp`. Tested HF's handling of about 200 parallel clients: fine apart from the resets. Cost about $0.0042/h × 800 box-runs × under 7 min, under $0.40. All 700 instances (including the first 100) are terminated; no SG or key pair created.
+
+### 2026-09-30 21:30 PDT: can JevBench public / hard and typed-decisions train selfjev? (Claude images, user question)
+
+- **JevBench public** (fstandhartinger/jevbench @ `bb05a33`, `datasets/public`): 231 items, original 72 (MIT, rubric
+  reviewed) + easy 48 + hard 111 ("authored with rationale; cross-model review before any system ran"). The board ranks on
+  sealed items too (24 held-out private, 146 imported, held-out hard); training on public items is allowed with disclosure
+  (their smalljev note). Ours (`reports/competitors/jevbench/selfjev-4b-vision/tiers.txt`): easy 100, original 98.6, hard
+  66.7; weakest hard families temporal_numeric 0.333, long_policy 0.526, judge_hard 0.588, tradeoff 0.5 (small n each).
+  **Not for training:** 231 items are 0.3% of our data, and training on them would spoil the clean public number while
+  the sealed board score is what ranks. Use as a diagnostic: its weak families match eval2's (temporal, numeric, judging).
+- **typed-decisions** (LocalLLaMA/typed-decisions, Apache-2.0): train 1,200 cases x 5 questions = 6,000 decisions
+  (customer service, invoices, security incidents, agent traces; noul / choice / score, no select-all), test 400 cases.
+  Gold = "the mean of three samples from a teacher of roughly 4B-class capability"; teacher self-agreement 0.735 is its
+  ceiling. Ours zero-shot 66.1 (Jev 72.7; score questions 60.9). **Usable only re-labelled:** the train split is
+  legitimate, but its labels are a weak model's, which AGENTS.md rules out as training targets; a verified batch (our
+  Astra judge, ~$20-35) would be allowed. Effect: large on typed-decisions itself (in-distribution; the card then lists
+  us under "fine-tuned on train"), little expected on eval2's gap (select-all questions, distractors), which it lacks.
 
 ### 2026-09-30 PDT: 100 × t4g.nano HF download smoke test (Claude, user request)
 100 `t4g.nano` (us-east-1, tag `Name=hf-dl-test`) each `curl`-downloaded the 4 files of `Jwuthrich/selfjev-4b-vision` (adapter, about 230 MB) and shut themselves down (terminate-on-shutdown). All 100 were `terminated` within 100 s of launch. Console output was empty, so per-box download success is unverified. Cost about $0.42/h × under 2 min, under $0.05. No SG or key pair created; nothing left running.
