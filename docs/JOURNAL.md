@@ -95,7 +95,8 @@ The tree and custom-model GPU runs and the unknown boxes are not in this table y
   150 beans photos (3 classes) + 50 text rows: held-out beans 30 / 32 -> 31 / 32.
 - **Release:** `selfjev` **0.4.0** on PyPI (tag `v0.4.0`, `f2cc778`, release workflow: build, smoke test, trusted
   publishing): everything since 0.3.0 (Ollama engine, quantized serving, row uploads, `wait_fine_tuning_job`, the image
-  fixes) but not this stall fix, which is on master (`6b43d94`) for the next release.
+  fixes) but not this stall fix, which is on master (`6b43d94`) for the next release. **0.4.1** (2026-10-02, tag
+  `v0.4.1`, `034e938`, user request): the stall fix, on PyPI.
 - **Cost:** ≈ $1.57 (profiling ≈ $0.60, e2e ≈ $0.97); the whole task ≈ $3.68 of the ≈ $4.75 approved.
 
 ### 2026-10-01 14:10 PDT: SDK, server and fine-tuning end to end on a GPU, text and images: 40 of 41 checks; one open stall (Claude images, user request)
