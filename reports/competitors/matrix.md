@@ -9,7 +9,7 @@
 | mica-4b | 4.2B, Qwen3.5-4B merged LoRA (llama.cpp BF16), text, Apache-2.0 | 162 | 89.6 (98% answered) | 84.1 (99% answered) | — | 68.0 | 82.7 / 64.0 | — |
 | openjev-27b-fp8 | 27B, Qwen3.8-27B FP8, text + images, CC-BY-NC-4.0 | 753 | 96.8 | 92.6 | 82.6 / 72.8 | 71.1 | 87.4 / 74.8 | — |
 | plumb-4b | 4.2B, JevK5 (Qwen3.5-4B), text, Apache-2.0 | 471 | 93.4 | 84.1 | — | 61.4 | 89.6 / 80.2 | — |
-| selfjev-4b-vision | 4B, Qwen3.5-4B + LoRA r64, text + images, Apache-2.0 code; Jev soft targets in training | 242 | 94.7 | 90.7 | 85.1 / 94.0 | 66.1 | 83.5 / 66.7 | 74.8 |
+| selfjev-4b-vision | 4B, Qwen3.5-4B + LoRA r64, text + images, Apache-2.0 code; Jev soft targets in training | 166 | 94.7 | 90.7 | 85.1 / 94.0 | 66.1 | 83.5 / 66.7 | 74.8 |
 
 | model | set | ours only right | model only right | p |
 |---|---|---|---|---|

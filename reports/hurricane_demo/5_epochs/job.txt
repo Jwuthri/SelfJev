@@ -1,0 +1,1 @@
+300 photos, 2 labels -> succeeded selfjev-4b:ft-hurricane-e5-4e4f0ce0 in 2.8 min; ['validation at step 0', 'validation at step 10']

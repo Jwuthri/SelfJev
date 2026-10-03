@@ -15,6 +15,7 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 
 | item | cost | who |
 |---|---|---|
+| AWS: speed + engine check + hurricane demo, g6e.xlarge `i-0fd6b435c5bf1639b` us-east-1, 16:03–17:06 PDT 2026-10-02 (1.05 h), terminated; SGs and key pairs deleted (us-east-1, us-east-2) | ≈ $1.96 (approved ≈ $3.5) | Claude images |
 | AWS: e2e of `6b43d94`, g6e.2xlarge `i-05fd0d6595bc17de6` us-east-2, 15:19–15:45 PDT 2026-10-01 (0.43 h), terminated by the script; SG and key pair deleted | ≈ $0.97 | Claude images |
 | AWS: profiling batched requests, g5.2xlarge `i-0d275c2c3d9ebec41` us-east-2, 14:56–≈ 15:25 PDT 2026-10-01 (no g6e capacity), terminated; SGs and key pairs deleted in 3 regions | ≈ $0.60 | Claude images |
 | AWS: end-to-end product tests, 2 × g6e.2xlarge us-east-2 (no g6e.xlarge capacity in us-east-1/2, us-west-2): `i-00b273f778aef5f83` 12:48–13:16 PDT and `i-0cb58ea7afdd6fb9e` 13:31–14:00 PDT 2026-10-01 (0.47 h each), terminated by the script; SGs and key pairs deleted (also those of 3 launches refused for capacity) | ≈ $2.11 (approved ≈ $2.15) | Claude images |
@@ -79,6 +80,29 @@ Times are PDT (the user's clock) unless marked UTC. Rules for every session: [AG
 The tree and custom-model GPU runs and the unknown boxes are not in this table yet: their owners should add them.
 
 ## Log
+
+### 2026-10-02 17:30 PDT: 0.4.1 speed vs the competitors, its accuracy unchanged, and a fine-tune on 300 photos of a new task (Claude images, user request)
+
+- **Speed** (the competitors' protocol: `selfjev serve` merged, eval2 through Jev's request shape, 4 in flight, one
+  L40S g6e.xlarge): **166 s** and 167 s on two passes, 242 s before the batching fix (JOURNAL 2026-10-01 15:50). Still
+  behind jpt-4b 90, kev-4b 109, decider-4b 145, level with Mica 162; ahead of Plumb 471, imajev 489, openjev 753.
+  `reports/competitors/eval2/selfjev-4b-vision-api-w4-v041`; `matrix.py` reads it; the speed cell is updated in
+  matrix.md, public_table.md, card_section.md, README.md, the two model cards in `weights/`, docs/comparison.md,
+  docs/landscape.md and website/content/comparison.md (matrix.md not regenerated whole: it would add the unpromoted
+  `selfjev-verdict-json*` rows of another session).
+- **The 0.4.1 engine** (DeltaNet batch buckets, q / k l2norm in torch) **scores like the release**, paired against
+  `reports/images_v1/`: eval2 96.08 vs 96.13 (1 / 2, p = 1), eval_llm 92.60 vs 92.49 (1 / 0), images 90.51 vs 90.41
+  (2 / 0); through Jev's requests 94.78 vs 94.68 (2 / 0). `reports/engine_0.4.1/`.
+- **Image fine-tuning demo** ([table](../reports/hurricane_demo/README.md)): 300 satellite photos of hurricane damage
+  (150 per class; `scripts/data/hurricane_photos.py`, rows the frozen test does not use, none byte-equal to a test
+  photo) through the API flow (`scripts/eval/image_finetune_demo.py`: folder -> `upload_file(rows)` -> job ->
+  `wait_fine_tuning_job`). Frozen test, hurricane (100 q): release 61.0 -> **79.0** after 1 epoch (2 optimizer steps,
+  1.8 min; 26 fixed / 8 broken, p = 0.003) -> **86.0** after 5 epochs (10 steps, 2.8 min; p = 2e-5). The other 9 image
+  tests 92.1 -> 91.9 / 91.6 (no family significant; -2 on eurosat, fashion, snacks at 5 epochs); eval2 96.1 unchanged.
+- **Change from it:** one epoch on a small file is 2 steps, so `epochs` now defaults to enough for 10 optimizer steps
+  (`training/finetune.MIN_STEPS`, at most 10 epochs; large files still 1); the API's `epochs` is optional. On master,
+  not on PyPI yet.
+- **Cost:** ≈ $1.96 (g6e.xlarge 1.05 h).
 
 ### 2026-10-01 15:50 PDT: batched requests no longer stall; e2e 21 / 21; selfjev 0.4.0 on PyPI (Claude images, user request)
 

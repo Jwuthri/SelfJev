@@ -75,7 +75,8 @@ CARD = {  # size / base / licence, from each model card (2026-09-30 survey)
 
 
 def wall(name):
-    p = R / "eval2" / ("selfjev-4b-vision-api-w4" if name == "selfjev-4b-vision" else name) / "report.json"
+    # ours: the 0.4.1 engine (2026-10-02; 242 s before its batching fix, selfjev-4b-vision-api-w4)
+    p = R / "eval2" / ("selfjev-4b-vision-api-w4-v041" if name == "selfjev-4b-vision" else name) / "report.json"
     return f"{json.loads(p.read_text())['meta']['wall_s']:.0f}" if p.exists() else ""
 
 

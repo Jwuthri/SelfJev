@@ -155,6 +155,10 @@
   "accuracy": 0.9337016574585635,
   "n": 1991
  },
+ "reports/competitors/eval2/selfjev-4b-vision-api-w4-v041/report.json": {
+  "accuracy": 0.9477649422400803,
+  "n": 1991
+ },
  "reports/competitors/eval2/selfjev-4b-vision-api-w4/report.json": {
   "accuracy": 0.9467604218985435,
   "n": 1991
@@ -459,6 +463,18 @@
   "accuracy": 0.9276745354093421,
   "n": 1991
  },
+ "reports/engine_0.4.1/eval2/report.json": {
+  "accuracy": 0.9608237066800602,
+  "n": 1991
+ },
+ "reports/engine_0.4.1/eval_images_v1/report.json": {
+  "accuracy": 0.9050949050949051,
+  "n": 2002
+ },
+ "reports/engine_0.4.1/eval_llm/report.json": {
+  "accuracy": 0.9260042283298098,
+  "n": 946
+ },
  "reports/external/eval2/ours-LoRA/report.json": {
   "accuracy": 0.8513309894525364,
   "n": 1991
@@ -482,6 +498,22 @@
  "reports/external/full/typesafe_jev-latest/report.json": {
   "accuracy": 0.8271391529818496,
   "n": 3471
+ },
+ "reports/hurricane_demo/1_epoch/eval2/report.json": {
+  "accuracy": 0.9613259668508287,
+  "n": 1991
+ },
+ "reports/hurricane_demo/1_epoch/eval_images_v1/report.json": {
+  "accuracy": 0.9120879120879121,
+  "n": 2002
+ },
+ "reports/hurricane_demo/5_epochs/eval2/report.json": {
+  "accuracy": 0.9608237066800602,
+  "n": 1991
+ },
+ "reports/hurricane_demo/5_epochs/eval_images_v1/report.json": {
+  "accuracy": 0.913086913086913,
+  "n": 2002
  },
  "reports/images_2026-09-29/base_pets100/report.json": {
   "accuracy": 0.73,

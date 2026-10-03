@@ -243,6 +243,9 @@ Each has a formatted box with its evidence in [findings.md](findings.md).
     no images. One mixed fine-tune from `selfjev-4b` (11.3K image questions from 6 licence-safe datasets + 11.3K replayed text
     questions, lr 5e-5, 1 epoch): trained image sets 70.4 -> 94.2%, held-out image sets 83.5 -> 84.3 (no transfer), text within
     noise (eval2 96.13, eval_llm 92.49, dev 84.07). Replay is what keeps text: pets-only training without it cost eval2 0.4.
+    A user's fine-tune on a new task works through the API: 300 photos of hurricane damage took the frozen hurricane test
+    61 -> 86% in 2.8 min (10 steps), the other image tests and eval2 within noise ([table](../reports/hurricane_demo/README.md),
+    JOURNAL 2026-10-02 17:30); a small file needs more than one epoch (jobs now default to >= 10 steps).
 17. **Open competitors, measured (2026-09-30, JOURNAL 14:15; `reports/competitors/matrix.md`):** on our frozen sets
     through Jev's exact requests, selfjev-4b-vision (eval2 94.7, eval_llm 90.7) beats the 7 smaller open models tested
     (Plumb, jpt, imajev, decider, Mica, kev at ≈ 4B; Laya 0.4B at 45) in paired tests (p ≤ 0.023); openjev-27B beats it on eval2 (96.8, p = 4e-5).

@@ -1,0 +1,63 @@
+{
+ "mode": "finetune",
+ "base": "Qwen/Qwen3.5-4B",
+ "revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+ "prompt": "challenger-state-first-v1",
+ "init": "weights/selfjev_4b_vision",
+ "options_in_question": true,
+ "data": {
+  "/home/ubuntu/.selfjev/server/files/file_fd96a42dc1d04d128a7fdc87.train.jsonl": "03add0b5422ee35cf21b30f2f6c03377ab305be3523b6b11a6c145e6fc459ee8"
+ },
+ "train_questions": 285,
+ "val_questions": 15,
+ "dropped_over_max_length": {
+  "train": {},
+  "val": {}
+ },
+ "max_length": 16384,
+ "epochs": 1,
+ "lr": 5e-05,
+ "lora_r": 64,
+ "batch_tokens": 16384,
+ "grad_accum": 2,
+ "steps": 2,
+ "seed": 13,
+ "select_by": "validation loss",
+ "soft_targets": 0,
+ "soft_weight": 0.5,
+ "log": [
+  {
+   "step": 0,
+   "validation": {
+    "loss": 1.5810905748357376,
+    "accuracy": 0.3333333333333333,
+    "brier": 0.9955360257454837,
+    "ece": 0.5098450779914856,
+    "n": 15,
+    "confidently_wrong": 5
+   },
+   "wall_s": 5.207493192000129
+  },
+  {
+   "step": 2,
+   "validation": {
+    "loss": 0.5540691554546356,
+    "accuracy": 0.7333333333333333,
+    "brier": 0.3688739210367203,
+    "ece": 0.12425318559010824,
+    "n": 15,
+    "confidently_wrong": 0
+   },
+   "wall_s": 81.05692163100002
+  }
+ ],
+ "best": {
+  "step": 2,
+  "loss": 0.5540691554546356,
+  "accuracy": 0.7333333333333333,
+  "brier": 0.3688739210367203,
+  "ece": 0.12425318559010824,
+  "n": 15,
+  "confidently_wrong": 0
+ }
+}
